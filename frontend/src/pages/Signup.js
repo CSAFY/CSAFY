@@ -18,13 +18,10 @@ function Signup() {
   const handleSubmit = () => {
     // api 연결 테스트용
     axios
-      .post(`https://tupli.kr/account/signup`, {
-        createdAt: '2022-04-18T08:23:06.644Z',
+      .post(`https://tupli.kr/api/v1/account/signup`, {
         email: userInfo.email,
-        modifiedAt: '2022-04-18T08:23:06.644Z',
         nickname: 'test',
         password: userInfo.password,
-        userId: 13579,
         username: userInfo.username,
       })
       .then((res) => console.log(res))
@@ -38,6 +35,10 @@ function Signup() {
       company: '',
       interest: '',
     });
+  };
+
+  const TuplioAuthTest = (e) => {
+    window.location.href = `https://tupli.kr/api/v1/oauth2/authorization/google?redirect_uri=https://tupli.kr/oauth/redirect`;
   };
 
   return (
@@ -120,6 +121,8 @@ function Signup() {
               bgcolor: '#D5F2FC',
             },
           }}
+          // 테스트용
+          onClick={TuplioAuthTest}
         >
           Sign up with Google
         </Button>
