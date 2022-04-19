@@ -244,6 +244,10 @@ const Nav = () => {
                   bgcolor: '#D5F2FC',
                 },
               }}
+              onClick={() => {
+                navigate('/signup');
+                setCurrentPage('signup');
+              }}
             >
               회원가입
             </Button>
