@@ -13,12 +13,13 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { styled, alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
+import  {styled  as styleds}  from '@mui/material/styles' ;
 // STYLED
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
 // SearchBar
-const Search = styled('div')(({ theme }) => ({
+const Search = styleds('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   border: '1px solid #84c2ea',
@@ -35,7 +36,7 @@ const Search = styled('div')(({ theme }) => ({
   },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styleds('div')(({ theme }) => ({
   // color: 'default',
   padding: theme.spacing(0, 2),
   height: '100%',
@@ -46,7 +47,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = styleds(InputBase)(({ theme }) => ({
   color: 'default',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
