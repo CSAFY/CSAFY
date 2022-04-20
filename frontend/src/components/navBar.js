@@ -13,15 +13,17 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { styled, alpha } from '@mui/material/styles';
+import { styled as muiStyled, alpha } from '@mui/material/styles';
+
 // STYLED
 // import styled from 'styled-components';
 
 // SearchBar
-const Search = styled('div')(({ theme }) => ({
+const Search = muiStyled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  border: '1px solid #84c2ea',
+  border: '1px solid black',
+  // border: '1px solid #84c2ea',
   // backgroundColor: alpha(theme.palette.common.white, 0.15),
   backgroundColor: 'rgba(255, 255, 255, 0.5)',
   '&:hover': {
@@ -31,11 +33,11 @@ const Search = styled('div')(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     width: 'auto',
   },
 }));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = muiStyled('div')(({ theme }) => ({
   // color: 'default',
   padding: theme.spacing(0, 2),
   height: '100%',
@@ -45,8 +47,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
 }));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
   color: 'default',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
@@ -77,7 +78,7 @@ const pages = [
 //   background-color: none;
 // `;
 
-const Nav = () => {
+const NavBar = () => {
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -103,7 +104,8 @@ const Nav = () => {
       elevation={0}
       sx={{
         zIndex: (theme) => theme.zIndex.drawer + 1,
-        bgcolor: '#D5F2FC',
+        // bgcolor: '#D5F2FC',
+        bgcolor: '#ffffff',
         margin: '0',
       }}
     >
@@ -166,7 +168,8 @@ const Nav = () => {
                       display: 'block',
                       ':hover': {
                         color: '#006D9F',
-                        bgcolor: '#D5F2FC',
+                        bgcolor: '#ffffff',
+                        // bgcolor: '#D5F2FC',
                       },
                     }}
                   >
@@ -190,7 +193,8 @@ const Nav = () => {
                       display: 'block',
                       ':hover': {
                         color: '#006D9F',
-                        bgcolor: '#D5F2FC',
+                        bgcolor: '#ffffff',
+                        // bgcolor: '#D5F2FC',
                       },
                     }}
                   >
@@ -241,7 +245,8 @@ const Nav = () => {
                 display: 'block',
                 ':hover': {
                   color: '#006D9F',
-                  bgcolor: '#D5F2FC',
+                  bgcolor: '#ffffff',
+                  // bgcolor: '#D5F2FC',
                 },
               }}
               onClick={() => {
@@ -293,6 +298,7 @@ const Nav = () => {
                       sx={{
                         ':hover': {
                           color: '#006D9F',
+                          bgcolor: '#ffffff',
                         },
                       }}
                     >
@@ -313,6 +319,7 @@ const Nav = () => {
                         },
                         color: '#006D9F ',
                         fontWeight: 'bold',
+                        bgcolor: '#ffffff',
                       }}
                     >
                       <Typography textAlign="center">{page.name}</Typography>
@@ -353,7 +360,8 @@ const Nav = () => {
                 display: 'block',
                 ':hover': {
                   color: '#006D9F',
-                  bgcolor: '#D5F2FC',
+                  bgcolor: '#ffffff',
+                  // bgcolor: '#D5F2FC',
                 },
               }}
             >
@@ -369,7 +377,8 @@ const Nav = () => {
                 display: 'block',
                 ':hover': {
                   color: '#006D9F',
-                  bgcolor: '#D5F2FC',
+                  bgcolor: '#ffffff',
+                  // bgcolor: '#D5F2FC',
                 },
               }}
               onClick={() => {
@@ -385,4 +394,4 @@ const Nav = () => {
     </AppBar>
   );
 };
-export default Nav;
+export default NavBar;
