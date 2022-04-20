@@ -1,4 +1,4 @@
-import { Button, formControlLabelClasses } from '@mui/material';
+import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import '../App.css';
 import axios from 'axios';
@@ -72,7 +72,7 @@ function Signup() {
             onChange={handleChangeUserInfo}
           />
         </div>
-        <div className="job_box">
+        {/* <div className="job_box">
           <div className="job_info_box">
             <p>목표 기업</p>
             <input
@@ -91,7 +91,7 @@ function Signup() {
               onChange={handleChangeUserInfo}
             />
           </div>
-        </div>
+        </div> */}
 
         <Button
           variant="contained"

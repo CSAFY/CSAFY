@@ -1,15 +1,6 @@
 .App {
 }
 
-/* Home */
-.Home {
-  text-align: center;
-
-  background-color: #d5f2fc;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 /* Signup */
 /* 화면 너비가 650px 이상일 때 적용 */
 @media (min-width: 650px) {
