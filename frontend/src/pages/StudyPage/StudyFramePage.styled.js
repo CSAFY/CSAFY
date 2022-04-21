@@ -12,3 +12,29 @@ export const TitleName = styled.div`
   font-weight: ${fontWeight.medium};
 `;
 
+export const SearchBox = styled.input`
+  weight: 300px;
+  height: 50px;
+`;
+
+export const SelectLayOut = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const KategorieLayOut = styled.div`
+  min-width: 100px
+`
+
+export const FlexDiv = styled.div`
+  display: flex;
+`;
+
+export const CardDiv = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 1em;
+  justify-items: center;
+  align-items: center;
+`
