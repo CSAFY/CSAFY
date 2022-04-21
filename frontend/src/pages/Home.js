@@ -90,7 +90,7 @@ const GuideMain = styled.div`
   border: 1px solid #d4d4d4;
   border-radius: 10px;
   height: 60vh;
-  margin-right: 3rem;
+
   margin-left: 3rem;
   padding-left: 2rem;
 
@@ -232,7 +232,9 @@ function Home() {
               <p>이산수학</p>
               <p>프로그래밍 언어</p>
             </GuideMain>
-            <GuideMain style={{ backgroundColor: '#D4EFFA' }}>
+            <GuideMain
+              style={{ backgroundColor: '#D4EFFA', marginRight: '3rem' }}
+            >
               <h1
                 style={{
                   position: 'absolute',
