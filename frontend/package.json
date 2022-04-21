@@ -12,9 +12,11 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
     "react": "^18.0.0",
+    "react-calendar-heatmap": "^1.8.1",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "react-tooltip": "^4.2.21",
     "recoil": "^0.7.2",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
