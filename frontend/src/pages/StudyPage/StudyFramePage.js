@@ -11,7 +11,8 @@ import BasicButton from "../../components/atoms/studypage/BasicButton"
 // import ToggleButton from "../../components/atoms/studypage/ToggleButton"
 import ToggleButtonsGroup from "../../components/atoms/studypage/ToggleButtonsGroup"
 import KateImgCard from "../../components/atoms/studypage/KateImgCard"
-
+import YouTubeUrl from "../../utils/api"
+import axios from 'axios';
 
 function StudyFramePage() {
   const [nowKategorie, setKategorie] = useState("전체")
@@ -25,9 +26,48 @@ function StudyFramePage() {
   }
 
   const onBasicBtnlick = () => {
-    console.log("hihi")
+    
   }
 
+
+  
+  const [youTubeData, setYouTubeData] = useState([])
+  const getData = async () => {
+    const params = {
+      key: 'AIzaSyAZCj6i0rNEKAniu2mB9EAB3GgNePaJQEM',
+      part:'snippet',
+      // 선택한 영화 제목
+      q: "스파이더맨",
+      type: 'video',
+    }
+    axios({
+      method: 'get',
+      url: "https://www.googleapis.com/youtube/v3/search",
+      params,
+    })
+    .then((res) => {
+      console.log(res.data.items)
+      setYouTubeData(res.data.items)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+  useEffect(() => {
+    getData();
+  }, []);
+  
+  const againCard = youTubeData.map((data) => 
+    
+    <KateImgCard
+      key={data.id.videoId}
+      imgSrc={data.snippet.thumbnails.high.url}
+      text={data.snippet.title}
+       >
+      
+    </KateImgCard>
+  )
+  
   
   
 
@@ -64,26 +104,7 @@ function StudyFramePage() {
         </KategorieLayOut>
 
         <CardDiv>
-          <KateImgCard
-            imgSrc={"logo512.png"}>
-
-          </KateImgCard>
-          <KateImgCard
-            imgSrc={"logo512.png"}>
-
-          </KateImgCard>
-          <KateImgCard
-            imgSrc={"logo512.png"}>
-
-          </KateImgCard>
-          <KateImgCard
-            imgSrc={"logo512.png"}>
-
-          </KateImgCard>
-          <KateImgCard
-            imgSrc={"logo512.png"}>
-
-          </KateImgCard>
+          {againCard}
         </CardDiv>
       </FlexDiv>
       

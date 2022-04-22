@@ -9,6 +9,8 @@ import Page2 from './pages/Page2';
 import Signup from './pages/Signup';
 import Test from './pages/Test';
 
+import StudyFramePage from './pages/StudyPage/StudyFramePage';
+
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +22,7 @@ function App() {
           <Route path="/page1" element={<Page1 />} />
           <Route path="/page2" element={<Page2 />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/StudyFramePage" element={<StudyFramePage />} />
         </Routes>
       </div>
     </BrowserRouter>
