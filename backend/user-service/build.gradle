@@ -64,6 +64,15 @@ dependencies {
 	//queryDSL
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	//openfeign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+}
+
+// Slf4j 중복 이슈
+configurations {
+	all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	all*.exclude group: 'org.springframework.boot', module: 'logback-classic'
 }
 
 dependencyManagement {
