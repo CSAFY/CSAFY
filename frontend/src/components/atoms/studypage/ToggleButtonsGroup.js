@@ -9,6 +9,14 @@ function ToggleButtonsGroup(props) {
     setAlignment(newAlignment);
     props.selectKategorie(event.target.value)
   };
+
+  const [kategori, setkategori] = useState(["전체", "네트워크", "보안", "컴퓨터구조", "웹서비스"]);
+
+  const againToggleButton = kategori.map((data) => 
+    <ToggleButton value={data}>
+      {data}
+    </ToggleButton>
+  )
   return (
     <ToggleButtonGroup
       orientation="vertical"
@@ -17,7 +25,7 @@ function ToggleButtonsGroup(props) {
       onChange={handleAlignment}
       aria-label="text alignment"
     >
-      <ToggleButton value="전체" >
+      {/* <ToggleButton value="전체" >
         전체
       </ToggleButton>
       <ToggleButton value="네트워크" >
@@ -28,7 +36,8 @@ function ToggleButtonsGroup(props) {
       </ToggleButton>
       <ToggleButton value="컴퓨터구조"  >
       컴퓨터구조
-      </ToggleButton>
+      </ToggleButton> */}
+      {againToggleButton}
     </ToggleButtonGroup>
   );
 }
