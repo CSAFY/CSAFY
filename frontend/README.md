@@ -14,6 +14,5 @@ npm install recoil
 npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
 
 npm install styled-components
-
-npm instll recoil-persist
 ```
+
