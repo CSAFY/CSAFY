@@ -67,17 +67,17 @@ spring:
           ssl:
             protocols: TLSv1.2
 
-  # Security OAuth
-#  security:
-#    oauth2.client:
-#      registration:
-#        google:
-#          clientId: 619221609043-nt8usbdpbeskqj1a4ij6n0osrcbnv84j.apps.googleusercontent.com
-#          clientSecret: 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
-#          redirectUri: https://tupli.kr/api/v1/login/oauth2/code/google  # 안전용 지정해주기. 보험.
-#          scope:
-#            - email
-#            - profile
+#   Security OAuth
+  security:
+    oauth2.client:
+      registration:
+        google:
+          clientId: 692747234718-8s6t26tako0ei0dm2j7dj0fj72k72b89.apps.googleusercontent.com
+          clientSecret: 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
+          redirectUri: http://localhost:8080/oauth2/code/google  # 안전용 지정해주기. 보험.
+          scope:
+            - email
+            - profile
 
 # 토큰 관련 secret Key 및 RedirectUri 설정
 app:
