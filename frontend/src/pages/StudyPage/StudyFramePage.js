@@ -8,9 +8,9 @@ import { LayOut,
  } from "./StudyFramePage.styled"
 import { useEffect, useRef, useState } from "react";
 import BasicButton from "../../components/atoms/studypage/BasicButton"
-// import ToggleButton from "../../components/atoms/studypage/ToggleButton"
-import ToggleButtonsGroup from "../../components/atoms/studypage/ToggleButtonsGroup"
-import KateImgCard from "../../components/atoms/studypage/KateImgCard"
+import CategoryList from "../../components/atoms/studypage/CategoryList"
+import ThumbNailCard from "../../components/atoms/studypage/ThumbNailCard"
+
 import YouTubeUrl from "../../utils/api"
 import axios from 'axios';
 
@@ -28,13 +28,14 @@ function StudyFramePage() {
   const onBasicBtnlick = () => {
     
   }
-
+  
+  
 
   
   const [youTubeData, setYouTubeData] = useState([])
   const getData = async () => {
     const params = {
-      key: 'AIzaSyAZCj6i0rNEKAniu2mB9EAB3GgNePaJQEM',
+      key: 'AIzaSyD0YhR64cx9_iaWnxKXPTxt39BVigDbFyw',
       part:'snippet',
       // 선택한 영화 제목
       q: "스파이더맨",
@@ -42,7 +43,7 @@ function StudyFramePage() {
     }
     axios({
       method: 'get',
-      url: "https://www.googleapis.com/youtube/v3/search",
+      url: YouTubeUrl,
       params,
     })
     .then((res) => {
@@ -59,13 +60,13 @@ function StudyFramePage() {
   
   const againCard = youTubeData.map((data) => 
     
-    <KateImgCard
-      key={data.id.videoId}
-      imgSrc={data.snippet.thumbnails.high.url}
-      text={data.snippet.title}
-       >
-      
-    </KateImgCard>
+      <ThumbNailCard
+        key={data.id.videoId}
+        imgSrc={data.snippet.thumbnails.high.url}
+        title={data.snippet.title}
+        videoId={data.id.videoId}
+        >
+      </ThumbNailCard>
   )
   
   
@@ -94,19 +95,20 @@ function StudyFramePage() {
 
       </SelectLayOut>
 
-      {/*  */}
+      
       <FlexDiv  >
         <KategorieLayOut>
-          <ToggleButtonsGroup
+          <CategoryList
             selectKategorie = {selectKategorie}>
 
-          </ToggleButtonsGroup>
+          </CategoryList>
         </KategorieLayOut>
 
         <CardDiv>
           {againCard}
         </CardDiv>
       </FlexDiv>
+      
       
     </LayOut>
   )
