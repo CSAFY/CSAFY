@@ -39,5 +39,4 @@ out/
 ### LOCAL ###
 /download
 /media
-application.yml
 **/src/main/resources/*.json
