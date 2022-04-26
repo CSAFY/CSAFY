@@ -20,22 +20,22 @@ spring:
             preLogger: true
             postLogger: true
       routes:
-        - id: user-service
-          uri: lb://USER-SERVICE # lb => load balancer
-          predicates:
-            - Path=/user-service/login
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service
-          uri: lb://USER-SERVICE # lb => load balancer
-          predicates:
-            - Path=/user-service/users
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#        - id: user-service
+#          uri: lb://USER-SERVICE # lb => load balancer
+#          predicates:
+#            - Path=/user-service/login
+#            - Method=POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#        - id: user-service
+#          uri: lb://USER-SERVICE # lb => load balancer
+#          predicates:
+#            - Path=/user-service/users
+#            - Method=POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: user-service
           uri: lb://USER-SERVICE # lb => load balancer
           predicates:
@@ -48,7 +48,7 @@ spring:
           uri: lb://USER-SERVICE # lb => load balancer
           predicates:
             - Path=/user-service/**
-            - Method=GET
+            - Method=GET,POST
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}

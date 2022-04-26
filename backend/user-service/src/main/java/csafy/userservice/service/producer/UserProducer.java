@@ -47,8 +47,10 @@ public class UserProducer {
                 .is_vip(userDto.getIs_vip())
                 .build();
         KafkaUserDto kafkaUserDto = new KafkaUserDto(schema, payload);
-
+        System.out.println("asdasd " + kafkaUserDto.getPayload().getCreatedAt());
+        System.out.println("asdasd " + kafkaUserDto.getPayload().getRoleType());
         ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
         String jsonInString ="";
         try{
             jsonInString = mapper.writeValueAsString(kafkaUserDto);

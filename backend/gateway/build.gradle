@@ -38,7 +38,7 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-bus-kafka
-    implementation 'org.springframework.cloud:spring-cloud-starter-bus-kafka:3.1.0'
+//    implementation 'org.springframework.cloud:spring-cloud-starter-bus-kafka:3.1.0'
 
 
 }
