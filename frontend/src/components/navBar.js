@@ -14,6 +14,32 @@ import MenuItem from '@mui/material/MenuItem';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled as muiStyled, alpha } from '@mui/material/styles';
+// MODAL
+import Modal from '@mui/material/Modal';
+import AuthModal from './AuthModal';
+
+const loginStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '517px',
+  height: '697px',
+  bgcolor: '#fff',
+  boxShadow: 24,
+  p: 4,
+};
+const signupStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '517px',
+  height: '834px',
+  bgcolor: '#fff',
+  boxShadow: 24,
+  p: 4,
+};
 
 // STYLED
 // import styled from 'styled-components';
@@ -66,9 +92,9 @@ const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
 
 // Navbar에 페이지 추가하려면 pages 안에 요소 추가
 const pages = [
+  { name: '학습', link: 'page1' },
   { name: '테스트', link: 'test' },
-  { name: '페이지 1', link: 'page1' },
-  { name: '페이지 2', link: 'page2' },
+  { name: '면접 대비', link: 'page2' },
 ];
 
 // const Logo = styled.img`
@@ -79,8 +105,23 @@ const pages = [
 // `;
 
 const NavBar = () => {
-  const navigate = useNavigate();
+  // MODAL
+  const [state, setState] = useState('signup');
+  const [login, setLogin] = useState(false);
+  const handleLoginOpen = () => {
+    setState('login');
+    setLogin(true);
+  };
+  const handleLoginClose = () => setLogin(false);
+  const [signup, setSignup] = useState(false);
+  const handleSignupOpen = () => {
+    setState('signup');
+    setSignup(true);
+  };
+  const handleSignupClose = () => setSignup(false);
 
+  // nav
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
   // const [anchorElUser, setAnchorElUser] = useState(null);
   const [currentPage, setCurrentPage] = useState('Home');
@@ -126,10 +167,10 @@ const NavBar = () => {
           >
             <Link to="/">
               <img
-                src="images/logo.ico"
+                src="images/csafy.png"
                 alt="Img"
                 style={{
-                  width: '45px',
+                  width: '110px',
                   height: '45px',
                   paddingTop: '10px',
                   backgroundColor: 'none',
@@ -218,12 +259,13 @@ const NavBar = () => {
             <Link to="/">
               {/* <Logo src="images/logo.ico" /> */}
               <img
-                src="images/logo.ico"
+                src="images/csafy.png"
                 alt="Img"
                 style={{
-                  width: '45px',
+                  width: '110px',
                   height: '45px',
                   paddingTop: '10px',
+                  paddingLeft: '10px',
                   backgroundColor: 'none',
                 }}
               />
@@ -249,13 +291,26 @@ const NavBar = () => {
                   // bgcolor: '#D5F2FC',
                 },
               }}
-              onClick={() => {
-                navigate('/signup');
-                setCurrentPage('signup');
-              }}
+              onClick={handleSignupOpen}
             >
               회원가입
             </Button>
+            <Modal
+              open={signup}
+              onClose={handleSignupClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={signupStyle}>
+                <AuthModal
+                  state={state}
+                  setState={setState}
+                  signup={signup}
+                  setSignup={setSignup}
+                  setLogin={setLogin}
+                />
+              </Box>
+            </Modal>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -364,9 +419,26 @@ const NavBar = () => {
                   // bgcolor: '#D5F2FC',
                 },
               }}
+              onClick={handleLoginOpen}
             >
               로그인
             </Button>
+            <Modal
+              open={login}
+              onClose={handleLoginClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              {state === 'login' ? (
+                <Box sx={loginStyle}>
+                  <AuthModal state={state} setState={setState} />
+                </Box>
+              ) : (
+                <Box sx={signupStyle}>
+                  <AuthModal state={state} setState={setState} />
+                </Box>
+              )}
+            </Modal>
             <Button
               sx={{
                 textAlign: 'center',
@@ -381,13 +453,47 @@ const NavBar = () => {
                   // bgcolor: '#D5F2FC',
                 },
               }}
-              onClick={() => {
-                navigate('/signup');
-                setCurrentPage('signup');
-              }}
+              onClick={handleSignupOpen}
             >
               회원가입
             </Button>
+            <Modal
+              open={signup}
+              onClose={handleSignupClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              {/* {state === 'signup' ? (
+                <Box sx={signupStyle}>
+                  <AuthModal
+                    state={state}
+                    setState={setState}
+                    signup={signup}
+                    setSignup={setSignup}
+                    setLogin={setLogin}
+                  />
+                </Box>
+              ) : (
+                <Box sx={loginStyle}>
+                  <AuthModal
+                    state={state}
+                    setState={setState}
+                    signup={signup}
+                    setSignup={setSignup}
+                    setLogin={setLogin}
+                  />
+                </Box>
+              )} */}
+              <Box sx={signupStyle}>
+                <AuthModal
+                  state={state}
+                  setState={setState}
+                  signup={signup}
+                  setSignup={setSignup}
+                  setLogin={setLogin}
+                />
+              </Box>
+            </Modal>
           </Box>
         </Toolbar>
       </Container>
