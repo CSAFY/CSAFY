@@ -4,6 +4,7 @@ import { LayOut,
   SelectLayOut,
   KategorieLayOut,
   FlexDiv,
+  InSideLayOut,
   CardDiv
  } from "./StudyFramePage.styled"
 import { useEffect, useRef, useState } from "react";
@@ -13,6 +14,9 @@ import ThumbNailCard from "../../components/atoms/studypage/ThumbNailCard"
 
 import YouTubeUrl from "../../utils/api"
 import axios from 'axios';
+
+import { useRecoilState } from "recoil";
+import { studyData } from "../../recoils";
 
 function StudyFramePage() {
   const [nowKategorie, setKategorie] = useState("전체")
@@ -32,7 +36,7 @@ function StudyFramePage() {
   
 
   
-  const [youTubeData, setYouTubeData] = useState([])
+  const [youTubeData, setYouTubeData] = useRecoilState(studyData)
   const getData = async () => {
     const params = {
       key: 'AIzaSyD0YhR64cx9_iaWnxKXPTxt39BVigDbFyw',
@@ -74,42 +78,43 @@ function StudyFramePage() {
 
   return (
     <LayOut>
-      <TitleName>
-        {nowKategorie}
-      </TitleName>
-      <SelectLayOut>
-        <SearchBox
-          placeholder="Search…"
-          value={searchValue}
-          onChange={onChange}>
-        </SearchBox>
+      <InSideLayOut>
+        <TitleName>
+          {nowKategorie}
+        </TitleName>
+        <SelectLayOut>
+          <SearchBox
+            placeholder="Search…"
+            value={searchValue}
+            onChange={onChange}>
+          </SearchBox>
+          
+
+          <BasicButton
+            children="필터"
+            onClick={onBasicBtnlick}
+            able={"Y"}
+            >
+          </BasicButton>
+          
+
+        </SelectLayOut>
+
         
+        <FlexDiv  >
+          <KategorieLayOut>
+            <CategoryList
+              selectKategorie = {selectKategorie}>
 
-        <BasicButton
-          children="필터"
-          onClick={onBasicBtnlick}
-          able={"Y"}
-          >
-        </BasicButton>
+            </CategoryList>
+          </KategorieLayOut>
+
+          <CardDiv>
+            {againCard}
+          </CardDiv>
+        </FlexDiv>
         
-
-      </SelectLayOut>
-
-      
-      <FlexDiv  >
-        <KategorieLayOut>
-          <CategoryList
-            selectKategorie = {selectKategorie}>
-
-          </CategoryList>
-        </KategorieLayOut>
-
-        <CardDiv>
-          {againCard}
-        </CardDiv>
-      </FlexDiv>
-      
-      
+      </InSideLayOut>
     </LayOut>
   )
 }

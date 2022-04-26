@@ -3,13 +3,30 @@ import { fontSize, fontWeight } from "../../_foundation";
 
 
 export const LayOut = styled.div`
-  background: rgba(150, 150, 150, 0.5);
+  background: #fff;
   height: 100vh;
 `;
 
+export const InSideLayOut = styled.div`
+  width: 1232px;
+  height: 1519px;
+  margin: 0 104px;
+  padding: 130px 5px 812px 0;
+`
+
 export const TitleName = styled.div`
-  font-size: ${fontSize.h4};
-  font-weight: ${fontWeight.medium};
+  width: 111px;
+  height: 30px;
+  margin: 0 199px 5px 64px;
+  font-family: SUIT;
+  font-size: 24px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #000;
 `;
 
 export const SearchBox = styled.input`
