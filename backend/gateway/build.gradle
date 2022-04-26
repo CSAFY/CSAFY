@@ -27,6 +27,7 @@ dependencies {
 
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
 
     //JWT 토큰
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'

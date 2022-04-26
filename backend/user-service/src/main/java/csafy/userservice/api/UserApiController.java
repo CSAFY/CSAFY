@@ -7,6 +7,7 @@ import csafy.userservice.entity.auth.ProviderType;
 import csafy.userservice.entity.auth.RoleType;
 import csafy.userservice.repository.UserRepository;
 import csafy.userservice.service.UserService;
+import csafy.userservice.service.producer.UserProducer;
 import csafy.userservice.service.token.JwtTokenProvider;
 import lombok.AccessLevel;
 import lombok.Data;

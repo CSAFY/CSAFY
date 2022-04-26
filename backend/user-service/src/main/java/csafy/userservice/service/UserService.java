@@ -1,7 +1,9 @@
 package csafy.userservice.service;
 
+import csafy.userservice.dto.UserDto;
 import csafy.userservice.entity.User;
 import csafy.userservice.repository.UserRepository;
+import csafy.userservice.service.producer.UserProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
+    private final UserProducer userProducer;
 
     private final UserRepository userRepository;
 
@@ -22,7 +25,8 @@ public class UserService {
         user.encodePassword(passwordEncoder);
         int randNum = (int)(Math.random()*20) + 1;
         user.setProfileImage("#" + randNum);
-        userRepository.save(user);
+        userProducer.send("users",new UserDto(user));
+//        userRepository.save(user);
 
         return user.getUserSeq();
     }
