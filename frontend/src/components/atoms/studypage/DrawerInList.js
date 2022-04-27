@@ -22,26 +22,22 @@ export default function DrawerInList(props) {
   const studyDatas = useRecoilValue(studyData)
   const setVideo = useSetRecoilState(videoData);
 
-  const onClickVideo = ({imgSrc, title, videoId}) => {
-    // props.isClick()
+  const onClickVideo = (event, data) => {
+    props.isClick('left', false)
     const tmp = {
-      "videoId" : videoId,
-      "title" : title,
-      "src" : imgSrc
+      "videoId" : data.videoId,
+      "title" : data.title,
+      "src" : data.imgSrc
     }
-    console.log(tmp)
-    // setVideo(tmp)
+    setVideo(tmp)
   }
 
-  const ttt = (event, index) => { 
-    props.isClick('left', false)
-    console.log(event)
-    console.log(index)
-  }
 
   const ListItems = studyDatas.map((data, index) => 
     
-      <ListItem button  key={index} onClick={ttt} >
+      <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {"imgSrc":data.snippet.thumbnails.high.url,
+        "title":data.snippet.title,
+        "videoId":data.id.videoId} )}} >
         <ListItemText primary={data.snippet.title} />
       </ListItem>
     

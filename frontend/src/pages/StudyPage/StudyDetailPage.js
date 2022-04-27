@@ -47,7 +47,11 @@ function StudyDetailPage() {
 
   return (
     <FullLayOut>
+
+      
       <Drawer></Drawer>
+
+
       <DetailLayOut>
         <TitleText>
           {videoDatas.title}
