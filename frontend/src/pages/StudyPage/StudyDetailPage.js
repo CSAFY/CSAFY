@@ -6,7 +6,7 @@ import { MyiFrame,
   StudyDetailText,
   StudyDetailHr,
   FlexDiv,
-  RelatedQuestions
+  // RelatedQuestions
  } from "./StudyDetailPage.styled"
 
 import { useEffect, useRef, useState } from "react";
@@ -14,6 +14,10 @@ import { useRecoilValue } from "recoil";
 import { videoData } from "../../recoils";
 import styled, { css } from "styled-components";
 import ExampleCard from "../../components/atoms/studypage/ExampleCard"
+import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
+import Drawer from "../../components/atoms/studypage/Drawer"
+
+
 
 
 function StudyDetailPage() {
@@ -30,8 +34,20 @@ function StudyDetailPage() {
       </ExampleCard>
   )
 
+
+  //임시 데이터
+  const [ddd, setddd] = useState(
+    [{ title : "OSI 7계층에 대해 설명해보세요.", answer : "src1"},
+    { title : "http란?", answer : "답답1"},
+    { title : "문제문제~1", answer : "답답3"},
+    { title : "문제문제~1", answer : "답답4"},
+    { title : "문제문제~1", answer : "답답5"},
+    { title : "문제문제~1", answer : "답답6"}])
+
+
   return (
     <FullLayOut>
+      <Drawer></Drawer>
       <DetailLayOut>
         <TitleText>
           {videoDatas.title}
@@ -67,21 +83,15 @@ function StudyDetailPage() {
           <StudyDetailText>
             관련 질문
           </StudyDetailText>
-          <RelatedQuestions>
-            OSI 7계층에 대해 설명해보세요.
-          </RelatedQuestions>
-          <RelatedQuestions>
-            OSI 7계층에 대해 설명해보세요.
-          </RelatedQuestions>
-          <RelatedQuestions>
-            OSI 7계층에 대해 설명해보세요.
-          </RelatedQuestions>
-          <RelatedQuestions>
-            OSI 7계층에 대해 설명해보세요.
+          
+          <RelatedQuestions
+            data = {ddd}>
+
           </RelatedQuestions>
 
         </StudyDetailDiv>
       </DetailLayOut>
+      
     </FullLayOut>
   
   )

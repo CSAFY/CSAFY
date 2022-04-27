@@ -14,7 +14,6 @@ function ThumbNailCard({imgSrc, title, videoId}) {
       "src" : imgSrc
     }
     setVideo(tmp)
-    console.log("click")
   }
 
   return (

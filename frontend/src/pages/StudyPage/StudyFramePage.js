@@ -36,7 +36,7 @@ function StudyFramePage() {
   
 
   
-  const [youTubeData, setYouTubeData] = useRecoilState(studyData)
+  const [studyDatas, setStudyData] = useRecoilState(studyData)
   const getData = async () => {
     const params = {
       key: 'AIzaSyD0YhR64cx9_iaWnxKXPTxt39BVigDbFyw',
@@ -51,8 +51,7 @@ function StudyFramePage() {
       params,
     })
     .then((res) => {
-      console.log(res.data.items)
-      setYouTubeData(res.data.items)
+      setStudyData(res.data.items)
     })
     .catch(err =>{
       console.log(err)
@@ -62,7 +61,7 @@ function StudyFramePage() {
     getData();
   }, []);
   
-  const againCard = youTubeData.map((data) => 
+  const againCard = studyDatas.map((data) => 
     
       <ThumbNailCard
         key={data.id.videoId}

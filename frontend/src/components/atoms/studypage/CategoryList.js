@@ -3,6 +3,9 @@ import ToggleButtonGroup   from '@mui/material/ToggleButtonGroup';
 import { useEffect, useRef, useState } from "react";
 import { createTheme } from '@mui/material/styles';
 
+import { useRecoilValue } from "recoil";
+import { category } from "../../../recoils";
+
 function CategoryList(props) {
   const [alignment, setAlignment] = useState('전체');
 
@@ -11,7 +14,7 @@ function CategoryList(props) {
     props.selectKategorie(event.target.value)
   };
 
-  const kategori = ["전체", "네트워크", "보안", "컴퓨터구조", "웹서비스", "Rma"];
+  const kategori = useRecoilValue(category)
   const btncolors = ['standard' , 'primary' , 'secondary' , 'error' , 'info' , 'success' , 'warning']
 
   const againToggleButton = kategori.map((data, index) => 
