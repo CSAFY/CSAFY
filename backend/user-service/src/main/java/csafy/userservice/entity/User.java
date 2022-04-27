@@ -36,7 +36,7 @@ public class User implements UserDetails {
     @JsonIgnore
     @Id
     @Column(name = "USER_SEQ")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userSeq;
 
     @Column(name = "USER_ID", length = 64, unique = true)

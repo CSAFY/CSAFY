@@ -17,10 +17,16 @@ import java.util.List;
 public class UserProducer {
 
     List<Field> fields = Arrays.asList(new Field("int32", true, "user_seq"),
+            new Field("string", true, "auth_key"),
+            new Field("string", true, "user_id"),
+            new Field("string", true, "email_verified_yn"),
+            new Field("string", true, "provider_type"),
             new Field("string", true, "role_type"),
             new Field("string", true, "created_at"),
+            new Field("string", true, "modified_at"),
             new Field("string", true, "username"),
             new Field("string", true, "nickname"),
+            new Field("string", true, "password"),
             new Field("string", true, "email"),
             new Field("string", true, "profile_image"),
             new Field("string", true, "introduction"),
@@ -29,7 +35,7 @@ public class UserProducer {
             .type("struct")
             .fields(fields)
             .optional(false)
-            .name("users")
+            .name("user")
             .build();
 
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -37,10 +43,16 @@ public class UserProducer {
     public UserDto send(String kafkaTopic, UserDto userDto){
         Payload payload = Payload.builder()
                 .userSeq(userDto.getUserSeq())
+                .authKey(userDto.getAuthKey())
+                .userId(userDto.getUserId())
+                .emailVerifiedYn(userDto.getEmailVerifiedYn())
+                .providerType(userDto.getProviderType())
                 .roleType(userDto.getRoleType())
                 .createdAt(userDto.getCreatedAt())
+                .modifiedAt(userDto.getModifiedAt())
                 .username(userDto.getUsername())
                 .nickname(userDto.getNickname())
+                .password(userDto.getPassword())
                 .email(userDto.getEmail())
                 .profileImage(userDto.getProfileImage())
                 .introduction(userDto.getIntroduction())
