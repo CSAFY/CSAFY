@@ -203,7 +203,7 @@ function BeforeLogin() {
                 width: '343px',
                 height: '50px',
                 fontSize: '40px',
-                fontWeight: '800',
+                fontWeight: '700',
 
                 margin: '7px 147px 14px 0',
               }}
@@ -281,7 +281,7 @@ function BeforeLogin() {
                 width: '264px',
                 height: '100px',
                 fontSize: '40px',
-                fontWeight: '800',
+                fontWeight: '700',
               }}
             >
               <p style={{ margin: '0' }}>기억에 남는 학습</p>
@@ -330,7 +330,7 @@ function BeforeLogin() {
                 height: '100px',
                 margin: '8px 113px 13px 0',
                 fontSize: '40px',
-                fontWeight: '800',
+                fontWeight: '700',
               }}
             >
               <p style={{ margin: 'auto' }}>메타버스 환경을 통한</p>
@@ -368,7 +368,7 @@ function BeforeLogin() {
                 height: '69px',
                 margin: '0 112px 25px 111px',
                 fontSize: '55px',
-                fontWeight: '800',
+                fontWeight: '700',
                 color: '#008ecf',
               }}
             >
