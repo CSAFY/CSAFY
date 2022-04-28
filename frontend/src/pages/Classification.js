@@ -8,7 +8,7 @@ import CompanyBox from '../components/companyClassification/CompanyBox';
 
 const StackWrapper = styled.div`
   width: 100%;
-  height: 100vh;
+  padding-bottom: 100px;
 
   display: flex;
   flex-direction: column;
@@ -30,30 +30,35 @@ const PageTitle = styled.div`
 function Classification() {
   const [dummyData, setDummyData] = useState([
     {
+      id: 1,
       img: 'images/google.png',
       company: '네이버',
       location: '경기도 성남시',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
+      id: 2,
       img: 'images/google.png',
       company: '카카오',
       location: '경기도 성남시',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
+      id: 3,
       img: 'images/google.png',
       company: '라인',
       location: '경기도 성남시',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
+      id: 4,
       img: 'images/google.png',
       company: '쿠팡',
       location: '서울특별시 송파구',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
+      id: 5,
       img: 'images/google.png',
       company: '우아한형제들',
       location: '서울특별시 송파구',
@@ -82,13 +87,11 @@ function Classification() {
           </div>
         </PageTitle>
         <Grid container>
-          {dummyData.map((v, i) => {
-            return (
-              <Grid item xs={4}>
-                <CompanyBox key={i} {...v} />
-              </Grid>
-            );
-          })}
+          {dummyData.map(v => (
+            <Grid item xs={4}>
+              <CompanyBox key={v.id} {...v} />
+            </Grid>
+          ))}
         </Grid>
       </StackContent>
     </StackWrapper>
