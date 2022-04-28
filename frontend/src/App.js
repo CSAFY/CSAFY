@@ -16,6 +16,8 @@ import Chatbot from './components/Chatbot';
 
 import StudyFramePage from './pages/StudyPage/StudyFramePage';
 import StudyDetailPage from './pages/StudyPage/StudyDetailPage';
+import Classification from './pages/Classification';
+import Interview from './pages/Interview';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
           <Route path="/page2" element={<Page2 />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/classification" element={<Classification />} />
+          <Route path="/interview" element={<Interview />} />
         </Routes>
         <Chatbot />
         <Footer />

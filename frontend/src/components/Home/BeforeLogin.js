@@ -1,6 +1,9 @@
 import { Button } from '@mui/material';
 import React from 'react';
 
+// REACT-REVEAL
+import Fade from 'react-reveal/Fade';
+
 // STYLED
 import styled from 'styled-components';
 
@@ -28,7 +31,6 @@ const HeroImage = styled.img`
   width: 1202px;
   height: 747px;
   flex-grow: 0;
-  border: 1px solid black;
 `;
 
 const DataWrapper = styled.section`
@@ -59,6 +61,14 @@ const InfoContent = styled.div`
 
   position: relative;
 `;
+// const InfoImage = styled.img`
+//   width: 663px;
+//   height: 453px;
+//   border: 1px solid black;
+
+//   position: absolute;
+//   top: 50px;
+// `;
 
 const MetaWrapper = styled.section`
   width: 100%;
@@ -105,7 +115,6 @@ const PlusContent = styled.div`
 const PlusImage = styled.img`
   width: 80vw;
   height: 500px;
-  border: 1px solid black;
 
   margin-top: 5rem;
 `;
@@ -180,7 +189,7 @@ function BeforeLogin() {
           >
             바로 시작하기
           </Button>
-          <HeroImage src="#" alt="Img" />
+          <HeroImage src="images/heroimg.png" alt="Img" />
         </HeroContent>
       </HeroWrapper>
       <DataWrapper>
@@ -227,42 +236,79 @@ function BeforeLogin() {
               </p>
             </div>
           </div>
-          <img
-            src="images/graph1.png"
-            alt="Graph1"
-            style={{
-              position: 'absolute',
-              right: '74px',
-              width: '375px',
-              height: '375px',
-            }}
-          />
-          <img
-            src="images/graph2.png"
-            alt="Graph2"
-            style={{
-              position: 'absolute',
-              top: '300px',
-              left: '219px',
-              width: '686px',
-              height: '311px',
-            }}
-          />
-          <img
-            src="images/card1.png"
-            alt="Card1"
-            style={{
-              position: 'absolute',
-              top: '450px',
-              right: '91px',
-              width: '362px',
-              height: '188px',
-            }}
-          />
+          <Fade right>
+            <img
+              src="images/graph1.png"
+              alt="Graph1"
+              style={{
+                position: 'absolute',
+                right: '74px',
+                width: '375px',
+                height: '375px',
+              }}
+            />
+            <img
+              src="images/graph2.png"
+              alt="Graph2"
+              style={{
+                position: 'absolute',
+                top: '300px',
+                left: '219px',
+                width: '686px',
+                height: '311px',
+              }}
+            />
+            <img
+              src="images/card1.png"
+              alt="Card1"
+              style={{
+                position: 'absolute',
+                top: '450px',
+                right: '91px',
+                width: '362px',
+                height: '188px',
+              }}
+            />
+          </Fade>
         </DataContent>
       </DataWrapper>
       <InfoWrapper>
         <InfoContent>
+          <Fade left>
+            <img
+              src="images/info1.png"
+              alt="Info1"
+              style={{
+                position: 'absolute',
+                top: '50px',
+                left: '50px',
+                width: '627px',
+                height: '431px',
+              }}
+            />
+            <img
+              src="images/info2.png"
+              alt="Info2"
+              style={{
+                position: 'absolute',
+                top: '400px',
+                left: '100px',
+                width: '497px',
+                height: '389px',
+              }}
+            />
+            <img
+              src="images/info3.png"
+              alt="Info3"
+              style={{
+                position: 'absolute',
+                top: '400px',
+                right: '230px',
+                width: '374px',
+                height: '288px',
+              }}
+            />
+          </Fade>
           <div style={{ position: 'absolute', top: '100px', right: '10px' }}>
             <p
               style={{
@@ -356,7 +402,9 @@ function BeforeLogin() {
               </p>
             </div>
           </div>
-          <MetaImage src="#" alt="Meta" />
+          <Fade right>
+            <MetaImage src="images/Meta.png" alt="Meta" />
+          </Fade>
         </MetaContent>
       </MetaWrapper>
       <PlusWrapper>
@@ -393,7 +441,9 @@ function BeforeLogin() {
               </p>
             </div>
           </div>
-          <PlusImage src="#" alt="PlusAlpha" />
+          <Fade bottom>
+            <PlusImage src="images/plusImg.png" alt="PlusAlpha" />
+          </Fade>
           <ButtonBox>
             <Button
               variant="contained"
