@@ -18,7 +18,7 @@ const LogoImg = styled.img`
 
   padding-top: 3rem;
 `;
-const InputBox = styled.div`
+const InputForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-conent: center;
@@ -36,10 +36,10 @@ const InputBox = styled.div`
 function Login() {
   const [userInfo, setUserInfo] = useState({ email: '', password: '' });
 
-  const handleChangeUserInfo = (e) => {
+  const handleChangeUserInfo = e => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     console.log('로그인');
   };
 
@@ -62,7 +62,7 @@ function Login() {
           회원가입
         </Link>
       </p>
-      <InputBox>
+      <InputForm>
         {/* <Input
           name="email"
           type="text"
@@ -128,7 +128,7 @@ function Login() {
           }}
           onClick={handleSubmit}
         />
-      </InputBox>
+      </InputForm>
     </LoginWrapper>
   );
 }
