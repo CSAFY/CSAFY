@@ -16,6 +16,8 @@ import Chatbot from './components/Chatbot';
 
 import StudyFramePage from './pages/StudyPage/StudyFramePage';
 import StudyDetailPage from './pages/StudyPage/StudyDetailPage';
+import IntensivePage from './pages/StudyPage/IntensivePage';
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           <Route path="/test" element={<Test />} />
           <Route path="/StudyFramePage" element={<StudyFramePage />} />
           <Route path="/StudyDetailPage" element={<StudyDetailPage />} />
+          <Route exact path="/IntensivePage/*" element={<IntensivePage />} />
           <Route path="/page2" element={<Page2 />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
