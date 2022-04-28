@@ -15,8 +15,8 @@ import ThumbNailCard from "../../components/atoms/studypage/ThumbNailCard"
 import YouTubeUrl from "../../utils/api"
 import axios from 'axios';
 
-import { useRecoilState } from "recoil";
-import { studyData } from "../../recoils";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { studyData, category } from "../../recoils";
 
 function StudyFramePage() {
   const [nowKategorie, setKategorie] = useState("전체")
@@ -72,7 +72,7 @@ function StudyFramePage() {
       </ThumbNailCard>
   )
   
-  
+  const categori = useRecoilValue(category)
   
 
   return (
@@ -103,8 +103,9 @@ function StudyFramePage() {
         <FlexDiv  >
           <KategorieLayOut>
             <CategoryList
-              selectKategorie = {selectKategorie}>
-
+              selectKategorie = {selectKategorie}
+              categori = {categori}
+              >
             </CategoryList>
           </KategorieLayOut>
 

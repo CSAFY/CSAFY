@@ -7,6 +7,10 @@ export const MyiFrame = styled.iframe`
   allowfullscreen
   margin: 20px auto 0 auto;
   src : ${(props) => props.videoId}
+  events:{
+    onStateChange : ${(props) => props.onPlayerStateChange}
+  }
+  
 `
 
 export const FullLayOut = styled.div`

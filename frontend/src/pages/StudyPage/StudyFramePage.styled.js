@@ -4,7 +4,7 @@ import { fontSize, fontWeight } from "../../_foundation";
 
 export const LayOut = styled.div`
   background: #fff;
-  height: 100vh;
+  
 `;
 
 export const InSideLayOut = styled.div`
