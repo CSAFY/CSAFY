@@ -52,6 +52,7 @@ const Title = styled.div`
 `;
 
 function VideoBox() {
+  // 더미 데이터
   const [videoInfo, setVideoInfo] = useState({
     category: '컴퓨터 구조',
     url: 'https://youtube.com',

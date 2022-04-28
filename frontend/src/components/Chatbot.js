@@ -48,16 +48,15 @@ function Chatbot() {
     borderRadius: '30px',
     background: 'white',
   };
-  const config = {
-    floating: true,
-    headerTitle: 'C;SAFY',
-    placeholder: '채팅이 불가능한 채널입니다.',
-    botDelay: 1000,
-  };
 
   return (
     <ThemeProvider theme={theme}>
-      <ChatBot steps={steps} {...config} />
+      <ChatBot
+        steps={steps}
+        floating={true}
+        headerTitle={'C;SAFY'}
+        placeholder={'채팅이 불가능한 채널입니다.'}
+      />
     </ThemeProvider>
   );
 }

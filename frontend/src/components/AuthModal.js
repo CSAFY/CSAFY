@@ -21,7 +21,7 @@ const LogoImg = styled.img`
 
   padding-top: 3rem;
 `;
-const InputBox = styled.div`
+const InputForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-conent: center;
@@ -39,14 +39,14 @@ const SignupWrapper = styled.div`
   align-items: center;
 `;
 
-function AuthModal({ state, setState, setSignup, signup }) {
+function AuthModal({ state, setState, setSignup, setModal }) {
   // LOGIN
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
 
-  const handleLoginInfo = (e) => {
+  const handleLoginInfo = e => {
     setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+  const handleLogin = e => {
     console.log('로그인');
   };
   // SIGNUP
@@ -66,11 +66,10 @@ function AuthModal({ state, setState, setSignup, signup }) {
     passwordCheckIsValid: true,
     agreementIsValid: true,
   });
-  const emailRegex =
-    /^([0-9a-zA-Z_.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+  const emailRegex = /^([0-9a-zA-Z_.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-  const handleSignupInfo = (e) => {
+  const handleSignupInfo = e => {
     setSignupInfo({ ...signupInfo, [e.target.name]: e.target.value });
     setToggle({
       emailIsValid: true,
@@ -79,7 +78,7 @@ function AuthModal({ state, setState, setSignup, signup }) {
       agreementIsValid: true,
     });
   };
-  const handleSignup = (e) => {
+  const handleSignup = e => {
     e.preventDefault();
     // Validation
     if (!emailRegex.test(signupInfo.email)) {
@@ -121,13 +120,13 @@ function AuthModal({ state, setState, setSignup, signup }) {
         username: 'username',
       })
       // 일단 회원가입 후 메인 페이지로 이동
-      .then((res) => {
+      .then(res => {
         // 모달 없애기
-        setSignup(false);
+        setModal(false);
         // navigate
         navigate('/mypage');
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
 
     // 초기화
     setSignupInfo({
@@ -137,7 +136,7 @@ function AuthModal({ state, setState, setSignup, signup }) {
     });
   };
 
-  const TuplioAuthTest = (e) => {
+  const TuplioAuthTest = e => {
     window.location.href = `https://tupli.kr/api/v1/oauth2/authorization/google?redirect_uri=https://tupli.kr/oauth/redirect`;
   };
 
@@ -162,10 +161,9 @@ function AuthModal({ state, setState, setSignup, signup }) {
               회원가입
             </span>
           </p>
-          <InputBox>
+          <InputForm>
             <TextField
               name="email"
-              id="outlined-basic"
               label="이메일"
               variant="outlined"
               sx={{ width: '352px', height: '57px', mt: '1rem' }}
@@ -173,9 +171,9 @@ function AuthModal({ state, setState, setSignup, signup }) {
             />
             <TextField
               name="password"
-              id="outlined-basic"
               label="비밀번호"
               type="password"
+              autoComplete="off"
               variant="outlined"
               sx={{ width: '352px', height: '57px', mt: '1rem' }}
               onChange={handleLoginInfo}
@@ -199,7 +197,7 @@ function AuthModal({ state, setState, setSignup, signup }) {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
-              onClick={handleSubmit}
+              onClick={handleLogin}
             >
               로그인
             </Button>
@@ -214,9 +212,9 @@ function AuthModal({ state, setState, setSignup, signup }) {
                 marginTop: '1rem',
                 cursor: 'pointer',
               }}
-              onClick={handleSubmit}
+              onClick={handleLogin}
             />
-          </InputBox>
+          </InputForm>
         </LoginWrapper>
       ) : (
         <SignupWrapper>
@@ -239,10 +237,9 @@ function AuthModal({ state, setState, setSignup, signup }) {
               로그인
             </span>
           </p>
-          <InputBox>
+          <InputForm>
             <TextField
               name="email"
-              id="outlined-basic"
               label="이메일"
               variant="outlined"
               sx={{ width: '352px', height: '57px', mt: '1rem' }}
@@ -267,9 +264,9 @@ function AuthModal({ state, setState, setSignup, signup }) {
             )}
             <TextField
               name="password"
-              id="outlined-basic"
               label="비밀번호"
               type="password"
+              autoComplete="off"
               variant="outlined"
               sx={{ width: '352px', height: '57px', mt: '1rem' }}
               onChange={handleSignupInfo}
@@ -294,9 +291,9 @@ function AuthModal({ state, setState, setSignup, signup }) {
             )}
             <TextField
               name="passwordCheck"
-              id="outlined-basic"
               label="비밀번호 확인"
               type="password"
+              autoComplete="off"
               variant="outlined"
               sx={{ width: '352px', height: '57px', mt: '1rem' }}
               onChange={handleSignupInfo}
@@ -405,7 +402,7 @@ function AuthModal({ state, setState, setSignup, signup }) {
                 <span> 구글로 가입하기</span>
               </div>
             </Button>
-          </InputBox>
+          </InputForm>
         </SignupWrapper>
       )}
     </>

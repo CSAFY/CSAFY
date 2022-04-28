@@ -95,6 +95,7 @@ const LogoImg = styled.img`
 `;
 
 function TestBox({ info }) {
+  // 더미 데이터
   const [testInfo, setTestInfo] = useState({
     date: '2022.01.11',
     testName: '모의고사 이름',
