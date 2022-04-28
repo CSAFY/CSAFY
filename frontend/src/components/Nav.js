@@ -16,7 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { alpha } from '@mui/material/styles';
 import  {styled  as styleds}  from '@mui/material/styles' ;
 // STYLED
-import styled from 'styled-components';
+// import styled from 'styled-components';
 
 // SearchBar
 const Search = styleds('div')(({ theme }) => ({
@@ -68,7 +68,7 @@ const StyledInputBase = styleds(InputBase)(({ theme }) => ({
 const pages = [
   { name: '테스트', link: 'test' },
   { name: '페이지 1', link: 'page1' },
-  { name: '페이지 2', link: 'page2' },
+  { name: '페이지 2', link: 'StudyFramePage' },
 ];
 
 // const Logo = styled.img`

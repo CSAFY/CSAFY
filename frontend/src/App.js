@@ -10,6 +10,7 @@ import Signup from './pages/Signup';
 import Test from './pages/Test';
 
 import StudyFramePage from './pages/StudyPage/StudyFramePage';
+import StudyDetailPage from './pages/StudyPage/StudyDetailPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/page2" element={<Page2 />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/StudyFramePage" element={<StudyFramePage />} />
+          <Route path="/StudyDetailPage" element={<StudyDetailPage />} />
         </Routes>
       </div>
     </BrowserRouter>
