@@ -49,6 +49,7 @@ const pages = [
   { name: '학습', link: 'StudyFramePage' },
   { name: '테스트', link: 'test' },
   { name: '면접 대비', link: 'page2' },
+  { name: '기술 스택', link: 'classification' },
 ];
 
 // const Logo = styled.img`
