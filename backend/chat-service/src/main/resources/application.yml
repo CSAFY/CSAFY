@@ -6,12 +6,12 @@ spring:
   application:
     name: chat-service
 
-  # REDIS
-#  redis:
-#    database: 0
-#    host: redis-18085.c54.ap-northeast-1-2.ec2.cloud.redislabs.com
-#    password: ZJPxInJwyW70mpMclChMkZYWjZQ5z17D
-#    port: 18085
+#   REDIS
+  redis:
+    database: 0
+    host: redis-16655.c265.us-east-1-2.ec2.cloud.redislabs.com
+    password: aPQH6weMR8J03aMXl6kKEEfZ15kI78W3
+    port: 16655
 
   # 마리아 DB(로컬)
   #  datasource:
@@ -20,18 +20,25 @@ spring:
   #    username: root
   #    password: 1234
 
-  # 마리아 DB(배포)
+  # 마리아 DB(배포) Tupli test
   datasource:
-    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P22A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P12A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     driver-class-name: org.mariadb.jdbc.Driver
-    username: S06P22A102
-    password: YT8FT0otFm
+    username: S06P12A102
+    password: vVXyuOaeMc
+
+  # 마리아 DB(배포)
+#  datasource:
+#    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P22A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    username: S06P22A102
+#    password: YT8FT0otFm
 
   # JPA 세팅
   jpa:
     hibernate:
-      ddl-auto: create # 애플리케이션 실행시점에 테이블 다 지우고 새로 생성
-#      ddl-auto: update  # 개발 단계에서는
+#      ddl-auto: create # 애플리케이션 실행시점에 테이블 다 지우고 새로 생성
+      ddl-auto: update  # 개발 단계에서는
 #      ddl-auto: create-drop
 #      ddl-auto: validate  # 최종 배포 운영 단계
 #      ddl-auto: none
@@ -60,15 +67,15 @@ spring:
             - email
             - profile
 
-# 토큰 관련 secret Key 및 RedirectUri 설정
-app:
-  auth:
-    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
-    tokenExpiry: 201600000
-    refreshTokenExpiry: 604800000
-  oauth2:
-    authorizedRedirectUris:
-      - https://tupli.kr/oauth/redirect
+## 토큰 관련 secret Key 및 RedirectUri 설정
+#app:
+#  auth:
+#    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+#    tokenExpiry: 201600000
+#    refreshTokenExpiry: 604800000
+#  oauth2:
+#    authorizedRedirectUris:
+#      - https://tupli.kr/oauth/redirect
 
 logging.level:
   org:
@@ -76,6 +83,13 @@ logging.level:
     springframework.web: WARN
 #    hibernate.SQL: INFO #debug # hibernate가 생성하는 로그를 다 보여줌
 # org.hibernate.type: trace # 쿼리 파라미터 로그 남기기
+
+# cors 설정 (보험)
+cors:
+  allowed-origins: 'http://localhost:3000'
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: '*'
+  max-age: 3600
 
 # 최종 배포진행시 1차적 교체
 jwt:

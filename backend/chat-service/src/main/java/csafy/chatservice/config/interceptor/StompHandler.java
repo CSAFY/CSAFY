@@ -6,6 +6,7 @@ import csafy.chatservice.dto.ChatUserInfo;
 import csafy.chatservice.dto.UserDto;
 import csafy.chatservice.repository.ChatRoomRepository;
 import csafy.chatservice.service.ChatService;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -45,11 +46,15 @@ public class StompHandler implements ChannelInterceptor {
 
         if (StompCommand.CONNECT == accessor.getCommand()) { // websocket 연결요청
             String jwtToken = accessor.getFirstNativeHeader("Authorization");
+            System.out.println("인증인증인증~");
             // 회원일 경우, Header의 jwt token 검증
             if (jwtToken != null) {
                 // 회원 token 받음
-                userServiceClient.checkTokenValidated(jwtToken);
-
+                try {
+                    userServiceClient.checkTokenValidated(jwtToken);
+                } catch (FeignException ex){
+                    log.error(ex.getMessage());
+                }
             } else {
                 // 비회원 : id, password 받음
             }
@@ -58,6 +63,7 @@ public class StompHandler implements ChannelInterceptor {
             // header정보에서 구독 destination정보를 얻고, roomId를 추출한다.
             String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
             String sessionId = (String) message.getHeaders().get("simpSessionId");
+            System.out.println("여기오쇼?????");
             // 채팅방의 인원수를 +1한다.
             chatRoomRepository.plusUserCount(roomId);
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
@@ -68,14 +74,22 @@ public class StompHandler implements ChannelInterceptor {
             String userSeq = null;
             if (jwtToken != null) {
                 // 회원일 경우 이름 변경
-                UserDto user = userServiceClient.getTokenUser(jwtToken);
-                name = user.getNickname();
-                // 보험
-                if (name == null) {
-                    name = user.getEmail();
+                try {
+                    UserDto user = userServiceClient.getTokenUser(jwtToken);
+                    name = user.getNickname();
+                    // 보험
+                    if (name == null) {
+                        name = user.getEmail();
+                    }
+                    img = user.getProfileImage();
+                    userSeq = String.valueOf(user.getUserSeq());
                 }
-                img = user.getProfileImage();
-                userSeq = String.valueOf(user.getUserSeq());
+                catch (FeignException ex){
+                    log.error(ex.getMessage());
+                    chatRoomRepository.setUserEnterInfo(sessionId, ChatUserInfo.builder().sender(name).roomId(roomId).userSeq(userSeq).build());
+                    chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(name).img(img).build());
+                    log.info("SUBSCRIBED {}, {}", name, roomId);
+                }
             }
             // 채팅방에 들어온 클라이언트 정보를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
             chatRoomRepository.setUserEnterInfo(sessionId, ChatUserInfo.builder().sender(name).roomId(roomId).userSeq(userSeq).build());
@@ -85,6 +99,7 @@ public class StompHandler implements ChannelInterceptor {
             // 연결이 종료된 클라이언트 sesssionId로 채팅방 id를 얻는다.
             String sessionId = (String) message.getHeaders().get("simpSessionId");
             // 퇴장한 클라이언트의 sessionId로 roomId를 얻고, roomId 맵핑 정보를 삭제한다.
+            System.out.println("세션ID : " + sessionId);
             ChatUserInfo chatUserInfo = chatRoomRepository.getUserEnterRoomId(sessionId);
             String name = chatUserInfo.getSender();
             String roomId = chatUserInfo.getRoomId().replaceFirst("playroom-", "");

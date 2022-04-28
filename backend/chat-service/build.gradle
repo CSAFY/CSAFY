@@ -1,13 +1,13 @@
-buildscript {
-	ext {
-		queryDslVersion = "5.0.0"
-	}
-}
+//buildscript {
+//	ext {
+//		queryDslVersion = "5.0.0"
+//	}
+//}
 
 plugins {
 	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+//	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 	id 'java'
 }
 
@@ -57,9 +57,10 @@ dependencies {
 	// 1차원 배열 json의 형태로 집어넣기
 	implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.12.1'
 
-	//queryDSL
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+//	//queryDSL
+//	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+//	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
 	//openfeign
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
@@ -81,27 +82,27 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-
-//queryDSL
-def querydslDir = "$buildDir/generated/querydsl"
-
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
-sourceSets {
-	main.java.srcDir querydslDir
-}
-// 버전이나 IDE 환경에 따라 바뀌기 쉬우니 문제 발생시 구글 참조
-configurations {
-	querydsl.extendsFrom compileClasspath
-}
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
-
-// querydsl cannot find symbol 문제 해결
-compileQuerydsl.doFirst {
-	if(file(querydslDir).exists() )
-		delete(file(querydslDir))
-}
+//
+////queryDSL
+//def querydslDir = "$buildDir/generated/querydsl"
+//
+//querydsl {
+//	jpa = true
+//	querydslSourcesDir = querydslDir
+//}
+//sourceSets {
+//	main.java.srcDir querydslDir
+//}
+//// 버전이나 IDE 환경에 따라 바뀌기 쉬우니 문제 발생시 구글 참조
+//configurations {
+//	querydsl.extendsFrom compileClasspath
+//}
+//compileQuerydsl {
+//	options.annotationProcessorPath = configurations.querydsl
+//}
+//
+//// querydsl cannot find symbol 문제 해결
+//compileQuerydsl.doFirst {
+//	if(file(querydslDir).exists() )
+//		delete(file(querydslDir))
+//}

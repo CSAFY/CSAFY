@@ -159,7 +159,7 @@ public class UserApiController {
      * @return
      */
     @GetMapping("/token/user")
-    public UserDto getTokenUser(String inputToken){
+    public UserDto getTokenUser(@RequestParam("inputToken") String inputToken){
 
         // 인증 확인후 돌리기
         String token = inputToken;
@@ -179,7 +179,7 @@ public class UserApiController {
      * @return
      */
     @GetMapping("/tokenvalidated")
-    public ResponseEntity<?> checkTokenValidated(String inputToken){
+    public ResponseEntity<?> checkTokenValidated(@RequestParam("inputToken") String inputToken){
 
         // 인증 확인후 돌리기
         String token = inputToken;
