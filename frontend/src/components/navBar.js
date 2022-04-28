@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 // MUI
+// inherit 흰색 default 회색 primary 파랑 secondary 보라 error 빨강 info 파랑 success 초록 warning 주황 string 적용안됨
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,64 +13,42 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
-import { alpha } from '@mui/material/styles';
-import  {styled  as styleds}  from '@mui/material/styles' ;
+
+// MODAL
+import Modal from '@mui/material/Modal';
+import AuthModal from './AuthModal';
+
 // STYLED
 // import styled from 'styled-components';
 
-// SearchBar
-const Search = styleds('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  border: '1px solid #84c2ea',
-  // backgroundColor: alpha(theme.palette.common.white, 0.15),
-  backgroundColor: 'rgba(255, 255, 255, 0.5)',
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styleds('div')(({ theme }) => ({
-  // color: 'default',
-  padding: theme.spacing(0, 2),
-  height: '100%',
+const loginStyle = {
   position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styleds(InputBase)(({ theme }) => ({
-  color: 'default',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
-  },
-}));
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '517px',
+  height: '697px',
+  bgcolor: '#fff',
+  boxShadow: 24,
+  p: 4,
+};
+const signupStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '517px',
+  height: '834px',
+  bgcolor: '#fff',
+  boxShadow: 24,
+  p: 4,
+};
 
 // Navbar에 페이지 추가하려면 pages 안에 요소 추가
 const pages = [
+  { name: '학습', link: 'page1' },
   { name: '테스트', link: 'test' },
-  { name: '페이지 1', link: 'page1' },
-  { name: '페이지 2', link: 'StudyFramePage' },
+  { name: '면접 대비', link: 'page2' },
 ];
 
 // const Logo = styled.img`
@@ -78,14 +58,23 @@ const pages = [
 //   background-color: none;
 // `;
 
-const Nav = () => {
-  const navigate = useNavigate();
+const NavBar = () => {
+  // MODAL
+  const [state, setState] = useState('signup');
+  const [modal, setModal] = useState(false);
+  const handleModalOpen = () => {
+    setState('login');
+    setModal(true);
+  };
+  const handleModalClose = () => setModal(false);
 
+  // nav
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
   // const [anchorElUser, setAnchorElUser] = useState(null);
   const [currentPage, setCurrentPage] = useState('Home');
 
-  const handleOpenNavMenu = (event) => {
+  const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
   };
   // const handleOpenUserMenu = (event) => {
@@ -103,8 +92,9 @@ const Nav = () => {
       position="sticky"
       elevation={0}
       sx={{
-        zIndex: (theme) => theme.zIndex.drawer + 1,
-        bgcolor: '#D5F2FC',
+        zIndex: theme => theme.zIndex.drawer + 1,
+        // bgcolor: '#D5F2FC',
+        bgcolor: '#ffffff',
         margin: '0',
       }}
     >
@@ -125,10 +115,10 @@ const Nav = () => {
           >
             <Link to="/">
               <img
-                src="images/logo.ico"
+                src="images/csafy.png"
                 alt="Img"
                 style={{
-                  width: '45px',
+                  width: '110px',
                   height: '45px',
                   paddingTop: '10px',
                   backgroundColor: 'none',
@@ -144,13 +134,13 @@ const Nav = () => {
               display: {
                 xs: 'none',
                 md: 'flex',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 alignItems: 'center',
               },
               mx: 3,
             }}
           >
-            {pages.map((page) => {
+            {pages.map(page => {
               if (page.link !== currentPage) {
                 return (
                   <Button
@@ -167,7 +157,8 @@ const Nav = () => {
                       display: 'block',
                       ':hover': {
                         color: '#006D9F',
-                        bgcolor: '#D5F2FC',
+                        bgcolor: '#ffffff',
+                        // bgcolor: '#D5F2FC',
                       },
                     }}
                   >
@@ -191,7 +182,8 @@ const Nav = () => {
                       display: 'block',
                       ':hover': {
                         color: '#006D9F',
-                        bgcolor: '#D5F2FC',
+                        bgcolor: '#ffffff',
+                        // bgcolor: '#D5F2FC',
                       },
                     }}
                   >
@@ -215,12 +207,13 @@ const Nav = () => {
             <Link to="/">
               {/* <Logo src="images/logo.ico" /> */}
               <img
-                src="images/logo.ico"
+                src="images/csafy.png"
                 alt="Img"
                 style={{
-                  width: '45px',
+                  width: '110px',
                   height: '45px',
                   paddingTop: '10px',
+                  paddingLeft: '10px',
                   backgroundColor: 'none',
                 }}
               />
@@ -238,20 +231,42 @@ const Nav = () => {
                 mx: 1,
                 my: 2,
                 color: 'black',
-                border: '1px solid black',
                 display: 'block',
                 ':hover': {
                   color: '#006D9F',
-                  bgcolor: '#D5F2FC',
+                  bgcolor: '#ffffff',
+                  // bgcolor: '#D5F2FC',
                 },
               }}
-              onClick={() => {
-                navigate('/signup');
-                setCurrentPage('signup');
-              }}
+              onClick={handleModalOpen}
             >
-              회원가입
+              로그인
             </Button>
+            <Modal
+              open={modal}
+              onClose={handleModalClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              {state === 'login' ? (
+                <Box sx={loginStyle}>
+                  <AuthModal
+                    state={state}
+                    setState={setState}
+                    setModal={setModal}
+                  />
+                </Box>
+              ) : (
+                <Box sx={signupStyle}>
+                  <AuthModal
+                    state={state}
+                    setState={setState}
+                    setModal={setModal}
+                  />
+                </Box>
+              )}
+            </Modal>
+
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -259,7 +274,6 @@ const Nav = () => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="default"
-              // inherit 흰색 default 회색 primary 파랑 secondary 보라 error 빨강 info 파랑 success 초록 warning 주황 string 적용안됨
             >
               <MenuIcon />
             </IconButton>
@@ -282,7 +296,7 @@ const Nav = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => {
+              {pages.map(page => {
                 if (page.link !== currentPage) {
                   return (
                     <MenuItem
@@ -294,6 +308,7 @@ const Nav = () => {
                       sx={{
                         ':hover': {
                           color: '#006D9F',
+                          bgcolor: '#ffffff',
                         },
                       }}
                     >
@@ -314,6 +329,7 @@ const Nav = () => {
                         },
                         color: '#006D9F ',
                         fontWeight: 'bold',
+                        bgcolor: '#ffffff',
                       }}
                     >
                       <Typography textAlign="center">{page.name}</Typography>
@@ -324,7 +340,7 @@ const Nav = () => {
             </Menu>
           </Box>
 
-          {/* 회원가입 / 로그인 버튼 */}
+          {/* 넓은 화면 로그인 버튼 */}
           <Box
             sx={{
               display: {
@@ -336,15 +352,6 @@ const Nav = () => {
               mx: 3,
             }}
           >
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon style={{ color: 'grey' }} />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
             <Button
               sx={{
                 textAlign: 'center',
@@ -354,36 +361,42 @@ const Nav = () => {
                 display: 'block',
                 ':hover': {
                   color: '#006D9F',
-                  bgcolor: '#D5F2FC',
+                  bgcolor: '#ffffff',
+                  // bgcolor: '#D5F2FC',
                 },
               }}
+              onClick={handleModalOpen}
             >
               로그인
             </Button>
-            <Button
-              sx={{
-                textAlign: 'center',
-                mx: 1,
-                my: 2,
-                color: 'black',
-                border: '1px solid black',
-                display: 'block',
-                ':hover': {
-                  color: '#006D9F',
-                  bgcolor: '#D5F2FC',
-                },
-              }}
-              onClick={() => {
-                navigate('/signup');
-                setCurrentPage('signup');
-              }}
+            <Modal
+              open={modal}
+              onClose={handleModalClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
             >
-              회원가입
-            </Button>
+              {state === 'login' ? (
+                <Box sx={loginStyle}>
+                  <AuthModal
+                    state={state}
+                    setState={setState}
+                    setModal={setModal}
+                  />
+                </Box>
+              ) : (
+                <Box sx={signupStyle}>
+                  <AuthModal
+                    state={state}
+                    setState={setState}
+                    setModal={setModal}
+                  />
+                </Box>
+              )}
+            </Modal>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 };
-export default Nav;
+export default NavBar;

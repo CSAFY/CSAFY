@@ -1,13 +1,18 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Nav from './components/Nav';
+import Footer from './components/Footer';
+import NavBar from './components/NavBar';
+import ScrollToTop from './components/common/ScrollToTop';
 
 // PAGES
 import Home from './pages/Home';
+import MyPage from './pages/MyPage';
 import Page1 from './pages/Page1';
 import Page2 from './pages/Page2';
 import Signup from './pages/Signup';
+import Login from './pages/Login';
 import Test from './pages/Test';
+import Chatbot from './components/Chatbot';
 
 import StudyFramePage from './pages/StudyPage/StudyFramePage';
 import StudyDetailPage from './pages/StudyPage/StudyDetailPage';
@@ -15,17 +20,20 @@ import StudyDetailPage from './pages/StudyPage/StudyDetailPage';
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="App">
-        <Nav />
+        <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/mypage" element={<MyPage />} />
           <Route path="/test" element={<Test />} />
           <Route path="/page1" element={<Page1 />} />
           <Route path="/page2" element={<Page2 />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/StudyFramePage" element={<StudyFramePage />} />
-          <Route path="/StudyDetailPage" element={<StudyDetailPage />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
+        <Chatbot />
+        <Footer />
       </div>
     </BrowserRouter>
   );
