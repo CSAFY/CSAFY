@@ -1,5 +1,6 @@
 package csafy.chatservice;
 
+import csafy.chatservice.error.FeignErrorDecoder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,4 +17,8 @@ public class ChatServiceApplication {
 		SpringApplication.run(ChatServiceApplication.class, args);
 	}
 
+	@Bean
+	public FeignErrorDecoder getFeignErrorDecoder(){
+		return new FeignErrorDecoder();
+	}
 }

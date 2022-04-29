@@ -10,6 +10,7 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -50,11 +51,12 @@ public class StompHandler implements ChannelInterceptor {
             // 회원일 경우, Header의 jwt token 검증
             if (jwtToken != null) {
                 // 회원 token 받음
-                try {
-                    userServiceClient.checkTokenValidated(jwtToken);
-                } catch (FeignException ex){
-                    log.error(ex.getMessage());
-                }
+//                try {
+                    ResponseEntity responseEntity = userServiceClient.checkTokenValidated(jwtToken);
+                    if(responseEntity.getStatusCodeValue() == 403) log.error("여기로 들어와야함");
+//                } catch (FeignException ex){
+//                    log.error(ex.getMessage());
+//                }
             } else {
                 // 비회원 : id, password 받음
             }

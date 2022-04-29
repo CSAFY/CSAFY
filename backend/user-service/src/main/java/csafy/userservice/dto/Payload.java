@@ -9,24 +9,25 @@ import csafy.userservice.entity.auth.RoleType;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 public class Payload {
-    private Long userSeq;
-    private String authKey;
-    private String userId;
-    private String emailVerifiedYn;
-    private ProviderType providerType;
-    private RoleType roleType;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Long user_seq;
+    private String auth_key;
+    private String user_id;
+    private String email_verified_yn;
+    private ProviderType provider_type;
+    private RoleType role_type;
+    private Timestamp created_at;
+    private Timestamp modified_at;
     private String username;
     private String nickname;
     private String password;
     private String email;
-    private String profileImage;
+    private String profile_image;
     private String introduction;
     private String is_vip;
 }

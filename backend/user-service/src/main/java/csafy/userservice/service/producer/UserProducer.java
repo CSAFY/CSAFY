@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,14 +18,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserProducer {
 
-    List<Field> fields = Arrays.asList(new Field("int32", true, "user_seq"),
+    List<Object> fields = Arrays.asList(
+            new Field("int64", true, "user_seq"),
             new Field("string", true, "auth_key"),
             new Field("string", true, "user_id"),
             new Field("string", true, "email_verified_yn"),
             new Field("string", true, "provider_type"),
             new Field("string", true, "role_type"),
-            new Field("string", true, "created_at"),
-            new Field("string", true, "modified_at"),
+            new TimeField("int64", true, "org.apache.kafka.connect.data.Timestamp", 1, "created_at"),
+            new TimeField("int64", true, "org.apache.kafka.connect.data.Timestamp", 1,"modified_at"),
             new Field("string", true, "username"),
             new Field("string", true, "nickname"),
             new Field("string", true, "password"),
@@ -31,6 +34,7 @@ public class UserProducer {
             new Field("string", true, "profile_image"),
             new Field("string", true, "introduction"),
             new Field("string", true, "is_vip"));
+
     Schema schema = Schema.builder()
             .type("struct")
             .fields(fields)
@@ -42,25 +46,26 @@ public class UserProducer {
 
     public UserDto send(String kafkaTopic, UserDto userDto){
         Payload payload = Payload.builder()
-                .userSeq(userDto.getUserSeq())
-                .authKey(userDto.getAuthKey())
-                .userId(userDto.getUserId())
-                .emailVerifiedYn(userDto.getEmailVerifiedYn())
-                .providerType(userDto.getProviderType())
-                .roleType(userDto.getRoleType())
-                .createdAt(userDto.getCreatedAt())
-                .modifiedAt(userDto.getModifiedAt())
+                .user_seq(userDto.getUser_seq())
+//                .user_seq(22L)
+                .auth_key(userDto.getAuth_key())
+                .user_id(userDto.getUser_id())
+                .email_verified_yn(userDto.getEmail_verified_yn())
+                .provider_type(userDto.getProvider_type())
+                .role_type(userDto.getRole_type())
+                .created_at(Timestamp.valueOf(userDto.getCreated_at()))
+                .modified_at(Timestamp.valueOf(userDto.getModified_at()))
                 .username(userDto.getUsername())
                 .nickname(userDto.getNickname())
                 .password(userDto.getPassword())
                 .email(userDto.getEmail())
-                .profileImage(userDto.getProfileImage())
+                .profile_image(userDto.getProfile_image())
                 .introduction(userDto.getIntroduction())
                 .is_vip(userDto.getIs_vip())
                 .build();
         KafkaUserDto kafkaUserDto = new KafkaUserDto(schema, payload);
-        System.out.println("asdasd " + kafkaUserDto.getPayload().getCreatedAt());
-        System.out.println("asdasd " + kafkaUserDto.getPayload().getRoleType());
+        System.out.println("asdasd " + kafkaUserDto.getPayload().getCreated_at());
+        System.out.println("asdasd " + kafkaUserDto.getPayload().getRole_type());
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         String jsonInString ="";
@@ -69,7 +74,8 @@ public class UserProducer {
         } catch (JsonProcessingException e){
             e.printStackTrace();
         }
-
+        System.out.print(jsonInString);
+        System.out.println("aaaaa");
         kafkaTemplate.send(kafkaTopic, jsonInString);
         log.info("User Producer to DB: " + userDto);
 

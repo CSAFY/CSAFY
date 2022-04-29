@@ -96,7 +96,8 @@ public class User implements UserDetails {
     @Size(max = 512)
     private String profileImage;
 
-    private String introduction = "안녕하세요. 잘 부탁드리겠습니다";
+//    private String introduction = "안녕하세요. 잘 부탁드리겠습니다";
+    private String introduction = "welcome";
 
     private String authKey;
 

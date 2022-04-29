@@ -14,19 +14,19 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserDto {
 
-    private Long userSeq;
-    private String authKey;
-    private String userId;
-    private String emailVerifiedYn;
-    private ProviderType providerType;
-    private RoleType roleType;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Long user_seq;
+    private String auth_key;
+    private String user_id;
+    private String email_verified_yn;
+    private ProviderType provider_type;
+    private RoleType role_type;
+    private LocalDateTime created_at;
+    private LocalDateTime modified_at;
     private String username;
     private String nickname;
     private String password;
     private String email;
-    private String profileImage;
+    private String profile_image;
     private String introduction;
     private String is_vip;
 
@@ -50,24 +50,24 @@ public class UserDto {
 //    }
 
     public UserDto(User user) {
-        this.userId = user.getUserId();
+        this.user_id = user.getUserId();
         this.username = user.getUsername();
         this.password = user.getPassword() != null ? user.getPassword() : "NO_PASS";
         this.email = user.getEmail() != null ? user.getEmail() : "NO_EMAIL";
-        this.emailVerifiedYn = user.getEmailVerifiedYn() != null ? user.getEmailVerifiedYn() :"N";
-        this.profileImage = user.getProfileImage() != null ? user.getProfileImage() : "";
-        this.providerType = user.getProviderType() != null ? user.getProviderType() : ProviderType.LOCAL;
-        this.roleType = user.getRoleType() != null ? user.getRoleType() : RoleType.USER;
-        this.createdAt = user.getCreatedAt();
-        this.modifiedAt = user.getModifiedAt();
+        this.email_verified_yn = user.getEmailVerifiedYn() != null ? user.getEmailVerifiedYn() :"N";
+        this.profile_image = user.getProfileImage() != null ? user.getProfileImage() : "";
+        this.provider_type = user.getProviderType() != null ? user.getProviderType() : ProviderType.LOCAL;
+        this.role_type = user.getRoleType() != null ? user.getRoleType() : RoleType.USER;
+        this.created_at = user.getCreatedAt();
+        this.modified_at = user.getModifiedAt();
         this.nickname = user.getNickname();
         this.introduction = user.getIntroduction();
         if (user.getProfileImage() == null || user.getProfileImage().equals("")) {
-            this.profileImage = null;
+            this.profile_image = null;
         } else {
-            this.profileImage = user.getProfileImage();
+            this.profile_image = user.getProfileImage();
         }
-        this.authKey = user.getAuthKey();
+        this.auth_key = user.getAuthKey();
         this.is_vip = user.getIs_vip();
     }
 }

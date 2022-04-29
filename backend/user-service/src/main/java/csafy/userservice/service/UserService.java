@@ -24,7 +24,7 @@ public class UserService {
         user.setPassword(user.getPassword());
         user.encodePassword(passwordEncoder);
         int randNum = (int)(Math.random()*20) + 1;
-        user.setProfileImage("#" + randNum);
+        user.setProfileImage("*" + randNum);
         userProducer.send("user",new UserDto(user));
 //        userRepository.save(user);
 

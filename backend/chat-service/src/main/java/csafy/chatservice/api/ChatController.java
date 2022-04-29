@@ -30,8 +30,8 @@ public class ChatController {
     public void message(ChatMessage message, @Header("Authorization") String token) {
 //        User user = jwtTokenProvider.getUser(token);
         UserDto user = userServiceClient.getTokenUser(token);
-        String nickname = user.getEmail();
-
+        String nickname = "익명의 유저";
+        if(user != null ) nickname = user.getEmail();
 
         // 로그인 회원 정보로 대화명 설정
         message.setSender(nickname);

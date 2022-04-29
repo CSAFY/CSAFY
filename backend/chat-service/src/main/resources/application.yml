@@ -20,12 +20,12 @@ spring:
   #    username: root
   #    password: 1234
 
-  # 마리아 DB(배포) Tupli test
-  datasource:
-    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P12A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: S06P12A102
-    password: vVXyuOaeMc
+#  # 마리아 DB(배포) Tupli test
+#  datasource:
+#    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P12A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    username: S06P12A102
+#    password: vVXyuOaeMc
 
   # 마리아 DB(배포)
 #  datasource:
@@ -33,6 +33,13 @@ spring:
 #    driver-class-name: org.mariadb.jdbc.Driver
 #    username: S06P22A102
 #    password: YT8FT0otFm
+
+  # 마리아 DB(배포)
+  datasource:
+    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P31A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: S06P31A102
+    password: tTelzd9jrW
 
   # JPA 세팅
   jpa:

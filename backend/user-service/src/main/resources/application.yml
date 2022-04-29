@@ -19,19 +19,26 @@ spring:
   #    driver-class-name: org.mariadb.jdbc.Driver
   #    username: root
   #    password: 1234
+#
+#  # 마리아 DB(배포)
+#  datasource:
+#    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P22A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    username: S06P22A102
+#    password: YT8FT0otFm
 
   # 마리아 DB(배포)
   datasource:
-    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P22A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P31A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     driver-class-name: org.mariadb.jdbc.Driver
-    username: S06P22A102
-    password: YT8FT0otFm
+    username: S06P31A102
+    password: tTelzd9jrW
 
   # JPA 세팅
   jpa:
     hibernate:
-      ddl-auto: create # 애플리케이션 실행시점에 테이블 다 지우고 새로 생성
-#      ddl-auto: update  # 개발 단계에서는
+#      ddl-auto: create # 애플리케이션 실행시점에 테이블 다 지우고 새로 생성
+      ddl-auto: update  # 개발 단계에서는
 #      ddl-auto: create-drop
 #      ddl-auto: validate  # 최종 배포 운영 단계
 #      ddl-auto: none
