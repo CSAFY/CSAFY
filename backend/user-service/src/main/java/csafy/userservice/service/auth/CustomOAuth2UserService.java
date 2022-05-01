@@ -1,5 +1,6 @@
 package csafy.userservice.service.auth;
 
+import csafy.userservice.dto.UserDto;
 import csafy.userservice.entity.User;
 import csafy.userservice.entity.auth.ProviderType;
 import csafy.userservice.entity.auth.RoleType;
@@ -8,6 +9,7 @@ import csafy.userservice.exception.OAuthProviderMissMatchException;
 import csafy.userservice.info.OAuth2UserInfo;
 import csafy.userservice.info.OAuth2UserInfoFactory;
 import csafy.userservice.repository.UserRepository;
+import csafy.userservice.service.producer.UserProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -24,6 +26,9 @@ import java.time.LocalDateTime;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+
+    private final UserProducer userProducer;
+
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -77,11 +82,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         );
         user.setNickname(userInfo.getName());
         user.setIs_vip("N");
-        if(user.getProfileImage() == null || user.getProfileImage().trim() == ""){
+        if(user.getProfileImage() == null || user.getProfileImage().trim().equals("")){
             int randNum = (int)(Math.random()*20) + 1;
-            user.setProfileImage("#" + randNum);
+            user.setProfileImage("*" + randNum); // 일단 *으로 받음 나중에 교체
         }
-        return userRepository.saveAndFlush(user);
+
+
+        userProducer.send("user", new UserDto(user)); // $$$ Test 필요!!
+        return user;
+//        return userRepository.saveAndFlush(user);
     }
 
     private User updateUser(User user, OAuth2UserInfo userInfo) {

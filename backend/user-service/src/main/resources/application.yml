@@ -81,7 +81,8 @@ spring:
         google:
           clientId: 692747234718-8s6t26tako0ei0dm2j7dj0fj72k72b89.apps.googleusercontent.com
           clientSecret: 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
-          redirectUri: http://localhost:8080/oauth2/code/google  # 안전용 지정해주기. 보험.
+#          redirectUri: http://localhost:8080/oauth2/code/google  # 안전용 지정해주기. 보험.
+          redirectUri: http://k6a102.p.ssafy.io:8000/user-service/oauth2/code/google  # 안전용 지정해주기. 보험.
           scope:
             - email
             - profile
@@ -94,7 +95,8 @@ app:
     refreshTokenExpiry: 604800000
   oauth2:
     authorizedRedirectUris:
-      - https://tupli.kr/oauth/redirect
+      - http://k6a102.p.ssafy.io/oauth/redirect
+#      - https://tupli.kr/oauth/redirect
 
 logging.level:
   org:
