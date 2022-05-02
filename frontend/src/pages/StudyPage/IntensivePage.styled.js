@@ -21,6 +21,39 @@ export const TitleName = styled.div`
   color: #000;
 `;
 
+export const GridDiv = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 1em;
+  justify-items: center;
+  align-items: center;
+`;
+
 export const FlexDiv = styled.div`
   display: flex;
 `;
+
+export const StudyDetailDiv = styled.div`
+  width: 100%;
+  height: 320px;
+`
+
+export const StudyDetailHr = styled.hr`
+  
+  margin: 32px 0px 21px 0px;
+`
+
+export const StudyDetailText = styled.div`
+  font-size: 24px;
+  height: 60px;
+  width: 500px;
+`
+
+export const DetailLayOut = styled.div`
+  height : 80%;
+  margin: 20px 20px 20px 20px;
+  padding: 22px 115px 98px 116px;
+  border-radius: 31px;
+  background-color: #fff;
+  text-align: center;
+`

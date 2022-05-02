@@ -1,6 +1,11 @@
 import { 
   FullLayOut,
-  FlexDiv
+  DetailLayOut,
+  FlexDiv,
+  StudyDetailDiv,
+  StudyDetailText,
+  StudyDetailHr,
+  GridDiv
  } from "./IntensivePage.styled"
 
 import { useEffect, useRef, useState } from "react";
@@ -16,11 +21,13 @@ import Select from '@mui/material/Select';
 import { useRecoilValue } from "recoil";
 import { category } from "../../recoils";
 
-import QuestionList from "../../components/atoms/studypage/QuestionList"
-import KeyWordCard from "../../components/atoms/studypage/KeyWordCard"
-import FourWayRace from "../../components/atoms/studypage/FourWayRace"
-import ShortAnswer from "../../components/atoms/studypage/ShortAnswer"
-import OXquiz from "../../components/atoms/studypage/OXquiz"
+import QuestionList from "../../components/atoms/intensivePage/QuestionList"
+import KeyWordCard from "../../components/atoms/intensivePage/KeyWordCard"
+import FourWayRace from "../../components/atoms/intensivePage/FourWayRace"
+import ShortAnswer from "../../components/atoms/intensivePage/ShortAnswer"
+import OXquiz from "../../components/atoms/intensivePage/OXquiz"
+import RelatedExam from "../../components/atoms/studypage/RelatedExam"
+import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 
 function IntensivePage() {
 
@@ -63,9 +70,19 @@ function IntensivePage() {
     </Box>
   )
 
+  //임시 데이터
+  const [ddd, setddd] = useState(
+    [{ title : "OSI 7계층에 대해 설명해보세요.", answer : "src1"},
+    { title : "http란?", answer : "답답1"},
+    { title : "문제문제~1", answer : "답답3"},
+    { title : "문제문제~1", answer : "답답4"},
+    { title : "문제문제~1", answer : "답답5"},
+    { title : "문제문제~1", answer : "답답6"}])
+
 
   return (
     <FullLayOut>
+      <DetailLayOut>
       {CategorySelect}
       <FlexDiv>
         <QuestionList
@@ -86,6 +103,23 @@ function IntensivePage() {
           </Routes>
       </FlexDiv>
       
+        <RelatedExam>
+        </RelatedExam>
+
+        <StudyDetailHr></StudyDetailHr>
+
+        <StudyDetailDiv>
+          <StudyDetailText>
+            관련 질문
+          </StudyDetailText>
+          
+          <RelatedQuestions
+            data = {ddd}>
+
+          </RelatedQuestions>
+
+        </StudyDetailDiv>
+      </DetailLayOut>
     </FullLayOut>
   )
 }

@@ -5,7 +5,6 @@ import { MyiFrame,
   StudyDetailDiv,
   StudyDetailText,
   StudyDetailHr,
-  FlexDiv,
   // RelatedQuestions
  } from "./StudyDetailPage.styled"
 
@@ -13,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { videoData } from "../../recoils";
 import styled, { css } from "styled-components";
-import ExampleCard from "../../components/atoms/studypage/ExampleCard"
+import RelatedExam from "../../components/atoms/studypage/RelatedExam"
 import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 import Drawer from "../../components/atoms/studypage/Drawer"
 
@@ -25,14 +24,6 @@ function StudyDetailPage() {
   const Url = `https://www.youtube.com/embed/${videoDatas.videoId}`
 
 
-  const [quiz, setQuiz] = useState([])
-  const againQuiz = quiz.map((data) => 
-    
-      <ExampleCard
-        key={data}
-        >
-      </ExampleCard>
-  )
 
 
   //임시 데이터
@@ -62,24 +53,8 @@ function StudyDetailPage() {
 
         <StudyDetailHr></StudyDetailHr>
 
-        <StudyDetailDiv>
-          <StudyDetailText>
-            관련 모의고사
-          </StudyDetailText>
-
-          <FlexDiv>
-            <ExampleCard>
-
-            </ExampleCard>
-            <ExampleCard>
-
-            </ExampleCard>
-            <ExampleCard>
-
-            </ExampleCard>
-          </FlexDiv>
-          
-        </StudyDetailDiv>
+        <RelatedExam>
+        </RelatedExam>
 
         <StudyDetailHr></StudyDetailHr>
 

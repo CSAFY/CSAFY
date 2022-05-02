@@ -58,7 +58,7 @@ export const StudyDetailText = styled.div`
   height: 60px;
   width: 500px;
 `
-export const FlexDiv = styled.div`
+export const GridDiv = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     margin: 1em;
