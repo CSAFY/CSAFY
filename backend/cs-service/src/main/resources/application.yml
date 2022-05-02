@@ -1,0 +1,55 @@
+server:
+  port: 0
+#  port: 20000
+
+spring:
+  application:
+    name: cs-service
+
+  # ??? DB(??)
+  datasource:
+    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P31A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: S06P31A102
+    password: tTelzd9jrW
+
+  # JPA ??
+  jpa:
+    hibernate:
+      #      ddl-auto: create # ?????? ????? ??? ? ??? ?? ??
+      ddl-auto: update  # ?? ?????
+    #      ddl-auto: create-drop
+    #      ddl-auto: validate  # ?? ?? ?? ??
+    #      ddl-auto: none
+    show-sql: true
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 1000 #1?? ?? ??? ??? ??, ??? ?? (MAX? ?? 1000)
+        format_sql: true # ?? ???? ?? ????
+    #        show_sql: true
+
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+logging.level:
+  org:
+    #    springframework.web: DEBUG
+    springframework.web: WARN
+#    hibernate.SQL: INFO #debug # hibernate? ???? ??? ? ???
+# org.hibernate.type: trace # ?? ???? ?? ???
+
+# ?? ????? 1?? ??
+jwt:
+  secret: zjb@=h&h077b^xz3n!0yijzx3iqp&yavug7n4+i!3$hrvwg2kz
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

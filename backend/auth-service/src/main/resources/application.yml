@@ -1,10 +1,9 @@
 server:
-  port: 0
-#  port: 20000
+  port: 20000
 
 spring:
   application:
-    name: user-service
+    name: auth-service
 
   # REDIS
 #  redis:
@@ -82,7 +81,7 @@ spring:
           clientId: 692747234718-8s6t26tako0ei0dm2j7dj0fj72k72b89.apps.googleusercontent.com
           clientSecret: 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
 #          redirectUri: http://localhost:8080/oauth2/code/google  # 안전용 지정해주기. 보험.
-          redirectUri: https://k6a102.p.ssafy.io/api/v1/user-service/login/oauth2/code/google  # 안전용 지정해주기. 보험.
+          redirectUri: https://k6a102.p.ssafy.io/api/v3/login/oauth2/code/google  # 안전용 지정해주기. 보험.
           scope:
             - email
             - profile
@@ -109,11 +108,3 @@ logging.level:
 jwt:
   secret: zjb@=h&h077b^xz3n!0yijzx3iqp&yavug7n4+i!3$hrvwg2kz
 
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
