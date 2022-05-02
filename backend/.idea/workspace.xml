@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b7fa1ecb-01ee-45ad-8398-bc8b2d484342" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/api/AuthApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/api/AuthApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/service/auth/CustomOAuth2UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/service/auth/CustomOAuth2UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cs-service/src/main/java/csafy/csservice/controller/InterviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/cs-service/src/main/java/csafy/csservice/controller/InterviewController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
