@@ -1,9 +1,11 @@
-package csafy.csservice.entity;
+package csafy.csservice.entity.interview;
 
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "INTERVIEW")
@@ -23,6 +25,9 @@ public class Interview {
 
     @Size(max = 200)
     private String question;
+
+    @OneToMany(mappedBy = "interview")
+    private List<InterviewLikes> interviewLikes = new ArrayList<>();
 
 
 }
