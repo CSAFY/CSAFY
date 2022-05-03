@@ -1,4 +1,4 @@
-package com.example.csafy_android.navigation
+package com.example.csafy_android.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

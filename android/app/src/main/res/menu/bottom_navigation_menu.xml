@@ -2,27 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/page_home"
+        android:id="@+id/menu_item_home"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="홈" />
 
     <item
-        android:id="@+id/page_study"
+        android:id="@+id/menu_item_study"
         android:icon="@drawable/ic_baseline_menu_book_24"
         android:title="학습" />
 
     <item
-        android:id="@+id/page_card"
+        android:id="@+id/menu_item_card"
         android:icon="@drawable/ic_baseline_credit_card_24"
         android:title="면접" />
 
     <item
-        android:id="@+id/page_test"
+        android:id="@+id/menu_item_test"
         android:icon="@drawable/ic_baseline_assignment_ind_24"
         android:title="문제" />
 
     <item
-        android:id="@+id/page_profile"
+        android:id="@+id/menu_item_profile"
         android:icon="@drawable/ic_baseline_assessment_24"
         android:title="프로필" />
 
