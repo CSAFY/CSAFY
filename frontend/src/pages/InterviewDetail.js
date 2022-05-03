@@ -99,13 +99,12 @@ const ToolTip = styled.div`
 `;
 
 function InterviewDetail() {
-  let { interviewId } = useParams();
   const [toggle, setToggle] = useState(false);
   const toggleTime = () => {
     console.log(toggle);
     setToggle(!toggle);
   };
-  console.log(interviewId);
+
   return (
     <InterviewDetailWrapper>
       <InterviewDetailContent>
