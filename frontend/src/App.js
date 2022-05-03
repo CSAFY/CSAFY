@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
@@ -7,7 +7,6 @@ import ScrollToTop from './components/common/ScrollToTop';
 // PAGES
 import Home from './pages/Home';
 import MyPage from './pages/MyPage';
-import Page1 from './pages/Page1';
 import Page2 from './pages/Page2';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -18,6 +17,11 @@ import StudyFramePage from './pages/StudyPage/StudyFramePage';
 import StudyDetailPage from './pages/StudyPage/StudyDetailPage';
 import Classification from './pages/Classification';
 import Interview from './pages/Interview';
+import Community from './pages/Community';
+import InterviewDetail from './pages/InterviewDetail';
+import InterviewResult from './pages/InterviewResult';
+import TestRoom from './pages/TestRoom';
+import EditProfile from './pages/EditProfile';
 
 function App() {
   return (
@@ -26,9 +30,12 @@ function App() {
       <div className="App">
         <NavBar />
         <Routes>
+          <Route path="/community" element={<Community />} />
           <Route path="/" element={<Home />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/editProfile" element={<EditProfile />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/test/:roomName" element={<TestRoom />} />
           <Route path="/StudyFramePage" element={<StudyFramePage />} />
           <Route path="/StudyDetailPage" element={<StudyDetailPage />} />
           <Route path="/page2" element={<Page2 />} />
@@ -36,6 +43,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/classification" element={<Classification />} />
           <Route path="/interview" element={<Interview />} />
+          <Route path="/interviewDetail" element={<InterviewDetail />} />
+          <Route path="/interviewResult" element={<InterviewResult />} />
         </Routes>
         <Chatbot />
         <Footer />

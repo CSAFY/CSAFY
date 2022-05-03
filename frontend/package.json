@@ -20,9 +20,13 @@
     "react-scripts": "5.0.1",
     "react-simple-chatbot": "^0.6.1",
     "react-tooltip": "^4.2.21",
+    "react-unity-webgl": "^8.8.0",
     "recoil": "^0.7.2",
+    "scss": "^0.2.4",
+    "sockjs-client": "^1.6.0",
     "styled-components": "^5.3.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webstomp-client": "^1.2.6"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -21,10 +21,12 @@ const BarGraph = styled.img`
   margin-right: 83px;
 `;
 
-function StudyAnalysis() {
+function StudyAnalysis({ userInfo }) {
   return (
     <AnalysisWrapper>
-      <h1 style={{ textAlign: 'center' }}>Admin님의 학습 분석 데이터</h1>
+      <h1 style={{ textAlign: 'center' }}>
+        {userInfo.username}님의 학습 분석 데이터
+      </h1>
       <DataWrapper>
         <PiGraph src="images/graph1.png" alt="Pi" />
         <div style={{ flexGrow: '1', marginLeft: '50px' }}>
