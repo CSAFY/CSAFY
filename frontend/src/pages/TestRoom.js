@@ -51,7 +51,7 @@ function TestRoom() {
     const sock = new SockJS(
       'https://k6a102.p.ssafy.io/api/v1/chat-service/ws-stomp',
     );
-    // const ws = Stomp.over(sock);
+    const ws = Stomp.over(sock);
     // roomID받아올 때 오류가 뜬다.
     // 퇴장한 클라이언트의 sessionId로 roomId를 얻고(여기서 얻는게 안된다...) roomId 맵핑 정보를 삭제한다 - 여기서 에러.
 

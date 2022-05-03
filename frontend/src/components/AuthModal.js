@@ -150,6 +150,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
 
     // api 연결 - 회원가입
     axios
+      // .post(`https://k6a102.p.ssafy.io/api/v1/user-service/accounts/signup/ `, {
       .post(`https://k6a102.p.ssafy.io/api/v1/user-service/signup`, {
         email: signupInfo.email,
         nickname: 'test',

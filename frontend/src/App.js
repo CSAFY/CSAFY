@@ -16,10 +16,10 @@ import Chatbot from './components/Chatbot';
 import StudyFramePage from './pages/StudyPage/StudyFramePage';
 import StudyDetailPage from './pages/StudyPage/StudyDetailPage';
 import Classification from './pages/Classification';
-import Interview from './pages/Interview';
+import InterviewList from './pages/InterviewList';
 import Community from './pages/Community';
+import Interview from './pages/Interview';
 import InterviewDetail from './pages/InterviewDetail';
-import InterviewResult from './pages/InterviewResult';
 import TestRoom from './pages/TestRoom';
 import EditProfile from './pages/EditProfile';
 
@@ -42,9 +42,9 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/classification" element={<Classification />} />
+          <Route path="/interviewList" element={<InterviewList />} />
           <Route path="/interview" element={<Interview />} />
-          <Route path="/interviewDetail" element={<InterviewDetail />} />
-          <Route path="/interviewResult" element={<InterviewResult />} />
+          <Route path="/InterviewDetail" element={<InterviewDetail />} />
         </Routes>
         <Chatbot />
         <Footer />
