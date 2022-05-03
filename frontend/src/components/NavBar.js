@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 // MUI
 // inherit 흰색 default 회색 primary 파랑 secondary 보라 error 빨강 info 파랑 success 초록 warning 주황 string 적용안됨
@@ -50,6 +50,7 @@ const pages = [
   { name: '테스트', link: 'test' },
   { name: '면접 대비', link: 'interview' },
   { name: '기술 스택', link: 'classification' },
+  { name: '메타버스', link: 'community' },
 ];
 
 // const Logo = styled.img`
@@ -60,6 +61,7 @@ const pages = [
 // `;
 
 const NavBar = () => {
+  const [toggleLogin, setToggleLogin] = useState('로그인');
   // MODAL
   const [state, setState] = useState('signup');
   const [modal, setModal] = useState(false);
@@ -68,6 +70,16 @@ const NavBar = () => {
     setModal(true);
   };
   const handleModalClose = () => setModal(false);
+  const token = localStorage.getItem('jwt');
+  useEffect(() => {
+    // 로그인 여부 확인
+    if (token) {
+      setToggleLogin('로그아웃');
+    } else {
+      setToggleLogin('로그인');
+    }
+    // console.log(token);
+  }, []);
 
   // nav
   const navigate = useNavigate();
@@ -87,6 +99,11 @@ const NavBar = () => {
   // const handleCloseUserMenu = () => {
   //   setAnchorElUser(null);
   // };
+
+  // 커뮤니티 페이지에서 안보이게 하기
+  const location = useLocation();
+
+  if (location.pathname === '/community') return null;
 
   return (
     <AppBar
@@ -114,19 +131,35 @@ const NavBar = () => {
               setCurrentPage('Home');
             }}
           >
-            <Link to="/">
-              <img
-                src="images/csafy.png"
-                alt="Img"
-                style={{
-                  width: '110px',
-                  height: '45px',
-                  paddingTop: '10px',
-                  backgroundColor: 'none',
-                }}
-              />
-              {/* <Logo src="images/logo.ico" /> */}
-            </Link>
+            {toggleLogin === '로그인' ? (
+              <Link to="/">
+                <img
+                  src="images/csafy.png"
+                  alt="Img"
+                  style={{
+                    width: '110px',
+                    height: '45px',
+                    paddingTop: '10px',
+                    backgroundColor: 'none',
+                  }}
+                />
+                {/* <Logo src="images/logo.ico" /> */}
+              </Link>
+            ) : (
+              <Link to="/mypage">
+                <img
+                  src="images/csafy.png"
+                  alt="Img"
+                  style={{
+                    width: '110px',
+                    height: '45px',
+                    paddingTop: '10px',
+                    backgroundColor: 'none',
+                  }}
+                />
+                {/* <Logo src="images/logo.ico" /> */}
+              </Link>
+            )}
           </Typography>
           {/* 반응형 - 넓은 화면 navbar */}
           <Box
@@ -226,23 +259,50 @@ const NavBar = () => {
               display: { xs: 'flex', md: 'none' },
             }}
           >
-            <Button
-              sx={{
-                textAlign: 'center',
-                mx: 1,
-                my: 2,
-                color: 'black',
-                display: 'block',
-                ':hover': {
-                  color: '#006D9F',
-                  bgcolor: '#ffffff',
-                  // bgcolor: '#D5F2FC',
-                },
-              }}
-              onClick={handleModalOpen}
-            >
-              로그인
-            </Button>
+            {token ? (
+              <Button
+                sx={{
+                  textAlign: 'center',
+                  mx: 1,
+                  my: 2,
+                  color: 'black',
+                  display: 'block',
+                  ':hover': {
+                    color: '#006D9F',
+                    bgcolor: '#ffffff',
+                    // bgcolor: '#D5F2FC',
+                  },
+                }}
+                onClick={() => {
+                  localStorage.removeItem('jwt');
+                  navigate('/');
+                  setToggleLogin('로그인');
+                }}
+              >
+                {/* 로그아웃 */}
+                {toggleLogin}
+              </Button>
+            ) : (
+              <Button
+                sx={{
+                  textAlign: 'center',
+                  mx: 1,
+                  my: 2,
+                  color: 'black',
+                  display: 'block',
+                  ':hover': {
+                    color: '#006D9F',
+                    bgcolor: '#ffffff',
+                    // bgcolor: '#D5F2FC',
+                  },
+                }}
+                onClick={handleModalOpen}
+              >
+                {/* 로그인 */}
+                {toggleLogin}
+              </Button>
+            )}
+
             <Modal
               open={modal}
               onClose={handleModalClose}
@@ -255,6 +315,7 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
+                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               ) : (
@@ -353,23 +414,49 @@ const NavBar = () => {
               mx: 3,
             }}
           >
-            <Button
-              sx={{
-                textAlign: 'center',
-                mx: 1,
-                my: 2,
-                color: 'black',
-                display: 'block',
-                ':hover': {
-                  color: '#006D9F',
-                  bgcolor: '#ffffff',
-                  // bgcolor: '#D5F2FC',
-                },
-              }}
-              onClick={handleModalOpen}
-            >
-              로그인
-            </Button>
+            {token ? (
+              <Button
+                sx={{
+                  textAlign: 'center',
+                  mx: 1,
+                  my: 2,
+                  color: 'black',
+                  display: 'block',
+                  ':hover': {
+                    color: '#006D9F',
+                    bgcolor: '#ffffff',
+                    // bgcolor: '#D5F2FC',
+                  },
+                }}
+                onClick={() => {
+                  localStorage.removeItem('jwt');
+                  navigate('/');
+                  setToggleLogin('로그인');
+                }}
+              >
+                {/* 로그아웃 */}
+                {toggleLogin}
+              </Button>
+            ) : (
+              <Button
+                sx={{
+                  textAlign: 'center',
+                  mx: 1,
+                  my: 2,
+                  color: 'black',
+                  display: 'block',
+                  ':hover': {
+                    color: '#006D9F',
+                    bgcolor: '#ffffff',
+                    // bgcolor: '#D5F2FC',
+                  },
+                }}
+                onClick={handleModalOpen}
+              >
+                {toggleLogin}
+              </Button>
+            )}
+
             <Modal
               open={modal}
               onClose={handleModalClose}
@@ -382,6 +469,7 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
+                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               ) : (

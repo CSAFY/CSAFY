@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // STYLED
 import styled from 'styled-components';
@@ -38,13 +38,31 @@ const ButtonBox = styled.div`
   margin-top: 20px;
   margin-bottom: 30px;
 `;
-const CatButton = styled.div`
+const TechButton = styled.div`
   width: 110px;
   height: 32px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
+  font-size: 16px;
+
+  cursor: pointer;
+  background-color: ${props => props.color};
+`;
+const AttitudeButton = styled.div`
+  width: 110px;
+  height: 32px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 16px;
+
+  cursor: pointer;
+  background-color: ${props => props.color};
 `;
 
 function Interview() {
@@ -66,6 +84,45 @@ function Interview() {
       category: '기술',
     },
   ]);
+  // test
+  const [page, setPage] = useState('All');
+  const [data, setData] = useState([]);
+  const getPage = page => {
+    const pageData = [];
+    for (let i = 0; i < dummyData.length; i++) {
+      if (dummyData[i].category === page) {
+        pageData.push(dummyData[i]);
+      }
+    }
+    setData(pageData);
+  };
+
+  const [cur, setCur] = useState(null);
+  const [prev, setPrev] = useState(null);
+  const handleClick = e => {
+    setCur(e.target.id);
+    if (e.target.id === 'cur') {
+      getPage('인성');
+      setPage('Attitude');
+    } else {
+      getPage('기술');
+      setPage('Tech');
+    }
+  };
+
+  useEffect(() => {
+    if (cur !== null) {
+      let current = document.getElementById(cur);
+      current.style.backgroundColor = '#008ed0';
+      current.style.color = '#fff';
+    }
+    if (prev !== null) {
+      let previous = document.getElementById(prev);
+      previous.style.backgroundColor = '#f6f7fb';
+      previous.style.color = '#000';
+    }
+    setPrev(cur);
+  }, [cur]);
 
   return (
     <InterviewWrapper>
@@ -90,17 +147,27 @@ function Interview() {
         <TypeBox>
           <div style={{ fontSize: '18px', fontWeight: '600' }}>유형 선택</div>
           <ButtonBox>
-            <CatButton style={{ backgroundColor: '#008ed0', color: '#fff' }}>
+            <AttitudeButton id="cur" onClick={handleClick}>
               # 인성 면접
-            </CatButton>
-            <CatButton># 기술 면접</CatButton>
+            </AttitudeButton>
+            <TechButton id="prev" onClick={handleClick}>
+              # 기술 면접
+            </TechButton>
           </ButtonBox>
         </TypeBox>
-        <QuestionContainer>
-          {dummyData.map(it => (
-            <QuestionBox key={it.id} {...it} />
-          ))}
-        </QuestionContainer>
+        {page === 'All' ? (
+          <QuestionContainer>
+            {dummyData.map(it => (
+              <QuestionBox key={it.id} {...it} />
+            ))}
+          </QuestionContainer>
+        ) : (
+          <QuestionContainer>
+            {data.map(it => (
+              <QuestionBox key={it.id} {...it} />
+            ))}
+          </QuestionContainer>
+        )}
       </InterviewContent>
     </InterviewWrapper>
   );

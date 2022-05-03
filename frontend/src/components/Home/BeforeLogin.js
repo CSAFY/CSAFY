@@ -3,6 +3,7 @@ import React from 'react';
 
 // REACT-REVEAL
 import Fade from 'react-reveal/Fade';
+import { useNavigate } from 'react-router-dom';
 
 // STYLED
 import styled from 'styled-components';
@@ -125,6 +126,7 @@ const ButtonBox = styled.div`
 `;
 
 function BeforeLogin() {
+  const navigate = useNavigate();
   return (
     <>
       <HeroWrapper>
@@ -484,6 +486,7 @@ function BeforeLogin() {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
+              onClick={() => navigate('/community')}
             >
               메타버스 체험하기
             </Button>

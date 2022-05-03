@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 // chatbot
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
@@ -48,6 +49,11 @@ function Chatbot() {
     borderRadius: '30px',
     background: 'white',
   };
+
+  // 커뮤니티 페이지에서 안보이게 하기
+  const location = useLocation();
+
+  if (location.pathname === '/community') return null;
 
   return (
     <ThemeProvider theme={theme}>
