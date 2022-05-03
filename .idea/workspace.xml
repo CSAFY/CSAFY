@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f7ba46ac-80f7-465c-a26c-ec2c84d8b293" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/chat-service/src/main/java/csafy/chatservice/error/FeignErrorDecoder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/dto/NullableField.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/dto/TimeField.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend_service.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chat-service/src/main/java/csafy/chatservice/ChatServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/chat-service/src/main/java/csafy/chatservice/ChatServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chat-service/src/main/java/csafy/chatservice/api/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/chat-service/src/main/java/csafy/chatservice/api/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chat-service/src/main/java/csafy/chatservice/config/interceptor/StompHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/chat-service/src/main/java/csafy/chatservice/config/interceptor/StompHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chat-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/chat-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/gateway/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/gateway/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/dto/Payload.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/dto/Payload.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/dto/Schema.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/dto/Schema.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/dto/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/service/producer/UserProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/user-service/src/main/java/csafy/userservice/service/producer/UserProducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/user-service/src/main/resources/application.yml" afterDir="false" />
-    </list>
+    <list default="true" id="f7ba46ac-80f7-465c-a26c-ec2c84d8b293" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,6 +32,7 @@
       <option name="presentableId" value="Default" />
       <updated>1651224270004</updated>
       <workItem from="1651224287801" duration="24000" />
+      <workItem from="1651564967570" duration="14000" />
     </task>
     <servers />
   </component>

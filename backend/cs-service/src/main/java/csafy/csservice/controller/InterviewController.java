@@ -10,6 +10,7 @@ import csafy.csservice.entity.interview.Interview;
 import csafy.csservice.entity.interview.InterviewComment;
 import csafy.csservice.entity.interview.InterviewMemo;
 import csafy.csservice.service.InterviewService;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +28,18 @@ public class InterviewController {
 
     private final UserServiceClient userServiceClient;
 
+    @GetMapping("/welcome")
+    public String welcome(){
+        return "welcome";
+    }
+
     // 면접 질문 리스트 받아오기 GET < 이거부터 ㄱㄱ 인성, 기술, 인성 + 기술
     @GetMapping("/list/get")
     public ResponseEntity getInterviewList(@RequestHeader(value = "Authorization") String token,
             @RequestParam(value = "category") String category){
-
-        if (userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 500 ||
-                userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 403) {
+        System.out.println("들어오긴함??");
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
         }
 
@@ -54,8 +60,8 @@ public class InterviewController {
     public ResponseEntity createInterviewList(@RequestHeader(value = "Authorization") String token,
             @RequestBody RequestCreateInterview createInterview){
 
-        if (userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 500 ||
-                userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 403) {
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
         }
 
@@ -74,8 +80,9 @@ public class InterviewController {
     @PostMapping("/{interviewSeq}/likes")
     public ResponseEntity interviewLikes(@RequestHeader(value = "Authorization") String token,
                                      @PathVariable("interviewSeq") Long interviewSeq) {
-        if (userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 500 ||
-                userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 403) {
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
         }
 
@@ -91,8 +98,8 @@ public class InterviewController {
                                      @PathVariable("interviewSeq") Long interviewSeq,
                                               @RequestBody String memo) {
 
-        if (userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 500 ||
-                userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 403) {
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
         }
 
@@ -118,8 +125,9 @@ public class InterviewController {
     public ResponseEntity createComment(@RequestHeader(value = "Authorization") String token,
                                               @PathVariable("interviewSeq") Long interviewSeq,
                                               @RequestBody String comment){
-        if(userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 500 ||
-                userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 403){
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if(!resultCode.equals("OK")){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
         }
 
@@ -139,8 +147,9 @@ public class InterviewController {
     public ResponseEntity updateComment(@RequestHeader(value = "Authorization") String token,
                                         @PathVariable("commentId") Long commentId,
                                         @RequestBody String comment){
-        if(userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 500 ||
-                userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 403){
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if(!resultCode.equals("OK")){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
         }
 
@@ -159,8 +168,9 @@ public class InterviewController {
     @DeleteMapping("/{commentId}/comment/delete")
     public ResponseEntity deleteComment(@RequestHeader(value = "Authorization") String token,
                                         @PathVariable("commentId") Long commentId){
-        if(userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 500 ||
-                userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 403){
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if(!resultCode.equals("OK")){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
         }
 
@@ -178,8 +188,9 @@ public class InterviewController {
     @PostMapping("/{commentId}/comment/likes")
     public ResponseEntity interviewCommentLikes(@RequestHeader(value = "Authorization") String token,
                                          @PathVariable("commentId") Long commentId) {
-        if (userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 500 ||
-                userServiceClient.checkTokenValidated(token).getStatusCodeValue() == 403) {
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
         }
 

@@ -140,7 +140,7 @@ public class UserApiController {
 
         // 인증 확인후 돌리기
         String token = request.getHeader("Authorization");
-
+        System.out.println("token : " + token);
         if (token == null || !jwtTokenProvider.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse(messageSource.
@@ -179,19 +179,18 @@ public class UserApiController {
      * @return
      */
     @GetMapping("/tokenvalidated")
-    public ResponseEntity<?> checkTokenValidated(@RequestParam("inputToken") String inputToken){
+    public String checkTokenValidated(@RequestParam("inputToken") String inputToken){
 
         // 인증 확인후 돌리기
         String token = inputToken;
+        System.out.println("토오큰 : " + token);
 
         if (token == null || !jwtTokenProvider.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse(messageSource.
-                            getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())) {
-                    });
+            System.out.println("토큰 에러");
+            return "error";
         }
 
-        return ResponseEntity.ok().body(null);
+        return "OK";
     }
 
 
