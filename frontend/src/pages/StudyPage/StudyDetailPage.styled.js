@@ -43,40 +43,7 @@ export const TitleText = styled.div`
   color: #000;
 `
 
-export const StudyDetailDiv = styled.div`
-  width: 100%;
-  height: 320px;
-`
-
 export const StudyDetailHr = styled.hr`
   
   margin: 32px 0px 21px 0px;
-`
-
-export const StudyDetailText = styled.div`
-  font-size: 24px;
-  height: 60px;
-  width: 500px;
-`
-export const GridDiv = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    margin: 1em;
-    justify-items: center;
-    align-items: center;
-`;
-
-export const RelatedQuestions = styled.div`
-  width: 100%;
-  height: 40px;
-  margin: 10px 0 0 157px;
-  font-family: SUIT;
-  font-size: 20px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: left;
-  color: #000;
 `

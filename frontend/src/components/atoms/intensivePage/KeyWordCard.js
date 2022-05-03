@@ -78,32 +78,32 @@ const steps = [
         </div>
       )
     } else {
-    return(
-    <div onClick={CloseCard}>
-      <Paper
-        square
-        elevation={0}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: "center",
-          height: 50,
-          pl: 2,
-          bgcolor: 'background.default',
-        }}
-      >
-        <Typography >{steps[activeStep].label}</Typography>
-      </Paper>
-      <Box sx={{ height: 400,  width: '90%', p: 2 }}>
-        {steps[activeStep].description}
-      </Box>
-    </div>
-    )
+      return(
+      <div onClick={CloseCard}>
+        <Paper
+          square
+          elevation={0}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: "center",
+            height: 50,
+            pl: 2,
+            bgcolor: 'background.default',
+          }}
+        >
+          <Typography >{steps[activeStep].label}</Typography>
+        </Paper>
+        <Box sx={{ height: 400,  width: '90%', p: 2 }}>
+          {steps[activeStep].description}
+        </Box>
+      </div>
+      )
     }
   }
 
   return (
-    <Box id="zz"  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px"}}>
+    <Box id="zz"  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", border: "solid"}}>
       
       {ClickKeyWordCard()}
 

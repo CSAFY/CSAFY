@@ -34,8 +34,6 @@ function StudyFramePage() {
   }
   
   
-
-  
   const [studyDatas, setStudyData] = useRecoilState(studyData)
   const getData = async () => {
     const params = {

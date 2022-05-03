@@ -15,7 +15,12 @@ function QuestionList(props) {
 
   
   const btncolors = ['standard' , 'primary' , 'secondary' , 'error' , 'info' , 'success' , 'warning']
+  const [check, setCheck] = useState(true)
 
+  useEffect(() => {
+    setCheck(false)
+  }, [props.nowCate])
+  
   const againToggleButton = props.categori.map((data, index) => 
   
     <ToggleButton
@@ -25,10 +30,12 @@ function QuestionList(props) {
       value={data.path}
       color={btncolors[index % 7]}
       sx={{ border: "solid"}}
+      disabled = {check}
       >
         {data.title} 
     </ToggleButton>
   )
+
   return (
     <MinBox>
       <ToggleButtonGroup

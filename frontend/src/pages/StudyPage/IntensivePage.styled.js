@@ -31,6 +31,7 @@ export const GridDiv = styled.div`
 
 export const FlexDiv = styled.div`
   display: flex;
+  margin : 40px 0 40px 0;
 `;
 
 export const StudyDetailDiv = styled.div`

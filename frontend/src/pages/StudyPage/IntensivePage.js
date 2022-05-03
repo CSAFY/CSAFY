@@ -26,6 +26,7 @@ import KeyWordCard from "../../components/atoms/intensivePage/KeyWordCard"
 import FourWayRace from "../../components/atoms/intensivePage/FourWayRace"
 import ShortAnswer from "../../components/atoms/intensivePage/ShortAnswer"
 import OXquiz from "../../components/atoms/intensivePage/OXquiz"
+import LodingPage from "../../components/atoms/intensivePage/LodingPage"
 import RelatedExam from "../../components/atoms/studypage/RelatedExam"
 import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 
@@ -70,14 +71,6 @@ function IntensivePage() {
     </Box>
   )
 
-  //임시 데이터
-  const [ddd, setddd] = useState(
-    [{ title : "OSI 7계층에 대해 설명해보세요.", answer : "src1"},
-    { title : "http란?", answer : "답답1"},
-    { title : "문제문제~1", answer : "답답3"},
-    { title : "문제문제~1", answer : "답답4"},
-    { title : "문제문제~1", answer : "답답5"},
-    { title : "문제문제~1", answer : "답답6"}])
 
 
   return (
@@ -85,10 +78,11 @@ function IntensivePage() {
       <DetailLayOut>
       {CategorySelect}
       <FlexDiv>
-        <QuestionList
+        <QuestionList 
           selectKategorie = {ChoiceChange}
           value = {nowChoice}
           categori = {choice}
+          nowCate = {nowCate}
           >
         </QuestionList>
 
@@ -96,29 +90,22 @@ function IntensivePage() {
 
         </KeyWordCard> */}
         <Routes>
-            <Route path="KeyWordCard" element={<KeyWordCard />} />
-            <Route path="FourWayRace" element={<FourWayRace />} />
-            <Route path="ShortAnswer" element={<ShortAnswer />} />
-            <Route path="OXquiz" element={<OXquiz />} />
-          </Routes>
+          <Route exact={true} path="/" element={<LodingPage />} />
+          <Route exact={true} path="KeyWordCard" element={<KeyWordCard />} />
+          <Route path="FourWayRace" element={<FourWayRace />} />
+          <Route path="ShortAnswer" element={<ShortAnswer />} />
+          <Route path="OXquiz" element={<OXquiz />} />
+        </Routes>
       </FlexDiv>
       
-        <RelatedExam>
+        {/* <RelatedExam>
         </RelatedExam>
 
         <StudyDetailHr></StudyDetailHr>
 
-        <StudyDetailDiv>
-          <StudyDetailText>
-            관련 질문
-          </StudyDetailText>
-          
-          <RelatedQuestions
-            data = {ddd}>
-
-          </RelatedQuestions>
-
-        </StudyDetailDiv>
+        <RelatedQuestions>
+        </RelatedQuestions> */}
+        
       </DetailLayOut>
     </FullLayOut>
   )
