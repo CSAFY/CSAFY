@@ -13,7 +13,7 @@ import VideoBox from '../components/myPage/VideoBox';
 
 // STYLED
 import styled from 'styled-components';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -80,12 +80,21 @@ function MyPage() {
         })
         .then(res => {
           console.log(res);
-          setUserInfo({
-            email: res.data.email,
-            is_vip: res.data.is_vip,
-            username: res.data.username,
-            profile_image: res.data.profile_image,
-          });
+          if (res.data.profile_image === null) {
+            setUserInfo({
+              email: res.data.email,
+              is_vip: res.data.is_vip,
+              username: res.data.username,
+              profile_image: 'images/google.png',
+            });
+          } else {
+            setUserInfo({
+              email: res.data.email,
+              is_vip: res.data.is_vip,
+              username: res.data.username,
+              profile_image: res.data.profile_image,
+            });
+          }
         })
         .catch(err => console.error(err));
     }
@@ -93,6 +102,7 @@ function MyPage() {
   useEffect(() => {
     getInfo();
   }, []);
+  console.log('🐸', userInfo);
 
   // Heatmap
   const today = new Date();
@@ -105,6 +115,10 @@ function MyPage() {
   // 프로필 변경 관련
   const [editToggle, setEditToggle] = useState(false);
   const handleEdit = () => {
+    setEditToggle(!editToggle);
+    console.log(editUserInfo);
+  };
+  const handleEditToggle = () => {
     setEditToggle(!editToggle);
   };
   const editProfileImage = () => {
@@ -121,6 +135,20 @@ function MyPage() {
     });
   }, [editToggle]);
 
+  // 이미지 업로드 관련
+  const [imageSrc, setImageSrc] = useState('');
+  const encodeFileToBase64 = fileBlob => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise(resolve => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        setEditUserInfo({ ...editUserInfo, profile_image: reader.result });
+        resolve();
+      };
+    });
+  };
+
   return (
     <>
       <MyPageWrapper>
@@ -129,41 +157,61 @@ function MyPage() {
             <UserInfo>
               {editToggle ? (
                 <div style={{ position: 'relative' }}>
-                  <ProfileImg
-                    src="images/google.png"
-                    alt="Profile"
-                    style={{ filter: 'blur(4px)' }}
-                  />
-                  <button
-                    style={{
-                      width: '115px',
-                      height: '22px',
-                      fontSize: '13px',
-                      fontWeight: '600',
-                      // color: '#fff',
-                      border: 'none',
-                      backgroundColor: 'transparent',
-
-                      cursor: 'pointer',
-
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                    }}
-                    onClick={editProfileImage}
-                  >
-                    프로필 사진 바꾸기
-                  </button>
+                  <div className="preview">
+                    {imageSrc ? (
+                      <ProfileImg src={imageSrc} alt="Profile" />
+                    ) : (
+                      // <img
+                      //   src={imageSrc}
+                      //   alt="preview-img"
+                      //   style={{
+                      //     width: '120px',
+                      //     height: '120px',
+                      //     borderRadius: '50%',
+                      //   }}
+                      // />
+                      <>
+                        <ProfileImg
+                          // src="images/google.png"
+                          src={userInfo.profile_image}
+                          alt="Profile"
+                          style={{ filter: 'blur(4px)' }}
+                        />
+                      </>
+                    )}
+                    <label
+                      htmlFor="upload-photo"
+                      style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                    >
+                      <input
+                        style={{ display: 'none' }}
+                        id="upload-photo"
+                        name="upload-photo"
+                        type="file"
+                        onChange={e => encodeFileToBase64(e.target.files[0])}
+                      />
+                      <Button
+                        component="span"
+                        sx={{
+                          textAlign: 'center',
+                          color: 'black',
+                          display: 'block',
+                          width: '120px',
+                        }}
+                      >
+                        Edit Photo
+                      </Button>
+                    </label>
+                  </div>
                 </div>
               ) : (
-                <ProfileImg src="images/google.png" alt="Profile" />
-              )}
-              {/* {userInfo.profile_image ? (
                 <ProfileImg src={userInfo.profile_image} alt="Profile" />
-              ) : (
-                <ProfileImg src="images/google.png" alt="Profile" />
-              )} */}
+              )}
 
               <Profile>
                 {/* is_vip === 'T'일대만 `프리미엄 이용중` 보이기 */}
@@ -272,7 +320,7 @@ function MyPage() {
                       bgcolor: 'white',
                     },
                   }}
-                  onClick={handleEdit}
+                  onClick={handleEditToggle}
                 >
                   프로필 변경
                 </Button>
