@@ -83,6 +83,7 @@ function IntensivePage() {
           value = {nowChoice}
           categori = {choice}
           nowCate = {nowCate}
+          disabled ={nowCate === "" ? true: false}
           >
         </QuestionList>
 
