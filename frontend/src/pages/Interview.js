@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { defaultAPI } from '../utils/api';
 
 // MUI
 import MuiSwitch from '../components/MuiSwitch';
@@ -7,7 +9,6 @@ import MuiSwitch from '../components/MuiSwitch';
 // STYLED
 import styled from 'styled-components';
 import Progress from '../components/Progress';
-import axios from 'axios';
 
 const InterviewDetailWrapper = styled.div`
   width: 100%;
@@ -113,7 +114,7 @@ function Interview() {
     const token = localStorage.getItem('jwt');
     axios
       .post(
-        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/create`,
+        `${defaultAPI}/cs-service/interview/create`,
         {
           category: interviewCat,
           question: questionNum,

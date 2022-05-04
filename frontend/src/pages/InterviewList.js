@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { defaultAPI } from '../utils/api';
+import QuestionBox from '../components/QuestionBox';
 
 // STYLED
 import styled from 'styled-components';
-import QuestionBox from '../components/QuestionBox';
 
 const InterviewWrapper = styled.div`
   width: 100%;
@@ -74,7 +75,7 @@ function InterviewList() {
     if (token) {
       axios
         .get(
-          `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/list/get?category=all`,
+          `${defaultAPI}/cs-service/interview/list/get?category=all`,
 
           { headers: { Authorization: token } },
         )
