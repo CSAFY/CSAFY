@@ -11,30 +11,14 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import styled, { css } from "styled-components";
 import { useEffect, useRef, useState } from "react";
 
-const steps = [
-  {
-    label: 'Select campaign settings',
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    label: 'Create an ad group',
-    description:
-      'An ad group contains one or more ads which target a shared set of keywords.',
-  },
-  {
-    label: 'Create an ad',
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-];
+import { useRecoilState } from "recoil";
+import { keyWordData } from "../../../recoils";
 
- function KeyWordCard() {
+
+function KeyWordCard() {
   const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [steps, setSteps] = useRecoilState(keyWordData)
   const maxSteps = steps.length;
 
   const handleNext = () => {
@@ -55,7 +39,28 @@ const steps = [
     setNowState(false)
   }
 
-  
+  useEffect(() => {
+    setSteps([
+      {
+        label: 'Select campaign settings',
+        description: `For each ad campaign that you create, you can control how much
+                  you're willing to spend on clicks and conversions, which networks
+                  and geographical locations you want your ads to show on, and more.`,
+      },
+      {
+        label: 'Create an ad group',
+        description:
+          'An ad group contains one or more ads which target a shared set of keywords.',
+      },
+      {
+        label: 'Create an ad',
+        description: `Try out different ad text to see what brings in the most customers,
+                  and learn how to enhance your ads using features like ad extensions.
+                  If you run into any problems with your ads, find out how to tell if
+                  they're running and how to resolve approval issues.`,
+      },
+    ])
+  }, [])
 
   function ClickKeyWordCard() {
     if (nowState === false) {
@@ -68,13 +73,19 @@ const steps = [
               display: 'flex',
               alignItems: 'center',
               justifyContent: "center",
-              height: 482,
+              height: 442,
               pl: 2,
               bgcolor: 'background.default',
             }}
           >
             <Typography >{steps[activeStep].label}</Typography>
+
           </Paper>
+          <DarkCardDiv>
+            <DarkCardText>
+              카드를 클릭하면 뜻을 볼 수 있어요 👆
+            </DarkCardText>
+          </DarkCardDiv>
         </div>
       )
     } else {
@@ -90,9 +101,10 @@ const steps = [
             height: 50,
             pl: 2,
             bgcolor: 'background.default',
+            
           }}
         >
-          <Typography >{steps[activeStep].label}</Typography>
+          <Typography sx={{padding: "10px"}}>{steps[activeStep].label}</Typography>
         </Paper>
         <Box sx={{ height: 400,  width: '90%', p: 2 }}>
           {steps[activeStep].description}
@@ -103,7 +115,10 @@ const steps = [
   }
 
   return (
-    <Box id="zz"  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", border: "solid"}}>
+    <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", 
+      borderRadius: "20px",
+      boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
+      backgroundColor: "#fff"}}>
       
       {ClickKeyWordCard()}
 
@@ -142,3 +157,20 @@ const steps = [
   );
 }
 export default KeyWordCard
+
+
+const DarkCardDiv = styled.div`
+  height : 40px;
+  flex-grow: 0;
+  margin: auto 0 0;
+  padding: auto ;
+  background-color: #303446;
+`
+
+const DarkCardText = styled.span`
+  text-align: center;
+  color: #fff;
+  font-family: SUIT;
+  font-size: 13px;
+  margin: auto;
+`
