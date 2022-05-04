@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import StudyAnalysis from '../components/myPage/StudyAnalysis';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { defaultAPI } from '../utils/api';
 
 // HEATMAP
 import CalendarHeatmap from 'react-calendar-heatmap';
@@ -14,8 +17,6 @@ import VideoBox from '../components/myPage/VideoBox';
 // STYLED
 import styled from 'styled-components';
 import { Button, Typography } from '@mui/material';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -73,7 +74,7 @@ function MyPage() {
     const token = localStorage.getItem('jwt');
     if (token) {
       axios
-        .get(`https://k6a102.p.ssafy.io/api/v1/user-service/token/user`, {
+        .get(`${defaultAPI}/user-service/token/user`, {
           params: {
             inputToken: token,
           },

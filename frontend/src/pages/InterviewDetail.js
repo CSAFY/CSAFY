@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ReplyIcon from '@mui/icons-material/Reply';
+import { defaultAPI } from '../utils/api';
+import axios from 'axios';
+
+import { Button } from '@mui/material';
+import CommentBox from '../components/CommentBox';
 
 // STYLED
 import styled from 'styled-components';
-import { Button } from '@mui/material';
-import CommentBox from '../components/CommentBox';
-import axios from 'axios';
-
 const DetailWrapper = styled.div`
   width: 100%;
-  height: 1500px;
+  height: 2000px;
   padding-bottom: 100px;
 
   display: flex;
@@ -94,8 +95,7 @@ const TechCategory = styled.div`
 
 const Board = styled.div`
   width: 840px;
-  height: 730px;
-  border: 1px solid black;
+  height: 1020px;
 
   position: absolute;
   top: 789px;
@@ -126,8 +126,6 @@ const CommentInput = styled.textarea`
   transform: translate(-50%);
 `;
 const CommentList = styled.div`
-  border: 1px solid black;
-
   position: absolute;
   top: 325px;
   left: 50%;
@@ -155,17 +153,18 @@ const ButtonBox = styled.div`
 
 function InterviewDetail() {
   const { interviewSeq } = useParams();
+
   const { state } = useLocation();
-  // console.log(state);
+  console.log(state);
   // console.log(interviewSeq);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(state.liked);
 
   const handleLikes = () => {
     const token = localStorage.getItem('jwt');
     if (token) {
       axios
         .post(
-          `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${interviewSeq}/likes`,
+          `${defaultAPI}/cs-service/interview/${interviewSeq}/likes`,
           null,
           { headers: { Authorization: token } },
         )
@@ -186,28 +185,40 @@ function InterviewDetail() {
   };
   const saveComment = e => {
     const token = localStorage.getItem('jwt');
-    console.log('save');
     // 수정은 put, 삭제는 delete - interview/{commentId}/comment
     axios
       .post(
-        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${interviewSeq}/comment`,
+        `${defaultAPI}/cs-service/interview/${interviewSeq}/comment`,
         { comment: myComment },
         { headers: { Authorization: token } },
       )
       .then(res => {
         console.log(res);
+        getComment();
+        setMyComment('');
       })
       .catch(err => console.error(err));
   };
   // 댓글 수정
 
   // 다른사람 댓글
-  const [dummyData, setDummyData] = useState([
-    { commentId: 1, content: '댓글1' },
-    { commentId: 2, content: '댓글2' },
-    { commentId: 3, content: '댓글3' },
-  ]);
-  console.log(isLiked);
+  const getComment = () => {
+    const token = localStorage.getItem('jwt');
+    axios
+      .get(`${defaultAPI}/cs-service/interview/${interviewSeq}/comment`, null, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log(res);
+        setCommentData(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+  useEffect(() => {
+    getComment();
+  }, []);
+  const [commentData, setCommentData] = useState([]);
+
   return (
     <DetailWrapper>
       <DetailContent>
@@ -267,14 +278,13 @@ function InterviewDetail() {
               댓글 등록
             </Button>
           </MyComment>
-          <CommentList>
-            {dummyData.map(it => (
-              <CommentBox key={it.commentId} {...it} />
-            ))}
-            {/* <CommentBox />
-            <CommentBox />
-            <CommentBox /> */}
-          </CommentList>
+          {commentData && (
+            <CommentList>
+              {commentData.map(it => (
+                <CommentBox key={it.id} {...it} />
+              ))}
+            </CommentList>
+          )}
         </Board>
       </DetailContent>
     </DetailWrapper>

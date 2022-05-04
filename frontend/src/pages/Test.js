@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { resolvePath, useNavigate, useParams } from 'react-router-dom';
+import { defaultAPI } from '../utils/api';
 
 function Test() {
   const [roomData, setRoomData] = useState({ room_name: '', chatRooms: [] });
@@ -12,7 +13,7 @@ function Test() {
   const createRoom = () => {
     // post query parameeters - **null값 추가 꼭 필요**
     axios
-      .post(`https://k6a102.p.ssafy.io/api/v1/chat-service/chat/room`, null, {
+      .post(`${defaultAPI}/chat-service/chat/room`, null, {
         // name: 'asdf',
         params: { name: roomName },
       })
@@ -26,11 +27,9 @@ function Test() {
 
   // 채팅방 다 찾기
   const findAllRoom = () => {
-    axios
-      .get('https://k6a102.p.ssafy.io/api/v1/chat-service/chat/rooms')
-      .then(res => {
-        setChatrooms(res.data);
-      });
+    axios.get(`${defaultAPI}/chat-service/chat/rooms`).then(res => {
+      setChatrooms(res.data);
+    });
   };
 
   useEffect(() => {

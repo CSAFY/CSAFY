@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { defaultAPI } from '../utils/api';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 import styled from 'styled-components';
 // MUI
 import { Button, TextField } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const LoginWrapper = styled.div`
   width: 517px;
@@ -62,8 +64,8 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
 
   const handleLogin = e => {
     axios
-      // .post(`https://tupli.kr/api/v1/account/signup`, {
-      .post(`https://k6a102.p.ssafy.io/api/v1/user-service/account/login`, {
+      // .post(`https://k6a102.p.ssafy.io/api/v1/user-service/account/login`, {
+      .post(`${defaultAPI}/user-service/account/login`, {
         email: loginInfo.email,
         password: loginInfo.password,
       })
@@ -150,8 +152,8 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
 
     // api 연결 - 회원가입
     axios
-      // .post(`https://k6a102.p.ssafy.io/api/v1/user-service/accounts/signup/ `, {
-      .post(`https://k6a102.p.ssafy.io/api/v1/user-service/signup`, {
+      // .post(`https://k6a102.p.ssafy.io/api/v1/user-service/signup/ `, {
+      .post(`${defaultAPI}/user-service/signup`, {
         email: signupInfo.email,
         nickname: 'test',
         password: signupInfo.password,
@@ -182,7 +184,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
     // TUPLI
     // window.location.href = `https://tupli.kr/api/v1/oauth2/authorization/google?redirect_uri=https://tupli.kr/oauth/redirect`;
     // CSAFY
-    window.location.href = `https://k6a102.p.ssafy.io/api/v3/oauth2/authorization/google?redirect_uri=https://k6a102.p.ssafy.io/oauth/redirect`;
+    window.location.href = `https://csafy.com/api/v3/oauth2/authorization/google?redirect_uri=https://csafy.com/oauth/redirect`;
   };
 
   return (
