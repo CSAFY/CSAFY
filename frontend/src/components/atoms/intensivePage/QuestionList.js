@@ -15,11 +15,7 @@ function QuestionList(props) {
 
   
   const btncolors = ['standard' , 'primary' , 'secondary' , 'error' , 'info' , 'success' , 'warning']
-  const [check, setCheck] = useState(true)
-
-  useEffect(() => {
-    setCheck(false)
-  }, [props.nowCate])
+  
   
   const againToggleButton = props.categori.map((data, index) => 
   
@@ -29,8 +25,10 @@ function QuestionList(props) {
       key={index}
       value={data.path}
       color={btncolors[index % 7]}
-      sx={{ border: "solid"}}
-      disabled = {check}
+      sx={{ borderRadius: "5px;",
+        boxShadow: "0 0 4px 0 rgba(0, 0, 0, 0.1);",
+        backgroundColor: "#fff;"}}
+        
       >
         {data.title} 
     </ToggleButton>
@@ -44,8 +42,8 @@ function QuestionList(props) {
         exclusive
         onChange={props.selectKategorie}
         aria-label="text alignment"
-        color="primary"
         
+        disabled = {props.disabled}
       >
         
         {againToggleButton}
