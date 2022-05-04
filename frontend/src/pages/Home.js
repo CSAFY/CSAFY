@@ -178,7 +178,7 @@ function Home() {
           <HeroMain>
             <div
               style={{
-                width: '598px',
+                // width: '598px',
                 height: '140px',
                 fontSize: '56px',
                 fontWeight: 'bold',

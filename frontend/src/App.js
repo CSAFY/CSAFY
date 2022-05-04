@@ -24,6 +24,7 @@ import TestRoom from './pages/TestRoom';
 import EditProfile from './pages/EditProfile';
 import Timer from './components/Timer';
 import InterviewDetail from './pages/InterviewDetail';
+import CSTest from './pages/CSTest';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
             path="/InterviewDetail/:interviewSeq"
             element={<InterviewDetail />}
           />
+          <Route path="/CSTest" element={<CSTest />} />
 
           {/*  */}
           <Route path="/timer" element={<Timer />} />

@@ -50,7 +50,8 @@ const pages = [
   { name: '테스트', link: 'test' },
   { name: '면접 대비', link: 'interview' },
   { name: '기술 스택', link: 'classification' },
-  { name: '메타버스', link: 'community' },
+  // { name: '메타버스', link: 'community' },
+  { name: '문제집', link: 'CSTest' },
 ];
 
 // const Logo = styled.img`
