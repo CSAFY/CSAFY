@@ -7,6 +7,7 @@ import MuiSwitch from '../components/MuiSwitch';
 // STYLED
 import styled from 'styled-components';
 import Progress from '../components/Progress';
+import axios from 'axios';
 
 const InterviewDetailWrapper = styled.div`
   width: 100%;
@@ -105,6 +106,31 @@ const ToolTip = styled.div`
 `;
 
 function Interview() {
+  // API
+  const [interviewCat, setInterviewCat] = useState('');
+  const [questionNum, setQuestionNum] = useState('');
+  const getTestData = () => {
+    const token = localStorage.getItem('jwt');
+    axios
+      .post(
+        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/create`,
+        {
+          category: interviewCat,
+          question: questionNum,
+        },
+        { headers: { Authorization: token } },
+      )
+      .then(res => {
+        // console.log(res);
+
+        setTimeout(() => {
+          navigate('/InterviewTest', { state: res.data });
+        }, 2000);
+      })
+      .catch(err => console.error(err));
+  };
+  // console.log(interviewCat, questionNum);
+
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
   const toggleTime = () => {
@@ -114,25 +140,30 @@ function Interview() {
   const [toggleStart, setToggleStart] = useState(false);
   const handleStart = () => {
     setToggleStart(true);
-
-    setTimeout(() => {
-      navigate('/interviewDetail');
-    }, 2000);
+    getTestData();
   };
   const handleAttClick = () => {
     setToggleQuestionBox(true);
+    // 인성
+    setInterviewCat('character');
   };
   const handleTechClick = () => {
     setToggleQuestionBox(true);
+    setInterviewCat('tech');
   };
   const handleRandomClick = () => {
     setToggleQuestionBox(true);
+    setInterviewCat('all');
   };
   const handleQuestionCount = () => {
     setToggleStartBox(true);
+    setQuestionNum('3');
   };
   const handleRandomCount = () => {
+    // 1~5 사이 랜덤
+    const randomNum = Math.floor(Math.random() * 5 + 1);
     setToggleStartBox(true);
+    setQuestionNum(`${randomNum}`);
   };
   const [toggleQuestionBox, setToggleQuestionBox] = useState(false);
   const [toggleStartBox, setToggleStartBox] = useState(false);
