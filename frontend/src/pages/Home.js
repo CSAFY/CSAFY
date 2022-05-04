@@ -133,7 +133,7 @@ const PlusWrapper = styled.section`
   height: 800px;
 
   background-color: #d4effa;
-  padding-top: 200px;
+  padding-top: 100px;
   padding-bottom: 100px;
 
   display: flex;
@@ -190,7 +190,7 @@ function Home() {
             </div>
             <div
               style={{
-                width: '341px',
+                // width: '341px',
                 height: '92px',
                 margin: '39px 128px 0 129px',
                 fontSize: '18px',
@@ -245,7 +245,7 @@ function Home() {
               style={{
                 margin: '0',
                 color: '#008ED0',
-                width: '198px',
+                // width: '198px',
                 height: '23px',
                 fontSize: '16px',
                 fontWeight: 'bold',
@@ -255,7 +255,7 @@ function Home() {
             </p>
             <p
               style={{
-                width: '343px',
+                // width: '343px',
                 height: '50px',
                 fontSize: '40px',
                 fontWeight: '800',
@@ -267,7 +267,7 @@ function Home() {
             </p>
             <div
               style={{
-                width: '490px',
+                // width: '490px',
                 height: '46px',
                 fontSize: '18px',
                 color: '#a7a8a9',
@@ -358,7 +358,7 @@ function Home() {
           <div style={{ position: 'absolute', top: '100px', right: '10px' }}>
             <p
               style={{
-                width: '198px',
+                // width: '198px',
                 height: '23px',
                 fontSize: '16px',
                 fontWeight: 'bold',
@@ -370,7 +370,7 @@ function Home() {
             </p>
             <div
               style={{
-                width: '264px',
+                // width: '264px',
                 height: '100px',
                 fontSize: '40px',
                 fontWeight: '800',
@@ -381,7 +381,7 @@ function Home() {
             </div>
             <div
               style={{
-                width: '447px',
+                // width: '447px',
                 height: '69px',
                 margin: '13px 0 0',
                 fontSize: '18px',
@@ -406,7 +406,7 @@ function Home() {
           <div style={{ width: '50%' }}>
             <p
               style={{
-                width: '198px',
+                // width: '198px',
                 height: '23px',
                 margin: '0 249px 8px 0',
                 fontSize: '16px',
@@ -418,7 +418,7 @@ function Home() {
             </p>
             <div
               style={{
-                width: '334px',
+                // width: '334px',
                 height: '100px',
                 margin: '8px 113px 13px 0',
                 fontSize: '40px',
@@ -430,7 +430,7 @@ function Home() {
             </div>
             <div
               style={{
-                width: '447px',
+                // width: '447px',
                 height: '69px',
                 margin: '13px 0 0 ',
                 fontSize: '18px',
@@ -458,7 +458,7 @@ function Home() {
           <div>
             <p
               style={{
-                width: '567px',
+                // width: '567px',
                 height: '69px',
                 margin: '0 112px 25px 111px',
                 fontSize: '55px',
@@ -470,7 +470,7 @@ function Home() {
             </p>
             <div
               style={{
-                width: '790px',
+                // width: '790px',
                 height: '50px',
                 margin: '25px 0 0',
                 fontSize: '20px',

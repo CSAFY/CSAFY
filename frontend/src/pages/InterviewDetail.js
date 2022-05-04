@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
-// MUI
-import MicIcon from '@mui/icons-material/Mic';
-import { LinearProgress } from '@mui/material';
+import React, { useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ReplyIcon from '@mui/icons-material/Reply';
 
 // STYLED
 import styled from 'styled-components';
-import VoiceRecord from '../components/VoiceRecord';
+import { Button } from '@mui/material';
+import CommentBox from '../components/CommentBox';
+import axios from 'axios';
 
-const InterviewResultWrapper = styled.div`
+const DetailWrapper = styled.div`
   width: 100%;
   height: 1500px;
   padding-bottom: 100px;
@@ -18,12 +21,13 @@ const InterviewResultWrapper = styled.div`
 
   background-color: #f6f7fb;
 `;
-const InterviewResultContent = styled.div`
+const DetailContent = styled.div`
   width: 1232px;
 
   position: relative;
 `;
-const QuestionBox = styled.div`
+
+const DetailBox = styled.div`
   width: 840px;
   height: 530px;
   border-radius: 9px;
@@ -31,6 +35,7 @@ const QuestionBox = styled.div`
   background-color: #fff;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
@@ -39,190 +44,240 @@ const QuestionBox = styled.div`
   left: 50%;
   transform: translate(-50%);
 `;
-const Question = styled.div`
-  width: 536px;
-  height: 165px;
-  font-size: 18px;
+
+const Content = styled.div`
+  font-size: 30px;
   font-weight: 600;
+
   text-align: center;
-  color: #000;
 `;
-const Icon = styled.div`
+const Likes = styled.div`
   position: absolute;
-  top: 322px;
-  left: 50%;
-  transform: translate(-50%);
-
-  cursor: pointer;
-`;
-const Record = styled.div`
-  position: absolute;
-  bottom: 50px;
-  left: 50%;
-  transform: translate(-50%);
-`;
-const Progress = styled.div`
-  width: 820px;
-  height: 8px;
-
-  background-color: #d7e4ec;
-  border-radius: 5px;
-
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translate(-50%);
-`;
-const NextButton = styled.button`
-  width: 100px;
-  height: 32px;
-
-  border-radius: 12px;
-  border: solid 1px #000;
-  background-color: #f5f5f5;
-
-  position: absolute;
-  top: 20px;
   right: 20px;
+  bottom: 40px;
 
-  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
-const PrevButton = styled.button`
-  width: 100px;
-  height: 32px;
 
-  border-radius: 12px;
-  border: solid 1px #000;
-  background-color: #f5f5f5;
-
-  position: absolute;
-  top: 20px;
-  left: 20px;
-
-  cursor: pointer;
-`;
-const MemoBox = styled.div`
-  width: 840px;
-  height: 394px;
+const AttitudeCategory = styled.div`
+  width: 78px;
+  height: 31px;
+  border-radius: 18px;
+  background-color: #def9ff;
+  font-size: 18px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   position: absolute;
-  top: 750px;
+  right: 20px;
+  top: 20px;
+`;
+const TechCategory = styled.div`
+  width: 78px;
+  height: 31px;
+  border-radius: 18px;
+  background-color: #d2fae2;
+  font-size: 18px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  right: 20px;
+  top: 20px;
+`;
+
+const Board = styled.div`
+  width: 840px;
+  height: 730px;
+  border: 1px solid black;
+
+  position: absolute;
+  top: 789px;
   left: 50%;
   transform: translate(-50%);
 `;
-const Memo = styled.textarea`
-  width: 790px;
-  height: 154px;
+const MyComment = styled.div`
+  width: 740px;
+  height: 230px;
   border-radius: 9px;
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
   background-color: #fff;
-  border: none;
-
-  font-size: 18px;
-  font-weight: 600;
-
-  padding: 50px;
-`;
-const MemoTtitle = styled.div`
-  font-size: 18px;
-  font-weight: 600;
 
   position: absolute;
   top: 30px;
-  left: 10px;
+  left: 50%;
+  transform: translate(-50%);
 `;
-const SaveButton = styled.button`
-  width: 100px;
-  height: 32px;
-
-  border-radius: 12px;
-  border: solid 1px #000;
-  background-color: #f5f5f5;
+const CommentInput = styled.textarea`
+  width: 600px;
+  height: 100px;
+  font-size: 20px;
+  padding: 15px;
 
   position: absolute;
-  bottom: 20px;
-  right: 10px;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%);
+`;
+const CommentList = styled.div`
+  border: 1px solid black;
 
-  cursor: pointer;
+  position: absolute;
+  top: 325px;
+  left: 50%;
+  transform: translate(-50%);
+`;
+
+const Comment = styled.div`
+  width: 620px;
+  height: 80px;
+  border: 1px solid black;
+
+  position: absolute;
+  top: 10px;
+  left: 25px;
+`;
+const ButtonBox = styled.div`
+  width: 60px;
+  height: 80px;
+  border: 1px solid black;
+
+  position: absolute;
+  top: 10px;
+  right: 25px;
 `;
 
 function InterviewDetail() {
-  // 질문
-  const [question, setQuestion] = useState('http와 https의 차이는 무엇인가요?');
+  const { interviewSeq } = useParams();
+  const { state } = useLocation();
+  // console.log(state);
+  // console.log(interviewSeq);
+  const [isLiked, setIsLiked] = useState(false);
 
-  // 테스트 관련
-  // dummyData
-  const [dummyData, setDummyData] = useState([
-    { id: 1, question: '문제1' },
-    { id: 2, question: '문제2' },
-    { id: 3, question: '문제3' },
-  ]);
-
-  const [cnt, setCnt] = useState(0);
-  // 다음 문제로 넘어가기
-  const nextQuestion = () => {
-    if (cnt === dummyData.length) {
-      alert('test end');
+  const handleLikes = () => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      axios
+        .post(
+          `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${interviewSeq}/likes`,
+          null,
+          { headers: { Authorization: token } },
+        )
+        .then(res => {
+          console.log(res);
+          setIsLiked(!isLiked);
+        })
+        .catch(err => console.error(err));
     } else {
-      setQuestion(dummyData[cnt]['question']);
-      setCnt(prev => prev + 1);
+      alert('로그인이 필요합니다.');
     }
   };
-  // progressbar
-  const widthStyle = {
-    height: '100%',
-    width: `${(100 / dummyData.length) * cnt}%`,
-    background: '#008ed0',
-    borderRadius: '10px',
-    transition: '1s ease 0.005s',
-  };
-  // const prevQuestion = () => {
-  //   setQuestion(dummyData[cnt]['question']);
-  //   console.log('3', cnt);
-  //   setCnt(prev => prev - 1);
-  //   console.log('4', cnt);
-  // };
 
-  const [memo, setMemo] = useState('');
-
-  const handleSave = () => {
-    console.log(memo);
+  // 댓글
+  const [myComment, setMyComment] = useState('');
+  const handleComment = e => {
+    setMyComment(e.target.value);
   };
+  const saveComment = e => {
+    const token = localStorage.getItem('jwt');
+    console.log('save');
+    // 수정은 put, 삭제는 delete - interview/{commentId}/comment
+    axios
+      .post(
+        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${interviewSeq}/comment`,
+        { comment: myComment },
+        { headers: { Authorization: token } },
+      )
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.error(err));
+  };
+  // 댓글 수정
+
+  // 다른사람 댓글
+  const [dummyData, setDummyData] = useState([
+    { commentId: 1, content: '댓글1' },
+    { commentId: 2, content: '댓글2' },
+    { commentId: 3, content: '댓글3' },
+  ]);
+  console.log(isLiked);
   return (
-    <InterviewResultWrapper>
-      <InterviewResultContent>
-        <QuestionBox>
-          {/* <PrevButton onClick={prevQuestion}>이전</PrevButton> */}
-          {cnt !== dummyData.length ? (
-            <NextButton onClick={nextQuestion}>다음</NextButton>
+    <DetailWrapper>
+      <DetailContent>
+        <DetailBox>
+          {state.category === '인성' ? (
+            <AttitudeCategory>{state.category}</AttitudeCategory>
           ) : (
-            <NextButton onClick={nextQuestion}>결과 보기</NextButton>
+            <TechCategory>{state.category}</TechCategory>
           )}
-          <Question>{question}</Question>
-          {/* <Icon>
-            <MicIcon fontSize="large" color="primary" />
-          </Icon> */}
-          <Icon>
-            <VoiceRecord />
-          </Icon>
-          {/* <Record>
-            <VoiceRecord />
-          </Record> */}
-          <Progress>
-            <div style={widthStyle}></div>
-          </Progress>
-        </QuestionBox>
-        <MemoBox>
-          <MemoTtitle>메모</MemoTtitle>
-          <Memo value={memo} onChange={e => setMemo(e.target.value)} />
-          <SaveButton onClick={handleSave}>저장하기</SaveButton>
-        </MemoBox>
-      </InterviewResultContent>
-    </InterviewResultWrapper>
+          <Content>Q. {state.question}</Content>
+          <Likes>
+            {isLiked ? (
+              <ThumbUpIcon
+                color="primary"
+                sx={{ marginRight: '10px', cursor: 'pointer' }}
+                onClick={handleLikes}
+              />
+            ) : (
+              <ThumbUpOffAltIcon
+                color="primary"
+                sx={{ marginRight: '10px', cursor: 'pointer' }}
+                onClick={handleLikes}
+              />
+            )}
+
+            {state.interviewLikes}
+          </Likes>
+        </DetailBox>
+        <Board>
+          <MyComment>
+            <CommentInput
+              type="text"
+              placeholder="좋은 질문이군요!"
+              value={myComment}
+              onChange={handleComment}
+            />
+            <Button
+              sx={{
+                width: '100px',
+                height: '40px',
+                textAlign: 'center',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                color: '#fff',
+                bgcolor: '#008ED0',
+                ':hover': {
+                  color: '#006D9F',
+                  bgcolor: '#D5F2FC',
+                },
+
+                position: 'absolute',
+                bottom: '15px',
+                right: '15px',
+              }}
+              onClick={saveComment}
+            >
+              댓글 등록
+            </Button>
+          </MyComment>
+          <CommentList>
+            {dummyData.map(it => (
+              <CommentBox key={it.commentId} {...it} />
+            ))}
+            {/* <CommentBox />
+            <CommentBox />
+            <CommentBox /> */}
+          </CommentList>
+        </Board>
+      </DetailContent>
+    </DetailWrapper>
   );
 }
 

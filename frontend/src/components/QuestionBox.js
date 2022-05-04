@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // STYLED
 import styled from 'styled-components';
@@ -55,8 +56,17 @@ const TechCategory = styled.div`
 `;
 
 function QuestionBox(props) {
+  const navigate = useNavigate();
+  const handleQuestion = () => {
+    console.log(props.interviewSeq);
+    navigate(`/interviewDetail/${props.interviewSeq}`, { state: props });
+  };
   return (
-    <Question>
+    <Question
+      // onClick={() => navigate(`/interviewDetail/${props.interviewSeq}`)}
+      onClick={handleQuestion}
+      style={{ cursor: 'pointer' }}
+    >
       <Content>Q. {props.question}</Content>
       {props.category === '인성' ? (
         <AttitudeCategory>{props.category}</AttitudeCategory>
