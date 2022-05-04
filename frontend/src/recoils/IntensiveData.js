@@ -4,7 +4,11 @@ import { localStorageEffect } from "../utils/localStorageEffect";
 ///
 export const keyWordData = atom({
   key: 'keyWordData',
-  default: {},
+  default: [
+    {
+      label: '',
+      description: ``,
+    },],
   effects_UNSTABLE: [localStorageEffect("keyWord_data_token")],
 });
 
@@ -18,7 +22,11 @@ export const keyWordDataToken = selector({
 ///
 export const fourWayRaceData = atom({
   key: 'fourWayRaceData',
-  default: {},
+  default: [{ 
+    explanation : "",
+    answer : null,
+    example : [" "," "]
+    },],
   effects_UNSTABLE: [localStorageEffect("four_way_wace_data_token")],
 });
 
@@ -46,7 +54,13 @@ export const shortAnswerDataToken = selector({
 ///
 export const oxquizData = atom({
   key: 'oxquizData',
-  default: {},
+  default: [
+    { 
+    explanation : "",
+    answer : null,
+    },
+    
+  ],
   effects_UNSTABLE: [localStorageEffect("oxquiz_data_token")],
 });
 
