@@ -33,8 +33,11 @@ import { useNavigate } from 'react-router-dom';
 // STYLED
 import styled from 'styled-components';
 
+// background-color: #d5f2fc;
 const HomeWrapper = styled.div`
-  background-color: #d5f2fc;
+  background-image: url(/images/main-background.png);
+  background-size: contain;
+  background-repeat: no-repeat;
   width: 100vw;
   display: flex;
   flex-direction: column;
