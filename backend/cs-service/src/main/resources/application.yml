@@ -8,7 +8,7 @@ spring:
 
   # 마리아 DB(배포)
   datasource:
-    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P31A102?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P31A102?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
     driver-class-name: org.mariadb.jdbc.Driver
     username: S06P31A102
     password: tTelzd9jrW
@@ -33,6 +33,10 @@ spring:
   messages:
     basename: messages
     encoding: UTF-8
+
+  sql:
+    init:
+      encoding: UTF-8
 
 logging.level:
   org:

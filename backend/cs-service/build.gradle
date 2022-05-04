@@ -46,6 +46,9 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
+    // https://mvnrepository.com/artifact/org.qlrm/qlrm
+    implementation group: 'org.qlrm', name: 'qlrm', version: '3.0.4'
+
     // 메일 인증
     implementation 'javax.mail:mail:1.4.7'
     implementation 'org.springframework:spring-context-support:5.3.14'

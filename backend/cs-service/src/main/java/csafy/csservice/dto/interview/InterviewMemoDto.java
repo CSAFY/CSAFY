@@ -18,7 +18,7 @@ public class InterviewMemoDto {
         this.memoSeq = interviewMemo.getMemoSeq();
         this.interviewSeq = interviewMemo.getInterview().getInterviewSeq();
         this.memo = interviewMemo.getMemo();
-        this.userSeq = userDto.getUserSeq();
+        this.userSeq = userDto.getUser_seq();
 
     }
 }

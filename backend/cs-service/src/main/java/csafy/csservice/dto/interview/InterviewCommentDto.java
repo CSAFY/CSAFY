@@ -32,7 +32,7 @@ public class InterviewCommentDto {
         else{
             this.isLiked = false;
             for(InterviewCommentLikes nowInterviewCommentLikes : interviewComment.getInterviewCommentLikes()){
-                if(Objects.equals(nowInterviewCommentLikes.getUserSeq(), userDto.getUserSeq())){
+                if(Objects.equals(nowInterviewCommentLikes.getUserSeq(), userDto.getUser_seq())){
                     this.isLiked = true;
                     break;
                 }
@@ -41,4 +41,5 @@ public class InterviewCommentDto {
 
 
     }
+
 }

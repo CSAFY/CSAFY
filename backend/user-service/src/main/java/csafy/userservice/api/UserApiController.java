@@ -169,8 +169,9 @@ public class UserApiController {
         }
 
         User user = jwtTokenProvider.getUser(token);
-
-        return new UserDto(user);
+        UserDto userDto = new UserDto(user);
+        userDto.setUser_seq(user.getUserSeq());
+        return userDto;
     }
 
     /**

@@ -1,24 +1,29 @@
 package csafy.csservice.dto;
 
+import csafy.csservice.dto.auth.ProviderType;
 import csafy.csservice.dto.auth.RoleType;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Data
+@Getter @Setter
 public class UserDto {
-    private Long userSeq;
-    //    private String userId;
-//    private String emailVerifiedYn;
-//    private ProviderType providerType;
-    private RoleType roleType;
-    private LocalDateTime createdAt;
-    //    private LocalDateTime modifiedAt;
+    private Long user_seq;
+    private String auth_key;
+    private String user_id;
+    private String email_verified_yn;
+    private ProviderType provider_type;
+    private RoleType role_type;
+    private LocalDateTime created_at;
+    private LocalDateTime modified_at;
     private String username;
     private String nickname;
-    //    private String password;
+    private String password;
     private String email;
-    private String profileImage;
+    private String profile_image;
     private String introduction;
     private String is_vip;
 }

@@ -1,11 +1,12 @@
 package csafy.csservice.controller;
 
 import csafy.csservice.client.UserServiceClient;
-import csafy.csservice.dto.interview.InterviewCommentDto;
-import csafy.csservice.dto.interview.InterviewDto;
-import csafy.csservice.dto.interview.InterviewMemoDto;
 import csafy.csservice.dto.UserDto;
+import csafy.csservice.dto.interview.*;
+import csafy.csservice.dto.request.CommentRequest;
+import csafy.csservice.dto.request.MemoRequest;
 import csafy.csservice.dto.request.RequestCreateInterview;
+import csafy.csservice.dto.response.InterviewCommentResponse;
 import csafy.csservice.entity.interview.Interview;
 import csafy.csservice.entity.interview.InterviewComment;
 import csafy.csservice.entity.interview.InterviewMemo;
@@ -66,7 +67,7 @@ public class InterviewController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
-        List<InterviewDto> interviewList = interviewService.createInterviewList(createInterview, userDto.getUserSeq());
+        List<InterviewCreateDto> interviewList = interviewService.createInterviewList(createInterview, userDto.getUser_seq());
 
 
         if(interviewList == null || interviewList.size() == 0){
@@ -74,6 +75,12 @@ public class InterviewController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(interviewList);
+    }
+
+    // 면접 좋아요 카운트 받기
+    @GetMapping("/{interviewSeq}/likes")
+    public ResponseEntity interviewLikesCount(@PathVariable("interviewSeq") Long interviewSeq){
+        return ResponseEntity.status(HttpStatus.OK).body(interviewService.interviewLikesCount(interviewSeq));
     }
 
     // 면접 좋아요 / 좋아요 취소
@@ -87,16 +94,14 @@ public class InterviewController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
-        interviewService.interviewLikes(userDto.getUserSeq(), interviewSeq);
+        interviewService.interviewLikes(userDto.getUser_seq(), interviewSeq);
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    // 메모 등록 , 업데이트
-    @PostMapping("/{interviewSeq}/memo/create")
+    @GetMapping("/{interviewSeq}/memo")
     public ResponseEntity createMemo(@RequestHeader(value = "Authorization") String token,
-                                     @PathVariable("interviewSeq") Long interviewSeq,
-                                              @RequestBody String memo) {
+                                     @PathVariable("interviewSeq") Long interviewSeq) {
 
         String resultCode = userServiceClient.checkTokenValidated(token);
         if (!resultCode.equals("OK")) {
@@ -104,7 +109,32 @@ public class InterviewController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
-        InterviewMemo interviewMemo = interviewService.createMemo(userDto.getUserSeq(), interviewSeq, memo);
+
+        InterviewMemo interviewMemo = interviewService.getMemo(userDto.getUser_seq(), interviewSeq);
+
+        if(interviewMemo == null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(interviewMemo.getMemo());
+    }
+
+    // 메모 등록 , 업데이트
+    @PostMapping("/{interviewSeq}/memo/create")
+    public ResponseEntity createMemo(@RequestHeader(value = "Authorization") String token,
+                                     @PathVariable("interviewSeq") Long interviewSeq,
+                                              @RequestBody MemoRequest memo) {
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+        System.out.println("유저유저 : " + userDto.getUser_seq());
+        System.out.println("유저유저 : " + userDto.getEmail());
+
+        InterviewMemo interviewMemo = interviewService.createMemo(userDto.getUser_seq(), interviewSeq, memo.getMemo());
 
         if (interviewMemo == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -118,13 +148,27 @@ public class InterviewController {
 
     // 메모 삭제?? (필요??)
 
+    // 댓글 리스트 받기
+    @GetMapping("/{interviewSeq}/comment")
+    public ResponseEntity getComment(@PathVariable("interviewSeq") Long interviewSeq){
 
+        List<InterviewCommentResponseDto> interviewComments = interviewService.getComment(interviewSeq);
+
+        if(interviewComments == null || interviewComments.size() == 0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        List<InterviewCommentResponse> result =
+                interviewComments.stream().map(InterviewCommentResponse::new).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 
     // 댓글 등록
-    @PostMapping("/{interviewSeq}/comment/create")
+    @PostMapping("/{interviewSeq}/comment")
     public ResponseEntity createComment(@RequestHeader(value = "Authorization") String token,
                                               @PathVariable("interviewSeq") Long interviewSeq,
-                                              @RequestBody String comment){
+                                              @RequestBody CommentRequest comment){
 
         String resultCode = userServiceClient.checkTokenValidated(token);
         if(!resultCode.equals("OK")){
@@ -132,7 +176,7 @@ public class InterviewController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
-        InterviewComment interviewComment = interviewService.createComment(userDto.getUserSeq(), interviewSeq, comment);
+        InterviewComment interviewComment = interviewService.createComment(userDto.getUser_seq(), interviewSeq, comment.getComment());
         if(interviewComment == null){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
@@ -143,10 +187,10 @@ public class InterviewController {
 
 
     // 댓글 수정
-    @PostMapping("/{commentId}/comment/update")
+    @PutMapping("/{commentId}/comment")
     public ResponseEntity updateComment(@RequestHeader(value = "Authorization") String token,
                                         @PathVariable("commentId") Long commentId,
-                                        @RequestBody String comment){
+                                        @RequestBody CommentRequest comment){
 
         String resultCode = userServiceClient.checkTokenValidated(token);
         if(!resultCode.equals("OK")){
@@ -154,7 +198,7 @@ public class InterviewController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
-        InterviewComment interviewComment = interviewService.updateComment(userDto.getUserSeq(), commentId, comment);
+        InterviewComment interviewComment = interviewService.updateComment(userDto.getUser_seq(), commentId, comment.getComment());
         if(interviewComment == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
@@ -165,7 +209,7 @@ public class InterviewController {
 
 
     // 댓글 삭제
-    @DeleteMapping("/{commentId}/comment/delete")
+    @DeleteMapping("/{commentId}/comment")
     public ResponseEntity deleteComment(@RequestHeader(value = "Authorization") String token,
                                         @PathVariable("commentId") Long commentId){
 
@@ -175,13 +219,20 @@ public class InterviewController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
-        InterviewComment interviewComment = interviewService.deleteComment(commentId, userDto.getUserSeq());
+        InterviewComment interviewComment = interviewService.deleteComment(commentId, userDto.getUser_seq());
         if(interviewComment == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
 
+    }
+
+
+    // 댓글 좋아요 카운트 추가
+    @GetMapping("/{commentId}/comment/likes")
+    public ResponseEntity interviewCommentLikesCount(@PathVariable("commentId") Long commentId){
+        return ResponseEntity.status(HttpStatus.OK).body(interviewService.interviewCommentLikesCount(commentId));
     }
 
     // 댓글 좋아요 / 좋아요 취소
@@ -195,10 +246,12 @@ public class InterviewController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
-        interviewService.interviewCommentLikes(userDto.getUserSeq(), commentId);
+        interviewService.interviewCommentLikes(userDto.getUser_seq(), commentId);
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
+
+
 
     // 인성, 기술, 인성+기술
     // 사용자가 원하는 것에 따른 선별된 면접 질문들 GET

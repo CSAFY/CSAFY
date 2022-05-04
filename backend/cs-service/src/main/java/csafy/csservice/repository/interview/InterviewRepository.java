@@ -14,12 +14,12 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     List<Interview> findCategory(@Param("category") String category);
 
     @Query(value = "select i.*, m.memo from interview i left join interview_memo m " +
-            "where i.interview_seq = m.interview_seq and m.user_seq = :userSeq " +
+            "on i.interview_seq = m.interview_seq and m.user_seq = :userSeq " +
             "order by rand() limit :question", nativeQuery = true)
     List<InterviewDto> findInterviewLimit(@Param("question") int question, @Param("userSeq") Long userSeq);
 
     @Query(value = "select i.*, m.memo from Interview i left join interview_memo m " +
-            "where i.category =:category and i.interview_seq = m.interview_seq and m.user_seq = :userSeq " +
+            "on i.category =:category and i.interview_seq = m.interview_seq and m.user_seq = :userSeq " +
             "order by rand() limit :question", nativeQuery = true)
     List<InterviewDto> findInterviewLimitCategory(@Param("category") String category, @Param("question") int question, @Param("userSeq") Long userSeq);
 

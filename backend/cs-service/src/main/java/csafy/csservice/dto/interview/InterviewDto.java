@@ -30,7 +30,7 @@ public class InterviewDto {
         else{
             this.isLiked = false;
             for(InterviewLikes nowInterviewLikes : interview.getInterviewLikes()){
-                if(Objects.equals(nowInterviewLikes.getUserSeq(), userDto.getUserSeq())){
+                if(Objects.equals(nowInterviewLikes.getUserSeq(), userDto.getUser_seq())){
                     this.isLiked = true;
                     break;
                 }

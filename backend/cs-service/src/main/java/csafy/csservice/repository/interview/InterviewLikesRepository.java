@@ -12,5 +12,6 @@ public interface InterviewLikesRepository extends JpaRepository<InterviewLikes, 
     @Query("select i from InterviewLikes i where i.userSeq =:userSeq and i.interview.interviewSeq =:interviewSeq")
     InterviewLikes isLiked(@Param("userSeq") Long userSeq, @Param("interviewSeq") Long interviewSeq);
 
-
+    @Query("select count(i) from InterviewLikes i where i.interview.interviewSeq =:interviewSeq")
+    int isLikedCount(@Param("interviewSeq") Long interviewSeq);
 }

@@ -1,14 +1,21 @@
 package csafy.csservice.service;
 
 import csafy.csservice.client.UserServiceClient;
+import csafy.csservice.dto.interview.InterviewCommentResponseDto;
+import csafy.csservice.dto.interview.InterviewCreateDto;
 import csafy.csservice.dto.interview.InterviewDto;
 import csafy.csservice.dto.request.RequestCreateInterview;
 import csafy.csservice.entity.interview.*;
 import csafy.csservice.repository.interview.*;
 import lombok.RequiredArgsConstructor;
+import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +32,9 @@ public class InterviewService {
 
     private final UserServiceClient userServiceClient;
 
+    @PersistenceContext
+    EntityManager em;
+
     public List<Interview> getInterviewList(String category){
         if(category.equalsIgnoreCase("all")){
             return interviewRepository.findAll();
@@ -35,15 +45,35 @@ public class InterviewService {
         }
     }
 
-    public List<InterviewDto> createInterviewList(RequestCreateInterview requestCreateInterview, Long userSeq){
+    public List<InterviewCreateDto> createInterviewList(RequestCreateInterview requestCreateInterview, Long userSeq){
         if(requestCreateInterview.getCategory().equalsIgnoreCase("all")){
-            return interviewRepository.findInterviewLimit(requestCreateInterview.getQuestion(), userSeq);
+
+            JpaResultMapper jpaResultMapper = new JpaResultMapper();
+            Query q = em.createNativeQuery("select i.*, m.memo from interview i left join interview_memo m " +
+                    "on i.interview_seq = m.interview_seq and m.user_seq = " + userSeq +
+                    " order by rand() limit " + requestCreateInterview.getQuestion());
+            List<InterviewCreateDto> list = jpaResultMapper.list(q, InterviewCreateDto.class);
+            return list;
+//            return interviewRepository.findInterviewLimit(requestCreateInterview.getQuestion(), userSeq);
         }
         else {
             String category = requestCreateInterview.getCategory().equalsIgnoreCase("character") ? "인성" : "기술";
-            return interviewRepository.findInterviewLimitCategory(category, requestCreateInterview.getQuestion(), userSeq);
+            JpaResultMapper jpaResultMapper = new JpaResultMapper();
+            Query q = em.createNativeQuery("select i.*, m.memo from Interview i left join interview_memo m " +
+                    "on i.interview_seq = m.interview_seq and m.user_seq = "+ userSeq + " where i.category = " + "\'" + category + "\'" +
+                    " order by rand() limit " + requestCreateInterview.getQuestion());
+            List<InterviewCreateDto> list = jpaResultMapper.list(q, InterviewCreateDto.class);
+            return list;
+//            return interviewRepository.findInterviewLimitCategory(category, requestCreateInterview.getQuestion(), userSeq);
         }
     }
+
+    public int interviewLikesCount(Long interviewSeq){
+
+        return interviewLikesRepository.isLikedCount(interviewSeq);
+
+    }
+
 
     @Transactional
     public void interviewLikes(Long userSeq, Long interviewSeq) {
@@ -59,22 +89,39 @@ public class InterviewService {
         else interviewLikesRepository.delete(interviewLikes);
     }
 
+    public InterviewMemo getMemo(Long userSeq, Long interviewSeq){
+
+        return interviewMemoRepository.findMemo(userSeq, interviewSeq);
+    }
+
 
     @Transactional
-    public InterviewMemo createMemo(Long id, Long interviewSeq, String memo){
-        InterviewMemo interviewMemo = new InterviewMemo();
+    public InterviewMemo createMemo(Long userSeq, Long interviewSeq, String memo){
+        InterviewMemo interviewMemo = interviewMemoRepository.findDuplicate(userSeq, interviewSeq);
+        if(interviewMemo == null) interviewMemo = new InterviewMemo();
         interviewMemo.setInterview(interviewRepository.findById(interviewSeq).orElse(null));
         interviewMemo.setMemo(memo);
-        interviewMemo.setUserSeq(id);
+        interviewMemo.setUserSeq(userSeq);
 
         return interviewMemoRepository.save(interviewMemo);
     }
 
+    public List<InterviewCommentResponseDto> getComment(Long interviewSeq){
+
+        JpaResultMapper jpaResultMapper = new JpaResultMapper();
+        Query q = em.createNativeQuery("select i.*, u.username, " +
+                "(select COUNT(*) from interview_comment_likes l WHERE l.interview_comment_id = i.id) AS likesCount, " +
+                "(select COUNT(*) from interview_comment_likes l WHERE l.user_seq = i.user_seq AND l.interview_comment_id = i.id) AS liked " +
+                "from interview_comment i right join User u on i.user_seq = u.user_seq where i.interview_seq = " + interviewSeq +
+                " order by i.created_at DESC");
+        List<InterviewCommentResponseDto> list = jpaResultMapper.list(q, InterviewCommentResponseDto.class);
+        return list;
+
+    }
+
     @Transactional
     public InterviewComment createComment(Long userSeq, Long interviewSeq, String comment){
-        InterviewComment interviewComment = interviewCommentRepository.findDuplicate(userSeq, interviewSeq);
-
-        if(interviewComment == null) interviewComment = new InterviewComment();
+        InterviewComment interviewComment = new InterviewComment();
         interviewComment.setInterview(interviewRepository.findById(interviewSeq).orElse(null));
         interviewComment.setCreatedAt(LocalDateTime.now());
         interviewComment.setComment(comment);
@@ -103,6 +150,10 @@ public class InterviewService {
         interviewCommentRepository.deleteById(commentId);
 
         return interviewComment;
+    }
+
+    public int interviewCommentLikesCount(Long commentId){
+        return interviewCommentLikesRepository.isLikedCount(commentId);
     }
 
     @Transactional
