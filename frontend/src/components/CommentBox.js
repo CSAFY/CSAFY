@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { defaultAPI } from '../utils/api';
+
 // STYLED
 import styled from 'styled-components';
 
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ReplyIcon from '@mui/icons-material/Reply';
 import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
-import axios from 'axios';
 
 const Box = styled.div`
   width: 740px;
-  height: 100px;
+  height: 140px;
   border-radius: 9px;
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
   background-color: #fff;
@@ -19,13 +22,26 @@ const Box = styled.div`
 
   position: relative;
 `;
-const Comment = styled.div`
-  width: 620px;
-  height: 80px;
-  border: 1px solid black;
-
+const UserInfo = styled.div`
   position: absolute;
   top: 10px;
+  left: 25px;
+`;
+const DateInfo = styled.div`
+  position: absolute;
+  top: 30px;
+  left: 25px;
+`;
+const Comment = styled.div`
+  width: 610px;
+  height: 55px;
+  border: 1px solid black;
+
+  padding-top: 10px;
+  padding-left: 10px;
+
+  position: absolute;
+  bottom: 10px;
   left: 25px;
 `;
 const CommentInput = styled.input`
@@ -40,17 +56,26 @@ const CommentInput = styled.input`
 `;
 const ButtonBox = styled.div`
   width: 60px;
-  height: 80px;
-  border: 1px solid black;
+  height: 119px;
+  border-radius: 9px;
+  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
+  background-color: rgba(0, 142, 208, 0.1);
 
   position: absolute;
   top: 10px;
-  right: 25px;
+  right: 15px;
 `;
 
-function CommentBox({ content, commentId }) {
+function CommentBox({
+  comment,
+  interviewSeq,
+  createdAt,
+  liked,
+  likesCount,
+  username,
+}) {
   const [editToggle, setEditToggle] = useState(false);
-  const [comment, setComment] = useState('');
+  const [newComment, setNewComment] = useState('');
 
   const toggleComment = () => {
     setEditToggle(!editToggle);
@@ -64,8 +89,8 @@ function CommentBox({ content, commentId }) {
     const token = localStorage.getItem('jwt');
     axios
       .put(
-        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${commentId}/comment`,
-        { comment },
+        `${defaultAPI}/cs-service/interview/${interviewSeq}/comment`,
+        { comment: newComment },
         { headers: { Authorization: token } },
       )
       .then(res => {
@@ -76,20 +101,29 @@ function CommentBox({ content, commentId }) {
   const deleteComment = () => {
     const token = localStorage.getItem('jwt');
     axios
-      .delete(
-        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${commentId}/comment`,
-        null,
-        { headers: { Authorization: token } },
-      )
+      .delete(`${defaultAPI}/cs-service/interview/1/comment`, null, {
+        headers: { Authorization: token },
+      })
       .then(res => {
         console.log(res);
       })
       .catch(err => console.error(err));
   };
 
+  const [commentLike, setCommentLike] = useState(liked);
   useEffect(() => {
-    setComment(content);
+    setNewComment(comment);
   }, []);
+  // console.log(liked);
+  const handleLike = () => {
+    if (commentLike) {
+      console.log('liked->like');
+      setCommentLike(liked);
+    } else {
+      console.log('like->liked');
+      setCommentLike(!liked);
+    }
+  };
 
   return (
     <div>
@@ -97,21 +131,45 @@ function CommentBox({ content, commentId }) {
         {editToggle ? (
           <CommentInput
             type="text"
-            value={comment}
-            onChange={e => setComment(e.target.value)}
+            value={newComment}
+            onChange={e => setNewComment(e.target.value)}
           />
         ) : (
-          <Comment>{content}</Comment>
+          <>
+            <UserInfo>{username}</UserInfo>
+            <DateInfo>{createdAt.substr(0, 10)}</DateInfo>
+            <Comment>{comment}</Comment>
+          </>
         )}
 
         <ButtonBox>
-          <ThumbUpIcon sx={{ width: '100%', mt: '5px' }} />
-          <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>13</p>
+          {commentLike ? (
+            <>
+              <ThumbUpIcon
+                sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
+                onClick={handleLike}
+              />
+              <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
+                {likesCount}
+              </p>
+            </>
+          ) : (
+            <>
+              <ThumbUpOffAltIcon
+                sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
+                onClick={handleLike}
+              />
+              <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
+                {likesCount}
+              </p>
+            </>
+          )}
+
           <div
             style={{
               display: 'flex',
               justifyContent: 'center',
-              marginTop: '8px',
+              marginTop: '18px',
             }}
           >
             {editToggle ? (

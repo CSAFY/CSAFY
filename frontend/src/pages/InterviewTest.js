@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { defaultAPI } from '../utils/api';
+import VoiceRecord from '../components/VoiceRecord';
 // MUI
 import MicIcon from '@mui/icons-material/Mic';
 import { LinearProgress } from '@mui/material';
 
 // STYLED
 import styled from 'styled-components';
-import VoiceRecord from '../components/VoiceRecord';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
 
 const InterviewResultWrapper = styled.div`
   width: 100%;
@@ -240,7 +241,7 @@ function InterviewTest() {
     // console.log(memo);
     axios
       .post(
-        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${seq}/memo/create`,
+        `${defaultAPI}/cs-service/interview/${seq}/memo/create`,
         { memo },
         { headers: { authorization: token } },
       )
@@ -255,10 +256,9 @@ function InterviewTest() {
     const token = localStorage.getItem('jwt');
     if (seq !== 0) {
       axios
-        .get(
-          `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${seq}/memo`,
-          { headers: { authorization: token } },
-        )
+        .get(`${defaultAPI}/cs-service/interview/${seq}/memo`, {
+          headers: { authorization: token },
+        })
         .then(res => {
           // console.log(res);
           // setMyMemo(res.data);
