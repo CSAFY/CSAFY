@@ -51,15 +51,42 @@ function TestRoom() {
     const sock = new SockJS(
       'https://k6a102.p.ssafy.io/api/v1/chat-service/ws-stomp',
     );
-    // const ws = Stomp.over(sock);
+    const ws = Stomp.over(sock);
     // roomID받아올 때 오류가 뜬다.
     // 퇴장한 클라이언트의 sessionId로 roomId를 얻고(여기서 얻는게 안된다...) roomId 맵핑 정보를 삭제한다 - 여기서 에러.
 
     if (token) {
-      // ws.connect({Authorization:token})
-      console.log('🐸', token);
+      ws.connect(
+        { Authorization: token },
+        function() {
+          ws.subscribe(
+            '/chat-service/sub/chat/room/' + state,
+            function(message) {
+              var recv = JSON.parse(message.body);
+              console.log('recv', recv);
+              recvMessage(recv);
+            },
+            { Authorization: token },
+          );
+        },
+        function() {
+          alert('서버 연결에 실패 하였습니다. 다시 접속해 주십시요.');
+          navigate('/'); // 홈으로
+        },
+      );
+      // console.log('🐸', token);
     }
   };
+
+  const recvMessage = recv => {
+    // console.log('recv', recv);
+    this.messages.unshift({
+      type: recv.type,
+      sender: recv.sender,
+      message: recv.message,
+    });
+  };
+
   useEffect(() => {
     initRoom();
     // const token = localStorage.getItem('jwt');
