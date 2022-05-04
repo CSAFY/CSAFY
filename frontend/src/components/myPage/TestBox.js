@@ -101,7 +101,16 @@ function TestBox({ info }) {
     testName: '모의고사 이름',
     rightQuestions: 19,
     totalQuestions: 20,
+    total: {
+      // 과목별 전체 문제 갯수
+      computer: 4,
+      data: 4,
+      os: 4,
+      db: 4,
+      etc: 4,
+    },
     result: {
+      // 과목별 맞은 문제 갯수
       computer: 4,
       data: 4,
       os: 4,

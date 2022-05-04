@@ -17,7 +17,17 @@ npm install styled-components
 
 npm install react-simple-chatbot
 
+npm install react-unity-webgl
+
+npm install scss
+
+npm install webstomp-client
+
+npm install sockjs-client
+
 // npm install react-calendar-heatmap react-tooltip 에러로 인해 yarn add 사용
 yarn add react-calendar-heatmap react-tooltip
-```
 
+// npm ERR! 시 npm i ~~ 뒤에 --legacy-peer-deps 추가
+npm i react-reveal --save --legacy-peer-deps
+```

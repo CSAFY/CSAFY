@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 // MUI
 import { Button, TextField } from '@mui/material';
@@ -39,15 +39,52 @@ const SignupWrapper = styled.div`
   align-items: center;
 `;
 
-function AuthModal({ state, setState, setSignup, setModal }) {
+function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
   // LOGIN
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
 
   const handleLoginInfo = e => {
     setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
   };
+
+  // const getInfo = () => {
+  //   axios
+  //     .get(`https://https://k6a102.p.ssafy.io/api/v1/user-service/token/user`, {
+  //       inputToken:
+  //         'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsInVzZXJfc2VxIjoyOSwidXNlcm5hbWUiOiJ1c2VybmFtZSIsImlhdCI6MTY1MTQ3NzAxOCwiZXhwIjoxNjUxNTYzNDE4fQ.wZlTG1MzQOFj1Q_WYUqYG7sHK0KYoYMwnaebABRFo5A',
+  //     })
+  //     .then(res => console.log(res))
+  //     .catch(err => console.error(err));
+  // };
+  // useEffect(() => {
+  //   getInfo();
+  // }, []);
+
   const handleLogin = e => {
-    console.log('로그인');
+    axios
+      // .post(`https://tupli.kr/api/v1/account/signup`, {
+      .post(`https://k6a102.p.ssafy.io/api/v1/user-service/account/login`, {
+        email: loginInfo.email,
+        password: loginInfo.password,
+      })
+      // 일단 회원가입 후 메인 페이지로 이동
+      .then(res => {
+        // 모달 없애기
+        setModal(false);
+        // navigate
+        navigate('/mypage');
+        // localStorage
+        localStorage.setItem('jwt', res.data.token);
+        console.log(res.data.token);
+        setToggleLogin('로그아웃');
+      })
+      .catch(err => console.error(err));
+
+    // 초기화
+    setLoginInfo({
+      email: '',
+      password: '',
+    });
   };
   // SIGNUP
   const navigate = useNavigate();
@@ -111,20 +148,25 @@ function AuthModal({ state, setState, setSignup, setModal }) {
       return;
     }
 
-    // api 연결 테스트용
+    // api 연결 - 회원가입
     axios
-      .post(`https://tupli.kr/api/v1/account/signup`, {
+      // .post(`https://k6a102.p.ssafy.io/api/v1/user-service/accounts/signup/ `, {
+      .post(`https://k6a102.p.ssafy.io/api/v1/user-service/signup`, {
         email: signupInfo.email,
         nickname: 'test',
         password: signupInfo.password,
-        username: 'username',
+        username: 'noname',
       })
       // 일단 회원가입 후 메인 페이지로 이동
       .then(res => {
+        // res
+        console.log(res);
         // 모달 없애기
         setModal(false);
-        // navigate
-        navigate('/mypage');
+        // navigate - 일단 홈으로
+        navigate('/');
+        // localstorage 저장
+        // localStorage.setItem('jwt', )
       })
       .catch(err => console.error(err));
 
@@ -137,7 +179,10 @@ function AuthModal({ state, setState, setSignup, setModal }) {
   };
 
   const TuplioAuthTest = e => {
-    window.location.href = `https://tupli.kr/api/v1/oauth2/authorization/google?redirect_uri=https://tupli.kr/oauth/redirect`;
+    // TUPLI
+    // window.location.href = `https://tupli.kr/api/v1/oauth2/authorization/google?redirect_uri=https://tupli.kr/oauth/redirect`;
+    // CSAFY
+    window.location.href = `https://k6a102.p.ssafy.io/api/v3/oauth2/authorization/google?redirect_uri=https://k6a102.p.ssafy.io/oauth/redirect`;
   };
 
   return (
@@ -153,7 +198,7 @@ function AuthModal({ state, setState, setSignup, setModal }) {
               margin: '0',
             }}
           >
-            회원이 아니신가요?{' '}
+            회원이 아니신가요?
             <span
               style={{ fontWeight: '600', color: '#008ed0', cursor: 'pointer' }}
               onClick={() => setState('signup')}
