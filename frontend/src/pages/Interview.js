@@ -119,6 +119,23 @@ function Interview() {
       navigate('/interviewDetail');
     }, 2000);
   };
+  const handleAttClick = () => {
+    setToggleQuestionBox(true);
+  };
+  const handleTechClick = () => {
+    setToggleQuestionBox(true);
+  };
+  const handleRandomClick = () => {
+    setToggleQuestionBox(true);
+  };
+  const handleQuestionCount = () => {
+    setToggleStartBox(true);
+  };
+  const handleRandomCount = () => {
+    setToggleStartBox(true);
+  };
+  const [toggleQuestionBox, setToggleQuestionBox] = useState(false);
+  const [toggleStartBox, setToggleStartBox] = useState(false);
 
   return (
     <InterviewDetailWrapper>
@@ -132,9 +149,12 @@ function Interview() {
         </SwitchBox>
         <TypeBox>
           <div>어떤 질문 유형을 원하시나요?</div>
-          <TypeButton>인성 면접</TypeButton>
-          <TypeButton>기술 면접</TypeButton>
-          <TypeButton style={{ backgroundColor: '#008ed0', color: '#fff' }}>
+          <TypeButton onClick={handleAttClick}>인성 면접</TypeButton>
+          <TypeButton onClick={handleTechClick}>기술 면접</TypeButton>
+          <TypeButton
+            style={{ backgroundColor: '#008ed0', color: '#fff' }}
+            onClick={handleRandomClick}
+          >
             알아서 해주세요
           </TypeButton>
           <div
@@ -144,16 +164,43 @@ function Interview() {
             면접 질문만 보고 싶어요
           </div>
         </TypeBox>
-        <QuestionBox>
-          <div>몇 가지 면접 질문을 원하시나요?</div>
-          <ButtonBox>
-            <TypeButton style={{ marginRight: '15px' }}>3개요!</TypeButton>
-            <TypeButton style={{ backgroundColor: '#008ed0', color: '#fff' }}>
-              알아서 해주세요
-            </TypeButton>
-          </ButtonBox>
-        </QuestionBox>
-        {toggleStart ? (
+        {toggleQuestionBox && (
+          <QuestionBox>
+            <div>몇 가지 면접 질문을 원하시나요?</div>
+            <ButtonBox>
+              <TypeButton
+                style={{ marginRight: '15px' }}
+                onClick={handleQuestionCount}
+              >
+                3개요!
+              </TypeButton>
+              <TypeButton
+                style={{ backgroundColor: '#008ed0', color: '#fff' }}
+                onClick={handleRandomCount}
+              >
+                알아서 해주세요
+              </TypeButton>
+            </ButtonBox>
+          </QuestionBox>
+        )}
+        {toggleStartBox ? (
+          <>
+            {toggleStart ? (
+              <QuestionBox style={{ top: '789px' }}>
+                <div>문제를 선별 중입니다.</div>
+                <div>잠시만 기다려 주세요.</div>
+                <Progress />
+              </QuestionBox>
+            ) : (
+              <QuestionBox style={{ top: '789px' }}>
+                <TypeButton onClick={handleStart}>면접 시작하기</TypeButton>
+              </QuestionBox>
+            )}
+          </>
+        ) : (
+          <></>
+        )}
+        {/* {toggleStart ? (
           <QuestionBox style={{ top: '789px' }}>
             <div>문제를 선별 중입니다.</div>
             <div>잠시만 기다려 주세요.</div>
@@ -163,7 +210,7 @@ function Interview() {
           <QuestionBox style={{ top: '789px' }}>
             <TypeButton onClick={handleStart}>면접 시작하기</TypeButton>
           </QuestionBox>
-        )}
+        )} */}
       </InterviewDetailContent>
     </InterviewDetailWrapper>
   );

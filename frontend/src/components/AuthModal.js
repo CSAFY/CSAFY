@@ -198,7 +198,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               margin: '0',
             }}
           >
-            회원이 아니신가요?{' '}
+            회원이 아니신가요?
             <span
               style={{ fontWeight: '600', color: '#008ed0', cursor: 'pointer' }}
               onClick={() => setState('signup')}

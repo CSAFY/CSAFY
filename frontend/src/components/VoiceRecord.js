@@ -1,5 +1,36 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+// MUI
+import MicIcon from '@mui/icons-material/Mic';
+import MicNoneIcon from '@mui/icons-material/MicNone';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
+//사용자 정의 Hook - for Timer
+const useCounter = (initialValue, ms) => {
+  const [count, setCount] = useState(initialValue);
+  const intervalRef = useRef(null);
+  const start = useCallback(() => {
+    if (intervalRef.current !== null) {
+      return;
+    }
+    intervalRef.current = setInterval(() => {
+      setCount(c => c + 1);
+    }, ms);
+  }, []);
+  const stop = useCallback(() => {
+    if (intervalRef.current === null) {
+      return;
+    }
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  }, []);
+  const reset = useCallback(() => {
+    setCount(0);
+    stop();
+  }, []);
+  return { count, start, stop, reset };
+};
+
+//
 function VoiceRecord() {
   const [stream, setStream] = useState();
   const [media, setMedia] = useState();
@@ -7,10 +38,12 @@ function VoiceRecord() {
   const [source, setSource] = useState();
   const [analyser, setAnalyser] = useState();
   const [audioUrl, setAudioUrl] = useState();
+
   const [disabled, setDisabled] = useState(true);
 
   const onRecAudio = () => {
-    setDisabled(true);
+    start();
+    // setDisabled(true);
 
     // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -57,6 +90,7 @@ function VoiceRecord() {
 
   // 사용자가 음성 녹음을 중지 했을 때
   const offRecAudio = () => {
+    stop();
     // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
     media.ondataavailable = function(e) {
       setAudioUrl(e.data);
@@ -96,17 +130,73 @@ function VoiceRecord() {
     audio.play();
   };
 
+  // Timer
+  //시, 분, 초를 state로 저장
+  const [currentHours, setCurrentHours] = useState(0);
+  const [currentMinutes, setCurrentMinutes] = useState(0);
+  const [currentSeconds, setCurrentSeconds] = useState(0);
+  const { count, start, stop, reset } = useCounter(0, 1000);
+  // 타이머 기능
+  const timer = () => {
+    const checkMinutes = Math.floor(count / 60);
+    const hours = Math.floor(count / 3600);
+    const minutes = checkMinutes % 60;
+    const seconds = count % 60;
+    setCurrentHours(hours);
+    setCurrentSeconds(seconds);
+    setCurrentMinutes(minutes);
+  };
+
+  // count의 변화에 따라 timer 함수 랜더링
+  useEffect(timer, [count]);
+
   return (
-    <>
-      {onRec ? (
-        <button onClick={onRecAudio}>녹음</button>
-      ) : (
-        <button onClick={offRecAudio}>녹음 중지</button>
-      )}
-      <button onClick={play} disabled={disabled}>
-        재생
-      </button>
-    </>
+    <div style={{ position: 'relative' }}>
+      <div
+        style={{
+          width: '80px',
+          height: '80px',
+          borderRadius: '50%',
+          backgroundColor: '#d7e4ec',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {disabled ? (
+          <>
+            {onRec ? (
+              <MicIcon fontSize="large" color="primary" onClick={onRecAudio} />
+            ) : (
+              // <button onClick={onRecAudio}>녹음</button>
+              <MicNoneIcon
+                fontSize="large"
+                color="primary"
+                onClick={offRecAudio}
+              />
+              // <button onClick={offRecAudio}>녹음 중지</button>
+            )}
+          </>
+        ) : (
+          <PlayArrowIcon fontSize="large" color="primary" onClick={play} />
+          // <button onClick={play}>재생</button>
+        )}
+      </div>
+      {/* left: 50%; transform: translate(-50%); */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '-30px',
+          left: '50%',
+          transform: 'translate(-50%)',
+        }}
+      >
+        {currentHours < 10 ? `0${currentHours}` : currentHours}:
+        {currentMinutes < 10 ? `0${currentMinutes}` : currentMinutes}:
+        {currentSeconds < 10 ? `0${currentSeconds}` : currentSeconds}
+      </div>
+    </div>
   );
 }
 

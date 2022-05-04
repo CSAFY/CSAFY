@@ -48,21 +48,18 @@ const Question = styled.div`
   color: #000;
 `;
 const Icon = styled.div`
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background-color: #d7e4ec;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   position: absolute;
   top: 322px;
   left: 50%;
   transform: translate(-50%);
 
   cursor: pointer;
+`;
+const Record = styled.div`
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translate(-50%);
 `;
 const Progress = styled.div`
   width: 820px;
@@ -195,20 +192,26 @@ function InterviewDetail() {
   const handleSave = () => {
     console.log(memo);
   };
-
-  ////// 녹음 관련 테스트
-
   return (
     <InterviewResultWrapper>
       <InterviewResultContent>
         <QuestionBox>
           {/* <PrevButton onClick={prevQuestion}>이전</PrevButton> */}
-          <NextButton onClick={nextQuestion}>다음</NextButton>
+          {cnt !== dummyData.length ? (
+            <NextButton onClick={nextQuestion}>다음</NextButton>
+          ) : (
+            <NextButton onClick={nextQuestion}>결과 보기</NextButton>
+          )}
           <Question>{question}</Question>
+          {/* <Icon>
+            <MicIcon fontSize="large" color="primary" />
+          </Icon> */}
           <Icon>
-            {/* <MicIcon fontSize="large" color="primary" /> */}
             <VoiceRecord />
           </Icon>
+          {/* <Record>
+            <VoiceRecord />
+          </Record> */}
           <Progress>
             <div style={widthStyle}></div>
           </Progress>

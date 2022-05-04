@@ -22,6 +22,7 @@ import Interview from './pages/Interview';
 import InterviewDetail from './pages/InterviewDetail';
 import TestRoom from './pages/TestRoom';
 import EditProfile from './pages/EditProfile';
+import Timer from './components/Timer';
 
 function App() {
   return (
@@ -45,6 +46,8 @@ function App() {
           <Route path="/interviewList" element={<InterviewList />} />
           <Route path="/interview" element={<Interview />} />
           <Route path="/InterviewDetail" element={<InterviewDetail />} />
+          {/*  */}
+          <Route path="/timer" element={<Timer />} />
         </Routes>
         <Chatbot />
         <Footer />
