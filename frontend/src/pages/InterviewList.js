@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 // STYLED
@@ -66,32 +67,38 @@ const AttitudeButton = styled.div`
 `;
 
 function InterviewList() {
-  const [dummyData, setDummyData] = useState([
-    {
-      id: 1,
-      question: '프로젝트 중 문제가 발생했을 때 어떻게 대처하셨나요?',
-      category: '인성',
-    },
-    {
-      id: 2,
-      question:
-        '다른 지원자들과 비교했을 때 본인이 이 점만은 제일 낫다고 생각하는 것은 무엇인가요?',
-      category: '인성',
-    },
-    {
-      id: 3,
-      question: '맵과 해쉬맵의 시간복잡도가 어떻게 되는지 설명해주세요.',
-      category: '기술',
-    },
-  ]);
+  // api 데이터 받기
+  const [apiData, setApiData] = useState([]);
+  const getApiData = () => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      axios
+        .get(
+          `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/list/get?category=all`,
+
+          { headers: { Authorization: token } },
+        )
+        .then(res => {
+          console.log(res);
+          setApiData(res.data);
+        })
+        .catch(err => console.error(err));
+    } else {
+      alert('로그인이 필요합니다.');
+    }
+  };
+  useEffect(() => {
+    getApiData();
+  }, []);
+
   // test
   const [page, setPage] = useState('All');
   const [data, setData] = useState([]);
   const getPage = page => {
     const pageData = [];
-    for (let i = 0; i < dummyData.length; i++) {
-      if (dummyData[i].category === page) {
-        pageData.push(dummyData[i]);
+    for (let i = 0; i < apiData.length; i++) {
+      if (apiData[i].category === page) {
+        pageData.push(apiData[i]);
       }
     }
     setData(pageData);
@@ -157,14 +164,14 @@ function InterviewList() {
         </TypeBox>
         {page === 'All' ? (
           <QuestionContainer>
-            {dummyData.map(it => (
-              <QuestionBox key={it.id} {...it} />
+            {apiData.map(it => (
+              <QuestionBox key={it.interviewSeq} {...it} />
             ))}
           </QuestionContainer>
         ) : (
           <QuestionContainer>
             {data.map(it => (
-              <QuestionBox key={it.id} {...it} />
+              <QuestionBox key={it.interviewSeq} {...it} />
             ))}
           </QuestionContainer>
         )}

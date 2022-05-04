@@ -19,10 +19,11 @@ import Classification from './pages/Classification';
 import InterviewList from './pages/InterviewList';
 import Community from './pages/Community';
 import Interview from './pages/Interview';
-import InterviewDetail from './pages/InterviewDetail';
+import InterviewTest from './pages/InterviewTest';
 import TestRoom from './pages/TestRoom';
 import EditProfile from './pages/EditProfile';
 import Timer from './components/Timer';
+import InterviewDetail from './pages/InterviewDetail';
 
 function App() {
   return (
@@ -45,7 +46,12 @@ function App() {
           <Route path="/classification" element={<Classification />} />
           <Route path="/interviewList" element={<InterviewList />} />
           <Route path="/interview" element={<Interview />} />
-          <Route path="/InterviewDetail" element={<InterviewDetail />} />
+          <Route path="/InterviewTest" element={<InterviewTest />} />
+          <Route
+            path="/InterviewDetail/:interviewSeq"
+            element={<InterviewDetail />}
+          />
+
           {/*  */}
           <Route path="/timer" element={<Timer />} />
         </Routes>
