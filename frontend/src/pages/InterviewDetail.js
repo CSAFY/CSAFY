@@ -13,7 +13,7 @@ import CommentBox from '../components/CommentBox';
 import styled from 'styled-components';
 const DetailWrapper = styled.div`
   width: 100%;
-  height: 2000px;
+
   padding-bottom: 100px;
 
   display: flex;
@@ -95,7 +95,6 @@ const TechCategory = styled.div`
 
 const Board = styled.div`
   width: 840px;
-  height: 1020px;
 
   position: absolute;
   top: 789px;
@@ -155,7 +154,7 @@ function InterviewDetail() {
   const { interviewSeq } = useParams();
 
   const { state } = useLocation();
-  console.log(state);
+  // console.log(state);
   // console.log(interviewSeq);
   const [isLiked, setIsLiked] = useState(state.liked);
 
@@ -170,12 +169,26 @@ function InterviewDetail() {
         )
         .then(res => {
           console.log(res);
+          // 좋아요 표시
           setIsLiked(!isLiked);
+          // 숫자 갱신
+          getSpecificLikes();
         })
         .catch(err => console.error(err));
     } else {
       alert('로그인이 필요합니다.');
     }
+  };
+  // 좋아요 정보 가져오기
+  const [interviewLikes, setInterviewLikes] = useState(0);
+  const getSpecificLikes = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/interview/${interviewSeq}/likes`)
+      .then(res => {
+        // console.log('🐸', res);
+        setInterviewLikes(res.data.interviewLikes);
+      })
+      .catch(err => console.error(err));
   };
 
   // 댓글
@@ -201,7 +214,7 @@ function InterviewDetail() {
   };
   // 댓글 수정
 
-  // 다른사람 댓글
+  // 댓글 목록 가져오기
   const getComment = () => {
     const token = localStorage.getItem('jwt');
     axios
@@ -209,18 +222,29 @@ function InterviewDetail() {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log(res);
+        // console.log('🎃', res);
         setCommentData(res.data);
       })
       .catch(err => console.error(err));
   };
+
   useEffect(() => {
     getComment();
+    setInterviewLikes(state.interviewLikes);
+    getSpecificLikes();
   }, []);
-  const [commentData, setCommentData] = useState([]);
 
+  const [commentData, setCommentData] = useState([]);
+  const pageHeight = 1000 + commentData.length * 200;
+
+  // console.log('🐸', commentData);
   return (
-    <DetailWrapper>
+    <DetailWrapper
+      style={{
+        height: `${pageHeight}px`,
+        // height: '2000px'
+      }}
+    >
       <DetailContent>
         <DetailBox>
           {state.category === '인성' ? (
@@ -244,7 +268,7 @@ function InterviewDetail() {
               />
             )}
 
-            {state.interviewLikes}
+            {interviewLikes}
           </Likes>
         </DetailBox>
         <Board>
@@ -281,7 +305,7 @@ function InterviewDetail() {
           {commentData && (
             <CommentList>
               {commentData.map(it => (
-                <CommentBox key={it.id} {...it} />
+                <CommentBox key={it.id} {...it} getComment={getComment} />
               ))}
             </CommentList>
           )}

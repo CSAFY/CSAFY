@@ -181,14 +181,37 @@ function Interview() {
         </SwitchBox>
         <TypeBox>
           <div>어떤 질문 유형을 원하시나요?</div>
-          <TypeButton onClick={handleAttClick}>인성 면접</TypeButton>
-          <TypeButton onClick={handleTechClick}>기술 면접</TypeButton>
-          <TypeButton
-            style={{ backgroundColor: '#008ed0', color: '#fff' }}
-            onClick={handleRandomClick}
-          >
-            알아서 해주세요
-          </TypeButton>
+          {interviewCat === 'character' ? (
+            <TypeButton
+              onClick={handleAttClick}
+              style={{ backgroundColor: '#008ed0', color: '#fff' }}
+            >
+              인성 면접
+            </TypeButton>
+          ) : (
+            <TypeButton onClick={handleAttClick}>인성 면접</TypeButton>
+          )}
+          {interviewCat === 'tech' ? (
+            <TypeButton
+              onClick={handleTechClick}
+              style={{ backgroundColor: '#008ed0', color: '#fff' }}
+            >
+              기술 면접
+            </TypeButton>
+          ) : (
+            <TypeButton onClick={handleTechClick}>기술 면접</TypeButton>
+          )}
+          {interviewCat === 'all' ? (
+            <TypeButton
+              style={{ backgroundColor: '#008ed0', color: '#fff' }}
+              onClick={handleRandomClick}
+            >
+              알아서 해주세요
+            </TypeButton>
+          ) : (
+            <TypeButton onClick={handleRandomClick}>알아서 해주세요</TypeButton>
+          )}
+
           <div
             onClick={() => navigate('/interviewList')}
             style={{ cursor: 'pointer', fontSize: '13px', fontWeight: '300' }}
@@ -200,18 +223,37 @@ function Interview() {
           <QuestionBox>
             <div>몇 가지 면접 질문을 원하시나요?</div>
             <ButtonBox>
-              <TypeButton
-                style={{ marginRight: '15px' }}
-                onClick={handleQuestionCount}
-              >
-                3개요!
-              </TypeButton>
-              <TypeButton
-                style={{ backgroundColor: '#008ed0', color: '#fff' }}
-                onClick={handleRandomCount}
-              >
-                알아서 해주세요
-              </TypeButton>
+              {questionNum === '3' ? (
+                <TypeButton
+                  style={{
+                    marginRight: '15px',
+                    backgroundColor: '#008ed0',
+                    color: '#fff',
+                  }}
+                  onClick={handleQuestionCount}
+                >
+                  3개요!
+                </TypeButton>
+              ) : (
+                <TypeButton
+                  style={{ marginRight: '15px' }}
+                  onClick={handleQuestionCount}
+                >
+                  3개요!
+                </TypeButton>
+              )}
+              {questionNum === 'all' ? (
+                <TypeButton
+                  style={{ backgroundColor: '#008ed0', color: '#fff' }}
+                  onClick={handleRandomCount}
+                >
+                  알아서 해주세요
+                </TypeButton>
+              ) : (
+                <TypeButton onClick={handleRandomCount}>
+                  알아서 해주세요
+                </TypeButton>
+              )}
             </ButtonBox>
           </QuestionBox>
         )}
