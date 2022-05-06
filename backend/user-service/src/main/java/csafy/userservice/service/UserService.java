@@ -7,6 +7,7 @@ import csafy.userservice.entity.User;
 import csafy.userservice.repository.UserRepository;
 import csafy.userservice.service.producer.UserProducer;
 import csafy.userservice.service.producer.UserUpdateProducer;
+import csafy.userservice.service.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserProducer userProducer;
     private final UserUpdateProducer userUpdateProducer;
+    private final JwtTokenProvider jwtTokenProvider;
 
     private final UserRepository userRepository;
 
@@ -58,6 +60,13 @@ public class UserService {
 
         userRepository.deleteByUserSeq(userSeq);
 
+    }
+
+    @Transactional
+    public void rankUpPremium(String token) {
+        User user = jwtTokenProvider.getUser(token);
+        user.setIs_vip("Y");
+        userRepository.save(user);
     }
 
 }

@@ -261,5 +261,10 @@ public class UserApiController {
         }
     }
 
+    @GetMapping("/rankup")
+    public void rankUpPremium(@RequestParam("token") String token){
+        userService.rankUpPremium(token);
+    }
+
 
 }
