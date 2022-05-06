@@ -33,7 +33,6 @@ public class AuthApiController {
             @RequestBody AuthReqModel authReqModel
     )
         {
-            System.out.println("제발!!!!!!!!!@#!@#!@#");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authReqModel.getId(),

@@ -146,7 +146,7 @@ public class InterviewService {
 
         if(interviewComment == null || !Objects.equals(interviewComment.getUserSeq(), userSeq)) return null;
 
-
+        interviewCommentLikesRepository.deleteByInterviewCommentId(commentId);
         interviewCommentRepository.deleteById(commentId);
 
         return interviewComment;
