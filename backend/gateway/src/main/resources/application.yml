@@ -82,6 +82,14 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/cs-service/(?<segment>.*), /$\{segment}
+        - id: pay-service
+          uri: lb://PAY-SERVICE # lb => load balancer
+          predicates:
+            - Path=/pay-service/**
+            - Method=GET,POST,PUT,DELETE
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/pay-service/(?<segment>.*), /$\{segment}
 #        - id: first-service
 #          uri: lb://MY-FIRST-SERVICE # lb => load balancer
 ##          uri: http://localhost:8081/
