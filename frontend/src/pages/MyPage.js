@@ -80,13 +80,14 @@ function MyPage() {
           },
         })
         .then(res => {
-          console.log(res);
+          // console.log('🎃', res);
           if (res.data.profile_image === null) {
             setUserInfo({
               email: res.data.email,
               is_vip: res.data.is_vip,
               username: res.data.username,
               profile_image: 'images/google.png',
+              user_seq: res.data.user_seq,
             });
           } else {
             setUserInfo({
@@ -94,6 +95,7 @@ function MyPage() {
               is_vip: res.data.is_vip,
               username: res.data.username,
               profile_image: res.data.profile_image,
+              user_seq: res.data.user_seq,
             });
           }
         })
@@ -103,7 +105,6 @@ function MyPage() {
   useEffect(() => {
     getInfo();
   }, []);
-  console.log('🐸', userInfo);
 
   // Heatmap
   const today = new Date();
@@ -116,8 +117,34 @@ function MyPage() {
   // 프로필 변경 관련
   const [editToggle, setEditToggle] = useState(false);
   const handleEdit = () => {
+    const token = localStorage.getItem('jwt');
     setEditToggle(!editToggle);
-    console.log(editUserInfo);
+    axios
+      .put(
+        ` https://csafy.com/api/v1/user-service/update`,
+        {
+          username: editUserInfo.username,
+          // profileImg: editUserInfo.profile_image,
+          profileImg:
+            'https://cdn.pixabay.com/photo/2020/05/17/20/21/cat-5183427_960_720.jpg',
+        },
+        {
+          headers: { Authorization: token },
+        },
+      )
+      .then(res => {
+        console.log(res);
+        setEditUserInfo({
+          username: res.data.username,
+          profile_image: res.data.profileImg,
+        });
+        setUserInfo({
+          ...userInfo,
+          username: res.data.username,
+          profile_image: res.data.profileImg,
+        });
+      })
+      .catch(err => console.error(err));
   };
   const handleEditToggle = () => {
     setEditToggle(!editToggle);

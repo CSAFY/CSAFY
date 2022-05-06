@@ -17,6 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 // MODAL
 import Modal from '@mui/material/Modal';
 import AuthModal from './AuthModal';
+import { Avatar, Tooltip } from '@mui/material';
 
 // STYLED
 // import styled from 'styled-components';
@@ -52,7 +53,10 @@ const pages = [
   { name: '면접 대비', link: 'interview' },
   { name: '기술 스택', link: 'classification' },
   // { name: '메타버스', link: 'community' },
+];
+const settings = [
   { name: '문제집', link: 'CSTest' },
+  { name: '오답노트', link: 'reviewNote' },
 ];
 
 // const Logo = styled.img`
@@ -63,6 +67,19 @@ const pages = [
 // `;
 
 const NavBar = () => {
+  // TEST
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const handleOpenUserMenu = event => {
+    setAnchorElUser(event.currentTarget);
+    setToggle(true);
+    setCurrentPage('/');
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+  const [toggle, setToggle] = useState(false);
+  ////
+
   const [toggleLogin, setToggleLogin] = useState('로그인');
   // MODAL
   const [state, setState] = useState('signup');
@@ -131,6 +148,7 @@ const NavBar = () => {
             }}
             onClick={() => {
               setCurrentPage('Home');
+              setToggle(false);
             }}
           >
             {toggleLogin === '로그인' ? (
@@ -184,6 +202,7 @@ const NavBar = () => {
                     onClick={() => {
                       navigate(`/${page.link}`);
                       setCurrentPage(page.link);
+                      setToggle(false);
                     }}
                     sx={{
                       textAlign: 'center',
@@ -208,6 +227,7 @@ const NavBar = () => {
                     onClick={() => {
                       navigate(`/${page.link}`);
                       setCurrentPage(page.link);
+                      setToggle(false);
                     }}
                     sx={{
                       textAlign: 'center',
@@ -228,8 +248,110 @@ const NavBar = () => {
                 );
               }
             })}
+            {/* 실력테스트 */}
+            <Tooltip title="Open settings">
+              {toggle ? (
+                <Button
+                  onClick={handleOpenUserMenu}
+                  sx={{
+                    textAlign: 'center',
+                    mx: 1,
+                    my: 2,
+                    color: '#006D9F',
+                    fontWeight: 'bold',
+                    display: 'block',
+                    ':hover': {
+                      color: '#006D9F',
+                      bgcolor: '#ffffff',
+                      // bgcolor: '#D5F2FC',
+                    },
+                  }}
+                >
+                  실력 테스트
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleOpenUserMenu}
+                  sx={{
+                    textAlign: 'center',
+                    mx: 1,
+                    my: 2,
+                    color: 'black',
+                    display: 'block',
+                    ':hover': {
+                      color: '#006D9F',
+                      bgcolor: '#ffffff',
+                      // bgcolor: '#D5F2FC',
+                    },
+                  }}
+                >
+                  실력 테스트
+                </Button>
+              )}
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map(setting => (
+                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                  <Typography
+                    textAlign="center"
+                    onClick={() => {
+                      navigate(`${setting.link}`);
+                      setCurrentPage(setting.link);
+                      // setToggle(false);
+                    }}
+                  >
+                    {setting.name}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Menu>
           </Box>
-
+          {/*  */}
+          {/* <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map(setting => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box> */}
+          {/*  */}
           {/* 반응형 - 좁은 화면 로고 */}
           <Typography
             variant="h6"

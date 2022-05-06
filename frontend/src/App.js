@@ -17,7 +17,6 @@ import StudyFramePage from './pages/StudyPage/StudyFramePage';
 import StudyDetailPage from './pages/StudyPage/StudyDetailPage';
 import IntensivePage from './pages/StudyPage/IntensivePage';
 
-
 import Classification from './pages/Classification';
 import InterviewList from './pages/InterviewList';
 import Community from './pages/Community';
@@ -28,7 +27,9 @@ import EditProfile from './pages/EditProfile';
 import Timer from './components/Timer';
 import InterviewDetail from './pages/InterviewDetail';
 import CSTest from './pages/CSTest';
-
+import ReviewNote from './pages/ReviewNote';
+import CSTestDetail from './pages/CSTestDetail';
+import CSTestResult from './pages/CSTestResult';
 
 function App() {
   return (
@@ -58,6 +59,9 @@ function App() {
             element={<InterviewDetail />}
           />
           <Route path="/CSTest" element={<CSTest />} />
+          <Route path="/CSTestDetail/:testId" element={<CSTestDetail />} />
+          <Route path="/CSTestResult/:testId" element={<CSTestResult />} />
+          <Route path="/reviewNote" element={<ReviewNote />} />
 
           {/*  */}
           <Route path="/timer" element={<Timer />} />
