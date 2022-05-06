@@ -1,0 +1,66 @@
+server:
+  port: 0
+#  port: 9999
+
+spring:
+  application:
+    name: pay-service
+
+  # 마리아 DB(배포)
+  datasource:
+    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P31A102?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: S06P31A102
+    password: tTelzd9jrW
+
+  # JPA 세팅
+  jpa:
+    hibernate:
+      #      ddl-auto: create # 애플리케이션 실행시점에 테이블 다 지우고 새로 생성
+      ddl-auto: update  # 개발 단계에서는
+    #      ddl-auto: create-drop
+    #      ddl-auto: validate  # 최종 배포 운영 단계
+    #      ddl-auto: none
+    show-sql: true
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 1000 #1대다 쿼리 뻥튀기 페이징 문제, 최적화 옵션 (MAX는 거의 1000)
+        format_sql: true # 너무 길어지면 읽기 힘들어짐
+  #        show_sql: true
+
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+  sql:
+    init:
+      encoding: UTF-8
+
+logging.level:
+  org:
+    #    springframework.web: DEBUG
+    springframework.web: WARN
+#    hibernate.SQL: INFO #debug # hibernate가 생성하는 로그를 다 보여줌
+# org.hibernate.type: trace # 쿼리 파라미터 로그 남기기
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+# 기본 정보 모음
+info:
+  server:
+    front: https://csafy.com
+
+# 카카오 ADMIN 키
+key:
+  kakao:
+    admin: 4ec316692262d86ea846ca16f2f4723b

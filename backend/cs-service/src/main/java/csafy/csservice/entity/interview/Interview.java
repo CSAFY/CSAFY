@@ -20,10 +20,10 @@ public class Interview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long interviewSeq;
 
-    @Size(max = 20)
+    @Size(max = 30)
     private String category;
 
-    @Size(max = 200)
+    @Size(max = 512)
     private String question;
 
     @OneToMany(mappedBy = "interview")
