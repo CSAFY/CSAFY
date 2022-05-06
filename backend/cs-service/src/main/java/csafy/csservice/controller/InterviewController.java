@@ -7,11 +7,14 @@ import csafy.csservice.dto.request.CommentRequest;
 import csafy.csservice.dto.request.MemoRequest;
 import csafy.csservice.dto.request.RequestCreateInterview;
 import csafy.csservice.dto.response.InterviewCommentResponse;
+import csafy.csservice.dto.response.ResponseInterviewCommentLikes;
+import csafy.csservice.dto.response.ResponseInterviewLikes;
 import csafy.csservice.entity.interview.Interview;
 import csafy.csservice.entity.interview.InterviewComment;
 import csafy.csservice.entity.interview.InterviewMemo;
 import csafy.csservice.service.InterviewService;
 import feign.FeignException;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,8 +83,13 @@ public class InterviewController {
     // 면접 좋아요 카운트 받기
     @GetMapping("/{interviewSeq}/likes")
     public ResponseEntity interviewLikesCount(@PathVariable("interviewSeq") Long interviewSeq){
-        return ResponseEntity.status(HttpStatus.OK).body(interviewService.interviewLikesCount(interviewSeq));
+        int interviewLikes = interviewService.interviewLikesCount(interviewSeq);
+        ResponseInterviewLikes responseInterviewLikes = new ResponseInterviewLikes();
+        responseInterviewLikes.setInterviewLikes(interviewLikes);
+        responseInterviewLikes.setInterviewSeq(interviewSeq);
+        return ResponseEntity.status(HttpStatus.OK).body(responseInterviewLikes);
     }
+
 
     // 면접 좋아요 / 좋아요 취소
     @PostMapping("/{interviewSeq}/likes")
@@ -198,7 +206,7 @@ public class InterviewController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
-        InterviewComment interviewComment = interviewService.updateComment(userDto.getUser_seq(), commentId, comment.getComment());
+        InterviewComment interviewComment = interviewService.updateComment(commentId, userDto.getUser_seq(), comment.getComment());
         if(interviewComment == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
@@ -232,7 +240,11 @@ public class InterviewController {
     // 댓글 좋아요 카운트 추가
     @GetMapping("/{commentId}/comment/likes")
     public ResponseEntity interviewCommentLikesCount(@PathVariable("commentId") Long commentId){
-        return ResponseEntity.status(HttpStatus.OK).body(interviewService.interviewCommentLikesCount(commentId));
+        int commentLikes = interviewService.interviewCommentLikesCount(commentId);
+        ResponseInterviewCommentLikes responseInterviewCommentLikes = new ResponseInterviewCommentLikes();
+        responseInterviewCommentLikes.setCommentLikes(commentLikes);
+        responseInterviewCommentLikes.setId(commentId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseInterviewCommentLikes);
     }
 
     // 댓글 좋아요 / 좋아요 취소

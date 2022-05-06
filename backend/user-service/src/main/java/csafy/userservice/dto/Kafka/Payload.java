@@ -1,4 +1,4 @@
-package csafy.userservice.dto;
+package csafy.userservice.dto.Kafka;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -27,7 +27,7 @@ public class Payload {
     private String nickname;
     private String password;
     private String email;
-    private String profile_image;
+    private String profile_image_url;
     private String introduction;
     private String is_vip;
 }

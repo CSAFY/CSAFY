@@ -134,7 +134,7 @@ public class InterviewService {
     public InterviewComment updateComment(Long commentId, Long userSeq, String comment){
         InterviewComment interviewComment = interviewCommentRepository.findById(commentId).orElse(null);
 
-        if(!Objects.equals(interviewComment.getUserSeq(), userSeq)) return null;
+        if(interviewComment == null || !Objects.equals(interviewComment.getUserSeq(), userSeq)) return null;
         interviewComment.setComment(comment);
 
         return interviewCommentRepository.save(interviewComment);
@@ -144,7 +144,7 @@ public class InterviewService {
     public InterviewComment deleteComment(Long commentId, Long userSeq){
         InterviewComment interviewComment = interviewCommentRepository.findById(commentId).orElse(null);
 
-        if(!Objects.equals(interviewComment.getUserSeq(), userSeq)) return null;
+        if(interviewComment == null || !Objects.equals(interviewComment.getUserSeq(), userSeq)) return null;
 
 
         interviewCommentRepository.deleteById(commentId);

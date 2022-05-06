@@ -1,5 +1,6 @@
-package csafy.userservice.dto;
+package csafy.userservice.dto.Kafka;
 
+import csafy.userservice.dto.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

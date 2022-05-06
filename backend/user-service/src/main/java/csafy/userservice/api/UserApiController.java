@@ -1,6 +1,7 @@
 package csafy.userservice.api;
 
 import csafy.userservice.dto.UserDto;
+import csafy.userservice.dto.request.UpdateRequest;
 import csafy.userservice.dto.response.ErrorResponse;
 import csafy.userservice.entity.User;
 import csafy.userservice.entity.auth.ProviderType;
@@ -108,6 +109,37 @@ public class UserApiController {
         LocalDateTime createdAt;
         LocalDateTime modifiedAt;
     }
+
+// 회원 정보 수정
+    @PutMapping("/update")
+    public ResponseEntity<?> userUpdate(@RequestHeader(value = "Authorization") String token,
+                                        @RequestBody UpdateRequest updateRequest) {
+
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
+        }
+
+        if(updateRequest.getUsername() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
+        }
+        
+        if(updateRequest.getProfileImg().length() >= 1024){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 URL이 너무 깁니다.");
+        }
+
+        Long userSeq = jwtTokenProvider.getUserSeq(token);
+
+        UpdateRequest updateRequestResult = userService.updateUser(userSeq, updateRequest);
+
+        if(updateRequestResult == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업데이트할 사용자를 찾을 수 없습니다.");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(updateRequestResult);
+    }
+
 
     /**
      * 회원 탈퇴
