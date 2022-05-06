@@ -49,6 +49,7 @@ function StudyFramePage() {
       params,
     })
     .then((res) => {
+      console.log(res.data.items)
       setStudyData(res.data.items)
     })
     .catch(err =>{
