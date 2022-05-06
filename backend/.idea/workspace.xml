@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b7fa1ecb-01ee-45ad-8398-bc8b2d484342" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/UserServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/UserServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/api/UserApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/csafy/userservice/api/UserApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/resources/application.yml" afterDir="false" />
-    </list>
+    <list default="true" id="b7fa1ecb-01ee-45ad-8398-bc8b2d484342" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,6 +30,7 @@
       <option name="presentableId" value="Default" />
       <updated>1650864449835</updated>
       <workItem from="1650864451967" duration="52000" />
+      <workItem from="1651451936259" duration="637000" />
     </task>
     <servers />
   </component>

@@ -1,6 +1,7 @@
 package csafy.userservice.api;
 
 import csafy.userservice.dto.UserDto;
+import csafy.userservice.dto.request.UpdateRequest;
 import csafy.userservice.dto.response.ErrorResponse;
 import csafy.userservice.entity.User;
 import csafy.userservice.entity.auth.ProviderType;
@@ -109,6 +110,37 @@ public class UserApiController {
         LocalDateTime modifiedAt;
     }
 
+// 회원 정보 수정
+    @PutMapping("/update")
+    public ResponseEntity<?> userUpdate(@RequestHeader(value = "Authorization") String token,
+                                        @RequestBody UpdateRequest updateRequest) {
+
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
+        }
+
+        if(updateRequest.getUsername() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
+        }
+        
+        if(updateRequest.getProfileImg().length() >= 1024){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 URL이 너무 깁니다.");
+        }
+
+        Long userSeq = jwtTokenProvider.getUserSeq(token);
+
+        UpdateRequest updateRequestResult = userService.updateUser(userSeq, updateRequest);
+
+        if(updateRequestResult == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업데이트할 사용자를 찾을 수 없습니다.");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(updateRequestResult);
+    }
+
+
     /**
      * 회원 탈퇴
      * @param token
@@ -140,7 +172,7 @@ public class UserApiController {
 
         // 인증 확인후 돌리기
         String token = request.getHeader("Authorization");
-
+        System.out.println("token : " + token);
         if (token == null || !jwtTokenProvider.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse(messageSource.
@@ -169,8 +201,9 @@ public class UserApiController {
         }
 
         User user = jwtTokenProvider.getUser(token);
-
-        return new UserDto(user);
+        UserDto userDto = new UserDto(user);
+        userDto.setUser_seq(user.getUserSeq());
+        return userDto;
     }
 
     /**
@@ -179,19 +212,18 @@ public class UserApiController {
      * @return
      */
     @GetMapping("/tokenvalidated")
-    public ResponseEntity<?> checkTokenValidated(@RequestParam("inputToken") String inputToken){
+    public String checkTokenValidated(@RequestParam("inputToken") String inputToken){
 
         // 인증 확인후 돌리기
         String token = inputToken;
+        System.out.println("토오큰 : " + token);
 
         if (token == null || !jwtTokenProvider.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse(messageSource.
-                            getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())) {
-                    });
+            System.out.println("토큰 에러");
+            return "error";
         }
 
-        return ResponseEntity.ok().body(null);
+        return "OK";
     }
 
 

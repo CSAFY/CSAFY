@@ -3,13 +3,14 @@ package csafy.userservice.service.producer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import csafy.userservice.dto.*;
+import csafy.userservice.dto.Kafka.KafkaUserDto;
+import csafy.userservice.dto.Kafka.Payload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class UserProducer {
             new Field("string", true, "nickname"),
             new Field("string", true, "password"),
             new Field("string", true, "email"),
-            new Field("string", true, "profile_image"),
+            new Field("string", true, "profile_image_url"),
             new Field("string", true, "introduction"),
             new Field("string", true, "is_vip"));
 
@@ -59,7 +60,7 @@ public class UserProducer {
                 .nickname(userDto.getNickname())
                 .password(userDto.getPassword())
                 .email(userDto.getEmail())
-                .profile_image(userDto.getProfile_image())
+                .profile_image_url(userDto.getProfile_image())
                 .introduction(userDto.getIntroduction())
                 .is_vip(userDto.getIs_vip())
                 .build();

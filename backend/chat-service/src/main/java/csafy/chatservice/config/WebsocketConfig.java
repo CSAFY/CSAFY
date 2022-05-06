@@ -35,7 +35,6 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws-stomp")
                 .setAllowedOriginPatterns("*")
-//                .setAllowedOrigins("*")  // 3년전은 이거로 CORS 통과가 됐는데 지금은 안됨. 차후 체크
                 .withSockJS();  // sock.js를 통하여 낮은 버전의 브라우저에서도 websocket이 동작할 수 있게
     }
 

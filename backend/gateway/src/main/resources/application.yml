@@ -17,13 +17,15 @@ spring:
         add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "*"
+            allowedOriginPatterns: "*"
+            allow-credentials: true
             allowedHeaders: "*"
             allowedMethods:
               - GET
               - POST
               - PUT
               - DELETE
+              - OPTIONS
       default-filters:
         - name: GlobalFilter
           args:
@@ -72,6 +74,14 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/chat-service/(?<segment>.*), /$\{segment}
+        - id: cs-service
+          uri: lb://CS-SERVICE # lb => load balancer
+          predicates:
+            - Path=/cs-service/**
+            - Method=GET,POST,PUT,DELETE
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/cs-service/(?<segment>.*), /$\{segment}
 #        - id: first-service
 #          uri: lb://MY-FIRST-SERVICE # lb => load balancer
 ##          uri: http://localhost:8081/

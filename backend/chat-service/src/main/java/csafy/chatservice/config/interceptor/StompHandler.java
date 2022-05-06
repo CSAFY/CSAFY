@@ -52,8 +52,9 @@ public class StompHandler implements ChannelInterceptor {
             if (jwtToken != null) {
                 // 회원 token 받음
 //                try {
-                    ResponseEntity responseEntity = userServiceClient.checkTokenValidated(jwtToken);
-                    if(responseEntity.getStatusCodeValue() == 403) log.error("여기로 들어와야함");
+
+                String resultCode = userServiceClient.checkTokenValidated(jwtToken);
+                    if(!resultCode.equals("OK")) log.error("여기로 들어와야함");
 //                } catch (FeignException ex){
 //                    log.error(ex.getMessage());
 //                }
