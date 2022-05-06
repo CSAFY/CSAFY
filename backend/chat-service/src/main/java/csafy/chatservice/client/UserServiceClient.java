@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface UserServiceClient {
 
     @GetMapping("/tokenvalidated")
-    ResponseEntity<?> checkTokenValidated(@RequestParam("inputToken") String inputToken);
+    String checkTokenValidated(@RequestParam("inputToken") String inputToken);
 
     @GetMapping("/token/user")
     UserDto getTokenUser(@RequestParam("inputToken") String inputToken);

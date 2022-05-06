@@ -1,9 +1,12 @@
 package csafy.userservice.service;
 
+import csafy.userservice.dto.Kafka.PayloadUpdate;
 import csafy.userservice.dto.UserDto;
+import csafy.userservice.dto.request.UpdateRequest;
 import csafy.userservice.entity.User;
 import csafy.userservice.repository.UserRepository;
 import csafy.userservice.service.producer.UserProducer;
+import csafy.userservice.service.producer.UserUpdateProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserProducer userProducer;
+    private final UserUpdateProducer userUpdateProducer;
 
     private final UserRepository userRepository;
 
@@ -36,6 +40,17 @@ public class UserService {
         if (findUsers != null) {
             throw new IllegalStateException("일치하는 아이디가 존재합니다.");
         }
+    }
+
+    public UpdateRequest updateUser(Long userSeq, UpdateRequest updateRequest){
+
+        Long result = userUpdateProducer.send("userUpdate", updateRequest, userSeq);
+
+        if(result == null){
+            return null;
+        }
+
+        return updateRequest;
     }
 
     @Transactional
