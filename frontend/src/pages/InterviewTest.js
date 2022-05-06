@@ -224,12 +224,19 @@ function InterviewTest() {
     borderRadius: '10px',
     transition: '1s ease 0.005s',
   };
+  // 처음 문제로 돌아가기
+  const toStart = () => {
+    setCnt(1);
+    setQuestion(testData[0]['question']);
+    setSeq(testData[0]['interviewSeq']);
+  };
   // const prevQuestion = () => {
   //   setQuestion(dummyData[cnt]['question']);
   //   console.log('3', cnt);
   //   setCnt(prev => prev - 1);
   //   console.log('4', cnt);
   // };
+  // console.log(testData);
 
   const [memo, setMemo] = useState('');
   const handleMemo = e => {
@@ -283,19 +290,15 @@ function InterviewTest() {
           {cnt !== testData.length ? (
             <NextButton onClick={nextQuestion}>다음</NextButton>
           ) : (
-            <NextButton onClick={nextQuestion}>결과 보기</NextButton>
+            <NextButton onClick={toStart}>처음으로</NextButton>
           )}
-          {/* <Question>{testData[cnt]['question']}</Question> */}
+
           <Question>{question}</Question>
-          {/* <Icon>
-            <MicIcon fontSize="large" color="primary" />
-          </Icon> */}
+
           <Icon>
             <VoiceRecord />
           </Icon>
-          {/* <Record>
-            <VoiceRecord />
-          </Record> */}
+
           <Progress>
             <div style={widthStyle}></div>
           </Progress>
@@ -305,10 +308,6 @@ function InterviewTest() {
           <Memo value={memo} onChange={handleMemo} />
           <SaveButton onClick={handleSave}>저장하기</SaveButton>
         </MemoBox>
-        {/* <StudyBox>
-          <MemoTtitle>나의 메모</MemoTtitle>
-          <MyMemo>{myMemo}</MyMemo>
-        </StudyBox> */}
       </InterviewResultContent>
     </InterviewResultWrapper>
   );
