@@ -5,25 +5,40 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import androidx.databinding.DataBindingUtil.setContentView
 import com.example.csafy_android.R
+import com.example.csafy_android.databinding.ActivityLoginBinding
 import com.example.csafy_android.databinding.FragmentHomeBinding
 
 
 class HomeFragment : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
+    private var _binding: FragmentHomeBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val binding get() = _binding!!
 
-    }
+    private lateinit var webView : WebView
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val view = binding.root
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+
+        webView = binding.webMain
+        webView.settings.javaScriptEnabled = true
+        webView.loadUrl("https://www.naver.com")
+
+        return view
+
     }
 
 
