@@ -49,10 +49,11 @@ const signupStyle = {
 const pages = [
   { name: '일반 학습', link: 'StudyFramePage' },
   { name: '집중 학습', link: 'IntensivePage' },
-  { name: '테스트', link: 'test' },
+  { name: '채팅', link: 'chat' },
   { name: '면접 대비', link: 'interview' },
   { name: '기술 스택', link: 'classification' },
-  // { name: '메타버스', link: 'community' },
+  { name: '메타버스', link: 'community' },
+  { name: '결제', link: 'payment' },
 ];
 const settings = [
   { name: '문제집', link: 'CSTest' },
