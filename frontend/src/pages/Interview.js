@@ -242,7 +242,7 @@ function Interview() {
                   3개요!
                 </TypeButton>
               )}
-              {questionNum === 'all' ? (
+              {questionNum !== '3' && questionNum !== '' ? (
                 <TypeButton
                   style={{ backgroundColor: '#008ed0', color: '#fff' }}
                   onClick={handleRandomCount}
