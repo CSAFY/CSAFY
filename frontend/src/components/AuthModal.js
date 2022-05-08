@@ -167,8 +167,6 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
         setModal(false);
         // navigate - 일단 홈으로
         navigate('/');
-        // localstorage 저장
-        // localStorage.setItem('jwt', )
       })
       .catch(err => console.error(err));
 
@@ -180,7 +178,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
     });
   };
 
-  const TuplioAuthTest = e => {
+  const googleOauth = e => {
     // TUPLI
     // window.location.href = `https://tupli.kr/api/v1/oauth2/authorization/google?redirect_uri=https://tupli.kr/oauth/redirect`;
     // CSAFY
@@ -259,7 +257,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
                 marginTop: '1rem',
                 cursor: 'pointer',
               }}
-              onClick={handleLogin}
+              onClick={googleOauth}
             />
           </InputForm>
         </LoginWrapper>
@@ -431,8 +429,8 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
                   bgcolor: '#D5F2FC',
                 },
               }}
-              // 테스트용
-              onClick={TuplioAuthTest}
+              // oauth
+              onClick={googleOauth}
             >
               <div
                 style={{
