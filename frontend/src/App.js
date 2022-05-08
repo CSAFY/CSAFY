@@ -10,7 +10,7 @@ import MyPage from './pages/MyPage';
 import Page2 from './pages/Page2';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Test from './pages/Test';
+import Chat from './pages/Chat';
 import Chatbot from './components/Chatbot';
 
 import StudyFramePage from './pages/StudyPage/StudyFramePage';
@@ -22,7 +22,7 @@ import InterviewList from './pages/InterviewList';
 import Community from './pages/Community';
 import Interview from './pages/Interview';
 import InterviewTest from './pages/InterviewTest';
-import TestRoom from './pages/TestRoom';
+import ChatRoom from './pages/ChatRoom';
 import EditProfile from './pages/EditProfile';
 import Timer from './components/Timer';
 import InterviewDetail from './pages/InterviewDetail';
@@ -30,6 +30,7 @@ import CSTest from './pages/CSTest';
 import ReviewNote from './pages/ReviewNote';
 import CSTestDetail from './pages/CSTestDetail';
 import CSTestResult from './pages/CSTestResult';
+import Payment from './pages/Payment';
 
 function App() {
   return (
@@ -42,8 +43,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/editProfile" element={<EditProfile />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/test/:roomName" element={<TestRoom />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/:roomName" element={<ChatRoom />} />
           <Route path="/StudyFramePage" element={<StudyFramePage />} />
           <Route path="/StudyDetailPage" element={<StudyDetailPage />} />
           <Route exact path="/IntensivePage/*" element={<IntensivePage />} />
@@ -62,6 +63,7 @@ function App() {
           <Route path="/CSTestDetail/:testId" element={<CSTestDetail />} />
           <Route path="/CSTestResult/:testId" element={<CSTestResult />} />
           <Route path="/reviewNote" element={<ReviewNote />} />
+          <Route path="/payment" element={<Payment />} />
 
           {/*  */}
           <Route path="/timer" element={<Timer />} />

@@ -6,12 +6,15 @@ import SockJS from 'sockjs-client';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
 
-function TestRoom() {
-  // sockJS 설정
-  const sock = new SockJS(`${defaultAPI}/chat-service/ws-stomp`);
-  const ws = Stomp.over(sock);
+let sock;
+let ws;
 
-  const { state } = useLocation();  // 나중에 roomId로 바꿔주세요!
+function ChatRoom() {
+  // sockJS 설정
+  // const sock = new SockJS(`${defaultAPI}/chat-service/ws-stomp`);
+  // const ws = Stomp.over(sock);
+
+  const { state } = useLocation(); // 나중에 roomId로 바꿔주세요!
   const navigate = useNavigate();
   const [chatRoomInfo, setChatRoomInfo] = useState({
     roomName: '',
@@ -28,10 +31,8 @@ function TestRoom() {
 
   useEffect(() => {
     roomInfo();
-  }, []);
-
-  useEffect(() => {
     initRoom();
+    getMessages();
   }, []);
 
   const roomInfo = () => {
@@ -45,17 +46,17 @@ function TestRoom() {
       });
     });
   };
-
   const initRoom = () => {
-    console.log("시작");
+    console.log('시작');
     const token = localStorage.getItem('jwt');
 
-    // const sock = new SockJS(`${defaultAPI}/chat-service/ws-stomp`);
-    // const ws = Stomp.over(sock);
+    sock = new SockJS(`${defaultAPI}/chat-service/ws-stomp`);
+    ws = Stomp.over(sock);
 
     if (token) {
       ws.connect(
         { Authorization: token },
+        // 성공했을 때
         function() {
           ws.subscribe(
             '/sub/chat/room/' + state,
@@ -67,6 +68,7 @@ function TestRoom() {
             { Authorization: token },
           );
         },
+        // 실패했을 때
         function() {
           alert('서버 연결에 실패 하였습니다. 다시 접속해 주십시요.');
           navigate('/'); // 홈으로
@@ -76,23 +78,50 @@ function TestRoom() {
     }
   };
 
-  const sendMessage = (type) => {
+  const sendMessage = type => {
     if (!chatMessage) return;
     const token = localStorage.getItem('jwt');
-    ws.send("/pub/chat/message", JSON.stringify({type:type, roomId: state, message: chatMessage}), {Authorization: token});
+    ws.send(
+      '/pub/chat/message',
+      JSON.stringify({ type: type, roomId: state, message: chatMessage }),
+      { Authorization: token },
+    );
     setChatMessage('');
-  }
+  };
 
   const recvMessage = recv => {
-    console.log('recv', recv);
+    // console.log('recv', recv);
     // this.messages.unshift({
     //   type: recv.type,
     //   sender: recv.sender,
     //   message: recv.message,
     // });
-    setMessages([...messages, { type: recv.type, sender: recv.sender, message: recv.message, }])
+    setMessages(prev => [
+      ...prev,
+      { type: recv.type, sender: recv.sender, message: recv.message },
+    ]);
   };
 
+  const getMessages = () => {
+    console.log('룸?', state);
+    axios
+      .get(`${defaultAPI}/chat-service/chat/room/message/${state}`)
+      .then(res => {
+        console.log('res🎃', res.data);
+        setMessages(res.data);
+      })
+      .catch(err => console.error(err));
+    // http.get('/chat-service/chat/room/message/' + state)
+    // .then(res => {
+    //   // console.log('res', res.data)
+    //   for (const message of res.data) {
+    //     console.log(message)
+    //     this.messages.unshift({"type":message.type,"sender":message.sender,"message":message.message})
+    //   }
+    // })
+  };
+
+  // console.log('🎃', messages);
   // console.log('???', messages);
 
   return (
@@ -103,28 +132,26 @@ function TestRoom() {
       <div>
         <label>채팅 메시지</label>
         <input
-        type="text"
-        className="form-control"
-        value={chatMessage}
-        onChange={e => setChatMessage(e.target.value)}
-      />
+          type="text"
+          className="form-control"
+          value={chatMessage}
+          onChange={e => setChatMessage(e.target.value)}
+        />
       </div>
 
       <button
-            className="btn btn-primary"
-            type="button"
-            onClick={() => sendMessage('TALK')}
-          >
-            메시지 보내기
+        className="btn btn-primary"
+        type="button"
+        onClick={() => sendMessage('TALK')}
+      >
+        메시지 보내기
       </button>
 
       <ul className="list-group">
-        {messages.map(message => (
+        {messages.map((message, i) => (
           // 적당한 키가 없는데
-          <li key={message.roomId}>
-            <div>
-              {message.message}
-            </div>
+          <li key={i}>
+            <div>{message.message}</div>
           </li>
         ))}
       </ul>
@@ -134,4 +161,4 @@ function TestRoom() {
   );
 }
 
-export default TestRoom;
+export default ChatRoom;
