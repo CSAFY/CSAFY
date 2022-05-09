@@ -9,7 +9,7 @@ import {
  } from "./IntensivePage.styled"
 
 import { useEffect, useRef, useState } from "react";
-import { Navigate, Route, Router, Routes } from 'react-router';
+import { Navigate, Route, Router, Routes, useLocation  } from 'react-router';
 import axios from 'axios';
 
 import Box from '@mui/material/Box';
@@ -70,8 +70,23 @@ function IntensivePage() {
       </FormControl>
     </Box>
   )
+  const location = useLocation();
+  
+  const relatedDisPlay = () => {
+    if (location.pathname === '/IntensivePage/KeyWordCard'){
+      return(
+        <div>
+          <RelatedExam>
+          </RelatedExam>
 
+          <StudyDetailHr></StudyDetailHr>
 
+          <RelatedQuestions>
+          </RelatedQuestions>
+        </div>
+      )
+    }
+  }
 
   return (
     <FullLayOut>
@@ -93,19 +108,13 @@ function IntensivePage() {
         <Routes>
           <Route exact={true} path="/" element={<LodingPage />} />
           <Route exact={true} path="KeyWordCard" element={<KeyWordCard />} />
-          <Route path="FourWayRace" element={<FourWayRace />} />
-          <Route path="ShortAnswer" element={<ShortAnswer />} />
-          <Route path="OXquiz" element={<OXquiz />} />
+          <Route exact={true} path="FourWayRace" element={<FourWayRace />} />
+          <Route exact={true} path="ShortAnswer" element={<ShortAnswer />} />
+          <Route exact={true} path="OXquiz" element={<OXquiz />} />
         </Routes>
       </FlexDiv>
       
-        {/* <RelatedExam>
-        </RelatedExam>
-
-        <StudyDetailHr></StudyDetailHr>
-
-        <RelatedQuestions>
-        </RelatedQuestions> */}
+        {relatedDisPlay()}
         
       </DetailLayOut>
     </FullLayOut>
