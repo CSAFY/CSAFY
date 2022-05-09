@@ -18,7 +18,7 @@ android {
 //    }
 
     defaultConfig {
-        applicationId "com.example.csafy_android"
+        applicationId "com.csafy.csafy_android"
         minSdkVersion 16
         targetSdkVersion 31
         versionCode 1

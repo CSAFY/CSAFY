@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.csafy_android.databinding.FragmentStudyBinding
+import com.csafy.csafy_android.databinding.FragmentStudyBinding
 
 class StudyFragment : Fragment() {
 

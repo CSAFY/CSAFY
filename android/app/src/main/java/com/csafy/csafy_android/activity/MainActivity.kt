@@ -6,8 +6,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.csafy.csafy_android.fragment.*
-import com.example.csafy_android.R
-import com.example.csafy_android.databinding.ActivityMainBinding
+import com.csafy.csafy_android.R
+import com.csafy.csafy_android.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {

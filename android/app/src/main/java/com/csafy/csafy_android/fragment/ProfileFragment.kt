@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.csafy.csafy_android.activity.LoginActivity
-import com.example.csafy_android.databinding.FragmentProfileBinding
+import com.csafy.csafy_android.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
 
