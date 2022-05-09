@@ -2,14 +2,12 @@ import {
   FullLayOut,
   DetailLayOut,
   FlexDiv,
-  StudyDetailDiv,
-  StudyDetailText,
   StudyDetailHr,
   GridDiv
  } from "./IntensivePage.styled"
 
-import { useEffect, useRef, useState } from "react";
-import { Navigate, Route, Router, Routes, useLocation  } from 'react-router';
+import { useEffect,  useState } from "react";
+import {  Route,  Routes, useLocation  } from 'react-router';
 import axios from 'axios';
 
 import Box from '@mui/material/Box';

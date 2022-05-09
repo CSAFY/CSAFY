@@ -24,21 +24,23 @@ export default function DrawerInList(props) {
 
   const onClickVideo = (event, data) => {
     props.isClick('left', false)
-    const tmp = {
-      "videoId" : data.videoId,
-      "title" : data.title,
-      "src" : data.imgSrc
-    }
-    setVideo(tmp)
+    
+    setVideo(data)
   }
 
 
   const ListItems = studyDatas.map((data, index) => 
     
-      <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {"imgSrc":data.snippet.thumbnails.high.url,
-        "title":data.snippet.title,
-        "videoId":data.id.videoId} )}} >
-        <ListItemText primary={data.snippet.title} />
+      <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
+        "imgSrc":`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`,
+        "title": data.title,
+        "videoId":data.videoId,
+        "category2Id" : data.category2Id,
+        "categoryId": data.categoryId,
+        "favorites" : data.favorites,
+        "id" : data.id,
+        "seen" : data.seen })}} >
+        <ListItemText primary={data.title} />
       </ListItem>
     
   )
