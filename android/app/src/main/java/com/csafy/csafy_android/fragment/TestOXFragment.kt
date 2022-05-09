@@ -1,21 +1,14 @@
-package com.example.csafy_android.fragment
+package com.csafy.csafy_android.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.example.csafy_android.R
-import com.example.csafy_android.activity.MainActivity
+import com.csafy.csafy_android.network.RequestToServer
+import com.csafy.csafy_android.network.data.response.ResponseOXData
 import com.example.csafy_android.databinding.FragmentTestOXBinding
-import com.example.csafy_android.databinding.FragmentTestSubjectBinding
-import com.example.csafy_android.network.RequestToServer
-import com.example.csafy_android.network.data.request.RequestLoginData
-import com.example.csafy_android.network.data.response.ResponseLoginData
-import com.example.csafy_android.network.data.response.ResponseOXData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -107,7 +100,7 @@ class TestOXFragment : Fragment() {
         }
 
         override fun onFailure(call: Call<ResponseOXData>, t: Throwable) {
-            TODO("Not yet implemented")
+
         }
         })
     }

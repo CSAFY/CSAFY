@@ -1,10 +1,10 @@
-package com.example.csafy_android.network
+package com.csafy.csafy_android.network
 
-import com.example.csafy_android.network.data.request.RequestJoinData
-import com.example.csafy_android.network.data.request.RequestLoginData
-import com.example.csafy_android.network.data.response.ResponseJoinData
-import com.example.csafy_android.network.data.response.ResponseLoginData
-import com.example.csafy_android.network.data.response.ResponseOXData
+import com.csafy.csafy_android.network.data.request.RequestJoinData
+import com.csafy.csafy_android.network.data.request.RequestLoginData
+import com.csafy.csafy_android.network.data.response.ResponseJoinData
+import com.csafy.csafy_android.network.data.response.ResponseLoginData
+import com.csafy.csafy_android.network.data.response.ResponseOXData
 import retrofit2.Call
 import retrofit2.http.*
 

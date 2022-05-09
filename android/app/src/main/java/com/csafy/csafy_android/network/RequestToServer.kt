@@ -1,4 +1,4 @@
-package com.example.csafy_android.network
+package com.csafy.csafy_android.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
