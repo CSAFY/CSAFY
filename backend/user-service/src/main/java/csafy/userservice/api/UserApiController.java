@@ -10,6 +10,7 @@ import csafy.userservice.repository.UserRepository;
 import csafy.userservice.service.UserService;
 import csafy.userservice.service.producer.UserProducer;
 import csafy.userservice.service.token.JwtTokenProvider;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -79,7 +80,7 @@ public class UserApiController {
 
         try {
             Long id = userService.join(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(null);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new UserDto(user));
         }
         catch (IllegalStateException e) {
             return ResponseEntity
@@ -218,8 +219,16 @@ public class UserApiController {
         String token = inputToken;
         System.out.println("토오큰 : " + token);
 
-        if (token == null || !jwtTokenProvider.validateToken(token)) {
+        if (token == null) {
             System.out.println("토큰 에러");
+            return "error";
+        }
+
+        try {
+            jwtTokenProvider.validateToken(token);
+        } catch (ExpiredJwtException ex){
+            return "JWT 토큰 만료";
+        } catch (Exception e){
             return "error";
         }
 

@@ -23,14 +23,23 @@ public class Video {
     private Long id;
 
     @Column(name = "category_id")
-    private int categoryId;
+    private String categoryId;
+
+    @Column(name = "category2_id")
+    private String category2Id;
 
     private String title;
 
     @Column(name = "video_id")
     private String videoId;
 
-    @OneToMany(mappedBy = "video")
+    @OneToMany(mappedBy = "video", cascade = {CascadeType.REMOVE})
     private List<VideoLikes> videoLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "video", cascade = {CascadeType.REMOVE})
+    private List<VideoFavorites> videoFavorites = new ArrayList<>();
+
+    @OneToMany(mappedBy = "video", cascade = {CascadeType.REMOVE})
+    private List<VideoSeen> videoSeens = new ArrayList<>();
 
 }

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "video_seen")
@@ -23,4 +24,7 @@ public class VideoSeen {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="video_seq")
     private Video video;
+
+    @Column(name ="seen_at")
+    private LocalDateTime seenAt;
 }

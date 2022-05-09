@@ -41,7 +41,6 @@ public class InterviewController {
     @GetMapping("/list/get")
     public ResponseEntity getInterviewList(@RequestHeader(value = "Authorization") String token,
             @RequestParam(value = "category") String category){
-        System.out.println("들어오긴함??");
         String resultCode = userServiceClient.checkTokenValidated(token);
         if (!resultCode.equals("OK")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
