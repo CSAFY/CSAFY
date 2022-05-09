@@ -1,9 +1,9 @@
-package com.example.csafy_android
+package com.csafy.csafy_android
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.csafy_android.fragment.*
+import com.csafy.csafy_android.fragment.*
 
 class MainPagerAdapter (fragment : FragmentActivity) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 5

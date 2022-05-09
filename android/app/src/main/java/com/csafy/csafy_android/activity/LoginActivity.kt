@@ -1,14 +1,14 @@
-package com.example.csafy_android.activity
+package com.csafy.csafy_android.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.csafy.csafy_android.network.RequestToServer
+import com.csafy.csafy_android.network.data.request.RequestLoginData
+import com.csafy.csafy_android.network.data.response.ResponseLoginData
 import com.example.csafy_android.databinding.ActivityLoginBinding
-import com.example.csafy_android.network.RequestToServer
-import com.example.csafy_android.network.data.request.RequestLoginData
-import com.example.csafy_android.network.data.response.ResponseLoginData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

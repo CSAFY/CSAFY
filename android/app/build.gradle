@@ -13,9 +13,9 @@ android {
     }
 
     // 데이터바인딩
-    dataBinding {
-        enabled = true
-    }
+//    dataBinding {
+//        enabled = true
+//    }
 
     defaultConfig {
         applicationId "com.example.csafy_android"
