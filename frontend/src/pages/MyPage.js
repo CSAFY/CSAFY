@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import StudyAnalysis from '../components/myPage/StudyAnalysis';
 import axios from 'axios';
+import swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { defaultAPI } from '../utils/api';
 
@@ -80,7 +81,7 @@ function MyPage() {
           },
         })
         .then(res => {
-          // console.log('🎃', res);
+          console.log('🎃', res);
           if (res.data.profile_image === null) {
             setUserInfo({
               email: res.data.email,
@@ -124,9 +125,9 @@ function MyPage() {
         ` https://csafy.com/api/v1/user-service/update`,
         {
           username: editUserInfo.username,
-          // profileImg: editUserInfo.profile_image,
-          profileImg:
-            'https://cdn.pixabay.com/photo/2020/05/17/20/21/cat-5183427_960_720.jpg',
+          profileImg: editUserInfo.profile_image,
+          // profileImg:
+          //   'https://cdn.pixabay.com/photo/2020/05/17/20/21/cat-5183427_960_720.jpg',
         },
         {
           headers: { Authorization: token },
@@ -146,6 +147,7 @@ function MyPage() {
       })
       .catch(err => console.error(err));
   };
+
   const handleEditToggle = () => {
     setEditToggle(!editToggle);
   };
@@ -156,6 +158,7 @@ function MyPage() {
     username: '',
     profile_image: '',
   });
+  // console.log(editUserInfo);
   useEffect(() => {
     setEditUserInfo({
       username: userInfo.username,
@@ -176,6 +179,37 @@ function MyPage() {
       };
     });
   };
+
+  // 프리미엄 결제
+  const buyPremium = () => {
+    const token = localStorage.getItem('jwt');
+
+    // 실제 적용시, 이미 프리미엄 유저인지 확인하는 것 필요
+    axios({
+      method: 'GET',
+      url: defaultAPI + '/pay-service/kakaoPay/',
+      headers: { Authorization: token },
+    })
+      .then(res => {
+        console.log(res);
+        window.location.href = res.data;
+      })
+      .catch(() => {
+        swal.fire({
+          icon: 'error',
+          title: '결제 실패',
+          text: '서버가 혼잡합니다. 다시 시도해 주세요.',
+        });
+      });
+  };
+
+  // var old = new Date().getTime();
+  // var now = new Date().getTime();
+
+  // var sec_gap = (now - old) / 1000;
+  // var min_gap = (now - old) / 1000 / 60;
+
+  // console.log(min_gap, sec_gap);
 
   return (
     <>
@@ -243,7 +277,7 @@ function MyPage() {
 
               <Profile>
                 {/* is_vip === 'T'일대만 `프리미엄 이용중` 보이기 */}
-                {userInfo.is_vip === 'T' && (
+                {userInfo.is_vip === 'Y' && (
                   <div
                     style={{
                       width: '85px',
@@ -330,7 +364,7 @@ function MyPage() {
                 <Button
                   variant="contained"
                   sx={{
-                    width: '130px',
+                    // width: '130px',
                     height: '40px',
                     textAlign: 'center',
                     display: 'block',
@@ -359,7 +393,7 @@ function MyPage() {
                 <Button
                   variant="contained"
                   sx={{
-                    width: '213px',
+                    // width: '213px',
                     height: '40px',
                     textAlign: 'center',
                     display: 'block',
@@ -377,6 +411,7 @@ function MyPage() {
                       bgcolor: 'white',
                     },
                   }}
+                  onClick={buyPremium}
                 >
                   Premium 버전 구독하기
                 </Button>

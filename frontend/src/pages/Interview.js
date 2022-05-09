@@ -123,8 +123,12 @@ function Interview() {
       )
       .then(res => {
         // console.log(res);
+        console.log(toggle);
+        res.data.push(toggle);
+        // console.log(testData);
 
         setTimeout(() => {
+          // navigate('/InterviewTest', { state: testData });
           navigate('/InterviewTest', { state: res.data });
         }, 2000);
       })
