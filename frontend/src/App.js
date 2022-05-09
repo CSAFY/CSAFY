@@ -31,6 +31,13 @@ import ReviewNote from './pages/ReviewNote';
 import CSTestDetail from './pages/CSTestDetail';
 import CSTestResult from './pages/CSTestResult';
 import Payment from './pages/Payment';
+import KakaopaySuccess from './pages/handler/KakaopaySuccess';
+import KakaopayCancel from './pages/handler/KakaopayCancel';
+import KakaopayFail from './pages/handler/KakaopayFail';
+import NotFound from './pages/handler/NotFound';
+import SpentTime from './pages/SpentTime';
+import AuthHandler from './pages/handler/AuthHandler';
+import Terms from './pages/Terms';
 
 function App() {
   return (
@@ -39,8 +46,9 @@ function App() {
       <div className="App">
         <NavBar />
         <Routes>
-          <Route path="/community" element={<Community />} />
           <Route path="/" element={<Home />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/editProfile" element={<EditProfile />} />
           <Route path="/chat" element={<Chat />} />
@@ -63,10 +71,15 @@ function App() {
           <Route path="/CSTestDetail/:testId" element={<CSTestDetail />} />
           <Route path="/CSTestResult/:testId" element={<CSTestResult />} />
           <Route path="/reviewNote" element={<ReviewNote />} />
-          <Route path="/payment" element={<Payment />} />
-
+          {/* <Route path="/payment" element={<Payment />} /> */}
+          <Route path="/oauth/redirect" element={<AuthHandler />} />
+          <Route path="/kakaoPay/success" element={<KakaopaySuccess />} />
+          <Route path="/kakaoPay/cancel" element={<KakaopayCancel />} />
+          <Route path="/kakaoPay/fail" element={<KakaopayFail />} />
+          <Route path="/*" element={<NotFound />} />
           {/*  */}
           <Route path="/timer" element={<Timer />} />
+          <Route path="/spentTime" element={<SpentTime />} />
         </Routes>
         <Chatbot />
         <Footer />
