@@ -19,7 +19,7 @@ import YouTubeVideo from "../../components/atoms/studypage/YouTubeVideo"
 function StudyDetailPage() {
   const videoDatas = useRecoilValue(videoData)
   const Url = `https://www.youtube.com/embed/${videoDatas.videoId}`
-  const datas = videoDatas.videoId
+  
 
 
   return (
@@ -40,7 +40,8 @@ function StudyDetailPage() {
         <StudyDetailHr></StudyDetailHr> */}
 
         <YouTubeVideo
-          id={datas}>
+          videoId={videoDatas.videoId}
+          id={videoDatas.id}>
         </YouTubeVideo>
 
         <RelatedExam>
