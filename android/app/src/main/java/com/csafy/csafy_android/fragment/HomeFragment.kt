@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.example.csafy_android.databinding.FragmentHomeBinding
+import com.csafy.csafy_android.databinding.FragmentHomeBinding
 
 
 class HomeFragment : Fragment() {

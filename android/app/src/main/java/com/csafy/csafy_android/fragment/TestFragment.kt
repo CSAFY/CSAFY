@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.csafy.csafy_android.activity.MainActivity
-import com.example.csafy_android.databinding.FragmentTestBinding
+import com.csafy.csafy_android.databinding.FragmentTestBinding
 
 class TestFragment : Fragment() {
 

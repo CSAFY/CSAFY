@@ -8,7 +8,7 @@ import android.widget.Toast
 import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.data.request.RequestLoginData
 import com.csafy.csafy_android.network.data.response.ResponseLoginData
-import com.example.csafy_android.databinding.ActivityLoginBinding
+import com.csafy.csafy_android.databinding.ActivityLoginBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
