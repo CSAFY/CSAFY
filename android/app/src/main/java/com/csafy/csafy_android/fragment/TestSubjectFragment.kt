@@ -1,15 +1,11 @@
-package com.example.csafy_android.fragment
+package com.csafy.csafy_android.fragment
 
 import android.os.Bundle
-import android.os.Debug
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.csafy_android.R
-import com.example.csafy_android.activity.MainActivity
-import com.example.csafy_android.databinding.FragmentTestBinding
+import com.csafy.csafy_android.activity.MainActivity
 import com.example.csafy_android.databinding.FragmentTestSubjectBinding
 
 class TestSubjectFragment : Fragment() {

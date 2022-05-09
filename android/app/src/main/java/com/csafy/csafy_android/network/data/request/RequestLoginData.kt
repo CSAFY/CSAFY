@@ -1,4 +1,4 @@
-package com.example.csafy_android.network.data.request
+package com.csafy.csafy_android.network.data.request
 
 data class RequestLoginData(
     val email : String,
