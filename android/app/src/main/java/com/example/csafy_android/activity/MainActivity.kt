@@ -3,6 +3,8 @@ package com.example.csafy_android.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.csafy_android.R
 import com.example.csafy_android.databinding.ActivityMainBinding
 import com.example.csafy_android.fragment.*
@@ -22,6 +24,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var testFragment: TestFragment
     private lateinit var profileFragment: ProfileFragment
 
+    // 하위 fragment
+    private lateinit var testSubjectFragment: TestSubjectFragment
+    private lateinit var testOXFragment: TestOXFragment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +45,73 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         testFragment = TestFragment()
         profileFragment = ProfileFragment()
 
+        // 하위 fragment
+        testSubjectFragment = TestSubjectFragment()
+        testOXFragment = TestOXFragment()
+
         supportFragmentManager.beginTransaction().replace(R.id.main_frame, homeFragment)
             .commit()
 
+    }
+
+    // frag -> frag
+    // 문제에서 OX, 사지선다 선택
+    fun changeTestFragment(index: Int, quizType: String){
+        when(index){
+            1 -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_frame, testFragment)
+                    .commit()
+            }
+
+            2 -> {
+                // 자료 보내기
+                var bundle = Bundle()
+                bundle.putString("quizType", quizType)
+
+                testSubjectFragment.arguments = bundle
+
+                // 이동                
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_frame, testSubjectFragment)
+                    .commit()
+                
+                // 보낸 자료 안내
+                Toast.makeText(this, quizType + "로 진입", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // frag -> frag
+    // 문제에서 과목 선택
+    // 1:자료구조, 2: 컴퓨터구조, 3: 운영체제론, 4: 데이터베이스, 5: 네트워크, 6: 기타
+    fun changeTestSubjectFragment(index: Int, quizType: String?){
+        var nextFragment: Fragment
+        if (quizType == "OX") {
+            nextFragment = testOXFragment
+        } else {
+            nextFragment = testOXFragment
+        }
+
+        // 자료 보내기
+        var bundle = Bundle()
+        when(index){
+            1 -> {bundle.putString("quizSubject", "자료구조")}
+            2 -> {bundle.putString("quizSubject", "컴퓨터구조")}
+            3 -> {bundle.putString("quizSubject", "운영체제론")}
+            4 -> {bundle.putString("quizSubject", "데이터베이스")}
+            5 -> {bundle.putString("quizSubject", "네트워크")}
+            6 -> {bundle.putString("quizSubject", "기타")}
+        }
+        nextFragment.arguments = bundle
+
+        // 이동
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_frame, nextFragment)
+            .commit()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
