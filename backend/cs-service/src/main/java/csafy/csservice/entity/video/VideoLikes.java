@@ -1,18 +1,17 @@
-package csafy.csservice.entity.Video;
+package csafy.csservice.entity.video;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "video_seen")
+@Table(name = "video_likes")
 @Getter
 @Setter
 @NoArgsConstructor
-public class VideoSeen {
+public class VideoLikes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +23,4 @@ public class VideoSeen {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="video_seq")
     private Video video;
-
-    @Column(name ="seen_at")
-    private LocalDateTime seenAt;
 }

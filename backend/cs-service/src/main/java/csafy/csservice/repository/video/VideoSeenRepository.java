@@ -1,6 +1,6 @@
 package csafy.csservice.repository.video;
 
-import csafy.csservice.entity.Video.VideoSeen;
+import csafy.csservice.entity.video.VideoSeen;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

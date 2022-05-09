@@ -1,6 +1,5 @@
-package csafy.csservice.entity.Video;
+package csafy.csservice.entity.video;
 
-import csafy.csservice.entity.interview.Interview;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,11 +7,11 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "video_likes")
+@Table(name = "video_favorites")
 @Getter
 @Setter
 @NoArgsConstructor
-public class VideoLikes {
+public class VideoFavorites {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

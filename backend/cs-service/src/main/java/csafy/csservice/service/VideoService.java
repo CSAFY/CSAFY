@@ -1,10 +1,8 @@
 package csafy.csservice.service;
 
-import csafy.csservice.dto.interview.InterviewCommentResponseDto;
 import csafy.csservice.dto.response.ResponseVideo;
-import csafy.csservice.entity.Video.VideoFavorites;
-import csafy.csservice.entity.Video.VideoSeen;
-import csafy.csservice.entity.interview.InterviewLikes;
+import csafy.csservice.entity.video.VideoFavorites;
+import csafy.csservice.entity.video.VideoSeen;
 import csafy.csservice.repository.video.VideoFavoritesRepository;
 import csafy.csservice.repository.video.VideoLikesRepository;
 import csafy.csservice.repository.video.VideoRepository;

@@ -1,6 +1,5 @@
-package csafy.csservice.entity.Video;
+package csafy.csservice.entity.video;
 
-import csafy.csservice.entity.interview.InterviewLikes;
 import lombok.*;
 
 import javax.persistence.*;

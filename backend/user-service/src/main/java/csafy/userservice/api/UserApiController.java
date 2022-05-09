@@ -80,6 +80,7 @@ public class UserApiController {
 
         try {
             Long id = userService.join(user);
+            user.setPassword(null);
             return ResponseEntity.status(HttpStatus.CREATED).body(new UserDto(user));
         }
         catch (IllegalStateException e) {
