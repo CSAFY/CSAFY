@@ -1,4 +1,4 @@
-package com.example.csafy_android
+package com.csafy.csafy_android
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

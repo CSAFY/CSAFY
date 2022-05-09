@@ -1,11 +1,11 @@
-package com.example.csafy_android.activity
+package com.csafy.csafy_android.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import com.example.csafy_android.R
-import com.example.csafy_android.databinding.ActivityMainBinding
-import com.example.csafy_android.fragment.*
+import com.csafy.csafy_android.R
+import com.csafy.csafy_android.databinding.ActivityMainBinding
+import com.csafy.csafy_android.fragment.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {

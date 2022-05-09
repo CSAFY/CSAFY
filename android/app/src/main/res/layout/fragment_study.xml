@@ -5,12 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".fragment.StudyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <WebView
+        android:id="@+id/web_study"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#5060e099"
-        android:layout_gravity="right"
-        android:text="학습 화면" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

@@ -1,14 +1,14 @@
-package com.example.csafy_android.activity
+package com.csafy.csafy_android.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.example.csafy_android.databinding.ActivityJoinBinding
-import com.example.csafy_android.network.RequestToServer
-import com.example.csafy_android.network.data.request.RequestJoinData
-import com.example.csafy_android.network.data.response.ResponseJoinData
+import com.csafy.csafy_android.databinding.ActivityJoinBinding
+import com.csafy.csafy_android.network.RequestToServer
+import com.csafy.csafy_android.network.data.request.RequestJoinData
+import com.csafy.csafy_android.network.data.response.ResponseJoinData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package com.example.csafy_android
+package com.csafy.csafy_android
 
 import org.junit.Test
 
