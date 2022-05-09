@@ -7,12 +7,13 @@ import axios from 'axios';
 class YouTubeVideo extends React.PureComponent {
   
   static propTypes = {
-    id: PropTypes.string.isRequired,
+    videoId: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
   };
   
   componentDidMount = () => {
     // On mount, check to see if the API script is already loaded
-
+    console.log(this.props)
     if (!window.YT) { // If not, load the script asynchronously
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
@@ -31,14 +32,14 @@ class YouTubeVideo extends React.PureComponent {
 
   componentDidUpdate = (event) => {
     console.log(this.props, "componentDidUpdate")
-    this.player.cueVideoById({videoId:this.props.id,suggestedQuality:"highres" })
+    this.player.cueVideoById({videoId:this.props.videoId,suggestedQuality:"highres" })
   }
 
   loadVideo = () => {
-    const { id } = this.props;
-    // the Player object is created uniquely based on the id in props
+    const { videoId } = this.props;
+    // the Player object is created uniquely based on the videoId in props
     this.player = new window.YT.Player("video", {
-      videoId: id,
+      videoId: videoId,
       width: "1158px;",
       height: "655px;",
       margin: "20px auto 0 auto;",
@@ -54,31 +55,32 @@ class YouTubeVideo extends React.PureComponent {
   };
 
   onPlayerStateChange = event => {
-    console.log(event.data)
-    // if(event.data ===  0){
-    //   this.studyFinish()
-    // }
+    // console.log(event.data)
+    
+    if(event.data ===  0){
+      this.studyFinish()
+    }
   };
   
   studyFinish = () => {
-    // axios({
-    //   method: 'get',
-    //   url: `https://csafy.com/api/v1/cs-service/study/${studySeq}/seen`,
-    //   headers: {
-    //     Authorization: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY2NzI5Mzg5NDI1NDU3NTg1NTgiLCJ1c2VyX3NlcSI6MzAsInVzZXJuYW1lIjoidGVzdGNjIiwidXNlcl9pZCI6IjExNjY3MjkzODk0MjU0NTc1ODU1OCIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE2NTIwNjkwODQsImV4cCI6MTY1MjI3MDY4NH0.L1pqHJcr43n107hOhz_9Hr_IwGxRPUl1-YD-I2ZbN6M"
-    //   },
-    // })
-    // .then((res) => {
-    //   console.log(res.data)
-    // })
-    // .catch(err =>{
-    //   console.log(err)
-    // })
+    axios({
+      method: 'post',
+      url: `https://csafy.com/api/v1/cs-service/study/${this.props.id}/seen`,
+      headers: {
+        Authorization: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY2NzI5Mzg5NDI1NDU3NTg1NTgiLCJ1c2VyX3NlcSI6MzAsInVzZXJuYW1lIjoidGVzdGNjIiwidXNlcl9pZCI6IjExNjY3MjkzODk0MjU0NTc1ODU1OCIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE2NTIwNjkwODQsImV4cCI6MTY1MjI3MDY4NH0.L1pqHJcr43n107hOhz_9Hr_IwGxRPUl1-YD-I2ZbN6M"
+      },
+    })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
   }
 
   render = () => {
 
-    const { id } = this.props;
+    const { videoId } = this.props;
     
     return (
       <div >
