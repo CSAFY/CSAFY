@@ -9,6 +9,7 @@ import { LinearProgress } from '@mui/material';
 
 // STYLED
 import styled from 'styled-components';
+import SpentTime from './SpentTime';
 
 const InterviewResultWrapper = styled.div`
   width: 100%;
@@ -49,6 +50,11 @@ const Question = styled.div`
   font-weight: 600;
   text-align: center;
   color: #000;
+`;
+const TimerBox = styled.div`
+  position: absolute;
+  top: 100px;
+  left: 200px;
 `;
 const Icon = styled.div`
   position: absolute;
@@ -191,15 +197,19 @@ const MyMemo = styled.div`
 function InterviewTest() {
   // API data
   const { state } = useLocation();
+  // console.log('🐕', state);
   const [testData, setTestData] = useState([]);
   const [seq, setSeq] = useState(0);
+  const [timeLimit, setTimeLimit] = useState(false);
   useEffect(() => {
     setTestData(state);
     setQuestion(state[0]['question']);
     setSeq(state[0]['interviewSeq']);
+    setTimeLimit(state[state.length - 1]);
   }, []);
   // console.log(testData);
   // console.log('🐸', seq);
+  // console.log(timeLimit);
 
   // 테스트 관련
   const [cnt, setCnt] = useState(1);
@@ -207,7 +217,7 @@ function InterviewTest() {
   const [question, setQuestion] = useState('');
   // 다음 문제로 넘어가기
   const nextQuestion = () => {
-    if (cnt === testData.length) {
+    if (cnt === testData.length - 1) {
       alert('test end');
     } else {
       setQuestion(testData[cnt]['question']);
@@ -219,7 +229,7 @@ function InterviewTest() {
   // progressbar
   const widthStyle = {
     height: '100%',
-    width: `${(100 / testData.length) * cnt}%`,
+    width: `${(100 / (testData.length - 1)) * cnt}%`,
     background: '#008ed0',
     borderRadius: '10px',
     transition: '1s ease 0.005s',
@@ -274,20 +284,31 @@ function InterviewTest() {
         .catch(err => console.error(err));
     }
   };
+
   useEffect(() => {
     getMyMemo();
   }, [seq]);
   // console.log('🎃', myMemo);
 
+  // 타이머 관련
+  // const endTime = (state.length - 1) * 60;
+  const endTime = 3;
+
   return (
     <InterviewResultWrapper>
       <InterviewResultContent>
+        {!timeLimit && (
+          <TimerBox>
+            {/* {stayTime} <button onClick={startTimer}>시작</button>{' '} */}
+            <SpentTime mm={'00'} ss={`${endTime}`} />
+          </TimerBox>
+        )}
         <QuestionBox>
           {/* <PrevButton onClick={prevQuestion}>이전</PrevButton> */}
           <StepBox>
-            {cnt}/{testData.length}
+            {cnt}/{testData.length - 1}
           </StepBox>
-          {cnt !== testData.length ? (
+          {cnt !== testData.length - 1 ? (
             <NextButton onClick={nextQuestion}>다음</NextButton>
           ) : (
             <NextButton onClick={toStart}>처음으로</NextButton>

@@ -51,9 +51,9 @@ const pages = [
   { name: '집중 학습', link: 'IntensivePage' },
   { name: '채팅', link: 'chat' },
   { name: '면접 대비', link: 'interview' },
-  { name: '기술 스택', link: 'classification' },
+  // { name: '기술 스택', link: 'classification' },
   { name: '메타버스', link: 'community' },
-  { name: '결제', link: 'payment' },
+  // { name: '결제', link: 'payment' },
 ];
 const settings = [
   { name: '문제집', link: 'CSTest' },
@@ -99,7 +99,7 @@ const NavBar = () => {
       setToggleLogin('로그인');
     }
     // console.log(token);
-  }, []);
+  }, [token]);
 
   // nav
   const navigate = useNavigate();
@@ -449,6 +449,7 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
+                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               )}
@@ -603,6 +604,7 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
+                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               )}

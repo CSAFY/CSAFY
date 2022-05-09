@@ -39,6 +39,12 @@ const SignupWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  position: relative;
+`;
+const Policy = styled.div`
+  position: absolute;
+  bottom: 25px;
 `;
 
 function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
@@ -118,7 +124,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
     });
   };
   const handleSignup = e => {
-    e.preventDefault();
+    // e.preventDefault();
     // Validation
     if (!emailRegex.test(signupInfo.email)) {
       setToggle({
@@ -163,20 +169,41 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
       .then(res => {
         // res
         console.log(res);
-        // 모달 없애기
-        setModal(false);
-        // navigate - 일단 홈으로
-        navigate('/');
+        setTimeout(() => {
+          axios
+            .post(`${defaultAPI}/user-service/account/login`, {
+              email: signupInfo.email,
+              password: signupInfo.password,
+            })
+            // 일단 회원가입 후 메인 페이지로 이동
+            .then(res => {
+              setToggleLogin('로그아웃');
+              // 모달 없애기
+              setModal(false);
+              // navigate
+              navigate('/mypage');
+              // localStorage
+              localStorage.setItem('jwt', res.data.token);
+            })
+            .catch(err => console.error(err));
+        }, 500);
+
+        // 초기화
+        // setLoginInfo({
+        //   email: '',
+        //   password: '',
+        // });
       })
       .catch(err => console.error(err));
 
     // 초기화
-    setSignupInfo({
-      email: '',
-      password: '',
-      passwordCheck: '',
-    });
+    // setSignupInfo({
+    //   email: '',
+    //   password: '',
+    //   passwordCheck: '',
+    // });
   };
+  // console.log(signupInfo);
 
   const googleOauth = e => {
     // TUPLI
@@ -376,7 +403,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
                   type="checkbox"
                   onClick={() => setPrivacy(!privacy)}
                 />{' '}
-                [필수] 개인정보 수집 및 이용 동의
+                <span>[필수] 개인정보 수집 및 이용 동의</span>
               </label>
               {toggle.agreementIsValid ? null : (
                 <div
@@ -448,6 +475,25 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               </div>
             </Button>
           </InputForm>
+          <Policy>
+            <div>
+              가입을 하면 C;SAFY의{' '}
+              <span
+                onClick={() => {
+                  navigate('/terms');
+                  setModal(false);
+                }}
+                style={{
+                  color: '#008ed0',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                }}
+              >
+                이용약관
+              </span>
+              에 동의하게 됩니다.
+            </div>
+          </Policy>
         </SignupWrapper>
       )}
     </>
