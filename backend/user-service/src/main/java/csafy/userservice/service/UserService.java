@@ -69,4 +69,8 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public User getUserSeqOnEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
 }

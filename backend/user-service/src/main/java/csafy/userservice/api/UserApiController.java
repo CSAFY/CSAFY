@@ -236,6 +236,19 @@ public class UserApiController {
         return "OK";
     }
 
+    /**
+     * email로 userSeq 찾기, feignclient
+     * @param email
+     * @return
+     */
+    @GetMapping("/email/seq")
+    public UserDto getUserSeqOnEmail(@RequestParam("email") String email){
+
+        User user = userService.getUserSeqOnEmail(email);
+
+        return new UserDto(user);
+    }
+
 
     /**
      * 로그인 JWT 발급

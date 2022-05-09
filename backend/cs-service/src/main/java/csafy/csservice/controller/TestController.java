@@ -2,6 +2,8 @@ package csafy.csservice.controller;
 
 import csafy.csservice.client.UserServiceClient;
 import csafy.csservice.dto.UserDto;
+import csafy.csservice.dto.response.zzz;
+import csafy.csservice.service.testService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/stack")
@@ -17,13 +21,13 @@ public class TestController {
 
     private final UserServiceClient userServiceClient;
 
-    private final
+    //private final;
 
     // 전체 CS 문제 모음집 - 분류 ( 난이도별, 랜덤 )
 
 
     // 과목별 문제집 GET
-    @GetMapping("/subject/get")
+    @GetMapping("/stack/get")
     public ResponseEntity getStackList(@RequestHeader(value = "Authorization") String token){
         // resultCode에 토큰 결과 저장
         String resultCode = userServiceClient.checkTokenValidated(token);
@@ -33,18 +37,24 @@ public class TestController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
         }
 
-        // 토큰에서 유저데이터, 문제집 리스트 받아오기
+        // 토큰에서 유저데이터, 문제 리스트 받아오기
         UserDto userDto = userServiceClient.getTokenUser(token);
-        List<Respon>
+        List<zzz> StackList = testService.getStackList(userDto.getUser_seq());
         //
-        return ResponseEntity.status(HttpStatus.OK).body(booksList);
+        return ResponseEntity.status(HttpStatus.OK).body(StackList);
     }
 
-    // 나만의 문제집 GET
+    // getMyStackList : 나만의 문제집 GET
+
+    // getStackDetail : 상세페이지
+
+    //
 
 
-    // 상세페이지
 
+
+
+    // 여기부턴 뭔소린지 나중에 듣자
     // 문제 유형 ( 실전, 일반 ) POST
 
     // 문제 가지고 오기 GET
