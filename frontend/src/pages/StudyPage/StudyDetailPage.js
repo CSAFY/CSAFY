@@ -13,7 +13,6 @@ import RelatedExam from "../../components/atoms/studypage/RelatedExam"
 import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 import Drawer from "../../components/atoms/studypage/Drawer"
 import YouTubeVideo from "../../components/atoms/studypage/YouTubeVideo"
-import Ttt from "../../components/atoms/studypage/Ttt"
 
 
 
@@ -34,11 +33,11 @@ function StudyDetailPage() {
         <TitleText>
           {videoDatas.title}
         </TitleText>
-        <MyiFrame
+        {/* <MyiFrame
           src={Url}
         ></MyiFrame>
 
-        <StudyDetailHr></StudyDetailHr>
+        <StudyDetailHr></StudyDetailHr> */}
 
         <YouTubeVideo
           id={datas}>

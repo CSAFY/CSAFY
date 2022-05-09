@@ -5,12 +5,14 @@ import { LayOut,
   KategorieLayOut,
   FlexDiv,
   InSideLayOut,
-  CardDiv
+  CardDiv,
+  SwitchBox
  } from "./StudyFramePage.styled"
 import { useEffect, useRef, useState } from "react";
-import BasicButton from "../../components/atoms/studypage/BasicButton"
 import CategoryList from "../../components/atoms/studypage/CategoryList"
 import ThumbNailCard from "../../components/atoms/studypage/ThumbNailCard"
+
+import MuiSwitch from '../../components/MuiSwitch';
 
 import YouTubeUrl from "../../utils/api"
 import axios from 'axios';
@@ -29,9 +31,8 @@ function StudyFramePage() {
     setSearchValue(event.target.value)
   }
 
-  const onBasicBtnlick = () => {
-    
-  }
+  
+  
   
   
   const [studyDatas, setStudyData] = useRecoilState(studyData)
@@ -49,7 +50,7 @@ function StudyFramePage() {
       params,
     })
     .then((res) => {
-      console.log(res.data.items)
+      
       setStudyData(res.data.items)
     })
     .catch(err =>{
@@ -59,12 +60,46 @@ function StudyFramePage() {
   useEffect(() => {
     getData();
   }, []);
+
+  // const qq = async () => {
+  //   axios({
+  //     method: 'get',
+  //     url: "https://csafy.com/api/v1/cs-service/study/list/get",
+  //     headers: {
+  //       Authorization: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY2NzI5Mzg5NDI1NDU3NTg1NTgiLCJ1c2VyX3NlcSI6MzAsInVzZXJuYW1lIjoidGVzdGNjIiwidXNlcl9pZCI6IjExNjY3MjkzODk0MjU0NTc1ODU1OCIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE2NTIwNjkwODQsImV4cCI6MTY1MjI3MDY4NH0.L1pqHJcr43n107hOhz_9Hr_IwGxRPUl1-YD-I2ZbN6M"
+  //     },
+  //   })
+  //   .then((res) => {
+  //     console.log(res.data)
+  // [{category2Id: "소분류1"
+  // categoryId: "대분류1"
+  // favorites: 1
+  // id: 1
+  // seen: 1
+  // title: "test1"
+  // videoId: "testURL1"},
+  // {category2Id: "소분류1"
+  // categoryId: "대분류1"
+  // favorites: 1
+  // id: 1
+  // seen: 1
+  // title: "test1"
+  // videoId: "testURL1"},]
+  //   })
+  //   .catch(err =>{
+  //     console.log(err)
+  //   })
+  // }
+  // useEffect(() => {
+  //   qq();
+  // }, []);
+  
   
   const againCard = studyDatas.map((data) => 
     
       <ThumbNailCard
         key={data.id.videoId}
-        imgSrc={data.snippet.thumbnails.high.url}
+        imgSrc={`https://i.ytimg.com/vi/${data.id.videoId}/hqdefault.jpg`}
         title={data.snippet.title}
         videoId={data.id.videoId}
         >
@@ -72,7 +107,11 @@ function StudyFramePage() {
   )
   
   const categori = useRecoilValue(category)
-  
+  const [toggle, setToggle] = useState(false);
+  const toggleTime = () => {
+    console.log(toggle);
+    setToggle(!toggle);
+  };
 
   return (
     <LayOut>
@@ -86,14 +125,11 @@ function StudyFramePage() {
             value={searchValue}
             onChange={onChange}>
           </SearchBox>
-          
 
-          <BasicButton
-            children="필터"
-            onClick={onBasicBtnlick}
-            able={"Y"}
-            >
-          </BasicButton>
+          <SwitchBox>
+            즐겨찾기
+            <MuiSwitch toggleTime={toggleTime} />
+          </SwitchBox>
           
 
         </SelectLayOut>

@@ -15,7 +15,7 @@ export const InSideLayOut = styled.div`
 `
 
 export const TitleName = styled.div`
-  width: 111px;
+  width: 150px;
   height: 30px;
   margin: 0 199px 5px 64px;
   font-family: SUIT;
@@ -55,3 +55,8 @@ export const CardDiv = styled.div`
   justify-items: center;
   align-items: center;
 `
+
+export const SwitchBox = styled.div`
+  
+  margin : 0 0 0 300px;
+`;

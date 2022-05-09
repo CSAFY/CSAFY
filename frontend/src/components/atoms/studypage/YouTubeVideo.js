@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import axios from 'axios';
+
 
 class YouTubeVideo extends React.PureComponent {
   
@@ -52,8 +54,27 @@ class YouTubeVideo extends React.PureComponent {
   };
 
   onPlayerStateChange = event => {
+    console.log(event.data)
+    // if(event.data ===  0){
+    //   this.studyFinish()
+    // }
   };
   
+  studyFinish = () => {
+    // axios({
+    //   method: 'get',
+    //   url: `https://csafy.com/api/v1/cs-service/study/${studySeq}/seen`,
+    //   headers: {
+    //     Authorization: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY2NzI5Mzg5NDI1NDU3NTg1NTgiLCJ1c2VyX3NlcSI6MzAsInVzZXJuYW1lIjoidGVzdGNjIiwidXNlcl9pZCI6IjExNjY3MjkzODk0MjU0NTc1ODU1OCIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE2NTIwNjkwODQsImV4cCI6MTY1MjI3MDY4NH0.L1pqHJcr43n107hOhz_9Hr_IwGxRPUl1-YD-I2ZbN6M"
+    //   },
+    // })
+    // .then((res) => {
+    //   console.log(res.data)
+    // })
+    // .catch(err =>{
+    //   console.log(err)
+    // })
+  }
 
   render = () => {
 
