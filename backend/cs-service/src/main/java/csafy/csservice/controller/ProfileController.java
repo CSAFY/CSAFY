@@ -104,7 +104,7 @@ public class ProfileController {
     // 유저 뱃지 관련
 
     // score 반환 (육각형 그래프 + 카드)
-    @GetMapping("/scores/get")
+    @GetMapping("/my/scores/get")
     public ResponseEntity getScoresToken(@RequestHeader(value = "Authorization") String token){
 
         String resultCode = userServiceClient.checkTokenValidated(token);

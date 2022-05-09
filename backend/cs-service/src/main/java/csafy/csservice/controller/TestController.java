@@ -26,23 +26,29 @@ public class TestController {
     // 전체 CS 문제 모음집 - 분류 ( 난이도별, 랜덤 )
 
 
-    // 과목별 문제집 GET
-    @GetMapping("/stack/get")
-    public ResponseEntity getStackList(@RequestHeader(value = "Authorization") String token){
-        // resultCode에 토큰 결과 저장
-        String resultCode = userServiceClient.checkTokenValidated(token);
-
-        // 대조 후 통과 못하면 상태 메시지 반환
-        if(!resultCode.equals("OK")){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
-        }
-
-        // 토큰에서 유저데이터, 문제 리스트 받아오기
-        UserDto userDto = userServiceClient.getTokenUser(token);
-        List<zzz> StackList = testService.getStackList(userDto.getUser_seq());
-        //
-        return ResponseEntity.status(HttpStatus.OK).body(StackList);
-    }
+//    // 과목별 문제집 GET
+//    @GetMapping("/stack/get")
+//    public ResponseEntity getStackList(@RequestHeader(value = "Authorization") String token){
+//        // resultCode에 토큰 결과 저장
+//        String resultCode = userServiceClient.checkTokenValidated(token);
+//
+//        // 대조 후 통과 못하면 상태 메시지 반환
+//        if(!resultCode.equals("OK")){
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+//        }
+//
+//        // 토큰에서 유저데이터, 문제 리스트 받아오기
+//        UserDto userDto = userServiceClient.getTokenUser(token);
+//        List<zzz> StackList = testService.getStackList(userDto.getUser_seq());
+//
+//        // 데이터 없으면 스테이터스에 널값 반환
+//        if( StackList == null || StackList.size() == 0){
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+//        }
+//
+//        // 최종 반환
+//        return ResponseEntity.status(HttpStatus.OK).body(StackList);
+//    }
 
     // getMyStackList : 나만의 문제집 GET
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface InterviewSeenRepository extends JpaRepository<InterviewSeen, Long> {
 
-    @Query("select i from InterviewSeen i where i.interview.interviewSeq =:interviewSeq and i.userSeq =: userSeq")
+    @Query("select i from InterviewSeen i where i.interview.interviewSeq =:interviewSeq and i.userSeq =:userSeq")
     InterviewSeen findByInterviewUser(@Param("interviewSeq") Long interviewSeq, @Param("userSeq") Long userSeq);
 
     @Query("select i from InterviewSeen i where i.userSeq =: userSeq order by i.seenAt DESC")
