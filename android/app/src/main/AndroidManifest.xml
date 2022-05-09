@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CSAFYandroid">
-        <activity android:name=".activity.JoinActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name="com.csafy.csafy_android.activity.JoinActivity" />
+        <activity android:name="com.csafy.csafy_android.activity.LoginActivity" />
+        <activity android:name="com.csafy.csafy_android.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

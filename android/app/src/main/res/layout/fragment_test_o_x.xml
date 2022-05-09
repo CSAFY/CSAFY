@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.TestOXFragment">
+    tools:context="com.csafy.csafy_android.fragment.TestOXFragment">
 
     <Button
         android:id="@+id/btnX"
