@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.data.response.ResponseOXData
-import com.example.csafy_android.databinding.FragmentTestOXBinding
+import com.csafy.csafy_android.databinding.FragmentTestOXBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

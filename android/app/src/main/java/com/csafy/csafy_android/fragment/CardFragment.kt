@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.example.csafy_android.databinding.FragmentCardBinding
+import com.csafy.csafy_android.databinding.FragmentCardBinding
 
 
 class CardFragment : Fragment() {
