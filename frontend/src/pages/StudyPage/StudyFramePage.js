@@ -5,12 +5,14 @@ import { LayOut,
   KategorieLayOut,
   FlexDiv,
   InSideLayOut,
-  CardDiv
+  CardDiv,
+  SwitchBox
  } from "./StudyFramePage.styled"
 import { useEffect, useRef, useState } from "react";
-import BasicButton from "../../components/atoms/studypage/BasicButton"
 import CategoryList from "../../components/atoms/studypage/CategoryList"
 import ThumbNailCard from "../../components/atoms/studypage/ThumbNailCard"
+
+import SlideToggleBtn from '../../components/atoms/studypage/SlideToggleBtn';
 
 import YouTubeUrl from "../../utils/api"
 import axios from 'axios';
@@ -29,27 +31,24 @@ function StudyFramePage() {
     setSearchValue(event.target.value)
   }
 
-  const onBasicBtnlick = () => {
-    
-  }
   
+  const [toggle, setToggle] = useState(false);
+  const toggleTime = () => {
+    
+    setToggle(!toggle);
+  };
   
   const [studyDatas, setStudyData] = useRecoilState(studyData)
   const getData = async () => {
-    const params = {
-      key: 'AIzaSyD0YhR64cx9_iaWnxKXPTxt39BVigDbFyw',
-      part:'snippet',
-      // 선택한 영화 제목
-      q: "스파이더맨",
-      type: 'video',
-    }
     axios({
       method: 'get',
-      url: YouTubeUrl,
-      params,
+      url: "https://csafy.com/api/v1/cs-service/study/list/get",
+      headers: {
+        Authorization: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY2NzI5Mzg5NDI1NDU3NTg1NTgiLCJ1c2VyX3NlcSI6MzAsInVzZXJuYW1lIjoidGVzdGNjIiwidXNlcl9pZCI6IjExNjY3MjkzODk0MjU0NTc1ODU1OCIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE2NTIwNjkwODQsImV4cCI6MTY1MjI3MDY4NH0.L1pqHJcr43n107hOhz_9Hr_IwGxRPUl1-YD-I2ZbN6M"
+      },
     })
     .then((res) => {
-      setStudyData(res.data.items)
+      setStudyData(res.data)
     })
     .catch(err =>{
       console.log(err)
@@ -58,17 +57,84 @@ function StudyFramePage() {
   useEffect(() => {
     getData();
   }, []);
+
+  const cateFilter = (data, index) => {
+    if (nowKategorie === "전체"){
+      return(
+        <ThumbNailCard
+            key={data.id}
+            imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+            title={data.title}
+            index={index}
+            videoId={data.videoId}
+            category2Id = {data.category2Id}
+            categoryId={data.categoryId}
+            favorites ={data.favorites}
+            id = {data.id}
+            seen = {data.seen}
+            >
+          </ThumbNailCard>
+      )
+    }else if (nowKategorie === data.categoryId) {
+      return(
+        <ThumbNailCard
+            key={data.id}
+            imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+            title={data.title}
+            index={index}
+            videoId={data.videoId}
+            category2Id = {data.category2Id}
+            categoryId={data.categoryId}
+            favorites ={data.favorites}
+            id = {data.id}
+            seen = {data.seen}
+            >
+          </ThumbNailCard>
+      )
+    } 
+  }
   
-  const againCard = studyDatas.map((data) => 
+  const againCard = studyDatas.map((data, index) => 
     
-      <ThumbNailCard
-        key={data.id.videoId}
-        imgSrc={data.snippet.thumbnails.high.url}
-        title={data.snippet.title}
-        videoId={data.id.videoId}
-        >
-      </ThumbNailCard>
+      {
+        if (toggle === false){
+          return cateFilter(data, index)
+        } else if (data.favorites === 1) {
+          return cateFilter(data)
+        }
+      }
   )
+
+  
+
+  // <ThumbNailCard
+  //           key={data.id}
+  //           index={index}
+  //           imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+  //           title={data.title}
+  //           videoId={data.videoId}
+  //           category2Id = {data.category2Id}
+  //           categoryId={data.categoryId}
+  //           favorites ={data.favorites}
+  //           id = {data.id}
+  //           seen = {data.seen}
+  //           >
+  //         </ThumbNailCard>
+
+
+  // (
+  //   <ThumbNailCard
+  //   key={data.id}
+  //   imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+  //   title={data.title}
+  //   videoId={data.videoId}
+  //   category2Id = {data.category2Id}
+  //   favorites ={data.favorites}
+  //   id = {data.id}
+  //   seen = {data.seen}
+  //   >
+  // </ThumbNailCard>
+  // )
   
   const categori = useRecoilValue(category)
   
@@ -85,28 +151,22 @@ function StudyFramePage() {
             value={searchValue}
             onChange={onChange}>
           </SearchBox>
-          
 
-          <BasicButton
-            children="필터"
-            onClick={onBasicBtnlick}
-            able={"Y"}
-            >
-          </BasicButton>
+          <SwitchBox>
+            즐겨찾기
+            <SlideToggleBtn toggleTime={toggleTime} />
+          </SwitchBox>
           
-
         </SelectLayOut>
 
-        
-        <FlexDiv  >
-          <KategorieLayOut>
-            <CategoryList
-              selectKategorie = {selectKategorie}
-              categori = {categori}
-              >
-            </CategoryList>
-          </KategorieLayOut>
-
+        <FlexDiv>
+          
+          <CategoryList
+            selectKategorie = {selectKategorie}
+            categori = {categori}
+            >
+          </CategoryList>
+          
           <CardDiv>
             {againCard}
           </CardDiv>
