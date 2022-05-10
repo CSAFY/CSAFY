@@ -38,6 +38,7 @@ import NotFound from './pages/handler/NotFound';
 import SpentTime from './pages/SpentTime';
 import AuthHandler from './pages/handler/AuthHandler';
 import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/editProfile" element={<EditProfile />} />
