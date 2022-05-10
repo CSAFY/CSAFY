@@ -1,10 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useLocation } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
 
 // STYLED
 import styled from 'styled-components';
@@ -67,6 +70,9 @@ let sock;
 let ws;
 
 function TestChatRoom({ chatRoomId }) {
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
   // console.log('🐸', chatRoomId);
   const navigate = useNavigate();
   const [chatRoomInfo, setChatRoomInfo] = useState({
@@ -77,17 +83,14 @@ function TestChatRoom({ chatRoomId }) {
   });
   const [messages, setMessages] = useState([]);
   const [chatMessage, setChatMessage] = useState('');
-  // const { roomName } = useParams();
-  // const [roomName, setRoomName] = useState('');
-  // const [roomStartTime, setRoomStartTime] = useState('');
-  // const [roomCount, setRoomCount] = useState(0);
 
   useEffect(() => {
     roomInfo();
     initRoom();
     getMessages();
   }, [chatRoomId]);
-  console.log('🐕', messages, chatRoomId);
+
+  // console.log('🐕', messages, chatRoomId);
 
   const roomInfo = () => {
     axios
@@ -101,7 +104,7 @@ function TestChatRoom({ chatRoomId }) {
       });
   };
   const initRoom = () => {
-    const token = localStorage.getItem('jwt');
+    // e.preventDefault();
     sock = new SockJS(`${defaultAPI}/chat-service/ws-stomp`);
     ws = Stomp.over(sock);
 
@@ -134,10 +137,13 @@ function TestChatRoom({ chatRoomId }) {
 
   const sendMessage = type => {
     if (!chatMessage) return;
-    const token = localStorage.getItem('jwt');
     ws.send(
       '/pub/chat/message',
-      JSON.stringify({ type: type, roomId: chatRoomId, message: chatMessage }),
+      JSON.stringify({
+        type: type,
+        roomId: chatRoomId,
+        message: chatMessage,
+      }),
       { Authorization: token },
     );
     setChatMessage('');
@@ -146,7 +152,11 @@ function TestChatRoom({ chatRoomId }) {
   const recvMessage = recv => {
     setMessages(prev => [
       ...prev,
-      { type: recv.type, sender: recv.sender, message: recv.message },
+      {
+        type: recv.type,
+        sender: recv.sender,
+        message: recv.message,
+      },
     ]);
   };
 
@@ -196,12 +206,12 @@ function TestChatRoom({ chatRoomId }) {
       </SendMessage>
 
       <MessageBox>
-        {messages.map((message, i) => (
+        {messages.map((message, idx) => (
           <>
             {message.message.includes('님이 방에 입장했습니다.') ? (
               <>
                 <Message
-                  key={i}
+                  key={idx}
                   style={{
                     height: '20px',
                     backgroundColor: '#2f3132',
@@ -216,7 +226,7 @@ function TestChatRoom({ chatRoomId }) {
               </>
             ) : (
               <>
-                <Message key={i}>{message.message}</Message>
+                <Message key={idx}>{message.message}</Message>
               </>
             )}
           </>

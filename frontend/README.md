@@ -32,4 +32,6 @@ yarn add react-calendar-heatmap react-tooltip
 
 // npm ERR! 시 npm i ~~ 뒤에 --legacy-peer-deps 추가
 npm i react-reveal --save --legacy-peer-deps
+
+npm install recoil-persist --save --legacy-peer-deps
 ```
