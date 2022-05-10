@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import CategoryList from "../../components/atoms/studypage/CategoryList"
 import ThumbNailCard from "../../components/atoms/studypage/ThumbNailCard"
 
-import MuiSwitch from '../../components/MuiSwitch';
+import SlideToggleBtn from '../../components/atoms/studypage/SlideToggleBtn';
 
 import YouTubeUrl from "../../utils/api"
 import axios from 'axios';
@@ -154,7 +154,7 @@ function StudyFramePage() {
 
           <SwitchBox>
             즐겨찾기
-            <MuiSwitch toggleTime={toggleTime} />
+            <SlideToggleBtn toggleTime={toggleTime} />
           </SwitchBox>
           
         </SelectLayOut>
