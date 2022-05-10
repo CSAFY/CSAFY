@@ -58,6 +58,7 @@ export const oxquizData = atom({
     { 
     explanation : "",
     answer : null,
+    word: "",
     },
     
   ],

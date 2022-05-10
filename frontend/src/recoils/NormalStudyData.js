@@ -4,7 +4,15 @@ import { localStorageEffect } from "../utils/localStorageEffect";
 
 export const studyData = atom({
   key: 'studyData',
-  default: [],
+  default: [{
+    category2Id: " ",
+    categoryId: " ",
+    favorites: null,
+    id: null,
+    seen: null,
+    title: "",
+    videoId: ""
+  }],
   effects_UNSTABLE: [localStorageEffect("study_data_token")],
 });
 

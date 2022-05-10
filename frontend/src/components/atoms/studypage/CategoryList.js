@@ -20,6 +20,7 @@ function CategoryList(props) {
       key={index}
       value={data}
       color={btncolors[index % 7]}
+      sx={{width: "120px;"}}
       >
       
       {data}
@@ -33,7 +34,7 @@ function CategoryList(props) {
       onChange={handleAlignment}
       aria-label="text alignment"
       color="primary"
-
+      sx={{margin: "40px 0 0 0;", width: "120px;"}}
     >
       
       {againToggleButton}
