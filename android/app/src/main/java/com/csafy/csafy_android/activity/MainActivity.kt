@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     // 하위 fragment
     private lateinit var testSubjectFragment: TestSubjectFragment
     private lateinit var testOXFragment: TestOXFragment
+    private lateinit var testMultipleFragment: TestMultipleFragment
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,10 +49,19 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         // 하위 fragment
         testSubjectFragment = TestSubjectFragment()
         testOXFragment = TestOXFragment()
+        testMultipleFragment = TestMultipleFragment()
 
         supportFragmentManager.beginTransaction().replace(R.id.main_frame, homeFragment)
             .commit()
 
+    }
+
+    // home으로 보내기
+    fun changeHomeFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_frame, testFragment)
+            .commit()
     }
 
     // frag -> frag
@@ -92,7 +102,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         if (quizType == "OX") {
             nextFragment = testOXFragment
         } else {
-            nextFragment = testOXFragment
+            nextFragment = testMultipleFragment
         }
 
         // 자료 보내기

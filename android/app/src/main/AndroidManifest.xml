@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CSAFYandroid">
+        android:theme="@style/Theme.CSAFYandroid"
+        android:name=".network.common.App">
         <activity android:name="com.csafy.csafy_android.activity.JoinActivity" />
         <activity android:name="com.csafy.csafy_android.activity.LoginActivity" />
         <activity android:name="com.csafy.csafy_android.activity.MainActivity">
