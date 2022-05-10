@@ -22,6 +22,7 @@ import VideoBox from '../components/myPage/VideoBox';
 // STYLED
 import styled from 'styled-components';
 import { Button } from '@mui/material';
+import QuestionBox from '../components/QuestionBox';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -76,9 +77,12 @@ function MyPage() {
     username: '',
     profile_image: '',
   });
-  // 정보 가져오기
+  // 사용자 정보 가져오기
   const getInfo = () => {
     axios
+      // .get(`${defaultAPI}/user-service/userInfo`, {
+      //   headers: { Authorization: token },
+      // })
       .get(`${defaultAPI}/user-service/token/user`, {
         params: {
           inputToken: token,
@@ -106,8 +110,50 @@ function MyPage() {
       })
       .catch(err => console.error(err));
   };
+  // 최근 본 면접 질문
+  const [recentInterview, setRecentInterview] = useState([]);
+  const getRecentInterviewInfo = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/profile/interview/seen`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('최근 본 면접 질문 --->', res);
+        setRecentInterview(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+  // 최근 본 강의
+  const [recentStudy, setRecentStudy] = useState([]);
+  const getRecentStudyInfo = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/profile/study/seen`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('최근 본 강의 --->', res);
+        setRecentStudy(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+  // 즐겨찾기 한 강의
+  const [favorites, setFavorites] = useState([]);
+  const getFavorites = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/profile/study/favorites`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('즐겨찾기 한 강의 --->', res);
+        setFavorites(res.data);
+      })
+      .catch(err => console.error(err));
+  };
   useEffect(() => {
     getInfo();
+    getRecentInterviewInfo();
+    getRecentStudyInfo();
+    getFavorites();
   }, []);
 
   // Heatmap
@@ -488,9 +534,13 @@ function MyPage() {
             }}
           >
             <h1 style={{ textAlign: 'center' }}>최근 본 면접 질문</h1>
-            <InterviewBox question={'Q1'} />
+            {recentInterview.map(info => (
+              <InterviewBox key={info.id} {...info} />
+              // <QuestionBox key={info.interviewSeq} {...info} />
+            ))}
+            {/* <InterviewBox question={'Q1'} />
             <InterviewBox question={'Q2'} />
-            <InterviewBox question={'Q3'} />
+            <InterviewBox question={'Q3'} /> */}
           </div>
           <div
             style={{

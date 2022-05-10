@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
 
 // STYLED
 import styled from 'styled-components';
@@ -76,19 +80,37 @@ function CommentBox({
   username,
   getComment,
 }) {
-  ///// 좋아요 관련 테스트용
-  console.log(
-    'from InterviewDetail ----------->',
-    'id:',
-    id,
-    'liked:',
-    liked,
-    'likesCount:',
-    likesCount,
-  );
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
   const [likeCount, setLikeCount] = useState(likesCount);
+
+  // 댓글 정보 가져오기
+  const [commentInfo, setCommentInfo] = useState({});
+  console.log(commentInfo);
+
+  const handleLike = () => {
+    setCommentLikeData({ id });
+    getCommentLikeData({ id });
+    getCommentData({ id });
+  };
+  const getCommentData = ({ id }) => {
+    axios
+      .get(`${defaultAPI}/cs-service/interview/${id}/comment/info`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('🐕', res);
+        setCommentInfo(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+  useEffect(() => {
+    getCommentData({ id });
+  }, []);
+
   // 좋아요 정보 가져오기
-  const getCommentLikeData = () => {
+  const getCommentLikeData = ({ id }) => {
     axios
       .get(`${defaultAPI}/cs-service/interview/${id}/comment/likes`)
       .then(res => {
@@ -97,22 +119,24 @@ function CommentBox({
       })
       .catch(err => console.error(err));
   };
+  // // 좋아요 클릭 여부
+  // const [isClicked, setIsClicked] = useState(liked);
   // useEffect(() => {
   //   getCommentLikeData();
   // }, []);
-  // 좋아요 클릭 여부
-  const [isClicked, setIsClicked] = useState(liked);
+  // useEffect(() => {
+  //   getCommentData(id);
+  // }, [isClicked]);
+
   // 좋아요 정보 수정
-  const setCommentLikeData = () => {
-    const token = localStorage.getItem('jwt');
+  const setCommentLikeData = ({ id }) => {
     axios
       .post(`${defaultAPI}/cs-service/interview/${id}/comment/likes`, null, {
         headers: { Authorization: token },
       })
       .then(res => {
         console.log('settedCommentLikeData', res);
-        setIsClicked(!isClicked);
-        getCommentLikeData();
+        getCommentLikeData({ id });
       })
       .catch(err => console.error(err));
   };
@@ -159,40 +183,6 @@ function CommentBox({
       .catch(err => console.error(err));
   };
 
-  // // 댓글 좋아요
-  // const [commentLike, setCommentLike] = useState(likesCount);
-
-  // // console.log(liked, likesCount, commentLike);
-  // const [isLiked, setIsLiked] = useState(liked);
-
-  // const handleLike = () => {
-  //   const token = localStorage.getItem('jwt');
-  //   axios
-  //     .post(`${defaultAPI}/cs-service/interview/${id}/comment/likes`, null, {
-  //       headers: { Authorization: token },
-  //     })
-  //     .then(res => {
-  //       console.log(res);
-  //       getSpecificCommentLikes();
-  //       setIsLiked(!isLiked);
-  //     })
-  //     .catch(err => console.error(err));
-  // };
-  // const getSpecificCommentLikes = () => {
-  //   axios
-  //     .get(`${defaultAPI}/cs-service/interview/${id}/comment/likes`)
-  //     .then(res => {
-  //       console.log('🐸🎃', res);
-  //       setCommentLike(res.data.commentLikes);
-  //     })
-  //     .catch(err => console.error(err));
-  // };
-  // console.log(commentLike, likesCount);
-
-  // useEffect(() => {
-  //   getSpecificCommentLikes();
-  // }, [isLiked]);
-
   return (
     <div>
       <Box>
@@ -211,24 +201,24 @@ function CommentBox({
         )}
 
         <ButtonBox>
-          {isClicked ? (
+          {commentInfo.liked ? (
             <>
               <ThumbUpIcon
                 sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
-                onClick={setCommentLikeData}
+                onClick={handleLike}
               />
               <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
-                {likeCount}
+                {commentInfo.commentLikesCount}
               </p>
             </>
           ) : (
             <>
               <ThumbUpOffAltIcon
                 sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
-                onClick={setCommentLikeData}
+                onClick={handleLike}
               />
               <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
-                {likeCount}
+                {commentInfo.commentLikesCount}
               </p>
             </>
           )}
