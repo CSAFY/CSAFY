@@ -4,34 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.csafy.csafy_android.fragment.TestOXFragment">
-
-    <Button
-        android:id="@+id/btnX"
-        android:layout_width="200dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="24dp"
-        android:text="X"
-        android:textColor="#FF0000"
-        android:textSize="75sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnO"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Button
-        android:id="@+id/btnO"
-        android:layout_width="200dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="24dp"
-        android:text="O"
-        android:textColor="@color/main_green"
-        android:textSize="75sp"
-        app:layout_constraintEnd_toStartOf="@+id/btnX"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+    tools:context=".fragment.TestMultipleFragment">
 
     <ImageView
         android:id="@+id/imageView"
@@ -90,6 +63,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btnExample1"
+        android:layout_width="400dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="10dp"
+        android:text="BUTTON"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/btnExample2"
+        android:layout_width="400dp"
+        android:layout_height="52dp"
+        android:text="Button"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnExample1" />
+
+    <Button
+        android:id="@+id/btnExample3"
+        android:layout_width="400dp"
+        android:layout_height="52dp"
+        android:text="Button"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnExample2" />
+
+    <Button
+        android:id="@+id/btnExample4"
+        android:layout_width="400dp"
+        android:layout_height="52dp"
+        android:text="BUTTON"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnExample3" />
+
     <ImageView
         android:id="@+id/imageViewResultX"
         android:layout_width="218dp"
@@ -126,6 +141,5 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
