@@ -44,6 +44,8 @@ function StudyDetailPage() {
           id={videoDatas.id}>
         </YouTubeVideo>
 
+        <StudyDetailHr></StudyDetailHr>
+        
         <RelatedExam>
         </RelatedExam>
 

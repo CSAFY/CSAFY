@@ -41,8 +41,6 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
 
   const ToggleFavorites = (bools) => {
     
-    
-
     axios({
       method: 'post',
       url: `https://csafy.com/api/v1/cs-service/study/${id}/favorites`,
@@ -51,7 +49,6 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
       },
     })
     .then((res) => {
-      console.log(res)
       setFavorit(bools)
       let tmp_data = studyDatas.slice()
     

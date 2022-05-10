@@ -13,7 +13,6 @@ class YouTubeVideo extends React.PureComponent {
   
   componentDidMount = () => {
     // On mount, check to see if the API script is already loaded
-    console.log(this.props)
     if (!window.YT) { // If not, load the script asynchronously
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
@@ -31,7 +30,7 @@ class YouTubeVideo extends React.PureComponent {
   };
 
   componentDidUpdate = (event) => {
-    console.log(this.props, "componentDidUpdate")
+    // console.log(this.props, "componentDidUpdate")
     this.player.cueVideoById({videoId:this.props.videoId,suggestedQuality:"highres" })
   }
 
@@ -79,9 +78,6 @@ class YouTubeVideo extends React.PureComponent {
   }
 
   render = () => {
-
-    const { videoId } = this.props;
-    
     return (
       <div >
         <div id="video" />
