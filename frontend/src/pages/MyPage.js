@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import StudyAnalysis from '../components/myPage/StudyAnalysis';
+import axios from 'axios';
+import swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { defaultAPI } from '../utils/api';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
 
 // HEATMAP
 import CalendarHeatmap from 'react-calendar-heatmap';
@@ -13,9 +21,7 @@ import VideoBox from '../components/myPage/VideoBox';
 
 // STYLED
 import styled from 'styled-components';
-import { Button, Typography } from '@mui/material';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -60,7 +66,10 @@ const VideoWrapper = styled.div`
 `;
 
 function MyPage() {
-  const navigate = useNavigate();
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
+  // 개인정보
   const [userInfo, setUserInfo] = useState({
     email: '',
     is_vip: '',
@@ -69,40 +78,37 @@ function MyPage() {
   });
   // 정보 가져오기
   const getInfo = () => {
-    // 사용자 토큰
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      axios
-        .get(`https://k6a102.p.ssafy.io/api/v1/user-service/token/user`, {
-          params: {
-            inputToken: token,
-          },
-        })
-        .then(res => {
-          console.log(res);
-          if (res.data.profile_image === null) {
-            setUserInfo({
-              email: res.data.email,
-              is_vip: res.data.is_vip,
-              username: res.data.username,
-              profile_image: 'images/google.png',
-            });
-          } else {
-            setUserInfo({
-              email: res.data.email,
-              is_vip: res.data.is_vip,
-              username: res.data.username,
-              profile_image: res.data.profile_image,
-            });
-          }
-        })
-        .catch(err => console.error(err));
-    }
+    axios
+      .get(`${defaultAPI}/user-service/token/user`, {
+        params: {
+          inputToken: token,
+        },
+      })
+      .then(res => {
+        console.log('🎃', res);
+        if (res.data.profile_image === null) {
+          setUserInfo({
+            email: res.data.email,
+            is_vip: res.data.is_vip,
+            username: res.data.username,
+            profile_image: 'images/google.png',
+            user_seq: res.data.user_seq,
+          });
+        } else {
+          setUserInfo({
+            email: res.data.email,
+            is_vip: res.data.is_vip,
+            username: res.data.username,
+            profile_image: res.data.profile_image,
+            user_seq: res.data.user_seq,
+          });
+        }
+      })
+      .catch(err => console.error(err));
   };
   useEffect(() => {
     getInfo();
   }, []);
-  console.log('🐸', userInfo);
 
   // Heatmap
   const today = new Date();
@@ -115,19 +121,44 @@ function MyPage() {
   // 프로필 변경 관련
   const [editToggle, setEditToggle] = useState(false);
   const handleEdit = () => {
+    const token = localStorage.getItem('jwt');
     setEditToggle(!editToggle);
-    console.log(editUserInfo);
+    axios
+      .put(
+        ` https://csafy.com/api/v1/user-service/update`,
+        {
+          username: editUserInfo.username,
+          profileImg: editUserInfo.profile_image,
+          // profileImg:
+          //   'https://cdn.pixabay.com/photo/2020/05/17/20/21/cat-5183427_960_720.jpg',
+        },
+        {
+          headers: { Authorization: token },
+        },
+      )
+      .then(res => {
+        console.log(res);
+        setEditUserInfo({
+          username: res.data.username,
+          profile_image: res.data.profileImg,
+        });
+        setUserInfo({
+          ...userInfo,
+          username: res.data.username,
+          profile_image: res.data.profileImg,
+        });
+      })
+      .catch(err => console.error(err));
   };
+
   const handleEditToggle = () => {
     setEditToggle(!editToggle);
-  };
-  const editProfileImage = () => {
-    // 이미지 수정용
   };
   const [editUserInfo, setEditUserInfo] = useState({
     username: '',
     profile_image: '',
   });
+  // console.log(editUserInfo);
   useEffect(() => {
     setEditUserInfo({
       username: userInfo.username,
@@ -143,10 +174,34 @@ function MyPage() {
     return new Promise(resolve => {
       reader.onload = () => {
         setImageSrc(reader.result);
-        setEditUserInfo({ ...editUserInfo, profile_image: reader.result });
+        setEditUserInfo({
+          ...editUserInfo,
+          profile_image: reader.result,
+        });
         resolve();
       };
     });
+  };
+
+  // 프리미엄 결제
+  const buyPremium = () => {
+    // 실제 적용시, 이미 프리미엄 유저인지 확인하는 것 필요 - 버튼 없앨꺼니까 괜찮
+    axios({
+      method: 'GET',
+      url: defaultAPI + '/pay-service/kakaoPay/',
+      headers: { Authorization: token },
+    })
+      .then(res => {
+        console.log(res);
+        window.location.href = res.data;
+      })
+      .catch(() => {
+        swal.fire({
+          icon: 'error',
+          title: '결제 실패',
+          text: '서버가 혼잡합니다. 다시 시도해 주세요.',
+        });
+      });
   };
 
   return (
@@ -215,7 +270,7 @@ function MyPage() {
 
               <Profile>
                 {/* is_vip === 'T'일대만 `프리미엄 이용중` 보이기 */}
-                {userInfo.is_vip === 'T' && (
+                {userInfo.is_vip === 'Y' && (
                   <div
                     style={{
                       width: '85px',
@@ -238,7 +293,11 @@ function MyPage() {
                   <input
                     type="text"
                     name="username"
-                    style={{ height: '30px', width: '179px', fontSize: '24px' }}
+                    style={{
+                      height: '30px',
+                      width: '179px',
+                      fontSize: '24px',
+                    }}
                     value={editUserInfo.username}
                     onChange={e =>
                       setEditUserInfo({
@@ -302,7 +361,7 @@ function MyPage() {
                 <Button
                   variant="contained"
                   sx={{
-                    width: '130px',
+                    // width: '130px',
                     height: '40px',
                     textAlign: 'center',
                     display: 'block',
@@ -331,7 +390,7 @@ function MyPage() {
                 <Button
                   variant="contained"
                   sx={{
-                    width: '213px',
+                    // width: '213px',
                     height: '40px',
                     textAlign: 'center',
                     display: 'block',
@@ -349,6 +408,7 @@ function MyPage() {
                       bgcolor: 'white',
                     },
                   }}
+                  onClick={buyPremium}
                 >
                   Premium 버전 구독하기
                 </Button>
@@ -393,7 +453,12 @@ function MyPage() {
 
           <VideoWrapper>
             <h1 style={{ textAlign: 'center' }}>즐겨찾는 학습</h1>
-            <div style={{ display: 'flex', justifyContent: 'between' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'between',
+              }}
+            >
               <VideoBox>1</VideoBox>
               <VideoBox>2</VideoBox>
               <VideoBox>3</VideoBox>
@@ -402,7 +467,12 @@ function MyPage() {
           </VideoWrapper>
           <VideoWrapper>
             <h1 style={{ textAlign: 'center' }}>최근 본 강의</h1>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <VideoBox>1</VideoBox>
               <VideoBox>2</VideoBox>
               <VideoBox>3</VideoBox>
@@ -430,7 +500,12 @@ function MyPage() {
           >
             <h1 style={{ textAlign: 'center' }}>최근 푼 모의고사</h1>
 
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
               <TestBox />
               <TestBox />
               <TestBox />

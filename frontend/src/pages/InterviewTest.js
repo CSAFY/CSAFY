@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
-// MUI
-import MicIcon from '@mui/icons-material/Mic';
-import { LinearProgress } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { defaultAPI } from '../utils/api';
+import VoiceRecord from '../components/VoiceRecord';
+
+// Recoil
+import { useRecoilState } from 'recoil';
+
+import { Token } from '../recoils/Token';
+import { TimeLimit } from '../recoils/TimeLimit';
 
 // STYLED
 import styled from 'styled-components';
-import VoiceRecord from '../components/VoiceRecord';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import SpentTime from './SpentTime';
 
 const InterviewResultWrapper = styled.div`
   width: 100%;
@@ -49,6 +54,11 @@ const Question = styled.div`
   text-align: center;
   color: #000;
 `;
+const TimerBox = styled.div`
+  position: absolute;
+  top: 100px;
+  left: 200px;
+`;
 const Icon = styled.div`
   position: absolute;
   top: 322px;
@@ -56,12 +66,6 @@ const Icon = styled.div`
   transform: translate(-50%);
 
   cursor: pointer;
-`;
-const Record = styled.div`
-  position: absolute;
-  bottom: 50px;
-  left: 50%;
-  transform: translate(-50%);
 `;
 const Progress = styled.div`
   width: 820px;
@@ -89,20 +93,20 @@ const NextButton = styled.button`
 
   cursor: pointer;
 `;
-const PrevButton = styled.button`
-  width: 100px;
-  height: 32px;
+// const PrevButton = styled.button`
+//   width: 100px;
+//   height: 32px;
 
-  border-radius: 12px;
-  border: solid 1px #000;
-  background-color: #f5f5f5;
+//   border-radius: 12px;
+//   border: solid 1px #000;
+//   background-color: #f5f5f5;
 
-  position: absolute;
-  top: 20px;
-  left: 20px;
+//   position: absolute;
+//   top: 20px;
+//   left: 20px;
 
-  cursor: pointer;
-`;
+//   cursor: pointer;
+// `;
 const StepBox = styled.div`
   width: 50px;
   height: 50px;
@@ -188,10 +192,15 @@ const MyMemo = styled.div`
 `;
 
 function InterviewTest() {
+  // Recoil
+  const [timeLimit, setTimeLimit] = useRecoilState(TimeLimit);
+  const [token, setToken] = useRecoilState(Token);
   // API data
   const { state } = useLocation();
+  // console.log('🐕', state);
   const [testData, setTestData] = useState([]);
   const [seq, setSeq] = useState(0);
+  // const [timeLimit, setTimeLimit] = useState(false);
   useEffect(() => {
     setTestData(state);
     setQuestion(state[0]['question']);
@@ -199,6 +208,7 @@ function InterviewTest() {
   }, []);
   // console.log(testData);
   // console.log('🐸', seq);
+  // console.log(timeLimit);
 
   // 테스트 관련
   const [cnt, setCnt] = useState(1);
@@ -223,42 +233,47 @@ function InterviewTest() {
     borderRadius: '10px',
     transition: '1s ease 0.005s',
   };
+  // 처음 문제로 돌아가기
+  const toStart = () => {
+    setCnt(1);
+    setQuestion(testData[0]['question']);
+    setSeq(testData[0]['interviewSeq']);
+  };
   // const prevQuestion = () => {
   //   setQuestion(dummyData[cnt]['question']);
   //   console.log('3', cnt);
   //   setCnt(prev => prev - 1);
   //   console.log('4', cnt);
   // };
+  // console.log(testData);
 
   const [memo, setMemo] = useState('');
   const handleMemo = e => {
+    e.preventDefault();
     setMemo(e.target.value);
   };
 
   const handleSave = () => {
-    const token = localStorage.getItem('jwt');
-    // console.log(memo);
     axios
       .post(
-        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${seq}/memo/create`,
+        `${defaultAPI}/cs-service/interview/${seq}/memo/create`,
         { memo },
         { headers: { authorization: token } },
       )
       .then(res => {
         console.log(res);
+        alert('저장 완료');
       })
       .catch(err => console.error(err));
   };
 
   // const [myMemo, setMyMemo] = useState('');
   const getMyMemo = () => {
-    const token = localStorage.getItem('jwt');
     if (seq !== 0) {
       axios
-        .get(
-          `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${seq}/memo`,
-          { headers: { authorization: token } },
-        )
+        .get(`${defaultAPI}/cs-service/interview/${seq}/memo`, {
+          headers: { authorization: token },
+        })
         .then(res => {
           // console.log(res);
           // setMyMemo(res.data);
@@ -267,14 +282,24 @@ function InterviewTest() {
         .catch(err => console.error(err));
     }
   };
+
   useEffect(() => {
     getMyMemo();
   }, [seq]);
   // console.log('🎃', myMemo);
 
+  // 타이머 관련 - 일단 3초로 설정
+  // const endTime = (state.length - 1) * 60;
+  const endTime = 3;
+
   return (
     <InterviewResultWrapper>
       <InterviewResultContent>
+        {timeLimit && (
+          <TimerBox>
+            <SpentTime mm={'00'} ss={`${endTime}`} />
+          </TimerBox>
+        )}
         <QuestionBox>
           {/* <PrevButton onClick={prevQuestion}>이전</PrevButton> */}
           <StepBox>
@@ -283,19 +308,15 @@ function InterviewTest() {
           {cnt !== testData.length ? (
             <NextButton onClick={nextQuestion}>다음</NextButton>
           ) : (
-            <NextButton onClick={nextQuestion}>결과 보기</NextButton>
+            <NextButton onClick={toStart}>처음으로</NextButton>
           )}
-          {/* <Question>{testData[cnt]['question']}</Question> */}
+
           <Question>{question}</Question>
-          {/* <Icon>
-            <MicIcon fontSize="large" color="primary" />
-          </Icon> */}
+
           <Icon>
             <VoiceRecord />
           </Icon>
-          {/* <Record>
-            <VoiceRecord />
-          </Record> */}
+
           <Progress>
             <div style={widthStyle}></div>
           </Progress>
@@ -305,10 +326,6 @@ function InterviewTest() {
           <Memo value={memo} onChange={handleMemo} />
           <SaveButton onClick={handleSave}>저장하기</SaveButton>
         </MemoBox>
-        {/* <StudyBox>
-          <MemoTtitle>나의 메모</MemoTtitle>
-          <MyMemo>{myMemo}</MyMemo>
-        </StudyBox> */}
       </InterviewResultContent>
     </InterviewResultWrapper>
   );

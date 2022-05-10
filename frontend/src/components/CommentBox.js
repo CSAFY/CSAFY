@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { defaultAPI } from '../utils/api';
+
 // STYLED
 import styled from 'styled-components';
 
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ReplyIcon from '@mui/icons-material/Reply';
 import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
-import axios from 'axios';
 
 const Box = styled.div`
   width: 740px;
-  height: 100px;
+  height: 140px;
   border-radius: 9px;
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
   background-color: #fff;
@@ -19,13 +22,26 @@ const Box = styled.div`
 
   position: relative;
 `;
-const Comment = styled.div`
-  width: 620px;
-  height: 80px;
-  border: 1px solid black;
-
+const UserInfo = styled.div`
   position: absolute;
   top: 10px;
+  left: 25px;
+`;
+const DateInfo = styled.div`
+  position: absolute;
+  top: 30px;
+  left: 25px;
+`;
+const Comment = styled.div`
+  width: 610px;
+  height: 55px;
+  border: 1px solid black;
+
+  padding-top: 10px;
+  padding-left: 10px;
+
+  position: absolute;
+  bottom: 10px;
   left: 25px;
 `;
 const CommentInput = styled.input`
@@ -40,18 +56,73 @@ const CommentInput = styled.input`
 `;
 const ButtonBox = styled.div`
   width: 60px;
-  height: 80px;
-  border: 1px solid black;
+  height: 119px;
+  border-radius: 9px;
+  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
+  background-color: rgba(0, 142, 208, 0.1);
 
   position: absolute;
   top: 10px;
-  right: 25px;
+  right: 15px;
 `;
 
-function CommentBox({ content, commentId }) {
-  const [editToggle, setEditToggle] = useState(false);
-  const [comment, setComment] = useState('');
+function CommentBox({
+  id,
+  comment,
+  interviewSeq,
+  createdAt,
+  liked,
+  likesCount,
+  username,
+  getComment,
+}) {
+  ///// 좋아요 관련 테스트용
+  console.log(
+    'from InterviewDetail ----------->',
+    'id:',
+    id,
+    'liked:',
+    liked,
+    'likesCount:',
+    likesCount,
+  );
+  const [likeCount, setLikeCount] = useState(likesCount);
+  // 좋아요 정보 가져오기
+  const getCommentLikeData = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/interview/${id}/comment/likes`)
+      .then(res => {
+        console.log('commentLikeData', res);
+        setLikeCount(res.data.commentLikes);
+      })
+      .catch(err => console.error(err));
+  };
+  // useEffect(() => {
+  //   getCommentLikeData();
+  // }, []);
+  // 좋아요 클릭 여부
+  const [isClicked, setIsClicked] = useState(liked);
+  // 좋아요 정보 수정
+  const setCommentLikeData = () => {
+    const token = localStorage.getItem('jwt');
+    axios
+      .post(`${defaultAPI}/cs-service/interview/${id}/comment/likes`, null, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('settedCommentLikeData', res);
+        setIsClicked(!isClicked);
+        getCommentLikeData();
+      })
+      .catch(err => console.error(err));
+  };
 
+  /////
+
+  const [editToggle, setEditToggle] = useState(false);
+  const [newComment, setNewComment] = useState(comment);
+
+  // 수정 관련
   const toggleComment = () => {
     setEditToggle(!editToggle);
     // 수정은 put, 삭제는 delete - interview/{commentId}/comment
@@ -59,37 +130,68 @@ function CommentBox({ content, commentId }) {
       editComment();
     }
   };
-
   const editComment = () => {
     const token = localStorage.getItem('jwt');
     axios
       .put(
-        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${commentId}/comment`,
-        { comment },
+        `${defaultAPI}/cs-service/interview/${id}/comment`,
+        { comment: newComment },
         { headers: { Authorization: token } },
       )
       .then(res => {
         console.log(res);
+        setNewComment(res.data.comment);
       })
       .catch(err => console.error(err));
   };
+  // console.log(newComment);
+  // 삭제
   const deleteComment = () => {
     const token = localStorage.getItem('jwt');
     axios
-      .delete(
-        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${commentId}/comment`,
-        null,
-        { headers: { Authorization: token } },
-      )
+      .delete(`${defaultAPI}/cs-service/interview/${id}/comment`, {
+        headers: { Authorization: token },
+      })
       .then(res => {
         console.log(res);
+        getComment();
       })
       .catch(err => console.error(err));
   };
 
-  useEffect(() => {
-    setComment(content);
-  }, []);
+  // // 댓글 좋아요
+  // const [commentLike, setCommentLike] = useState(likesCount);
+
+  // // console.log(liked, likesCount, commentLike);
+  // const [isLiked, setIsLiked] = useState(liked);
+
+  // const handleLike = () => {
+  //   const token = localStorage.getItem('jwt');
+  //   axios
+  //     .post(`${defaultAPI}/cs-service/interview/${id}/comment/likes`, null, {
+  //       headers: { Authorization: token },
+  //     })
+  //     .then(res => {
+  //       console.log(res);
+  //       getSpecificCommentLikes();
+  //       setIsLiked(!isLiked);
+  //     })
+  //     .catch(err => console.error(err));
+  // };
+  // const getSpecificCommentLikes = () => {
+  //   axios
+  //     .get(`${defaultAPI}/cs-service/interview/${id}/comment/likes`)
+  //     .then(res => {
+  //       console.log('🐸🎃', res);
+  //       setCommentLike(res.data.commentLikes);
+  //     })
+  //     .catch(err => console.error(err));
+  // };
+  // console.log(commentLike, likesCount);
+
+  // useEffect(() => {
+  //   getSpecificCommentLikes();
+  // }, [isLiked]);
 
   return (
     <div>
@@ -97,21 +199,66 @@ function CommentBox({ content, commentId }) {
         {editToggle ? (
           <CommentInput
             type="text"
-            value={comment}
-            onChange={e => setComment(e.target.value)}
+            value={newComment}
+            onChange={e => setNewComment(e.target.value)}
           />
         ) : (
-          <Comment>{content}</Comment>
+          <>
+            <UserInfo>{username}</UserInfo>
+            <DateInfo>{createdAt.substr(0, 10)}</DateInfo>
+            <Comment>{newComment}</Comment>
+          </>
         )}
 
         <ButtonBox>
-          <ThumbUpIcon sx={{ width: '100%', mt: '5px' }} />
-          <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>13</p>
+          {isClicked ? (
+            <>
+              <ThumbUpIcon
+                sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
+                onClick={setCommentLikeData}
+              />
+              <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
+                {likeCount}
+              </p>
+            </>
+          ) : (
+            <>
+              <ThumbUpOffAltIcon
+                sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
+                onClick={setCommentLikeData}
+              />
+              <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
+                {likeCount}
+              </p>
+            </>
+          )}
+          {/* {isLiked ? (
+            <>
+              <ThumbUpIcon
+                sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
+                onClick={handleLike}
+              />
+              <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
+                {commentLike}
+              </p>
+            </>
+          ) : (
+            <>
+              <ThumbUpOffAltIcon
+                sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
+                onClick={handleLike}
+              />
+              <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
+                {commentLike}
+              </p>
+            </>
+          )} */}
+
           <div
             style={{
               display: 'flex',
               justifyContent: 'center',
-              marginTop: '8px',
+              marginTop: '18px',
             }}
           >
             {editToggle ? (

@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
 
 // MUI
 // inherit 흰색 default 회색 primary 파랑 secondary 보라 error 빨강 info 파랑 success 초록 warning 주황 string 적용안됨
@@ -13,13 +17,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import { Tooltip } from '@mui/material';
 
 // MODAL
 import Modal from '@mui/material/Modal';
 import AuthModal from './AuthModal';
-
-// STYLED
-// import styled from 'styled-components';
 
 const loginStyle = {
   position: 'absolute',
@@ -48,23 +50,35 @@ const signupStyle = {
 const pages = [
   { name: '일반 학습', link: 'StudyFramePage' },
   { name: '집중 학습', link: 'IntensivePage' },
-  { name: '테스트', link: 'test' },
+  { name: '채팅', link: 'chat' },
   { name: '면접 대비', link: 'interview' },
-  { name: '기술 스택', link: 'classification' },
-  // { name: '메타버스', link: 'community' },
+  // { name: '기술 스택', link: 'classification' },
+  { name: '메타버스', link: 'community' },
+  // { name: '결제', link: 'payment' },
+];
+const settings = [
   { name: '문제집', link: 'CSTest' },
+  { name: '오답노트', link: 'reviewNote' },
 ];
 
-// const Logo = styled.img`
-//   width: 45px;
-//   height: 45px;
-//   padding-top: 10px;
-//   background-color: none;
-// `;
-
 const NavBar = () => {
-  const [toggleLogin, setToggleLogin] = useState('로그인');
+  // recoil 상태관리
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
+  // 실력테스트 anchor
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [toggle, setToggle] = useState(false);
+  const handleOpenUserMenu = event => {
+    setAnchorElUser(event.currentTarget);
+    setToggle(true);
+    setCurrentPage('/');
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   // MODAL
+  const [toggleLogin, setToggleLogin] = useState('로그인');
   const [state, setState] = useState('signup');
   const [modal, setModal] = useState(false);
   const handleModalOpen = () => {
@@ -72,40 +86,33 @@ const NavBar = () => {
     setModal(true);
   };
   const handleModalClose = () => setModal(false);
-  const token = localStorage.getItem('jwt');
-  useEffect(() => {
-    // 로그인 여부 확인
-    if (token) {
-      setToggleLogin('로그아웃');
-    } else {
-      setToggleLogin('로그인');
-    }
-    // console.log(token);
-  }, []);
 
   // nav
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
-  // const [anchorElUser, setAnchorElUser] = useState(null);
   const [currentPage, setCurrentPage] = useState('Home');
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
   };
-  // const handleOpenUserMenu = (event) => {
-  //   setAnchorElUser(event.currentTarget);
-  // };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null);
-  // };
 
-  // 커뮤니티 페이지에서 안보이게 하기
+  // 커뮤니티 페이지에서 네브바 안보이게 하기
   const location = useLocation();
-
   if (location.pathname === '/community') return null;
+
+  // 로그아웃 관련
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    // Recoil
+    setIsLoggedIn(false);
+    setToken('');
+    // 이동
+    navigate('/');
+    setToggleLogin('로그인');
+  };
 
   return (
     <AppBar
@@ -131,9 +138,10 @@ const NavBar = () => {
             }}
             onClick={() => {
               setCurrentPage('Home');
+              setToggle(false);
             }}
           >
-            {toggleLogin === '로그인' ? (
+            {!isLoggedIn ? (
               <Link to="/">
                 <img
                   src="images/csafy.png"
@@ -145,7 +153,6 @@ const NavBar = () => {
                     backgroundColor: 'none',
                   }}
                 />
-                {/* <Logo src="images/logo.ico" /> */}
               </Link>
             ) : (
               <Link to="/mypage">
@@ -159,10 +166,10 @@ const NavBar = () => {
                     backgroundColor: 'none',
                   }}
                 />
-                {/* <Logo src="images/logo.ico" /> */}
               </Link>
             )}
           </Typography>
+
           {/* 반응형 - 넓은 화면 navbar */}
           <Box
             sx={{
@@ -184,6 +191,7 @@ const NavBar = () => {
                     onClick={() => {
                       navigate(`/${page.link}`);
                       setCurrentPage(page.link);
+                      setToggle(false);
                     }}
                     sx={{
                       textAlign: 'center',
@@ -208,6 +216,7 @@ const NavBar = () => {
                     onClick={() => {
                       navigate(`/${page.link}`);
                       setCurrentPage(page.link);
+                      setToggle(false);
                     }}
                     sx={{
                       textAlign: 'center',
@@ -228,6 +237,78 @@ const NavBar = () => {
                 );
               }
             })}
+            {/* 실력테스트 */}
+            <Tooltip title="Open settings">
+              {toggle ? (
+                <Button
+                  onClick={handleOpenUserMenu}
+                  sx={{
+                    textAlign: 'center',
+                    mx: 1,
+                    my: 2,
+                    color: '#006D9F',
+                    fontWeight: 'bold',
+                    display: 'block',
+                    ':hover': {
+                      color: '#006D9F',
+                      bgcolor: '#ffffff',
+                      // bgcolor: '#D5F2FC',
+                    },
+                  }}
+                >
+                  실력 테스트
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleOpenUserMenu}
+                  sx={{
+                    textAlign: 'center',
+                    mx: 1,
+                    my: 2,
+                    color: 'black',
+                    display: 'block',
+                    ':hover': {
+                      color: '#006D9F',
+                      bgcolor: '#ffffff',
+                      // bgcolor: '#D5F2FC',
+                    },
+                  }}
+                >
+                  실력 테스트
+                </Button>
+              )}
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map(setting => (
+                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                  <Typography
+                    textAlign="center"
+                    onClick={() => {
+                      navigate(`${setting.link}`);
+                      setCurrentPage(setting.link);
+                      // setToggle(false);
+                    }}
+                  >
+                    {setting.name}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Menu>
           </Box>
 
           {/* 반응형 - 좁은 화면 로고 */}
@@ -241,7 +322,6 @@ const NavBar = () => {
             }}
           >
             <Link to="/">
-              {/* <Logo src="images/logo.ico" /> */}
               <img
                 src="images/csafy.png"
                 alt="Img"
@@ -275,11 +355,7 @@ const NavBar = () => {
                     // bgcolor: '#D5F2FC',
                   },
                 }}
-                onClick={() => {
-                  localStorage.removeItem('jwt');
-                  navigate('/');
-                  setToggleLogin('로그인');
-                }}
+                onClick={handleLogout}
               >
                 {/* 로그아웃 */}
                 {toggleLogin}
@@ -326,6 +402,7 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
+                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               )}
@@ -416,7 +493,7 @@ const NavBar = () => {
               mx: 3,
             }}
           >
-            {token ? (
+            {isLoggedIn ? (
               <Button
                 sx={{
                   textAlign: 'center',
@@ -430,14 +507,10 @@ const NavBar = () => {
                     // bgcolor: '#D5F2FC',
                   },
                 }}
-                onClick={() => {
-                  localStorage.removeItem('jwt');
-                  navigate('/');
-                  setToggleLogin('로그인');
-                }}
+                onClick={handleLogout}
               >
-                {/* 로그아웃 */}
-                {toggleLogin}
+                로그아웃
+                {/* {toggleLogin} */}
               </Button>
             ) : (
               <Button
@@ -455,7 +528,8 @@ const NavBar = () => {
                 }}
                 onClick={handleModalOpen}
               >
-                {toggleLogin}
+                로그인
+                {/* {toggleLogin} */}
               </Button>
             )}
 
@@ -480,6 +554,7 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
+                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               )}

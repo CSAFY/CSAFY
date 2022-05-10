@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { defaultAPI } from '../utils/api';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
+
+// Styled
 import styled from 'styled-components';
-// MUI
 import { Button, TextField } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const LoginWrapper = styled.div`
   width: 517px;
@@ -37,57 +43,52 @@ const SignupWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  position: relative;
+`;
+const Policy = styled.div`
+  position: absolute;
+  bottom: 25px;
 `;
 
 function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
+  const navigate = useNavigate();
+
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
+
   // LOGIN
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
 
   const handleLoginInfo = e => {
+    e.preventDefault();
     setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
   };
-
-  // const getInfo = () => {
-  //   axios
-  //     .get(`https://https://k6a102.p.ssafy.io/api/v1/user-service/token/user`, {
-  //       inputToken:
-  //         'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsInVzZXJfc2VxIjoyOSwidXNlcm5hbWUiOiJ1c2VybmFtZSIsImlhdCI6MTY1MTQ3NzAxOCwiZXhwIjoxNjUxNTYzNDE4fQ.wZlTG1MzQOFj1Q_WYUqYG7sHK0KYoYMwnaebABRFo5A',
-  //     })
-  //     .then(res => console.log(res))
-  //     .catch(err => console.error(err));
-  // };
-  // useEffect(() => {
-  //   getInfo();
-  // }, []);
-
-  const handleLogin = e => {
+  const submitLogin = e => {
+    e.preventDefault();
     axios
-      // .post(`https://tupli.kr/api/v1/account/signup`, {
-      .post(`https://k6a102.p.ssafy.io/api/v1/user-service/account/login`, {
+      .post(`${defaultAPI}/user-service/account/login`, {
         email: loginInfo.email,
         password: loginInfo.password,
       })
       // 일단 회원가입 후 메인 페이지로 이동
       .then(res => {
+        // localStorage
+        localStorage.setItem('jwt', res.data.token);
+        // recoil
+        setIsLoggedIn(true);
+        setToken(res.data.token);
         // 모달 없애기
         setModal(false);
         // navigate
         navigate('/mypage');
-        // localStorage
-        localStorage.setItem('jwt', res.data.token);
-        console.log(res.data.token);
         setToggleLogin('로그아웃');
       })
       .catch(err => console.error(err));
-
-    // 초기화
-    setLoginInfo({
-      email: '',
-      password: '',
-    });
   };
+
   // SIGNUP
-  const navigate = useNavigate();
   const [service, setService] = useState(false);
   const [privacy, setPrivacy] = useState(false);
   const [signupInfo, setSignupInfo] = useState({
@@ -107,6 +108,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const handleSignupInfo = e => {
+    e.preventDefault();
     setSignupInfo({ ...signupInfo, [e.target.name]: e.target.value });
     setToggle({
       emailIsValid: true,
@@ -115,7 +117,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
       agreementIsValid: true,
     });
   };
-  const handleSignup = e => {
+  const submitSignup = e => {
     e.preventDefault();
     // Validation
     if (!emailRegex.test(signupInfo.email)) {
@@ -150,39 +152,49 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
 
     // api 연결 - 회원가입
     axios
-      // .post(`https://k6a102.p.ssafy.io/api/v1/user-service/accounts/signup/ `, {
-      .post(`https://k6a102.p.ssafy.io/api/v1/user-service/signup`, {
+      .post(`${defaultAPI}/user-service/signup`, {
         email: signupInfo.email,
         nickname: 'test',
         password: signupInfo.password,
         username: 'noname',
       })
-      // 일단 회원가입 후 메인 페이지로 이동
+      // 회원가입 후 마이페이지로 바로 이동
       .then(res => {
-        // res
-        console.log(res);
-        // 모달 없애기
-        setModal(false);
-        // navigate - 일단 홈으로
-        navigate('/');
-        // localstorage 저장
-        // localStorage.setItem('jwt', )
+        // console.log(res);
+        setTimeout(() => {
+          axios
+            .post(`${defaultAPI}/user-service/account/login`, {
+              email: signupInfo.email,
+              password: signupInfo.password,
+            })
+            .then(res => {
+              // localStorage
+              localStorage.setItem('jwt', res.data.token);
+              // recoil
+              setIsLoggedIn(true);
+              setToken(res.data.token);
+              // 모달 없애기
+              setModal(false);
+              // navigate
+              navigate('/mypage');
+              setToggleLogin('로그아웃');
+            })
+            .catch(err => console.error(err));
+        }, 500);
       })
       .catch(err => console.error(err));
-
-    // 초기화
-    setSignupInfo({
-      email: '',
-      password: '',
-      passwordCheck: '',
-    });
   };
 
-  const TuplioAuthTest = e => {
-    // TUPLI
-    // window.location.href = `https://tupli.kr/api/v1/oauth2/authorization/google?redirect_uri=https://tupli.kr/oauth/redirect`;
+  // Oauth
+  const googleOauth = () => {
     // CSAFY
-    window.location.href = `https://k6a102.p.ssafy.io/api/v3/oauth2/authorization/google?redirect_uri=https://k6a102.p.ssafy.io/oauth/redirect`;
+    window.location.href = `https://csafy.com/api/v3/oauth2/authorization/google?redirect_uri=https://csafy.com/oauth/redirect`;
+  };
+
+  // 이용약관 보기
+  const handleTerms = () => {
+    navigate('/terms');
+    setModal(false);
   };
 
   return (
@@ -242,12 +254,11 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
-              onClick={handleLogin}
+              onClick={submitLogin}
             >
               로그인
             </Button>
             <p>또는</p>
-
             <img
               src="images/google.png"
               alt="Google"
@@ -257,7 +268,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
                 marginTop: '1rem',
                 cursor: 'pointer',
               }}
-              onClick={handleLogin}
+              onClick={googleOauth}
             />
           </InputForm>
         </LoginWrapper>
@@ -376,7 +387,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
                   type="checkbox"
                   onClick={() => setPrivacy(!privacy)}
                 />{' '}
-                [필수] 개인정보 수집 및 이용 동의
+                <span>[필수] 개인정보 수집 및 이용 동의</span>
               </label>
               {toggle.agreementIsValid ? null : (
                 <div
@@ -408,13 +419,11 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
-              onClick={handleSignup}
+              onClick={submitSignup}
             >
               가입하기
             </Button>
-
             <p>또는</p>
-
             <Button
               variant="dark"
               sx={{
@@ -429,8 +438,8 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
                   bgcolor: '#D5F2FC',
                 },
               }}
-              // 테스트용
-              onClick={TuplioAuthTest}
+              // oauth
+              onClick={googleOauth}
             >
               <div
                 style={{
@@ -448,6 +457,22 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               </div>
             </Button>
           </InputForm>
+          <Policy>
+            <div>
+              가입을 하면 C;SAFY의{' '}
+              <span
+                onClick={handleTerms}
+                style={{
+                  color: '#008ed0',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                }}
+              >
+                이용약관
+              </span>
+              에 동의하게 됩니다.
+            </div>
+          </Policy>
         </SignupWrapper>
       )}
     </>

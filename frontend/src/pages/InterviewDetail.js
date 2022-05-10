@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ReplyIcon from '@mui/icons-material/Reply';
+import { defaultAPI } from '../utils/api';
+import axios from 'axios';
+
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
+
+// COMPONENTS
+import CommentBox from '../components/CommentBox';
 
 // STYLED
 import styled from 'styled-components';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { Button } from '@mui/material';
-import CommentBox from '../components/CommentBox';
-import axios from 'axios';
 
 const DetailWrapper = styled.div`
   width: 100%;
-  height: 1500px;
+
   padding-bottom: 100px;
 
   display: flex;
@@ -94,8 +101,6 @@ const TechCategory = styled.div`
 
 const Board = styled.div`
   width: 840px;
-  height: 730px;
-  border: 1px solid black;
 
   position: absolute;
   top: 789px;
@@ -126,8 +131,6 @@ const CommentInput = styled.textarea`
   transform: translate(-50%);
 `;
 const CommentList = styled.div`
-  border: 1px solid black;
-
   position: absolute;
   top: 325px;
   left: 50%;
@@ -154,62 +157,93 @@ const ButtonBox = styled.div`
 `;
 
 function InterviewDetail() {
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
   const { interviewSeq } = useParams();
+  // 특정 번호의 면접 질문에 대한 liked 정보(지금은 좋아요 수만 받아지는데 좋아요 했는지 여부까지..!)를 가져올 수 있으면 좋겠다...
   const { state } = useLocation();
-  // console.log(state);
-  // console.log(interviewSeq);
-  const [isLiked, setIsLiked] = useState(false);
-
+  const [isLiked, setIsLiked] = useState(state.liked);
+  console.log('0. 🐸. state', state);
+  // 면접 질문 관련
   const handleLikes = () => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      axios
-        .post(
-          `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${interviewSeq}/likes`,
-          null,
-          { headers: { Authorization: token } },
-        )
-        .then(res => {
-          console.log(res);
-          setIsLiked(!isLiked);
-        })
-        .catch(err => console.error(err));
-    } else {
-      alert('로그인이 필요합니다.');
-    }
+    axios
+      .post(`${defaultAPI}/cs-service/interview/${interviewSeq}/likes`, null, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('1. 🐸', res);
+        // 좋아요 표시
+        setIsLiked(!isLiked);
+        // 숫자 갱신
+        getSpecificLikes();
+      })
+      .catch(err => console.error(err));
   };
+  // 좋아요 정보 가져오기
+  const [interviewLikes, setInterviewLikes] = useState(0);
+  const getSpecificLikes = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/interview/${interviewSeq}/likes`)
+      .then(res => {
+        console.log('2. 🐸', res);
+        setInterviewLikes(res.data.interviewLikes);
+      })
+      .catch(err => console.error(err));
+  };
+  console.log('3. 🐸', interviewLikes);
 
-  // 댓글
+  // 댓글 관련
   const [myComment, setMyComment] = useState('');
   const handleComment = e => {
     setMyComment(e.target.value);
   };
   const saveComment = e => {
-    const token = localStorage.getItem('jwt');
-    console.log('save');
     // 수정은 put, 삭제는 delete - interview/{commentId}/comment
     axios
       .post(
-        `https://k6a102.p.ssafy.io/api/v1/cs-service/interview/${interviewSeq}/comment`,
+        `${defaultAPI}/cs-service/interview/${interviewSeq}/comment`,
         { comment: myComment },
         { headers: { Authorization: token } },
       )
       .then(res => {
         console.log(res);
+        getComment();
+        setMyComment('');
       })
       .catch(err => console.error(err));
   };
-  // 댓글 수정
 
-  // 다른사람 댓글
-  const [dummyData, setDummyData] = useState([
-    { commentId: 1, content: '댓글1' },
-    { commentId: 2, content: '댓글2' },
-    { commentId: 3, content: '댓글3' },
-  ]);
-  console.log(isLiked);
+  // 댓글 목록 가져오기
+  const getComment = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/interview/${interviewSeq}/comment`, null, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('🎃', res);
+        setCommentData(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+
+  useEffect(() => {
+    getComment();
+    setInterviewLikes(state.interviewLikes);
+    getSpecificLikes();
+  }, []);
+
+  const [commentData, setCommentData] = useState([]);
+  const pageHeight = 1000 + commentData.length * 200;
+
+  // console.log('🐸', commentData);
   return (
-    <DetailWrapper>
+    <DetailWrapper
+      style={{
+        height: `${pageHeight}px`,
+        // height: '2000px'
+      }}
+    >
       <DetailContent>
         <DetailBox>
           {state.category === '인성' ? (
@@ -222,18 +256,24 @@ function InterviewDetail() {
             {isLiked ? (
               <ThumbUpIcon
                 color="primary"
-                sx={{ marginRight: '10px', cursor: 'pointer' }}
+                sx={{
+                  marginRight: '10px',
+                  cursor: 'pointer',
+                }}
                 onClick={handleLikes}
               />
             ) : (
               <ThumbUpOffAltIcon
                 color="primary"
-                sx={{ marginRight: '10px', cursor: 'pointer' }}
+                sx={{
+                  marginRight: '10px',
+                  cursor: 'pointer',
+                }}
                 onClick={handleLikes}
               />
             )}
 
-            {state.interviewLikes}
+            {interviewLikes}
           </Likes>
         </DetailBox>
         <Board>
@@ -267,14 +307,13 @@ function InterviewDetail() {
               댓글 등록
             </Button>
           </MyComment>
-          <CommentList>
-            {dummyData.map(it => (
-              <CommentBox key={it.commentId} {...it} />
-            ))}
-            {/* <CommentBox />
-            <CommentBox />
-            <CommentBox /> */}
-          </CommentList>
+          {commentData && (
+            <CommentList>
+              {commentData.map(it => (
+                <CommentBox key={it.id} {...it} getComment={getComment} />
+              ))}
+            </CommentList>
+          )}
         </Board>
       </DetailContent>
     </DetailWrapper>

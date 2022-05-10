@@ -1,0 +1,124 @@
+
+    // 바에 작성된 최신 작성 메시지 가져오기
+    getMessages: function() {
+      console.log('룸?', this.roomId)
+      http.get('/chat-service/chat/room/message/' + this.roomId)
+      .then(res => {
+        // console.log('res', res.data)
+        for (const message of res.data) {
+          console.log(message)
+          this.messages.unshift({"type":message.type,"sender":message.sender,"message":message.message})
+        }
+      })
+    },
+    // 시작하기
+    initRoom: function() {
+      this.token = localStorage.getItem('jwt')
+      var _this = this; // 순서 변경 금지 (강민구)
+      _this.sock = new SockJS("https://csafy.com/api/v1/chat-service/ws-stomp"); // _this.sock = new SockJS("http://localhost:8080/ws-stomp");
+      // _this.sock = new SockJS("http://localhost:33333/ws-stomp"); 
+      _this.ws = Stomp.over(_this.sock);
+      if (_this.token) {
+          console.log(_this.token);
+          _this.ws.connect({Authorization:_this.token}, function() {
+          // _this.ws.subscribe("/chat-service/sub/chat/room/"+_this.roomId, function(message) {
+          _this.ws.subscribe("/sub/chat/room/"+_this.roomId, function(message) {
+            var recv = JSON.parse(message.body);
+            console.log('recv', recv)
+            _this.recvMessage(recv);
+          }, {Authorization:_this.token});
+        }, function() {
+            alert("서버 연결에 실패 하였습니다. 다시 접속해 주십시요.");
+            router.push({name: 'Home'})  // 홈으로
+        });
+      } else {
+        _this.ws.connect('id','password', function() {
+          _this.ws.subscribe("/chat-service/sub/chat/room/"+_this.roomId, function(message) {
+            var recv = JSON.parse(message.body);
+            // console.log('recv', recv)
+            _this.recvMessage(recv);
+          });
+        }, function() {
+            alert("서버 연결에 실패 하였습니다. 다시 접속해 주십시요.");
+            router.push({name: 'Home'})  // 홈으로
+        });
+      }
+    },
+    // 메시지 보내기
+    sendMessage: function(type) {
+      // 비어 있지 않으면 보내기
+      if (this.message) {
+        this.ws.send("/pub/chat/message", JSON.stringify({type:type, roomId:this.roomId, message:this.message}), {Authorization:this.token});
+        this.message = '';
+      }
+    },
+    // 메시지 받기
+    recvMessage: function(recv) {
+      console.log('recv', recv);
+      this.messages.unshift({"type":recv.type,"sender":recv.sender,"message":recv.message})
+    },
+    // 채팅방 나갈때
+    chatRoomout: function() {
+        // 이 방에 있었던 시간 (밀리초 단위) 
+        var roomEndTime = new Date();
+        var time = Math.floor((roomEndTime.getTime()-this.roomStartTime.getTime()) / 1000)
+        // console.log(time, '초 경과')
+        // userInfo 갱신 (원래 store 작업)
+        axios({
+            method: 'PUT',
+            headers: {Authorization: localStorage.getItem('jwt')},  // 현재 persisted-vue 없음.
+            // headers: {AUTH: this.token},
+            //url: `http://127.0.0.1:8080/userinfo`,
+            url: SERVER.URL + '/chat-service' + SERVER.ROUTES.accounts.userInfoDetail,
+            params: {time: time},
+          })
+          .then((res) => {
+            console.log('badges', res.data)
+            })
+          .catch (() => {
+            swal.fire ({
+              icon: 'error',
+              title: '결제 실패',
+              text: '서버가 혼잡합니다. 다시 시도해 주세요.'
+            })
+          })
+        // 내용 보냈고, 이제 연결 끊기
+        this.ws.disconnect()
+    },
+    // 채팅방 나가기 버튼 누를때
+    chatRoomoutButton: function() {
+        // // 이 방에 있었던 시간 (밀리초 단위) 
+        // var roomEndTime = new Date();
+        // var time = Math.floor((roomEndTime.getTime()-this.roomStartTime.getTime()) / 1000)
+        // console.log(time, '초 경과')
+        // // userInfo 갱신 (원래 store 작업)
+        // axios({
+        //     method: 'PUT',
+        //     headers: {AUTH: localStorage.getItem('jwt')},  // 현재 persisted-vue 없음.
+        //     // headers: {AUTH: this.token},
+        //     //url: `http://127.0.0.1:8080/userinfo`,
+        //     url: SERVER.URL + SERVER.ROUTES.userInfoDetail,
+        //     params: {time: time},
+        //   })
+        //   .then((res) => {
+        //     console.log(res.data)
+        //     })
+        //   .catch (() => {
+        //     swal.fire ({
+        //       icon: 'error',
+        //       title: '결제 실패',
+        //       text: '서버가 혼잡합니다. 다시 시도해 주세요.'
+        //     })
+        //   })
+        // // 내용 보냈고, 이제 연결 끊기
+        // this.ws.disconnect()
+        // 홈으로 보냄
+        router.push('/')
+    },
+    // 채팅방 없애기
+    deleteRoom: function() {
+      http.delete('/chat-service/chat/room/'+this.roomId)
+      router.push({name: 'Home'})
+    }
+  }
+}

@@ -25,9 +25,13 @@ npm install webstomp-client
 
 npm install sockjs-client
 
+npm install sweetalert2
+
 // npm install react-calendar-heatmap react-tooltip 에러로 인해 yarn add 사용
 yarn add react-calendar-heatmap react-tooltip
 
 // npm ERR! 시 npm i ~~ 뒤에 --legacy-peer-deps 추가
 npm i react-reveal --save --legacy-peer-deps
+
+npm install recoil-persist --save --legacy-peer-deps
 ```

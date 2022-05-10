@@ -1,8 +1,9 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
-
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { TimeLimit } from '../recoils/TimeLimit';
 
 const IOSSwitch = styled(props => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -57,8 +58,16 @@ const IOSSwitch = styled(props => (
   },
 }));
 
-function MuiSwitch({ toggleTime }) {
-  return <IOSSwitch sx={{ m: 1 }} defaultChecked onChange={toggleTime} />;
+function MuiSwitch() {
+  const [timeLimit, setTimeLimit] = useRecoilState(TimeLimit);
+
+  return (
+    <IOSSwitch
+      sx={{ m: 1 }}
+      checked={timeLimit}
+      onChange={() => setTimeLimit(!timeLimit)}
+    />
+  );
 }
 
 export default MuiSwitch;

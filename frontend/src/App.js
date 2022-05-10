@@ -10,25 +10,34 @@ import MyPage from './pages/MyPage';
 import Page2 from './pages/Page2';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Test from './pages/Test';
+import Chat from './pages/Chat';
 import Chatbot from './components/Chatbot';
 
 import StudyFramePage from './pages/StudyPage/StudyFramePage';
 import StudyDetailPage from './pages/StudyPage/StudyDetailPage';
 import IntensivePage from './pages/StudyPage/IntensivePage';
 
-
 import Classification from './pages/Classification';
 import InterviewList from './pages/InterviewList';
 import Community from './pages/Community';
 import Interview from './pages/Interview';
 import InterviewTest from './pages/InterviewTest';
-import TestRoom from './pages/TestRoom';
+import ChatRoom from './pages/ChatRoom';
 import EditProfile from './pages/EditProfile';
 import Timer from './components/Timer';
 import InterviewDetail from './pages/InterviewDetail';
 import CSTest from './pages/CSTest';
-
+import ReviewNote from './pages/ReviewNote';
+import CSTestDetail from './pages/CSTestDetail';
+import CSTestResult from './pages/CSTestResult';
+import Payment from './pages/Payment';
+import KakaopaySuccess from './pages/handler/KakaopaySuccess';
+import KakaopayCancel from './pages/handler/KakaopayCancel';
+import KakaopayFail from './pages/handler/KakaopayFail';
+import NotFound from './pages/handler/NotFound';
+import SpentTime from './pages/SpentTime';
+import AuthHandler from './pages/handler/AuthHandler';
+import Terms from './pages/Terms';
 
 function App() {
   return (
@@ -37,12 +46,13 @@ function App() {
       <div className="App">
         <NavBar />
         <Routes>
-          <Route path="/community" element={<Community />} />
           <Route path="/" element={<Home />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/editProfile" element={<EditProfile />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/test/:roomName" element={<TestRoom />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/:roomName" element={<ChatRoom />} />
           <Route path="/StudyFramePage" element={<StudyFramePage />} />
           <Route path="/StudyDetailPage" element={<StudyDetailPage />} />
           <Route exact path="/IntensivePage/*" element={<IntensivePage />} />
@@ -58,9 +68,18 @@ function App() {
             element={<InterviewDetail />}
           />
           <Route path="/CSTest" element={<CSTest />} />
-
+          <Route path="/CSTestDetail/:testId" element={<CSTestDetail />} />
+          <Route path="/CSTestResult/:testId" element={<CSTestResult />} />
+          <Route path="/reviewNote" element={<ReviewNote />} />
+          {/* <Route path="/payment" element={<Payment />} /> */}
+          <Route path="/oauth/redirect" element={<AuthHandler />} />
+          <Route path="/kakaoPay/success" element={<KakaopaySuccess />} />
+          <Route path="/kakaoPay/cancel" element={<KakaopayCancel />} />
+          <Route path="/kakaoPay/fail" element={<KakaopayFail />} />
+          <Route path="/*" element={<NotFound />} />
           {/*  */}
           <Route path="/timer" element={<Timer />} />
+          <Route path="/spentTime" element={<SpentTime />} />
         </Routes>
         <Chatbot />
         <Footer />
