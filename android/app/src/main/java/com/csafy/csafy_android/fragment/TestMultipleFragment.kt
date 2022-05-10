@@ -40,10 +40,6 @@ class TestMultipleFragment : Fragment() {
     private lateinit var answer:String
     private lateinit var score:Number
     private lateinit var quizSubject:String
-//    private lateinit var example1:String  // 보기 1~4 번
-//    private lateinit var example2:String  // 보기 1~4 번
-//    private lateinit var example3:String  // 보기 1~4 번
-//    private lateinit var example4:String  // 보기 1~4 번
 
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +67,7 @@ class TestMultipleFragment : Fragment() {
         // 세팅하기
         var correct:Int = 0
         var wrong:Int = 0
+        score = 0
         getMutipleQuiz()
         binding.imageViewResultX.visibility = View.GONE
         binding.imageViewResultO.visibility = View.GONE
@@ -145,6 +142,7 @@ class TestMultipleFragment : Fragment() {
             ) {
                 // 통신 성공
                 if(response.isSuccessful){
+                    Log.d("문제 정보", response.body()!!.toString() )
                     binding.textQuiz.setText(response.body()!!.quiz)
                     answer = response.body()!!.answer
                     binding.btnExample1.setText("이것은 1번 문항")
