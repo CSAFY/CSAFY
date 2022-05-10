@@ -7,9 +7,10 @@ export const MyiFrame = styled.iframe`
   allowfullscreen
   margin: 20px auto 0 auto;
   src : ${(props) => props.videoId}
-  events:{
-    onStateChange : ${(props) => props.onPlayerStateChange}
-  }
+  events: {
+      'onReady': ${(props) => props.onPlayerReady},
+      'onStateChange': ${(props) => props.onPlayerStateChange}
+    }
   
 `
 

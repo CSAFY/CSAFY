@@ -24,27 +24,49 @@ export default function DrawerInList(props) {
 
   const onClickVideo = (event, data) => {
     props.isClick('left', false)
-    const tmp = {
-      "videoId" : data.videoId,
-      "title" : data.title,
-      "src" : data.imgSrc
-    }
-    setVideo(tmp)
+    
+    setVideo(data)
   }
 
 
-  const ListItems = studyDatas.map((data, index) => 
-    
-      <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {"imgSrc":data.snippet.thumbnails.high.url,
-        "title":data.snippet.title,
-        "videoId":data.id.videoId} )}} >
-        <ListItemText primary={data.snippet.title} />
-      </ListItem>
-    
-  )
+  const ListItems = (categoryId) =>  {
+    return(
+      studyDatas.map((data, index) => {
+        if (categoryId === "전체") {
+          return(
+            <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
+              "imgSrc":`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`,
+              "title": data.title,
+              "videoId":data.videoId,
+              "category2Id" : data.category2Id,
+              "categoryId": data.categoryId,
+              "favorites" : data.favorites,
+              "id" : data.id,
+              "seen" : data.seen })}} >
+              <ListItemText primary={data.title} />
+            </ListItem>
+          )
+        } else if (categoryId === data.categoryId){
+          return(
+            <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
+              "imgSrc":`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`,
+              "title": data.title,
+              "videoId":data.videoId,
+              "category2Id" : data.category2Id,
+              "categoryId": data.categoryId,
+              "favorites" : data.favorites,
+              "id" : data.id,
+              "seen" : data.seen })}} >
+              <ListItemText primary={data.title} />
+            </ListItem>
+          )
+        }
+      })
+    )
+  }
   
   
-  const DrawerInList = props.data.map((data, index) => 
+  const DrawerInList = props.data.map((categoryId, index) => 
     <Accordion 
       expanded={expanded === `panel${index + 1}`} 
       onChange={handleChange(`panel${index + 1}`)}
@@ -54,11 +76,11 @@ export default function DrawerInList(props) {
         aria-controls={`panel${index + 1}bh-content`}
         id={`panel${index + 1}bh-header`}
       >
-        <Typography sx={{ width: '33%', flexShrink: 0 }}>{data}</Typography>
+        <Typography sx={{ width: '33%', flexShrink: 0 }}>{categoryId}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         
-        {ListItems}
+        {ListItems(categoryId)}
         
       </AccordionDetails>
     </Accordion>
