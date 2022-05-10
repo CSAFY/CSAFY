@@ -17,8 +17,6 @@ class TestFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(
@@ -28,14 +26,11 @@ class TestFragment : Fragment() {
         _binding = FragmentTestBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val mainActivity = activity as MainActivity
-        // Inflate the layout for this fragment
-
         // 다음 단계로 이동
+        val mainActivity = activity as MainActivity
         binding.btnOX.setOnClickListener {
             mainActivity.changeTestFragment(2, "OX")
         }
-
         binding.btnQuiz.setOnClickListener {
             mainActivity.changeTestFragment(2, "Quiz")
         }
