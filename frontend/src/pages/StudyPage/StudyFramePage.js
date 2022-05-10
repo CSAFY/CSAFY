@@ -34,7 +34,7 @@ function StudyFramePage() {
   
   const [toggle, setToggle] = useState(false);
   const toggleTime = () => {
-    console.log(toggle);
+    
     setToggle(!toggle);
   };
   
@@ -48,7 +48,6 @@ function StudyFramePage() {
       },
     })
     .then((res) => {
-      console.log(res.data)
       setStudyData(res.data)
     })
     .catch(err =>{
@@ -59,13 +58,14 @@ function StudyFramePage() {
     getData();
   }, []);
 
-  const cateFilter = (data) => {
+  const cateFilter = (data, index) => {
     if (nowKategorie === "전체"){
       return(
         <ThumbNailCard
             key={data.id}
             imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
             title={data.title}
+            index={index}
             videoId={data.videoId}
             category2Id = {data.category2Id}
             categoryId={data.categoryId}
@@ -81,6 +81,7 @@ function StudyFramePage() {
             key={data.id}
             imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
             title={data.title}
+            index={index}
             videoId={data.videoId}
             category2Id = {data.category2Id}
             categoryId={data.categoryId}
@@ -97,7 +98,7 @@ function StudyFramePage() {
     
       {
         if (toggle === false){
-          return cateFilter(data)
+          return cateFilter(data, index)
         } else if (data.favorites === 1) {
           return cateFilter(data)
         }

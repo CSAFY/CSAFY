@@ -17,7 +17,7 @@ export const InSideLayOut = styled.div`
 export const TitleName = styled.div`
   width: 300px;
   height: 60px;
-  margin: 0 auto 5px 22%;
+  margin: 0 auto 5px 12%;
   font-family: SUIT;
   font-size: 35px;
   font-weight: 600;
