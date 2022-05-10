@@ -58,6 +58,7 @@ public class InterviewController {
 
     }
 
+
     // 사용자가 원하는 면접 유형, 문제 수, 시간 모드 여부 POST
     @PostMapping("/create")
     public ResponseEntity createInterviewList(@RequestHeader(value = "Authorization") String token,
@@ -77,6 +78,26 @@ public class InterviewController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(interviewList);
+    }
+
+
+    @GetMapping("/{interviewSeq}/info")
+    public ResponseEntity interviewLikesCount(@RequestHeader(value = "Authorization") String token,
+                                                @PathVariable("interviewSeq") Long interviewSeq){
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        Interview interview = interviewService.getInterview(interviewSeq);
+        if(interview == null){
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new InterviewDto(interview, userDto));
     }
 
     // 면접 좋아요 카운트 받기
@@ -169,6 +190,26 @@ public class InterviewController {
                 interviewComments.stream().map(InterviewCommentResponse::new).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/{commentId}/comment/info")
+    public ResponseEntity getInterviewCommentInfo(@RequestHeader(value = "Authorization") String token,
+                                              @PathVariable("commentId") Long commentId){
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if(!resultCode.equals("OK")){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        InterviewComment interviewComment = interviewService.getCommentInfo(commentId);
+        if(interviewComment == null){
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new InterviewCommentDto(interviewComment, userDto));
     }
 
     // 댓글 등록

@@ -1,6 +1,7 @@
 package csafy.userservice.api;
 
 import csafy.userservice.dto.UserDto;
+import csafy.userservice.dto.request.MobileUpdateRequest;
 import csafy.userservice.dto.request.UpdateRequest;
 import csafy.userservice.dto.response.ErrorResponse;
 import csafy.userservice.entity.User;
@@ -47,6 +48,74 @@ public class UserApiController {
     @GetMapping("/welcome")
     public String welcome() {
         return "welcome";
+    }
+
+    @GetMapping("/{userSeq}/user/get")
+    public ResponseEntity getUserInfo(@PathVariable("userSeq") Long userSeq){
+        User user = userService.getUser(userSeq);
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        UserDto userDto = new UserDto(user);
+        userDto.setUser_seq(user.getUserSeq());
+        userDto.setUser_id(user.getUserId());
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(null);
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @GetMapping("/userInfo")
+    public ResponseEntity getUserTokenInfo(@RequestHeader(value = "Authorization") String token){
+
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
+        }
+
+        Long userSeq = jwtTokenProvider.getUserSeq(token);
+
+        User user = userService.getUser(userSeq);
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        UserDto userDto = new UserDto(user);
+        userDto.setUser_seq(user.getUserSeq());
+        userDto.setUser_id(user.getUserId());
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(null);
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @PutMapping("/mobile/update")
+    public ResponseEntity<?> userMobileUpdate(@RequestHeader(value = "Authorization") String token,
+                                        @RequestBody MobileUpdateRequest updateRequest) {
+
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
+        }
+
+        if(updateRequest.getUsername() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
+        }
+        if(updateRequest.getIntroduction() == null || updateRequest.getIntroduction().length() >= 1024){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 자기소개 형식입니다.");
+        }
+        if(updateRequest.getProfileImg().length() >= 1024){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 URL이 너무 깁니다.");
+        }
+
+        Long userSeq = jwtTokenProvider.getUserSeq(token);
+
+        MobileUpdateRequest updateRequestResult = userService.updateMobileUser(userSeq, updateRequest);
+
+        if(updateRequestResult == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업데이트할 사용자를 찾을 수 없습니다.");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(updateRequestResult);
     }
 
     /**
@@ -245,8 +314,12 @@ public class UserApiController {
     public UserDto getUserSeqOnEmail(@RequestParam("email") String email){
 
         User user = userService.getUserSeqOnEmail(email);
-
-        return new UserDto(user);
+        UserDto userDto = new UserDto(user);
+        userDto.setUser_seq(user.getUserSeq());
+        userDto.setUser_id(user.getUserId());
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(null);
+        return userDto;
     }
 
 

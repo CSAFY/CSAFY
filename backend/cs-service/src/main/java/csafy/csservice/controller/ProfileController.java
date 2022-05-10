@@ -31,7 +31,7 @@ public class ProfileController {
 
     // 학습 분석 데이터 GET
 
-    // 즐겨찾기 한 학습 GET
+    // 즐겨찾기 한 학습 GET(토큰)
     @GetMapping("/study/favorites")
     public ResponseEntity getFavoriteStudy(@RequestHeader(value = "Authorization") String token){
 
@@ -50,7 +50,7 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatus.OK).body(videoDtoList);
     }
 
-    // 최근 본 강의 GET
+    // 최근 본 강의 GET (토큰)
     @GetMapping("/study/seen")
     public ResponseEntity getLatestStudy(@RequestHeader(value = "Authorization") String token){
 
@@ -69,8 +69,7 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatus.OK).body(videoDtoList);
     }
 
-    // 최근 본 면접 질문 GET
-
+    // 최근 본 면접 질문 GET(토큰)
     @GetMapping("/interview/seen")
     public ResponseEntity getLatestInterview(@RequestHeader(value = "Authorization") String token){
 
@@ -88,10 +87,6 @@ public class ProfileController {
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-
-
-
-
 
 
 

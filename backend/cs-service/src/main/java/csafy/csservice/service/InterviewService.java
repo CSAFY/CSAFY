@@ -44,6 +44,10 @@ public class InterviewService {
         }
     }
 
+    public Interview getInterview(Long interviewSeq){
+        return interviewRepository.findById(interviewSeq).orElse(null);
+    }
+
     @Transactional
     public List<InterviewCreateDto> createInterviewList(RequestCreateInterview requestCreateInterview, Long userSeq){
         if(requestCreateInterview.getCategory().equalsIgnoreCase("all")){
@@ -119,6 +123,10 @@ public class InterviewService {
         List<InterviewCommentResponseDto> list = jpaResultMapper.list(q, InterviewCommentResponseDto.class);
         return list;
 
+    }
+
+    public InterviewComment getCommentInfo(Long commentId){
+        return interviewCommentRepository.findById(commentId).orElse(null);
     }
 
     @Transactional

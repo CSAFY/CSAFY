@@ -12,6 +12,10 @@ import csafy.csservice.repository.interview.InterviewSeenRepository;
 import csafy.csservice.repository.profile.StatisticsRepository;
 import csafy.csservice.repository.video.VideoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,19 +35,25 @@ public class ProfileService {
 
 
     public List<VideoDto> getLatestStudy(Long userSeq){
-        List<Video> videoList = videoRepository.findUserStudy(userSeq);
+        Pageable pageable = PageRequest.of(0, 4);
+        Page<Video> videoPage = videoRepository.findUserStudy(userSeq, pageable);
+        List<Video> videoList = videoPage.getContent();
 
         return videoList.stream().map(VideoDto::new).collect(Collectors.toList());
     }
 
     public List<VideoDto> getFavoriteStudy(Long userSeq){
-        List<Video> videoList = videoRepository.findUserFavoriteStudy(userSeq);
+        Pageable pageable = PageRequest.of(0, 4);
+        Page<Video> videoPage = videoRepository.findUserFavoriteStudy(userSeq, pageable);
+        List<Video> videoList = videoPage.getContent();
 
         return videoList.stream().map(VideoDto::new).collect(Collectors.toList());
     }
 
     public List<InterviewSeenDto> getLatestInterview(Long userSeq){
-        List<InterviewSeen> interviewList = interviewSeenRepository.findByInterviewSeen(userSeq);
+        Pageable pageable = PageRequest.of(0, 4);
+        Page<InterviewSeen> interviewPage = interviewSeenRepository.findByInterviewSeen(userSeq, pageable);
+        List<InterviewSeen> interviewList = interviewPage.getContent();
 
         return interviewList.stream().map(InterviewSeenDto::new).collect(Collectors.toList());
     }
