@@ -56,6 +56,7 @@ class TestOXFragment : Fragment() {
         // 세팅하기
         var correct:Int = 0
         var wrong:Int = 0
+        score = 0
         getOXQuiz()
         binding.imageViewResultX.visibility = View.GONE
         binding.imageViewResultO.visibility = View.GONE
