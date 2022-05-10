@@ -161,37 +161,33 @@ function InterviewDetail() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
   const { interviewSeq } = useParams();
-  // 특정 번호의 면접 질문에 대한 liked 정보(지금은 좋아요 수만 받아지는데 좋아요 했는지 여부까지..!)를 가져올 수 있으면 좋겠다...
-  const { state } = useLocation();
-  const [isLiked, setIsLiked] = useState(state.liked);
-  console.log('0. 🐸. state', state);
+
   // 면접 질문 관련
+  const [interviewInfo, setInterviewInfo] = useState({});
+  // 좋아요 정보 가져오기(갱신)
+  const getInterviewInfo = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/interview/${interviewSeq}/info`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        setInterviewInfo(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+  console.log('🐕', interviewInfo);
+  // 좋아요 눌렀을 때
   const handleLikes = () => {
     axios
       .post(`${defaultAPI}/cs-service/interview/${interviewSeq}/likes`, null, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('1. 🐸', res);
-        // 좋아요 표시
-        setIsLiked(!isLiked);
-        // 숫자 갱신
-        getSpecificLikes();
+        // isliked 갱신
+        getInterviewInfo();
       })
       .catch(err => console.error(err));
   };
-  // 좋아요 정보 가져오기
-  const [interviewLikes, setInterviewLikes] = useState(0);
-  const getSpecificLikes = () => {
-    axios
-      .get(`${defaultAPI}/cs-service/interview/${interviewSeq}/likes`)
-      .then(res => {
-        console.log('2. 🐸', res);
-        setInterviewLikes(res.data.interviewLikes);
-      })
-      .catch(err => console.error(err));
-  };
-  console.log('3. 🐸', interviewLikes);
 
   // 댓글 관련
   const [myComment, setMyComment] = useState('');
@@ -229,31 +225,29 @@ function InterviewDetail() {
 
   useEffect(() => {
     getComment();
-    setInterviewLikes(state.interviewLikes);
-    getSpecificLikes();
+
+    getInterviewInfo();
   }, []);
 
   const [commentData, setCommentData] = useState([]);
   const pageHeight = 1000 + commentData.length * 200;
 
-  // console.log('🐸', commentData);
   return (
     <DetailWrapper
       style={{
         height: `${pageHeight}px`,
-        // height: '2000px'
       }}
     >
       <DetailContent>
         <DetailBox>
-          {state.category === '인성' ? (
-            <AttitudeCategory>{state.category}</AttitudeCategory>
+          {interviewInfo.category === '인성' ? (
+            <AttitudeCategory>{interviewInfo.category}</AttitudeCategory>
           ) : (
-            <TechCategory>{state.category}</TechCategory>
+            <TechCategory>{interviewInfo.category}</TechCategory>
           )}
-          <Content>Q. {state.question}</Content>
+          <Content>Q. {interviewInfo.question}</Content>
           <Likes>
-            {isLiked ? (
+            {interviewInfo.liked ? (
               <ThumbUpIcon
                 color="primary"
                 sx={{
@@ -272,8 +266,7 @@ function InterviewDetail() {
                 onClick={handleLikes}
               />
             )}
-
-            {interviewLikes}
+            {interviewInfo.interviewLikes}
           </Likes>
         </DetailBox>
         <Board>
