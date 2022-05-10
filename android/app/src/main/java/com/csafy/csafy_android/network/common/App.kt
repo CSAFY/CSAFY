@@ -5,8 +5,17 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class App : Application() {
+
+    init {
+        instance = this
+    }
+
     companion object {
         lateinit var prefs: PrefsManager
+        lateinit var instance: App
+        fun ApplicationContext() : Context {
+            return instance.applicationContext
+        }
     }
 
     override fun onCreate() {
