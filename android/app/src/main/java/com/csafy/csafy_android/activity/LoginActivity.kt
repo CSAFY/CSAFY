@@ -1,6 +1,7 @@
 package com.csafy.csafy_android.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -56,6 +57,13 @@ class LoginActivity : AppCompatActivity() {
                         // 통신 성공
                         if(response.isSuccessful){
                             Log.d("성공", response.toString())
+
+                            // 토큰부터 저장해보자
+                            val sharedPreference = getSharedPreferences("Login", MODE_PRIVATE)
+                            val editor: SharedPreferences.Editor = sharedPreference.edit()
+                            editor.putString("token", response.body()!!.token)
+                            editor.commit()
+
                             Toast.makeText(this@LoginActivity, "로그인을 진행할게요.", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
