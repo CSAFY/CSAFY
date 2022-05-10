@@ -25,8 +25,14 @@ public class TestController {
 
     // 전체 CS 문제 모음집 - 분류 ( 난이도별, 랜덤 )
 
+    // 4지선다에 필요한 기능들
+    // 문제 받아오기
+    // 문제에서 선택지들 받아오기 1정답 3오답
+    // 정답의 결과 집계하기 - 종합점수 계산한댔음
 
-    // 과목별 문제집 GET
+    // 문제들은 일회성. 푼 문제 불러오기등 미구현.
+
+//    // 과목별 문제집 GET
 //    @GetMapping("/stack/get")
 //    public ResponseEntity getStackList(@RequestHeader(value = "Authorization") String token){
 //        // resultCode에 토큰 결과 저장
@@ -50,9 +56,10 @@ public class TestController {
 //        return ResponseEntity.status(HttpStatus.OK).body(StackList);
 //    }
 
-    // getMyStackList : 나만의 문제집 GET
 
-    // getStackDetail : 상세페이지
+    // getMyStackList : 나만의 문제집 GET > 보류
+
+    // getStackDetail : 상세페이지 > 캔슬
 
     //
 

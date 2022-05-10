@@ -105,6 +105,22 @@ public class StudyController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    // 최근 본 강의 체크
+    @PostMapping("/{studySeq}/play")
+    public ResponseEntity studyPlay(@RequestHeader(value = "Authorization") String token,
+                                         @PathVariable("studySeq") Long studySeq) {
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+        videoService.studyPlays(userDto.getUser_seq(), studySeq);
+
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
 
     // 일반 학습 페이지
 

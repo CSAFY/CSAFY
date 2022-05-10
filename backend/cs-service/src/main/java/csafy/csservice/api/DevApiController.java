@@ -1,10 +1,13 @@
 package csafy.csservice.api;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Controller
@@ -71,6 +74,28 @@ public class DevApiController {
 
     @Data
     static class QuizEntity2 {
+        private String key;
+        private String value;
+    }
+
+    // 샘플2에서 받는거
+
+    @GetMapping("/test/quizsample3")
+    public ResponseEntity unitySampleQuiz3() {
+
+        List<QuizEntity3> cards = new ArrayList<>();
+        cards.add(new QuizEntity3("http" , "웹을 기준으로 브라우저와 서버 간에 데이터를 주고받기 위한 방식111"));
+        cards.add(new QuizEntity3("http" , "웹을 기준으로 브라우저와 서버 간에 데이터를 주고받기 위한 방식222"));
+        cards.add(new QuizEntity3("http" , "웹을 기준으로 브라우저와 서버 간에 데이터를 주고받기 위한 방식333"));
+        cards.add(new QuizEntity3("http" , "웹을 기준으로 브라우저와 서버 간에 데이터를 주고받기 위한 방식444"));
+        cards.add(new QuizEntity3("http" , "웹을 기준으로 브라우저와 서버 간에 데이터를 주고받기 위한 방식555"));
+
+        return ResponseEntity.ok(cards);
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class QuizEntity3 {
         private String key;
         private String value;
     }

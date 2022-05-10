@@ -117,3 +117,15 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIATMEFXWGA6FYZZ55J
+      secretKey: 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
+    s3:
+      bucket: csafy-profile
+    region:
+      static: us-east-1
+    stack:
+      auto: false

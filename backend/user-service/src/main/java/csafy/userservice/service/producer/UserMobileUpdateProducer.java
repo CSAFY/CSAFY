@@ -42,14 +42,14 @@ public class UserMobileUpdateProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public Long send(String kafkaTopic, MobileUpdateRequest updateRequest, Long userSeq){
+    public Long send(String kafkaTopic, String s3url, String introduction, String username, Long userSeq){
         PayloadMobileUpdate payload = PayloadMobileUpdate.builder()
                 .user_seq(userSeq)
 //                .user_seq(22L)
                 .modified_at(Timestamp.valueOf(LocalDateTime.now()))
-                .username(updateRequest.getUsername())
-                .profile_image_url(updateRequest.getProfileImg())
-                .introduction(updateRequest.getIntroduction())
+                .username(username)
+                .profile_image_url(s3url)
+                .introduction(introduction)
                 .build();
         KafkaUserMobileUpdateDto kafkaUserUpdateDto = new KafkaUserMobileUpdateDto(schema, payload);
         System.out.println("asdasd " + kafkaUserUpdateDto.getPayload().getModified_at());
@@ -65,7 +65,9 @@ public class UserMobileUpdateProducer {
         }
         System.out.print(jsonInString);
         kafkaTemplate.send(kafkaTopic, jsonInString);
-        log.info("User Mobile Update Producer to DB: " + updateRequest);
+        log.info("User Mobile Update Producer to DB: " + s3url);
+        log.info("User Mobile Update Producer to DB: " + introduction);
+        log.info("User Mobile Update Producer to DB: " + username);
 
         return userSeq;
     }

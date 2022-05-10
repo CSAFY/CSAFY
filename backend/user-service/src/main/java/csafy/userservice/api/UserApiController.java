@@ -8,6 +8,7 @@ import csafy.userservice.entity.User;
 import csafy.userservice.entity.auth.ProviderType;
 import csafy.userservice.entity.auth.RoleType;
 import csafy.userservice.repository.UserRepository;
+import csafy.userservice.service.S3.S3Uploader;
 import csafy.userservice.service.UserService;
 import csafy.userservice.service.producer.UserProducer;
 import csafy.userservice.service.token.JwtTokenProvider;
@@ -25,11 +26,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -43,6 +46,7 @@ public class UserApiController {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
+    private final S3Uploader s3Uploader;
     private final UserRepository userRepository;
 
     @GetMapping("/welcome")
@@ -89,27 +93,37 @@ public class UserApiController {
 
     @PutMapping("/mobile/update")
     public ResponseEntity<?> userMobileUpdate(@RequestHeader(value = "Authorization") String token,
-                                        @RequestBody MobileUpdateRequest updateRequest) {
+                                              @RequestPart(value = "image", required = false) MultipartFile file,
+                                              @RequestPart(value = "introduction", required = false) String introduction,
+                                              @RequestPart(value = "username", required = false) String username) {
 
         if (!jwtTokenProvider.validateToken(token)) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
         }
+        String s3url = null;
 
-        if(updateRequest.getUsername() == null){
+        try{
+            s3url = s3Uploader.upload(file, "profile");
+        } catch (IOException ex){
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미지 업로드 실패");
+        }
+
+        if(username == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
         }
-        if(updateRequest.getIntroduction() == null || updateRequest.getIntroduction().length() >= 1024){
+        if(introduction == null || introduction.length() >= 1024){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 자기소개 형식입니다.");
         }
-        if(updateRequest.getProfileImg().length() >= 1024){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 URL이 너무 깁니다.");
+        if(s3url == null || s3url.length() >= 1024){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 프로필 이미지 URL 형식입니다.");
         }
 
         Long userSeq = jwtTokenProvider.getUserSeq(token);
 
-        MobileUpdateRequest updateRequestResult = userService.updateMobileUser(userSeq, updateRequest);
+        MobileUpdateRequest updateRequestResult = userService.updateMobileUser(userSeq, s3url, introduction, username);
 
         if(updateRequestResult == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업데이트할 사용자를 찾을 수 없습니다.");
@@ -184,7 +198,8 @@ public class UserApiController {
 // 회원 정보 수정
     @PutMapping("/update")
     public ResponseEntity<?> userUpdate(@RequestHeader(value = "Authorization") String token,
-                                        @RequestBody UpdateRequest updateRequest) {
+                                        @RequestPart(value = "image", required = false) MultipartFile file,
+                                        @RequestPart(value = "username", required = false) String username) {
 
         if (!jwtTokenProvider.validateToken(token)) {
             return ResponseEntity
@@ -192,17 +207,27 @@ public class UserApiController {
                     .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
         }
 
-        if(updateRequest.getUsername() == null){
+        String s3url = null;
+
+        try{
+            s3url = s3Uploader.upload(file, "profile");
+        } catch (IOException ex){
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 업로드 오류");
+        }
+
+
+        if(username == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
         }
         
-        if(updateRequest.getProfileImg().length() >= 1024){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 URL이 너무 깁니다.");
+        if(s3url == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 업로드 실패");
         }
 
         Long userSeq = jwtTokenProvider.getUserSeq(token);
 
-        UpdateRequest updateRequestResult = userService.updateUser(userSeq, updateRequest);
+        UpdateRequest updateRequestResult = userService.updateUser(userSeq, username, s3url);
 
         if(updateRequestResult == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업데이트할 사용자를 찾을 수 없습니다.");
@@ -361,6 +386,21 @@ public class UserApiController {
     public void rankUpPremium(@RequestParam("token") String token){
         userService.rankUpPremium(token);
     }
+
+//    // S3
+//
+//    @PostMapping("/images")
+//    public ResponseEntity upload(@RequestParam("images") MultipartFile multipartFile) throws IOException {
+//        String urlResult = null;
+//        try{
+//            urlResult = s3Uploader.upload(multipartFile, "profile");
+//
+//        } catch (IOException ex){
+//            ex.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(urlResult);
+//    }
 
 
 }

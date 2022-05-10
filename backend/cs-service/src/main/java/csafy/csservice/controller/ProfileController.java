@@ -49,6 +49,26 @@ public class ProfileController {
 
         return ResponseEntity.status(HttpStatus.OK).body(videoDtoList);
     }
+//
+//    // 최근 다 본 강의 GET (토큰)
+//    @GetMapping("/study/seen")
+//    public ResponseEntity getLatestStudy(@RequestHeader(value = "Authorization") String token){
+//
+//        String resultCode = userServiceClient.checkTokenValidated(token);
+//        if (!resultCode.equals("OK")) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+//        }
+//
+//        UserDto userDto = userServiceClient.getTokenUser(token);
+//        List<VideoDto> videoDtoList = profileService.getLatestStudy(userDto.getUser_seq());
+//
+//        if(videoDtoList == null || videoDtoList.size() == 0){
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(videoDtoList);
+//    }
+
 
     // 최근 본 강의 GET (토큰)
     @GetMapping("/study/seen")

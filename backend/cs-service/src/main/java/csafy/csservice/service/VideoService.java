@@ -2,11 +2,9 @@ package csafy.csservice.service;
 
 import csafy.csservice.dto.response.ResponseVideo;
 import csafy.csservice.entity.video.VideoFavorites;
+import csafy.csservice.entity.video.VideoPlay;
 import csafy.csservice.entity.video.VideoSeen;
-import csafy.csservice.repository.video.VideoFavoritesRepository;
-import csafy.csservice.repository.video.VideoLikesRepository;
-import csafy.csservice.repository.video.VideoRepository;
-import csafy.csservice.repository.video.VideoSeenRepository;
+import csafy.csservice.repository.video.*;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Service;
@@ -25,6 +23,7 @@ public class VideoService {
     private final VideoLikesRepository videoLikesRepository;
     private final VideoRepository videoRepository;
     private final VideoSeenRepository videoSeenRepository;
+    private final VideoPlayRepository videoPlayRepository;
 
     @PersistenceContext
     EntityManager em;
@@ -80,5 +79,21 @@ public class VideoService {
         videoSeenRepository.save(videoSeen);
     }
 
+    @Transactional
+    public void studyPlays(Long userSeq, Long studySeq){
+
+        VideoPlay videoPlay = videoPlayRepository.checkPlay(userSeq, studySeq);
+
+        if(videoPlay == null ) {
+            videoPlay = new VideoPlay();
+            videoPlay.setVideo(videoRepository.findById(studySeq).orElse(null));
+            videoPlay.setUserSeq(userSeq);
+            videoPlay.setPlayAt(LocalDateTime.now());
+        }
+        else {
+            videoPlay.setPlayAt(LocalDateTime.now());
+        }
+        videoPlayRepository.save(videoPlay);
+    }
 
 }
