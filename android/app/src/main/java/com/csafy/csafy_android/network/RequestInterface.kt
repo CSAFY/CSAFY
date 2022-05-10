@@ -3,10 +3,7 @@ package com.csafy.csafy_android.network
 import com.csafy.csafy_android.network.data.request.RequestJoinData
 import com.csafy.csafy_android.network.data.request.RequestLoginData
 import com.csafy.csafy_android.network.data.request.RequestScoreData
-import com.csafy.csafy_android.network.data.response.ResponseJoinData
-import com.csafy.csafy_android.network.data.response.ResponseLoginData
-import com.csafy.csafy_android.network.data.response.ResponseMultipleData
-import com.csafy.csafy_android.network.data.response.ResponseOXData
+import com.csafy.csafy_android.network.data.response.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -40,6 +37,9 @@ interface RequestInterface {
         @Body body : RequestScoreData
     ) : Call<Void>
 
+    // 카드 받아오기
+    @GET("cs-service/test/quizsample3")
+    fun cardSample() : Call<List<ResponseCardData>>
 
     // 회원 탈퇴
     //위와 같이 @DELETE 어쩌구의 형식으로 가지고 가면
