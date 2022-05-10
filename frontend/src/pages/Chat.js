@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { resolvePath, useNavigate, useParams } from 'react-router-dom';
 import { defaultAPI } from '../utils/api';
+// // Recoil
+// import { useRecoilState } from 'recoil';
+// import { LoginState } from '../recoils/LoginState';
+// import { Token } from '../recoils/Token';
 
-import RefreshIcon from '@mui/icons-material/Refresh';
+// COMPONENTS
+import TestChatRoom from '../components/TestChatRoom';
 
 // STYLED
 import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
-import { fontSize } from '@mui/system';
-import ChatRoom from './ChatRoom';
-import TestChatRoom from '../components/TestChatRoom';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const Phone = styled.div`
   width: 426px;
@@ -82,24 +84,28 @@ const ChatRooms = styled.div`
 `;
 
 function Chat() {
-  const [roomData, setRoomData] = useState({ room_name: '', chatRooms: [] });
+  // // Recoil
+  // const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  // const [token, setToken] = useRecoilState(Token);
+
+  // 채팅 관련 데이터
   const [chatrooms, setChatrooms] = useState([]);
   const [roomName, setRoomName] = useState('');
-  const navigate = useNavigate();
 
-  // 모바일용
+  // 핸드폰 화면 채팅용
   const [chatRoomId, setChatRoomId] = useState('');
 
+  console.log(chatrooms);
   // 채팅방 개설
   const createRoom = () => {
-    // post query parameeters - **null값 추가 꼭 필요**
+    // post query parameters - **null값 추가 꼭 필요**
     axios
       .post(`${defaultAPI}/chat-service/chat/room`, null, {
-        // name: 'asdf',
         params: { name: roomName },
       })
       .then(res => {
-        console.log(res.data.name + '방 개설에 성공하였습니다.');
+        alert(`${res.data.name}방 개설 성공`);
+        // console.log(res.data.name + '방 개설에 성공하였습니다.');
         setRoomName('');
         findAllRoom();
       })
@@ -117,8 +123,6 @@ function Chat() {
     findAllRoom();
   }, []);
 
-  // console.log('🎃', chatRoomId);
-  // console.log(chatrooms);
   return (
     <ChatWrapper>
       <ChatContent>
@@ -150,7 +154,6 @@ function Chat() {
             <h1>채팅방 리스트</h1>
             <RefreshIcon
               onClick={findAllRoom}
-              // fontSize="medium"
               sx={{ ml: '20px', fontSize: 30 }}
               style={{ cursor: 'pointer' }}
             />

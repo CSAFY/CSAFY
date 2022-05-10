@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ReplyIcon from '@mui/icons-material/Reply';
 import { defaultAPI } from '../utils/api';
 import axios from 'axios';
 
-import { Button } from '@mui/material';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
+
+// COMPONENTS
 import CommentBox from '../components/CommentBox';
 
 // STYLED
 import styled from 'styled-components';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { Button } from '@mui/material';
+
 const DetailWrapper = styled.div`
   width: 100%;
 
@@ -151,33 +157,28 @@ const ButtonBox = styled.div`
 `;
 
 function InterviewDetail() {
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
   const { interviewSeq } = useParams();
-
+  // 특정 번호의 면접 질문에 대한 liked 정보(지금은 좋아요 수만 받아지는데 좋아요 했는지 여부까지..!)를 가져올 수 있으면 좋겠다...
   const { state } = useLocation();
-  // console.log(state);
-  // console.log(interviewSeq);
   const [isLiked, setIsLiked] = useState(state.liked);
-
+  console.log('0. 🐸. state', state);
+  // 면접 질문 관련
   const handleLikes = () => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      axios
-        .post(
-          `${defaultAPI}/cs-service/interview/${interviewSeq}/likes`,
-          null,
-          { headers: { Authorization: token } },
-        )
-        .then(res => {
-          console.log(res);
-          // 좋아요 표시
-          setIsLiked(!isLiked);
-          // 숫자 갱신
-          getSpecificLikes();
-        })
-        .catch(err => console.error(err));
-    } else {
-      alert('로그인이 필요합니다.');
-    }
+    axios
+      .post(`${defaultAPI}/cs-service/interview/${interviewSeq}/likes`, null, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('1. 🐸', res);
+        // 좋아요 표시
+        setIsLiked(!isLiked);
+        // 숫자 갱신
+        getSpecificLikes();
+      })
+      .catch(err => console.error(err));
   };
   // 좋아요 정보 가져오기
   const [interviewLikes, setInterviewLikes] = useState(0);
@@ -185,19 +186,19 @@ function InterviewDetail() {
     axios
       .get(`${defaultAPI}/cs-service/interview/${interviewSeq}/likes`)
       .then(res => {
-        // console.log('🐸', res);
+        console.log('2. 🐸', res);
         setInterviewLikes(res.data.interviewLikes);
       })
       .catch(err => console.error(err));
   };
+  console.log('3. 🐸', interviewLikes);
 
-  // 댓글
+  // 댓글 관련
   const [myComment, setMyComment] = useState('');
   const handleComment = e => {
     setMyComment(e.target.value);
   };
   const saveComment = e => {
-    const token = localStorage.getItem('jwt');
     // 수정은 put, 삭제는 delete - interview/{commentId}/comment
     axios
       .post(
@@ -212,17 +213,15 @@ function InterviewDetail() {
       })
       .catch(err => console.error(err));
   };
-  // 댓글 수정
 
   // 댓글 목록 가져오기
   const getComment = () => {
-    const token = localStorage.getItem('jwt');
     axios
       .get(`${defaultAPI}/cs-service/interview/${interviewSeq}/comment`, null, {
         headers: { Authorization: token },
       })
       .then(res => {
-        // console.log('🎃', res);
+        console.log('🎃', res);
         setCommentData(res.data);
       })
       .catch(err => console.error(err));
@@ -257,13 +256,19 @@ function InterviewDetail() {
             {isLiked ? (
               <ThumbUpIcon
                 color="primary"
-                sx={{ marginRight: '10px', cursor: 'pointer' }}
+                sx={{
+                  marginRight: '10px',
+                  cursor: 'pointer',
+                }}
                 onClick={handleLikes}
               />
             ) : (
               <ThumbUpOffAltIcon
                 color="primary"
-                sx={{ marginRight: '10px', cursor: 'pointer' }}
+                sx={{
+                  marginRight: '10px',
+                  cursor: 'pointer',
+                }}
                 onClick={handleLikes}
               />
             )}

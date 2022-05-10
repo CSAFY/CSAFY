@@ -3,9 +3,12 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
 import VoiceRecord from '../components/VoiceRecord';
-// MUI
-import MicIcon from '@mui/icons-material/Mic';
-import { LinearProgress } from '@mui/material';
+
+// Recoil
+import { useRecoilState } from 'recoil';
+
+import { Token } from '../recoils/Token';
+import { TimeLimit } from '../recoils/TimeLimit';
 
 // STYLED
 import styled from 'styled-components';
@@ -64,12 +67,6 @@ const Icon = styled.div`
 
   cursor: pointer;
 `;
-const Record = styled.div`
-  position: absolute;
-  bottom: 50px;
-  left: 50%;
-  transform: translate(-50%);
-`;
 const Progress = styled.div`
   width: 820px;
   height: 8px;
@@ -96,20 +93,20 @@ const NextButton = styled.button`
 
   cursor: pointer;
 `;
-const PrevButton = styled.button`
-  width: 100px;
-  height: 32px;
+// const PrevButton = styled.button`
+//   width: 100px;
+//   height: 32px;
 
-  border-radius: 12px;
-  border: solid 1px #000;
-  background-color: #f5f5f5;
+//   border-radius: 12px;
+//   border: solid 1px #000;
+//   background-color: #f5f5f5;
 
-  position: absolute;
-  top: 20px;
-  left: 20px;
+//   position: absolute;
+//   top: 20px;
+//   left: 20px;
 
-  cursor: pointer;
-`;
+//   cursor: pointer;
+// `;
 const StepBox = styled.div`
   width: 50px;
   height: 50px;
@@ -195,17 +192,19 @@ const MyMemo = styled.div`
 `;
 
 function InterviewTest() {
+  // Recoil
+  const [timeLimit, setTimeLimit] = useRecoilState(TimeLimit);
+  const [token, setToken] = useRecoilState(Token);
   // API data
   const { state } = useLocation();
   // console.log('🐕', state);
   const [testData, setTestData] = useState([]);
   const [seq, setSeq] = useState(0);
-  const [timeLimit, setTimeLimit] = useState(false);
+  // const [timeLimit, setTimeLimit] = useState(false);
   useEffect(() => {
     setTestData(state);
     setQuestion(state[0]['question']);
     setSeq(state[0]['interviewSeq']);
-    setTimeLimit(state[state.length - 1]);
   }, []);
   // console.log(testData);
   // console.log('🐸', seq);
@@ -217,7 +216,7 @@ function InterviewTest() {
   const [question, setQuestion] = useState('');
   // 다음 문제로 넘어가기
   const nextQuestion = () => {
-    if (cnt === testData.length - 1) {
+    if (cnt === testData.length) {
       alert('test end');
     } else {
       setQuestion(testData[cnt]['question']);
@@ -229,7 +228,7 @@ function InterviewTest() {
   // progressbar
   const widthStyle = {
     height: '100%',
-    width: `${(100 / (testData.length - 1)) * cnt}%`,
+    width: `${(100 / testData.length) * cnt}%`,
     background: '#008ed0',
     borderRadius: '10px',
     transition: '1s ease 0.005s',
@@ -250,12 +249,11 @@ function InterviewTest() {
 
   const [memo, setMemo] = useState('');
   const handleMemo = e => {
+    e.preventDefault();
     setMemo(e.target.value);
   };
 
   const handleSave = () => {
-    const token = localStorage.getItem('jwt');
-    // console.log(memo);
     axios
       .post(
         `${defaultAPI}/cs-service/interview/${seq}/memo/create`,
@@ -264,13 +262,13 @@ function InterviewTest() {
       )
       .then(res => {
         console.log(res);
+        alert('저장 완료');
       })
       .catch(err => console.error(err));
   };
 
   // const [myMemo, setMyMemo] = useState('');
   const getMyMemo = () => {
-    const token = localStorage.getItem('jwt');
     if (seq !== 0) {
       axios
         .get(`${defaultAPI}/cs-service/interview/${seq}/memo`, {
@@ -290,25 +288,24 @@ function InterviewTest() {
   }, [seq]);
   // console.log('🎃', myMemo);
 
-  // 타이머 관련
+  // 타이머 관련 - 일단 3초로 설정
   // const endTime = (state.length - 1) * 60;
   const endTime = 3;
 
   return (
     <InterviewResultWrapper>
       <InterviewResultContent>
-        {!timeLimit && (
+        {timeLimit && (
           <TimerBox>
-            {/* {stayTime} <button onClick={startTimer}>시작</button>{' '} */}
             <SpentTime mm={'00'} ss={`${endTime}`} />
           </TimerBox>
         )}
         <QuestionBox>
           {/* <PrevButton onClick={prevQuestion}>이전</PrevButton> */}
           <StepBox>
-            {cnt}/{testData.length - 1}
+            {cnt}/{testData.length}
           </StepBox>
-          {cnt !== testData.length - 1 ? (
+          {cnt !== testData.length ? (
             <NextButton onClick={nextQuestion}>다음</NextButton>
           ) : (
             <NextButton onClick={toStart}>처음으로</NextButton>
