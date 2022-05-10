@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../../recoils/LoginState';
+import { Token } from '../../recoils/Token';
 
 // STYLED
 import styled from 'styled-components';
@@ -43,14 +47,19 @@ const AlertBox = styled.div`
 `;
 
 export default function AuthHandler() {
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
   const navigate = useNavigate();
   const location = useLocation();
   // console.log(location);
-  const token = location.search.split('=')[1];
+  const jwt = location.search.split('=')[1];
   // console.log(token);
 
   useEffect(() => {
-    localStorage.setItem('jwt', token);
+    localStorage.setItem('jwt', jwt);
+    setToken(jwt);
+    setIsLoggedIn(true);
     navigate('/');
   }, []);
 

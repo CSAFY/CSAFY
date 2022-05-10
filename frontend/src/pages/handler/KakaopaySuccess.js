@@ -50,7 +50,7 @@ function KakaopaySuccess() {
   const location = useLocation();
   // console.log(location);
   const pgToken = location.search.split('=')[1];
-  console.log(pgToken);
+  // console.log(pgToken);
   // console.log(location.search.split('=')[1]);
 
   useEffect(() => {

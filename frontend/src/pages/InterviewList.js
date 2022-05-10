@@ -1,6 +1,12 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { defaultAPI } from '../utils/api';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
+
+// COMPONENTS
 import QuestionBox from '../components/QuestionBox';
 
 // STYLED
@@ -68,25 +74,21 @@ const AttitudeButton = styled.div`
 `;
 
 function InterviewList() {
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
   // api 데이터 받기
   const [apiData, setApiData] = useState([]);
   const getApiData = () => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      axios
-        .get(
-          `${defaultAPI}/cs-service/interview/list/get?category=all`,
-
-          { headers: { Authorization: token } },
-        )
-        .then(res => {
-          console.log(res);
-          setApiData(res.data);
-        })
-        .catch(err => console.error(err));
-    } else {
-      alert('로그인이 필요합니다.');
-    }
+    axios
+      .get(`${defaultAPI}/cs-service/interview/list/get?category=all`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        // console.log(res);
+        setApiData(res.data);
+      })
+      .catch(err => console.error(err));
   };
   useEffect(() => {
     getApiData();
@@ -136,7 +138,14 @@ function InterviewList() {
     <InterviewWrapper>
       <InterviewContent>
         <PageTitle>
-          <div style={{ fontSize: '24px', fontWeight: '600' }}>면접 질문</div>
+          <div
+            style={{
+              fontSize: '24px',
+              fontWeight: '600',
+            }}
+          >
+            면접 질문
+          </div>
           <div
             style={{
               marginLeft: '50px',
@@ -147,13 +156,24 @@ function InterviewList() {
             |
           </div>
           <div
-            style={{ fontSize: '16px', fontWeight: '300', color: '#8a8888' }}
+            style={{
+              fontSize: '16px',
+              fontWeight: '300',
+              color: '#8a8888',
+            }}
           >
             총 215개의 기업
           </div>
         </PageTitle>
         <TypeBox>
-          <div style={{ fontSize: '18px', fontWeight: '600' }}>유형 선택</div>
+          <div
+            style={{
+              fontSize: '18px',
+              fontWeight: '600',
+            }}
+          >
+            유형 선택
+          </div>
           <ButtonBox>
             <AttitudeButton id="cur" onClick={handleClick}>
               # 인성 면접

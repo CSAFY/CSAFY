@@ -4,6 +4,10 @@ import axios from 'axios';
 import swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { defaultAPI } from '../utils/api';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
 
 // HEATMAP
 import CalendarHeatmap from 'react-calendar-heatmap';
@@ -17,7 +21,7 @@ import VideoBox from '../components/myPage/VideoBox';
 
 // STYLED
 import styled from 'styled-components';
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -62,7 +66,10 @@ const VideoWrapper = styled.div`
 `;
 
 function MyPage() {
-  const navigate = useNavigate();
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
+  // 개인정보
   const [userInfo, setUserInfo] = useState({
     email: '',
     is_vip: '',
@@ -71,37 +78,33 @@ function MyPage() {
   });
   // 정보 가져오기
   const getInfo = () => {
-    // 사용자 토큰
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      axios
-        .get(`${defaultAPI}/user-service/token/user`, {
-          params: {
-            inputToken: token,
-          },
-        })
-        .then(res => {
-          console.log('🎃', res);
-          if (res.data.profile_image === null) {
-            setUserInfo({
-              email: res.data.email,
-              is_vip: res.data.is_vip,
-              username: res.data.username,
-              profile_image: 'images/google.png',
-              user_seq: res.data.user_seq,
-            });
-          } else {
-            setUserInfo({
-              email: res.data.email,
-              is_vip: res.data.is_vip,
-              username: res.data.username,
-              profile_image: res.data.profile_image,
-              user_seq: res.data.user_seq,
-            });
-          }
-        })
-        .catch(err => console.error(err));
-    }
+    axios
+      .get(`${defaultAPI}/user-service/token/user`, {
+        params: {
+          inputToken: token,
+        },
+      })
+      .then(res => {
+        console.log('🎃', res);
+        if (res.data.profile_image === null) {
+          setUserInfo({
+            email: res.data.email,
+            is_vip: res.data.is_vip,
+            username: res.data.username,
+            profile_image: 'images/google.png',
+            user_seq: res.data.user_seq,
+          });
+        } else {
+          setUserInfo({
+            email: res.data.email,
+            is_vip: res.data.is_vip,
+            username: res.data.username,
+            profile_image: res.data.profile_image,
+            user_seq: res.data.user_seq,
+          });
+        }
+      })
+      .catch(err => console.error(err));
   };
   useEffect(() => {
     getInfo();
@@ -151,9 +154,6 @@ function MyPage() {
   const handleEditToggle = () => {
     setEditToggle(!editToggle);
   };
-  const editProfileImage = () => {
-    // 이미지 수정용
-  };
   const [editUserInfo, setEditUserInfo] = useState({
     username: '',
     profile_image: '',
@@ -174,7 +174,10 @@ function MyPage() {
     return new Promise(resolve => {
       reader.onload = () => {
         setImageSrc(reader.result);
-        setEditUserInfo({ ...editUserInfo, profile_image: reader.result });
+        setEditUserInfo({
+          ...editUserInfo,
+          profile_image: reader.result,
+        });
         resolve();
       };
     });
@@ -182,9 +185,7 @@ function MyPage() {
 
   // 프리미엄 결제
   const buyPremium = () => {
-    const token = localStorage.getItem('jwt');
-
-    // 실제 적용시, 이미 프리미엄 유저인지 확인하는 것 필요
+    // 실제 적용시, 이미 프리미엄 유저인지 확인하는 것 필요 - 버튼 없앨꺼니까 괜찮
     axios({
       method: 'GET',
       url: defaultAPI + '/pay-service/kakaoPay/',
@@ -202,14 +203,6 @@ function MyPage() {
         });
       });
   };
-
-  // var old = new Date().getTime();
-  // var now = new Date().getTime();
-
-  // var sec_gap = (now - old) / 1000;
-  // var min_gap = (now - old) / 1000 / 60;
-
-  // console.log(min_gap, sec_gap);
 
   return (
     <>
@@ -300,7 +293,11 @@ function MyPage() {
                   <input
                     type="text"
                     name="username"
-                    style={{ height: '30px', width: '179px', fontSize: '24px' }}
+                    style={{
+                      height: '30px',
+                      width: '179px',
+                      fontSize: '24px',
+                    }}
                     value={editUserInfo.username}
                     onChange={e =>
                       setEditUserInfo({
@@ -456,7 +453,12 @@ function MyPage() {
 
           <VideoWrapper>
             <h1 style={{ textAlign: 'center' }}>즐겨찾는 학습</h1>
-            <div style={{ display: 'flex', justifyContent: 'between' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'between',
+              }}
+            >
               <VideoBox>1</VideoBox>
               <VideoBox>2</VideoBox>
               <VideoBox>3</VideoBox>
@@ -465,7 +467,12 @@ function MyPage() {
           </VideoWrapper>
           <VideoWrapper>
             <h1 style={{ textAlign: 'center' }}>최근 본 강의</h1>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <VideoBox>1</VideoBox>
               <VideoBox>2</VideoBox>
               <VideoBox>3</VideoBox>
@@ -493,7 +500,12 @@ function MyPage() {
           >
             <h1 style={{ textAlign: 'center' }}>최근 푼 모의고사</h1>
 
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
               <TestBox />
               <TestBox />
               <TestBox />

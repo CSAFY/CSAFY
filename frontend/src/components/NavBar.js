@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
 
 // MUI
 // inherit 흰색 default 회색 primary 파랑 secondary 보라 error 빨강 info 파랑 success 초록 warning 주황 string 적용안됨
@@ -13,14 +17,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import { Tooltip } from '@mui/material';
 
 // MODAL
 import Modal from '@mui/material/Modal';
 import AuthModal from './AuthModal';
-import { Avatar, Tooltip } from '@mui/material';
-
-// STYLED
-// import styled from 'styled-components';
 
 const loginStyle = {
   position: 'absolute',
@@ -60,16 +61,13 @@ const settings = [
   { name: '오답노트', link: 'reviewNote' },
 ];
 
-// const Logo = styled.img`
-//   width: 45px;
-//   height: 45px;
-//   padding-top: 10px;
-//   background-color: none;
-// `;
-
 const NavBar = () => {
-  // TEST
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  // recoil 상태관리
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
+  // 실력테스트 anchor
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [toggle, setToggle] = useState(false);
   const handleOpenUserMenu = event => {
     setAnchorElUser(event.currentTarget);
     setToggle(true);
@@ -78,11 +76,9 @@ const NavBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const [toggle, setToggle] = useState(false);
-  ////
 
-  const [toggleLogin, setToggleLogin] = useState('로그인');
   // MODAL
+  const [toggleLogin, setToggleLogin] = useState('로그인');
   const [state, setState] = useState('signup');
   const [modal, setModal] = useState(false);
   const handleModalOpen = () => {
@@ -90,40 +86,33 @@ const NavBar = () => {
     setModal(true);
   };
   const handleModalClose = () => setModal(false);
-  const token = localStorage.getItem('jwt');
-  useEffect(() => {
-    // 로그인 여부 확인
-    if (token) {
-      setToggleLogin('로그아웃');
-    } else {
-      setToggleLogin('로그인');
-    }
-    // console.log(token);
-  }, [token]);
 
   // nav
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
-  // const [anchorElUser, setAnchorElUser] = useState(null);
   const [currentPage, setCurrentPage] = useState('Home');
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
   };
-  // const handleOpenUserMenu = (event) => {
-  //   setAnchorElUser(event.currentTarget);
-  // };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null);
-  // };
 
-  // 커뮤니티 페이지에서 안보이게 하기
+  // 커뮤니티 페이지에서 네브바 안보이게 하기
   const location = useLocation();
-
   if (location.pathname === '/community') return null;
+
+  // 로그아웃 관련
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    // Recoil
+    setIsLoggedIn(false);
+    setToken('');
+    // 이동
+    navigate('/');
+    setToggleLogin('로그인');
+  };
 
   return (
     <AppBar
@@ -152,7 +141,7 @@ const NavBar = () => {
               setToggle(false);
             }}
           >
-            {toggleLogin === '로그인' ? (
+            {!isLoggedIn ? (
               <Link to="/">
                 <img
                   src="images/csafy.png"
@@ -164,7 +153,6 @@ const NavBar = () => {
                     backgroundColor: 'none',
                   }}
                 />
-                {/* <Logo src="images/logo.ico" /> */}
               </Link>
             ) : (
               <Link to="/mypage">
@@ -178,10 +166,10 @@ const NavBar = () => {
                     backgroundColor: 'none',
                   }}
                 />
-                {/* <Logo src="images/logo.ico" /> */}
               </Link>
             )}
           </Typography>
+
           {/* 반응형 - 넓은 화면 navbar */}
           <Box
             sx={{
@@ -322,37 +310,7 @@ const NavBar = () => {
               ))}
             </Menu>
           </Box>
-          {/*  */}
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map(setting => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
-          {/*  */}
+
           {/* 반응형 - 좁은 화면 로고 */}
           <Typography
             variant="h6"
@@ -364,7 +322,6 @@ const NavBar = () => {
             }}
           >
             <Link to="/">
-              {/* <Logo src="images/logo.ico" /> */}
               <img
                 src="images/csafy.png"
                 alt="Img"
@@ -398,11 +355,7 @@ const NavBar = () => {
                     // bgcolor: '#D5F2FC',
                   },
                 }}
-                onClick={() => {
-                  localStorage.removeItem('jwt');
-                  navigate('/');
-                  setToggleLogin('로그인');
-                }}
+                onClick={handleLogout}
               >
                 {/* 로그아웃 */}
                 {toggleLogin}
@@ -540,7 +493,7 @@ const NavBar = () => {
               mx: 3,
             }}
           >
-            {token ? (
+            {isLoggedIn ? (
               <Button
                 sx={{
                   textAlign: 'center',
@@ -554,14 +507,10 @@ const NavBar = () => {
                     // bgcolor: '#D5F2FC',
                   },
                 }}
-                onClick={() => {
-                  localStorage.removeItem('jwt');
-                  navigate('/');
-                  setToggleLogin('로그인');
-                }}
+                onClick={handleLogout}
               >
-                {/* 로그아웃 */}
-                {toggleLogin}
+                로그아웃
+                {/* {toggleLogin} */}
               </Button>
             ) : (
               <Button
@@ -579,7 +528,8 @@ const NavBar = () => {
                 }}
                 onClick={handleModalOpen}
               >
-                {toggleLogin}
+                로그인
+                {/* {toggleLogin} */}
               </Button>
             )}
 
