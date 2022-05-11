@@ -23,21 +23,21 @@ function KeyWordCard() {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setNowState(false)
+    // setNowState(false)
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    setNowState(false)
+    // setNowState(false)
   };
 
-  const [nowState, setNowState] = useState(false)
-  const OpenCard = () => {
-    setNowState(true)
-  }
-  const CloseCard = () => {
-    setNowState(false)
-  }
+  // const [nowState, setNowState] = useState(false)
+  // const OpenCard = () => {
+  //   setNowState(true)
+  // }
+  // const CloseCard = () => {
+  //   setNowState(false)
+  // }
 
   useEffect(() => {
     setSteps([
@@ -62,10 +62,68 @@ function KeyWordCard() {
     ])
   }, [])
 
-  function ClickKeyWordCard() {
-    if (nowState === false) {
-      return (
-        <div onClick={OpenCard}>
+  // function ClickKeyWordCard() {
+  //   if (nowState === false) {
+  //     return (
+  //       <div onClick={OpenCard}>
+  //         <Paper
+  //           square
+  //           elevation={0}
+  //           sx={{
+  //             display: 'flex',
+  //             alignItems: 'center',
+  //             justifyContent: "center",
+  //             height: 442,
+  //             pl: 2,
+  //             bgcolor: 'background.default',
+  //           }}
+  //         >
+  //           <Typography >{steps[activeStep].label}</Typography>
+
+  //         </Paper>
+  //         <DarkCardDiv>
+  //           <DarkCardText>
+  //             카드를 클릭하면 뜻을 볼 수 있어요 👆
+  //           </DarkCardText>
+  //         </DarkCardDiv>
+  //       </div>
+  //     )
+  //   } else {
+  //     return(
+  //     <div onClick={CloseCard}>
+  //       <Paper
+  //         square
+  //         elevation={0}
+  //         sx={{
+  //           display: 'flex',
+  //           alignItems: 'center',
+  //           justifyContent: "center",
+  //           height: 50,
+  //           pl: 2,
+  //           bgcolor: 'background.default',
+            
+  //         }}
+  //       >
+  //         <Typography sx={{padding: "10px"}}>{steps[activeStep].label}</Typography>
+  //       </Paper>
+  //       <Box sx={{ height: 400,  width: '90%', p: 2 }}>
+  //         {steps[activeStep].description}
+  //       </Box>
+  //     </div>
+  //     )
+  //   }
+  // }
+
+  
+
+  return (
+    <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", 
+      }}>
+      
+      {/* {ClickKeyWordCard()} */}
+      <Cont>
+
+        <ItemFront>
           <Paper
             square
             elevation={0}
@@ -82,15 +140,13 @@ function KeyWordCard() {
 
           </Paper>
           <DarkCardDiv>
-            <DarkCardText>
-              카드를 클릭하면 뜻을 볼 수 있어요 👆
-            </DarkCardText>
+            {/* <DarkCardText> */}
+              마우스를 올리면 뜻을 볼 수 있어요 👆
+            {/* </DarkCardText> */}
           </DarkCardDiv>
-        </div>
-      )
-    } else {
-      return(
-      <div onClick={CloseCard}>
+        </ItemFront>
+
+        <ItemBack>
         <Paper
           square
           elevation={0}
@@ -109,24 +165,20 @@ function KeyWordCard() {
         <Box sx={{ height: 400,  width: '90%', p: 2 }}>
           {steps[activeStep].description}
         </Box>
-      </div>
-      )
-    }
-  }
+        </ItemBack>
 
-  return (
-    <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", 
-      borderRadius: "20px",
-      boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
-      backgroundColor: "#fff"}}>
-      
-      {ClickKeyWordCard()}
+      </Cont>
 
       <MobileStepper
         variant="text"
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
+        sx={{
+          margin : "20px 0 0 0",
+          borderRadius: "20px",
+          boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
+          backgroundColor: "#fff"}}
         nextButton={
           <Button
             size="small"
@@ -163,7 +215,11 @@ const DarkCardDiv = styled.div`
   height : 40px;
   flex-grow: 0;
   margin: auto 0 0;
-  padding: auto ;
+  text-align: center;
+  line-height: 40px;
+  color: #fff;
+  font-family: SUIT;
+  font-size: 13px;
   background-color: #303446;
 `
 
@@ -172,5 +228,40 @@ const DarkCardText = styled.span`
   color: #fff;
   font-family: SUIT;
   font-size: 13px;
-  margin: auto;
+`
+
+const ItemFront = styled.div`
+  width: 100%;
+  border :  solid ;
+  font-size : 35px;
+  backface-visibility : hidden;
+  transition : 1s;
+`
+
+const ItemBack = styled.div`
+  
+  border :  solid ;
+  font-size : 35px;
+  backface-visibility : hidden;
+  transition : 1s;
+`
+
+const Cont = styled.div`
+  
+  height : 482px;
+  perspective: 800px;
+  ${ItemFront} {
+    position : absolute;
+    transform : rotateX(0deg);
+  }
+  ${ItemBack} {
+    position : absolute;
+    transform : rotateX(-180deg);
+  }
+  :hover ${ItemFront} {
+    transform : rotateX(180deg);
+  }
+  :hover ${ItemBack} {
+    transform : rotateX(0deg);
+  }
 `
