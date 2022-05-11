@@ -1,6 +1,7 @@
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { useEffect, useRef, useState } from "react";
+import styled, { css } from "styled-components";
 
 function LodingPage() {
   

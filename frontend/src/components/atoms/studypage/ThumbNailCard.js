@@ -113,7 +113,6 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
           {title}
         </TextContainer>
       </Link>
-      {favorite}
     </CardBox>
   )
 }
