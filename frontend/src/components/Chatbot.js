@@ -1,10 +1,16 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // chatbot
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
 
 function Chatbot() {
+  const navigate = useNavigate();
+
+  const contactAdmin = () => {
+    navigate('/userChat');
+  };
+
   const steps = [
     {
       id: '0',
@@ -25,6 +31,7 @@ function Chatbot() {
       options: [
         { value: 2, label: '유형 1', trigger: '4' },
         { value: 3, label: '유형 2', trigger: '5' },
+        { value: 7, label: '상담사 연결하기', trigger: '7' },
       ],
     },
     {
@@ -40,6 +47,11 @@ function Chatbot() {
     {
       id: '6',
       options: [{ value: 4, label: '뒤로가기', trigger: '2' }],
+    },
+    {
+      id: '7',
+      message: '상담사와 연결되었습니다.',
+      end: true,
     },
   ];
 
@@ -58,6 +70,7 @@ function Chatbot() {
   return (
     <ThemeProvider theme={theme}>
       <ChatBot
+        handleEnd={contactAdmin}
         steps={steps}
         floating={true}
         headerTitle={'C;SAFY'}

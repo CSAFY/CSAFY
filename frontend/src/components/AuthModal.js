@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
+import { Username } from '../recoils/Username';
 
 // Styled
 import styled from 'styled-components';
@@ -57,6 +58,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
   // Recoil
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
+  const [username, setUserName] = useRecoilState(Username);
 
   // LOGIN
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
@@ -79,6 +81,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
         // recoil
         setIsLoggedIn(true);
         setToken(res.data.token);
+        setUserName(res.data.username);
         // 모달 없애기
         setModal(false);
         // navigate
@@ -173,6 +176,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               // recoil
               setIsLoggedIn(true);
               setToken(res.data.token);
+              setUserName(res.data.username);
               // 모달 없애기
               setModal(false);
               // navigate
@@ -210,7 +214,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               margin: '0',
             }}
           >
-            회원이 아니신가요?
+            회원이 아니신가요?{' '}
             <span
               style={{ fontWeight: '600', color: '#008ed0', cursor: 'pointer' }}
               onClick={() => setState('signup')}
