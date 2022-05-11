@@ -62,64 +62,12 @@ function KeyWordCard() {
     ])
   }, [])
 
-  // function ClickKeyWordCard() {
-  //   if (nowState === false) {
-  //     return (
-  //       <div onClick={OpenCard}>
-  //         <Paper
-  //           square
-  //           elevation={0}
-  //           sx={{
-  //             display: 'flex',
-  //             alignItems: 'center',
-  //             justifyContent: "center",
-  //             height: 442,
-  //             pl: 2,
-  //             bgcolor: 'background.default',
-  //           }}
-  //         >
-  //           <Typography >{steps[activeStep].label}</Typography>
-
-  //         </Paper>
-  //         <DarkCardDiv>
-  //           <DarkCardText>
-  //             카드를 클릭하면 뜻을 볼 수 있어요 👆
-  //           </DarkCardText>
-  //         </DarkCardDiv>
-  //       </div>
-  //     )
-  //   } else {
-  //     return(
-  //     <div onClick={CloseCard}>
-  //       <Paper
-  //         square
-  //         elevation={0}
-  //         sx={{
-  //           display: 'flex',
-  //           alignItems: 'center',
-  //           justifyContent: "center",
-  //           height: 50,
-  //           pl: 2,
-  //           bgcolor: 'background.default',
-            
-  //         }}
-  //       >
-  //         <Typography sx={{padding: "10px"}}>{steps[activeStep].label}</Typography>
-  //       </Paper>
-  //       <Box sx={{ height: 400,  width: '90%', p: 2 }}>
-  //         {steps[activeStep].description}
-  //       </Box>
-  //     </div>
-  //     )
-  //   }
-  // }
-
   
 
   return (
     <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", minWidth: "600px"}}>
       
-      {/* {ClickKeyWordCard()} */}
+     
       <Cont>
 
         <ItemFront>
@@ -130,18 +78,22 @@ function KeyWordCard() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: "center",
+              width: 590,
               height: 442,
-              pl: 2,
+              margin: "0 auto 0 auto",
+              
               bgcolor: 'background.default',
             }}
           >
-            <Typography >{steps[activeStep].label}</Typography>
+            <Typography sx={{width: 580}}>
+              <Title>
+                {steps[activeStep].label}
+              </Title>
+            </Typography>
 
           </Paper>
           <DarkCardDiv>
-            {/* <DarkCardText> */}
-              마우스를 올리면 뜻을 볼 수 있어요 👆
-            {/* </DarkCardText> */}
+            마우스를 올리면 뜻을 볼 수 있어요 👆
           </DarkCardDiv>
         </ItemFront>
 
@@ -159,9 +111,9 @@ function KeyWordCard() {
             
           }}
         >
-          <Typography sx={{padding: "10px"}}>{steps[activeStep].label}</Typography>
+          <Typography sx={{padding: "10px", fontSize: "35px"}}>{steps[activeStep].label}</Typography>
         </Paper>
-        <Box sx={{ height: 400,  width: '90%', p: 2 }}>
+        <Box sx={{ height: 400,  width: '90%', p: 2 , padding: "20px"}}>
           {steps[activeStep].description}
         </Box>
         </ItemBack>
@@ -263,4 +215,20 @@ const Cont = styled.div`
   :hover ${ItemBack} {
     transform : rotateX(0deg);
   }
+`
+
+export const  Title = styled.div`
+  width: 90%;
+  height: 60px;
+  margin: 10px auto 15px; auto;
+  flex-grow: 0;
+  font-family: SUIT;
+  font-size: 32px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #000;
 `

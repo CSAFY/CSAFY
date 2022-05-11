@@ -53,11 +53,12 @@ export const FlexDiv = styled.div`
 
 export const CardDiv = styled.div`
   width: 1150px;
+  min-height : 600px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   margin: 1em;
   justify-items: center;
-  align-items: center;
+  align-items: flex-start;
 `
 
 export const SwitchBox = styled.div`

@@ -153,6 +153,9 @@ function FourWayRace() {
   if (pageNumber === 1) {
     return(
     <FourCardDiv>
+      <Title>
+        4지선다 문제풀기
+      </Title>
       <QuestionText>
         📗 몇 문제를 풀기를 원하시나요?
       </QuestionText>
@@ -244,9 +247,9 @@ function FourWayRace() {
 }
 export default FourWayRace
 
-const FourCardDiv = styled.div`
+export const FourCardDiv = styled.div`
   width: 60%;
-  height: 150px;
+  height: 210px;
   flex-grow: 0;
   margin: 10px auto 10px auto;
   padding: 20px 7px 11px 13px;
@@ -255,10 +258,27 @@ const FourCardDiv = styled.div`
   background-color: #fff;
 `
 
-const QuestionText = styled.div`
+export const  Title = styled.div`
+  width: 300px;
+  height: 60px;
+  margin: 10px auto 15px; auto;
+  flex-grow: 0;
+  font-family: SUIT;
+  font-size: 32px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #000;
+`
+
+
+export const QuestionText = styled.div`
   width: 300px;
   height: 30px;
-  margin:auto;
+  margin: 0 auto 20px auto;
   flex-grow: 0;
   font-family: SUIT;
   font-size: 18px;
@@ -271,7 +291,7 @@ const QuestionText = styled.div`
   color: #000;
 `
 
-const ClickBtn = styled.button`  
+export const ClickBtn = styled.button`  
   
   flex-grow: 0;
   margin: 0 5px 0 5px;

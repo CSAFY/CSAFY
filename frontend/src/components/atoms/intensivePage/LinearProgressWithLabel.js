@@ -42,7 +42,6 @@ export default function LinearWithValueLabel(props) {
 
   useEffect(() => {
     if (progress === 100){
-      console.log("done!!!!")
       props.setPageNumber(3)
     }
   }, [progress])

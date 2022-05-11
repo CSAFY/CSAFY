@@ -6,51 +6,79 @@ import MobileStepper from '@mui/material/MobileStepper';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LinearWithValueLabel from "./LinearProgressWithLabel";
 
 import { useRecoilState } from "recoil";
 import { oxquizData } from "../../../recoils";
 
+import axios from 'axios';
 
-function OXquiz() {
+import {
+  FourCardDiv,
+  QuestionText,
+  ClickBtn,
+  Title
+  } from "./FourWayRace"
+
+
+function OXquiz(props) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
   
   const [oxData, setOXData] = useRecoilState(oxquizData)
   const maxSteps = oxData.length;
 
+  const [pageNumber, setPageNumber] = useState(1)
+  const [selecCNT, setSelecCNT] = useState(5)
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSelectO(0)
-    setSelectX(0)
+    setSelectO(2)
+    setSelectX(2)
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    setSelectO(0)
-    setSelectX(0)
+    setSelectO(2)
+    setSelectX(2)
   };
 
+  const getData = async () => {
+    const Url = `https://csafy.com/api/v1/cs-service/study/multiple/ox?category=${props.Cate}&questionNum=${selecCNT}`
+    axios({
+      method: 'get',
+      url:  Url,
+      
+    })
+    .then((res) => {
+      console.log(res.data)
+      setOXData(res.data)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+
   useEffect(() => {
-    setOXData([{ 
-      explanation : "단어에 대한 설명을 제시해 줍니다 . 한줄일지 두줄일지 모르고 여튼...",
-      answer : 2},
-      { 
-        explanation : "단어에 대한 설명을 제시해 줍니다 . 모르고 여튼...",
-        answer : 1}
-    ])
-  }, [])
+    if (pageNumber === 2){
+      getData()
+    }
+  }, [pageNumber])
 
-  const [selectO, setSelectO] = useState(0)
-  const [selectX, setSelectX] = useState(0)
+  useEffect(() => {
+    setPageNumber(1)
+  },[props.Cate])
 
+  const [selectO, setSelectO] = useState(2)
+  const [selectX, setSelectX] = useState(2)
 
   const onClickO = () => {
-    setSelectO(1)
-    setSelectX(0)
-  }
-  const onClickX = () => {
     setSelectO(0)
     setSelectX(2)
+  }
+  const onClickX = () => {
+    setSelectO(2)
+    setSelectX(1)
   }
 
   const OXCardPack = (
@@ -59,84 +87,157 @@ function OXquiz() {
       <CardCoverDiv>
         
         <OXCard onClick={onClickO}
-          border={selectO === 0 ?  "solid 2px #ebeef4;" 
+          border={selectO === 2 ?  "solid 2px #ebeef4;" 
                 : selectO === oxData[activeStep].answer ? "solid 2px #25b26d;" 
                 : "solid 2px  #e12e2e;"}
-          backgroundColor={selectO === 0 ?  "#fff;" 
+          backgroundColor={selectO === 2 ?  "#fff;" 
           : selectO === oxData[activeStep].answer ? "#f2fbf6;"
           : "#FFD5D2;"}>
           <O>
             O
           </O>
         </OXCard>
-        {selectO === 0 ?  " " 
+        {selectO === 2 ?  " " 
           : selectO === oxData[activeStep].answer ? "정답입니다" 
           : "틀렸습니다"}
       </CardCoverDiv>
       <CardCoverDiv>
         
         <OXCard onClick={onClickX}
-        border={selectX === 0 ?  "solid 2px #ebeef4;" 
+        border={selectX === 2 ?  "solid 2px #ebeef4;" 
         : selectX === oxData[activeStep].answer ? "solid 2px #25b26d;" 
         : "solid 2px  #e12e2e;"}
-        backgroundColor={selectX === 0 ?  "#fff;" 
+        backgroundColor={selectX === 2 ?  "#fff;" 
         : selectX === oxData[activeStep].answer ? "#f2fbf6;"
         : "#FFD5D2;"}>
           <X>
             X
           </X>
         </OXCard>
-        {selectX === 0 ?  " " 
+        {selectX === 2 ?  " " 
           : selectX === oxData[activeStep].answer ? "정답입니다" 
           : "틀렸습니다"}
       </CardCoverDiv>
     </FlexDiv>
   )
+
+  const Explan = () => {
+    if (oxData[activeStep].key !== null){
+      return(
+        <div>
+          <div>
+            {oxData[activeStep].key}에 대한 설명이 맞는지 선택하세요.
+          </div>
+          <div>
+            {oxData[activeStep].explanation}
+          </div>
+        </div>
+      )
+    } else {
+      return(
+        <div>
+          <div>
+            {oxData[activeStep].explanation}
+          </div>
+        </div>
+      )
+    }
+  }
   
-  return(
-    <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", 
-    borderRadius: "20px",
-    boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
-    backgroundColor: "#fff"}}>
-    
-    <MeaningDiv>
-        {oxData[activeStep].explanation}
-      </MeaningDiv>
-      {OXCardPack}
-      <FootBar></FootBar>
-    <MobileStepper
-      variant="text"
-      steps={maxSteps}
-      position="static"
-      activeStep={activeStep}
-      nextButton={
-        <Button
-          size="small"
-          onClick={handleNext}
-          disabled={activeStep === maxSteps - 1}
+  
+  const onClickBtn = (data) => {
+    setSelecCNT(data)
+    setPageNumber(2)
+  }
+
+  if (pageNumber === 1) {
+    return(
+    <FourCardDiv>
+      <Title>
+        OX 문제풀기
+      </Title>
+      
+      <QuestionText>
+        📗 몇 문제를 풀기를 원하시나요?
+      </QuestionText>
+      <ClickBtn
+        able={"Y"}
+        onClick={() => onClickBtn(selecCNT)}
         >
-          Next
-          {theme.direction === 'rtl' ? (
-            <KeyboardArrowLeft />
-          ) : (
-            <KeyboardArrowRight />
-          )}
-        </Button>
-      }
-      backButton={
-        <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-          {theme.direction === 'rtl' ? (
-            <KeyboardArrowRight />
-          ) : (
-            <KeyboardArrowLeft />
-          )}
-          Back
-        </Button>
-      }
-    />
-    
-  </Box>
-  )
+        <input type={"number"} min="1" max="20" 
+        onClick={(event)=> event.stopPropagation()}
+        onChange={(event) => setSelecCNT(event.target.value)}
+        value={selecCNT}></input>
+        문제
+      </ClickBtn>
+      <ClickBtn
+        able={"Y"}
+        onClick={() => {onClickBtn(5) }}
+        >
+        알아서 해주세요
+      </ClickBtn>
+    </FourCardDiv>)
+  }else if (pageNumber === 2) {
+    return(
+    <FourCardDiv >
+      <QuestionText>
+        📤 문제를 선별 중입니다.
+        
+      </QuestionText>
+      <QuestionText>
+        잠시만 기다려 주세요 
+      </QuestionText>
+      
+      <LinearWithValueLabel   setPageNumber={setPageNumber}/>
+    </FourCardDiv>)
+  }else if (pageNumber === 3) {
+    return(
+      <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", 
+      borderRadius: "20px",
+      boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
+      backgroundColor: "#fff"}}>
+      
+      <MeaningDiv>
+
+        {Explan()}
+
+      </MeaningDiv>
+        {OXCardPack}
+        <FootBar></FootBar>
+      <MobileStepper
+        variant="text"
+        steps={maxSteps}
+        position="static"
+        activeStep={activeStep}
+        nextButton={
+          <Button
+            size="small"
+            onClick={handleNext}
+            disabled={activeStep === maxSteps - 1}
+          >
+            Next
+            {theme.direction === 'rtl' ? (
+              <KeyboardArrowLeft />
+            ) : (
+              <KeyboardArrowRight />
+            )}
+          </Button>
+        }
+        backButton={
+          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+            {theme.direction === 'rtl' ? (
+              <KeyboardArrowRight />
+            ) : (
+              <KeyboardArrowLeft />
+            )}
+            Back
+          </Button>
+        }
+      />
+      
+    </Box>
+    )
+  }
 }
 export default OXquiz
 
@@ -205,3 +306,4 @@ const FootBar = styled.div`
   margin: 42px 0 0;
   background-color: #d7e4ec;
 `
+

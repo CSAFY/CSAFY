@@ -6,17 +6,8 @@ import styled, { css } from "styled-components";
 
 
 function QuestionList(props) {
-  // const [alignment, setAlignment] = useState('전체');
-
-  // const handleAlignment = (event, newAlignment) => {
-  //   setAlignment(newAlignment);
-  //   props.selectKategorie(event.target.value)
-  // };
-
-  
   const btncolors = ['standard' , 'primary' , 'secondary' , 'error' , 'info' , 'success' , 'warning']
-  
-  
+    
   const againToggleButton = props.categori.map((data, index) => 
   
     <ToggleButton
@@ -28,7 +19,6 @@ function QuestionList(props) {
       sx={{ borderRadius: "5px;",
         boxShadow: "0 0 4px 0 rgba(0, 0, 0, 0.1);",
         backgroundColor: "#fff;"}}
-        
       >
         {data.title} 
     </ToggleButton>
@@ -42,7 +32,7 @@ function QuestionList(props) {
         exclusive
         onChange={props.selectKategorie}
         aria-label="text alignment"
-        
+        color="primary"
         disabled = {props.disabled}
       >
         
