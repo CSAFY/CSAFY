@@ -6,27 +6,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.csafy.csafy_android.fragment.ProfileFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#50bdf590"
-        android:text="프로필 화면" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_go_login"
-            android:layout_width="324dp"
-            android:layout_height="60dp"
-            android:background="@drawable/btn_round"
-            android:text="로그인 바로가기"
-            app:layout_constraintLeft_toLeftOf="parent"
+        <ImageView
+            android:id="@+id/btn_setting"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_baseline_settings_24"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="16dp" />
+
+        <ImageView
+            android:id="@+id/btn_login"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_baseline_login_24"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toStartOf="@id/btn_setting"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="16dp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_profile"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:src="@drawable/cute_dog"
+            android:layout_marginTop="60dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             />
+
+        <TextView
+            android:id="@+id/tx_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="username"
+            android:layout_marginTop="14dp"
+            android:textSize="17sp"
+            app:layout_constraintTop_toBottomOf="@id/img_profile"
+            app:layout_constraintStart_toStartOf="@id/img_profile"
+            app:layout_constraintEnd_toEndOf="@id/img_profile"
+            />
+
+        <TextView
+            android:id="@+id/tx_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="comment"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/tx_username"
+            app:layout_constraintStart_toStartOf="@id/tx_username"
+            app:layout_constraintEnd_toEndOf="@id/tx_username"
+            />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_green4"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tx_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/main_blue4"
+            app:layout_constraintTop_toBottomOf="@id/tab_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
