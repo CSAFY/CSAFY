@@ -8,6 +8,8 @@ import { defaultAPI } from '../utils/api';
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
+import { Username } from '../recoils/Username';
+import { Userinfo } from '../recoils/Userinfo';
 
 // HEATMAP
 import CalendarHeatmap from 'react-calendar-heatmap';
@@ -70,6 +72,8 @@ function MyPage() {
   // Recoil
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
+  const [username, setUserName] = useRecoilState(Username);
+  const [userinfo, setUserinfo] = useRecoilState(Userinfo);
   // 개인정보
   const [userInfo, setUserInfo] = useState({
     email: '',
@@ -89,6 +93,8 @@ function MyPage() {
         },
       })
       .then(res => {
+        setUserName(res.data.username);
+        setUserinfo({ email: res.data.email, username: res.data.username });
         console.log('🎃', res);
         if (res.data.profile_image === null) {
           setUserInfo({
@@ -167,7 +173,6 @@ function MyPage() {
   // 프로필 변경 관련
   const [editToggle, setEditToggle] = useState(false);
   const handleEdit = () => {
-    const token = localStorage.getItem('jwt');
     setEditToggle(!editToggle);
     axios
       .put(
@@ -184,6 +189,8 @@ function MyPage() {
       )
       .then(res => {
         console.log(res);
+        setUserName(res.data.username);
+        setUserInfo({ ...userinfo, username: res.data.username });
         setEditUserInfo({
           username: res.data.username,
           profile_image: res.data.profileImg,
@@ -534,10 +541,11 @@ function MyPage() {
             }}
           >
             <h1 style={{ textAlign: 'center' }}>최근 본 면접 질문</h1>
-            {recentInterview.map(info => (
-              <InterviewBox key={info.id} {...info} />
-              // <QuestionBox key={info.interviewSeq} {...info} />
-            ))}
+            {recentInterview &&
+              recentInterview.map(info => (
+                <InterviewBox key={info.id} {...info} />
+                // <QuestionBox key={info.interviewSeq} {...info} />
+              ))}
             {/* <InterviewBox question={'Q1'} />
             <InterviewBox question={'Q2'} />
             <InterviewBox question={'Q3'} /> */}

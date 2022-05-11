@@ -83,70 +83,45 @@ function CommentBox({
   // Recoil
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
-  const [likeCount, setLikeCount] = useState(likesCount);
 
-  // 댓글 정보 가져오기
+  // 댓글 정보
   const [commentInfo, setCommentInfo] = useState({});
-  console.log(commentInfo);
-
-  const handleLike = () => {
-    setCommentLikeData({ id });
-    getCommentLikeData({ id });
-    getCommentData({ id });
-  };
-  const getCommentData = ({ id }) => {
+  const getCommentData = () => {
     axios
       .get(`${defaultAPI}/cs-service/interview/${id}/comment/info`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('🐕', res);
+        // console.log(res);
         setCommentInfo(res.data);
       })
       .catch(err => console.error(err));
   };
   useEffect(() => {
-    getCommentData({ id });
+    getCommentData();
   }, []);
 
-  // 좋아요 정보 가져오기
-  const getCommentLikeData = ({ id }) => {
-    axios
-      .get(`${defaultAPI}/cs-service/interview/${id}/comment/likes`)
-      .then(res => {
-        console.log('commentLikeData', res);
-        setLikeCount(res.data.commentLikes);
-      })
-      .catch(err => console.error(err));
+  const handleLike = () => {
+    setCommentLikeData();
   };
-  // // 좋아요 클릭 여부
-  // const [isClicked, setIsClicked] = useState(liked);
-  // useEffect(() => {
-  //   getCommentLikeData();
-  // }, []);
-  // useEffect(() => {
-  //   getCommentData(id);
-  // }, [isClicked]);
 
   // 좋아요 정보 수정
-  const setCommentLikeData = ({ id }) => {
+  const setCommentLikeData = () => {
     axios
       .post(`${defaultAPI}/cs-service/interview/${id}/comment/likes`, null, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('settedCommentLikeData', res);
-        getCommentLikeData({ id });
+        // console.log(res);
+        getCommentData();
       })
       .catch(err => console.error(err));
   };
 
-  /////
-
+  // 댓글 수정 관련
   const [editToggle, setEditToggle] = useState(false);
   const [newComment, setNewComment] = useState(comment);
 
-  // 수정 관련
   const toggleComment = () => {
     setEditToggle(!editToggle);
     // 수정은 put, 삭제는 delete - interview/{commentId}/comment
@@ -155,7 +130,6 @@ function CommentBox({
     }
   };
   const editComment = () => {
-    const token = localStorage.getItem('jwt');
     axios
       .put(
         `${defaultAPI}/cs-service/interview/${id}/comment`,
@@ -163,21 +137,20 @@ function CommentBox({
         { headers: { Authorization: token } },
       )
       .then(res => {
-        console.log(res);
+        // console.log(res);
         setNewComment(res.data.comment);
       })
       .catch(err => console.error(err));
   };
-  // console.log(newComment);
+
   // 삭제
   const deleteComment = () => {
-    const token = localStorage.getItem('jwt');
     axios
       .delete(`${defaultAPI}/cs-service/interview/${id}/comment`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         getComment();
       })
       .catch(err => console.error(err));
@@ -268,4 +241,4 @@ function CommentBox({
   );
 }
 
-export default CommentBox;
+export default React.memo(CommentBox);
