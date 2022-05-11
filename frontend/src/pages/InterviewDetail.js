@@ -175,7 +175,7 @@ function InterviewDetail() {
       })
       .catch(err => console.error(err));
   };
-  console.log('🐕', interviewInfo);
+  // console.log('🐕', interviewInfo);
   // 좋아요 눌렀을 때
   const handleLikes = () => {
     axios
@@ -203,7 +203,7 @@ function InterviewDetail() {
         { headers: { Authorization: token } },
       )
       .then(res => {
-        console.log(res);
+        // console.log(res);
         getComment();
         setMyComment('');
       })
@@ -225,7 +225,6 @@ function InterviewDetail() {
 
   useEffect(() => {
     getComment();
-
     getInterviewInfo();
   }, []);
 
