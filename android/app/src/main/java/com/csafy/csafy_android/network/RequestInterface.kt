@@ -2,6 +2,7 @@ package com.csafy.csafy_android.network
 
 import com.csafy.csafy_android.network.data.request.RequestJoinData
 import com.csafy.csafy_android.network.data.request.RequestLoginData
+import com.csafy.csafy_android.network.data.response.ResponseFavoriteData
 import com.csafy.csafy_android.network.data.response.ResponseJoinData
 import com.csafy.csafy_android.network.data.response.ResponseLoginData
 import com.csafy.csafy_android.network.data.response.ResponseOXData
@@ -22,9 +23,19 @@ interface RequestInterface {
         @Body body : RequestLoginData
     ) : Call<ResponseLoginData>
 
+    // 즐겨찾는 학습
+    @GET("cs-service/profile/study/favorites")
+    fun responseFavorite(
+        @Header("token") token: String?
+    ) : Call<ResponseFavoriteData>
+
+
+    /* 학습 탭 */
     // OX 퀴즈 받기
     @GET("cs-service/unity/quizsample")
     fun quizOXSample() : Call<ResponseOXData>
+
+
 
 
     // 회원 탈퇴
