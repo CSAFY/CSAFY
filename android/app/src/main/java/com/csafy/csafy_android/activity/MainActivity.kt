@@ -190,6 +190,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             .commit()
     }
 
+    // 바텀 네비게이션 기능
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_home -> {
