@@ -18,10 +18,7 @@ import YouTubeVideo from "../../components/atoms/studypage/YouTubeVideo"
 
 function StudyDetailPage() {
   const videoDatas = useRecoilValue(videoData)
-  const Url = `https://www.youtube.com/embed/${videoDatas.videoId}`
   
-
-
   return (
     <FullLayOut>
       

@@ -11,6 +11,7 @@ class YouTubeVideo extends React.PureComponent {
     id: PropTypes.number.isRequired,
   };
   
+  
   componentDidMount = () => {
     // On mount, check to see if the API script is already loaded
     if (!window.YT) { // If not, load the script asynchronously
@@ -58,15 +59,36 @@ class YouTubeVideo extends React.PureComponent {
     
     if(event.data ===  0){
       this.studyFinish()
+    }else if(event.data ===  1){
+      // this.studyPlay()
+      console.log("play")
     }
   };
   
   studyFinish = () => {
+    const JWT = window.localStorage.getItem("jwt")
     axios({
       method: 'post',
       url: `https://csafy.com/api/v1/cs-service/study/${this.props.id}/seen`,
       headers: {
-        Authorization: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY2NzI5Mzg5NDI1NDU3NTg1NTgiLCJ1c2VyX3NlcSI6MzAsInVzZXJuYW1lIjoidGVzdGNjIiwidXNlcl9pZCI6IjExNjY3MjkzODk0MjU0NTc1ODU1OCIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE2NTIwNjkwODQsImV4cCI6MTY1MjI3MDY4NH0.L1pqHJcr43n107hOhz_9Hr_IwGxRPUl1-YD-I2ZbN6M"
+        Authorization: JWT
+      },
+    })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+
+  studyPlay = () => {
+    const JWT = window.localStorage.getItem("jwt")
+    axios({
+      method: 'post',
+      url: `https://csafy.com/api/v1/cs-service/study/${this.props.id}/play`,
+      headers: {
+        Authorization: JWT
       },
     })
     .then((res) => {

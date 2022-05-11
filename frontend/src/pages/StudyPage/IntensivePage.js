@@ -35,7 +35,6 @@ function IntensivePage() {
   const categorys = useRecoilValue(category)
   const choice = [{ title : "키워드 학습", path : "KeyWordCard"}, 
   {title : "4지 선다", path :"FourWayRace"}, 
-  {title : "단답형", path :"ShortAnswer"},
    {title : "OX 퀴즈", path :"OXquiz"}]
 
   const cateChange = (event) => {
@@ -107,7 +106,7 @@ function IntensivePage() {
           <Route exact={true} path="/" element={<LodingPage />} />
           <Route exact={true} path="KeyWordCard" element={<KeyWordCard />} />
           <Route exact={true} path="FourWayRace" element={<FourWayRace />} />
-          <Route exact={true} path="ShortAnswer" element={<ShortAnswer />} />
+          {/* <Route exact={true} path="ShortAnswer" element={<ShortAnswer />} /> */}
           <Route exact={true} path="OXquiz" element={<OXquiz />} />
         </Routes>
       </FlexDiv>
