@@ -3,11 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.csafy.csafy_android.fragment.HomeFragment">
 
-    <WebView
-        android:id="@+id/web_main"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="400dp"
+                >
+
+                <TextView
+                    android:id="@+id/tx_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="CSAFY"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pie_chart"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:background="@color/main_green3"
+                    android:layout_gravity="center"
+                    />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/bar_chart"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:background="@color/main_blue3"
+                    android:layout_gravity="center"
+                    />
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

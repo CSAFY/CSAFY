@@ -4,7 +4,8 @@ import com.csafy.csafy_android.network.data.request.RequestJoinData
 import com.csafy.csafy_android.network.data.request.RequestLoginData
 import com.csafy.csafy_android.network.data.request.RequestScoreData
 import com.csafy.csafy_android.network.data.response.*
-import okhttp3.ResponseBody
+import com.csafy.csafy_android.network.data.response.ResponseFavoriteData
+import com.csafy.csafy_android.network.data.response.ResponseOXData
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -23,7 +24,15 @@ interface RequestInterface {
         @Body body : RequestLoginData
     ) : Call<ResponseLoginData>
 
-    // OX 퀴즈 받기 샘플
+    // 즐겨찾는 학습
+    @GET("cs-service/profile/study/favorites")
+    fun responseFavorite(
+        @Header("token") token: String?
+    ) : Call<ResponseFavoriteData>
+
+
+    /* 학습 탭 */
+    // OX 퀴즈 받기
     @GET("cs-service/unity/quizsample")
     fun quizOXSample() : Call<ResponseOXData>
 
@@ -47,6 +56,8 @@ interface RequestInterface {
     // 카드 받아오기
     @GET("cs-service/test/quizsample3")
     fun cardSample() : Call<List<ResponseCardData>>
+
+
 
     // 회원 탈퇴
     //위와 같이 @DELETE 어쩌구의 형식으로 가지고 가면
