@@ -117,8 +117,7 @@ function KeyWordCard() {
   
 
   return (
-    <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", 
-      }}>
+    <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", minWidth: "600px"}}>
       
       {/* {ClickKeyWordCard()} */}
       <Cont>
