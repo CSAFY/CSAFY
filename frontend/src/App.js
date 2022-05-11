@@ -39,6 +39,7 @@ import SpentTime from './pages/SpentTime';
 import AuthHandler from './pages/handler/AuthHandler';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import UserChat from './pages/UserChat';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
           <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/editProfile" element={<EditProfile />} />
+          <Route path="/userChat" element={<UserChat />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/chat/:roomName" element={<ChatRoom />} />
           <Route path="/StudyFramePage" element={<StudyFramePage />} />
