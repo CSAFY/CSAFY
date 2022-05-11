@@ -185,8 +185,8 @@ class StudyCardFragment : Fragment() {
                 response: Response<List<ResponseCardData>>
             ) {
                 cards = response.body()!!
-                Log.d("카드 확인", cards.toString())
-                Log.d("카드 확인2", cards[0].toString())
+//                Log.d("카드 확인", cards.toString())
+//                Log.d("카드 확인2", cards[0].toString())
 
                 cards_now = 1
                 cards_num = cards.size

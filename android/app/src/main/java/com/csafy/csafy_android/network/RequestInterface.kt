@@ -23,9 +23,16 @@ interface RequestInterface {
         @Body body : RequestLoginData
     ) : Call<ResponseLoginData>
 
-    // OX 퀴즈 받기
+    // OX 퀴즈 받기 샘플
     @GET("cs-service/unity/quizsample")
     fun quizOXSample() : Call<ResponseOXData>
+
+    // OX 퀴즈 리스트 받기
+    @GET("cs-service/study/multiple/ox")
+    fun quizOXList(
+        @Query("category") category:String,
+        @Query("questionNum") questionNum:Int
+    ) : Call<List<ResponseOXData2>>
 
     // 4지선다 퀴즈 받기
     @GET("cs-service/test/quizsample")

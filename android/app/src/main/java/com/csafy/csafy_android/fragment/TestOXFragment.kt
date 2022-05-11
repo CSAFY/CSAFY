@@ -13,6 +13,7 @@ import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.data.response.ResponseOXData
 import com.csafy.csafy_android.databinding.FragmentTestOXBinding
 import com.csafy.csafy_android.network.data.request.RequestScoreData
+import com.csafy.csafy_android.network.data.response.ResponseOXData2
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,6 +53,11 @@ class TestOXFragment : Fragment() {
             quizSubject = bundle.getString("quizSubject") ?: "과목 이름"
         }
         binding.textSubject.setText(quizSubject)
+
+        // 운영체제론만 따로
+        if (quizSubject == "운영체제론") {
+            quizSubject = "운영체제"
+        }
 
         // 세팅하기
         var correct:Int = 0
@@ -97,8 +103,8 @@ class TestOXFragment : Fragment() {
         return view
     }
 
-    // http 보내서 OX 퀴즈 정보 받기
-    fun getOXQuiz() {
+    // http 보내서 OX 퀴즈(샘플) 정보 받기
+    fun getOXSampleQuiz() {
         requestToServer.service.quizOXSample().enqueue(object : Callback<ResponseOXData> {  // 콜백 등록
 
         override fun onResponse(
@@ -121,6 +127,33 @@ class TestOXFragment : Fragment() {
         override fun onFailure(call: Call<ResponseOXData>, t: Throwable) {
         }
         })
+    }
+
+    // http로 OX 진짜 퀴즈 받기
+    fun getOXQuiz() {
+        requestToServer.service.quizOXList(quizSubject, 1)
+            .enqueue(object : Callback<List<ResponseOXData2>> {  // 콜백 등록
+                override fun onResponse(
+                    call: Call<List<ResponseOXData2>>,
+                    response: Response<List<ResponseOXData2>>
+                ) {
+                    val quiz = response.body()!![0]
+                    // 질문
+                    var text = ""
+                    if (quiz.key != null) text += quiz.key + "\n"
+                    binding.textQuiz.setText(text + quiz.explanation)
+
+                    // 정답
+                    if (quiz.answer == 1) {
+                        answer = "X"
+                    } else {
+                        answer = "O"
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ResponseOXData2>>, t: Throwable) {
+                }
+            })
     }
 
     // 해당 점수 갱신
