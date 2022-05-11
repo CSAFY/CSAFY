@@ -102,14 +102,10 @@ public class UserApiController {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
         }
-        String s3url = null;
 
-        try{
-            s3url = s3Uploader.upload(file, "profile");
-        } catch (IOException ex){
-            ex.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미지 업로드 실패");
-        }
+        Long userSeq = jwtTokenProvider.getUserSeq(token);
+
+        if(userSeq == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰 에러");
 
         if(username == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
@@ -117,11 +113,19 @@ public class UserApiController {
         if(introduction == null || introduction.length() >= 1024){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 자기소개 형식입니다.");
         }
+
+        String s3url = null;
+
+        try{
+            s3url = s3Uploader.upload(file, "profile", userSeq);
+        } catch (IOException ex){
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미지 업로드 실패");
+        }
+
         if(s3url == null || s3url.length() >= 1024){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 프로필 이미지 URL 형식입니다.");
         }
-
-        Long userSeq = jwtTokenProvider.getUserSeq(token);
 
         MobileUpdateRequest updateRequestResult = userService.updateMobileUser(userSeq, s3url, introduction, username);
 
@@ -207,25 +211,28 @@ public class UserApiController {
                     .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
         }
 
+        Long userSeq = jwtTokenProvider.getUserSeq(token);
+
+        if(userSeq == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰 에러");
+
+        if(username == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
+        }
+
         String s3url = null;
 
         try{
-            s3url = s3Uploader.upload(file, "profile");
+            s3url = s3Uploader.upload(file, "profile", userSeq);
         } catch (IOException ex){
             ex.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 업로드 오류");
         }
 
 
-        if(username == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
-        }
-        
+
         if(s3url == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 업로드 실패");
         }
-
-        Long userSeq = jwtTokenProvider.getUserSeq(token);
 
         UpdateRequest updateRequestResult = userService.updateUser(userSeq, username, s3url);
 

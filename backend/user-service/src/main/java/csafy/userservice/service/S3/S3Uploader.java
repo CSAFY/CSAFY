@@ -2,9 +2,7 @@ package csafy.userservice.service.S3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.internal.Mimetypes;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +14,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,61 +29,39 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;  // S3 버킷 이름
 
-    public String upload(MultipartFile file, String dir) throws IOException {
+    public String upload(MultipartFile file, String dir, Long userSeq) throws IOException {
         UUID uuid = UUID.randomUUID();
-        String fileName = uuid + file.getOriginalFilename();
+//        String fileName = uuid + file.getOriginalFilename();
+        String fileName = uuid.toString();
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType(Mimetypes.getInstance().getMimetype(fileName));
-
+//        objectMetadata.setContentType(Mimetypes.getInstance().getMimetype(fileName));
+//        objectMetadata.setContentType("image/jpg");
+        objectMetadata.setContentType(file.getContentType());
         byte[] bytes = IOUtils.toByteArray(file.getInputStream());
         objectMetadata.setContentLength(bytes.length);
         ByteArrayInputStream byteArrayIs = new ByteArrayInputStream(bytes);
 
-        amazonS3Client.putObject(new PutObjectRequest(bucket,  dir + "/" + fileName, byteArrayIs, objectMetadata)
+        removeFolder(dir + "/" + userSeq);
+
+//        amazonS3Client.deleteObject(bucket,  dir + "/" + userSeq);
+
+        amazonS3Client.putObject(new PutObjectRequest(bucket,  dir + "/" + userSeq + "/" + fileName, byteArrayIs, objectMetadata)
+                .withMetadata(objectMetadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead));                                                        // public read 권한 주기
 
-        return dir + File.separator + fileName;
-
-//        File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
-//                .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
-
-//        return upload(uploadFile, dirName);
+        return dir + File.separator + userSeq + File.separator + fileName;
     }
 
-    // S3로 파일 업로드하기
-    private String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();   // S3에 저장된 파일 이름
-        String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
-//        removeNewFile(uploadFile);
-        return uploadImageUrl;
-    }
+    //폴더 삭제 (폴더안의 모든 파일 삭제)
+    public void removeFolder(String folderName){
+        ListObjectsV2Request listObjectsV2Request = new ListObjectsV2Request().withBucketName(bucket).withPrefix(folderName+"/");
+        ListObjectsV2Result listObjectsV2Result = amazonS3Client.listObjectsV2(listObjectsV2Request);
 
-    // S3로 업로드
-    private String putS3(File uploadFile, String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, fileName).toString();
-    }
-
-    // 로컬에 저장된 이미지 지우기
-    private void removeNewFile(File targetFile) {
-        if (targetFile.delete()) {
-            log.info("File delete success");
-            return;
+        for (S3ObjectSummary objectSummary : listObjectsV2Result.getObjectSummaries()) {
+            DeleteObjectRequest request = new DeleteObjectRequest(bucket, objectSummary.getKey());
+            amazonS3Client.deleteObject(request);
+            System.out.println("Deleted " + objectSummary.getKey());
         }
-        log.info("File delete fail");
-    }
-
-    // 로컬에 파일 업로드 하기
-    private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
-        if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) { // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
-                fos.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
-
-        return Optional.empty();
     }
 }

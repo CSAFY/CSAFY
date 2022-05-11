@@ -26,4 +26,5 @@ public class UserDto {
     private String profile_image;
     private String introduction;
     private String is_vip;
+
 }
