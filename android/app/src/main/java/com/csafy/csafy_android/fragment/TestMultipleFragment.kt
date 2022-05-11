@@ -20,6 +20,7 @@ import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.data.request.RequestScoreData
 import com.csafy.csafy_android.network.data.response.ResponseLoginData
 import com.csafy.csafy_android.network.data.response.ResponseMultipleData
+import com.csafy.csafy_android.network.data.response.ResponseMultipleData2
 import com.csafy.csafy_android.network.data.response.ResponseOXData
 import retrofit2.Call
 import retrofit2.Callback
@@ -63,6 +64,10 @@ class TestMultipleFragment : Fragment() {
             quizSubject = bundle.getString("quizSubject") ?: "과목 이름"
         }
         binding.textSubject.setText(quizSubject)
+        // 운영체제론만 따로
+        if (quizSubject == "운영체제론") {
+            quizSubject = "운영체제"
+        }
 
         // 세팅하기
         var correct:Int = 0
@@ -134,34 +139,61 @@ class TestMultipleFragment : Fragment() {
 
     // http 보내서 OX 퀴즈 정보 받기
     fun getMutipleQuiz() {
-        requestToServer.service.quizMultipleSample().enqueue(object : Callback<ResponseMultipleData> {  // 콜백 등록
-
+        requestToServer.service.getQuizMultipleList(quizSubject, 3).enqueue(object : Callback<List<ResponseMultipleData2>> {  // 콜백 등록
             override fun onResponse(
-                call: Call<ResponseMultipleData>,
-                response: Response<ResponseMultipleData>
+                call: Call<List<ResponseMultipleData2>>,
+                response: Response<List<ResponseMultipleData2>>
             ) {
-                // 통신 성공
-                if(response.isSuccessful){
-                    Log.d("문제 정보", response.body()!!.toString() )
-                    binding.textQuiz.setText(response.body()!!.quiz)
-                    answer = response.body()!!.answer
-                    binding.btnExample1.setText("이것은 1번 문항")
-                    binding.btnExample2.setText("이것은 2번 문항입니다!")
-                    binding.btnExample3.setText("이것은 조금 긴 3번 문항입니다.")
-                    binding.btnExample4.setText("4번점심나가서먹을거같아4번점심나가서먹을거같아4번점심나가서먹을거같아4번점심나가서먹을거같아4번점심나가서먹을거같아4번점심나가서먹을거같아")
-                }
-                else {
-                    when (response.code()) {
-                        404 -> Log.d("실패", response.message())
-                        405 -> Log.d("문제가 뭐야", response.message())
 
-                    }
-                }
+                val quiz = response.body()!![0]
+
+                Log.d("문제 정보", response.body()!!.toString() )
+                Log.d("문제 정보2", quiz.toString() )
+                binding.textQuiz.setText(quiz.question)
+                answer = quiz.answer.toString()
+                binding.btnExample1.setText(quiz.examples[0])
+                binding.btnExample2.setText(quiz.examples[1])
+                binding.btnExample3.setText(quiz.examples[2])
+                binding.btnExample4.setText(quiz.examples[3])
             }
-            override fun onFailure(call: Call<ResponseMultipleData>, t: Throwable) {
+
+            override fun onFailure(call: Call<List<ResponseMultipleData2>>, t: Throwable) {
             }
+
+
         })
     }
+
+    // http 보내서 OX 퀴즈 정보 받기
+//    fun getSampleMutipleQuiz() {
+//        requestToServer.service.quizMultipleSample().enqueue(object : Callback<ResponseMultipleData> {  // 콜백 등록
+//
+//            override fun onResponse(
+//                call: Call<ResponseMultipleData>,
+//                response: Response<ResponseMultipleData>
+//            ) {
+//                // 통신 성공
+//                if(response.isSuccessful){
+//                    Log.d("문제 정보", response.body()!!.toString() )
+//                    binding.textQuiz.setText(response.body()!!.quiz)
+//                    answer = response.body()!!.answer
+//                    binding.btnExample1.setText("이것은 1번 문항")
+//                    binding.btnExample2.setText("이것은 2번 문항입니다!")
+//                    binding.btnExample3.setText("이것은 조금 긴 3번 문항입니다.")
+//                    binding.btnExample4.setText("4번점심나가서먹을거같아4번점심나가서먹을거같아4번점심나가서먹을거같아4번점심나가서먹을거같아4번점심나가서먹을거같아4번점심나가서먹을거같아")
+//                }
+//                else {
+//                    when (response.code()) {
+//                        404 -> Log.d("실패", response.message())
+//                        405 -> Log.d("문제가 뭐야", response.message())
+//
+//                    }
+//                }
+//            }
+//            override fun onFailure(call: Call<ResponseMultipleData>, t: Throwable) {
+//            }
+//        })
+//    }
 
     // 해당 점수 갱신
     fun updateScores() {
