@@ -40,12 +40,12 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
   const [studyDatas, setStudyData] = useRecoilState(studyData)
 
   const ToggleFavorites = (bools) => {
-    
+    const JWT = window.localStorage.getItem("jwt")
     axios({
       method: 'post',
       url: `https://csafy.com/api/v1/cs-service/study/${id}/favorites`,
       headers: {
-        Authorization: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY2NzI5Mzg5NDI1NDU3NTg1NTgiLCJ1c2VyX3NlcSI6MzAsInVzZXJuYW1lIjoidGVzdGNjIiwidXNlcl9pZCI6IjExNjY3MjkzODk0MjU0NTc1ODU1OCIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE2NTIwNjkwODQsImV4cCI6MTY1MjI3MDY4NH0.L1pqHJcr43n107hOhz_9Hr_IwGxRPUl1-YD-I2ZbN6M"
+        Authorization: JWT
       },
     })
     .then((res) => {
@@ -92,10 +92,10 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
         <CategoryShowDiv>
           {category2Id}
         </CategoryShowDiv>
-        
-        {isEnd()}
-        {ToggleStar()}
-        
+        <span>
+          {isEnd()}
+          {ToggleStar()}
+        </span>
       </InforDiv>
       
       
@@ -121,7 +121,7 @@ export default ThumbNailCard
 
 const CardBox = styled.div`
   width: 40%;
-  min-width: 340px;
+  min-width: 330px;
   height: 270px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
@@ -131,7 +131,7 @@ const CardBox = styled.div`
   ${
     css`
     :hover{
-      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 8px 16px 0 rgba(0, 125, 207, 0.48);
     }
     `
   }

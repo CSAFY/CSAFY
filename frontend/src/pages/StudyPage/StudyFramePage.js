@@ -22,6 +22,7 @@ import { studyData, category } from "../../recoils";
 
 function StudyFramePage() {
   const [nowKategorie, setKategorie] = useState("전체")
+
   const selectKategorie = (event) => {
     setKategorie(event)
   }
@@ -40,11 +41,13 @@ function StudyFramePage() {
   
   const [studyDatas, setStudyData] = useRecoilState(studyData)
   const getData = async () => {
+    const JWT = window.localStorage.getItem("jwt")
+    
     axios({
       method: 'get',
       url: "https://csafy.com/api/v1/cs-service/study/list/get",
       headers: {
-        Authorization: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY2NzI5Mzg5NDI1NDU3NTg1NTgiLCJ1c2VyX3NlcSI6MzAsInVzZXJuYW1lIjoidGVzdGNjIiwidXNlcl9pZCI6IjExNjY3MjkzODk0MjU0NTc1ODU1OCIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE2NTIwNjkwODQsImV4cCI6MTY1MjI3MDY4NH0.L1pqHJcr43n107hOhz_9Hr_IwGxRPUl1-YD-I2ZbN6M"
+        Authorization: JWT
       },
     })
     .then((res) => {
@@ -55,6 +58,7 @@ function StudyFramePage() {
     })
   }
   useEffect(() => {
+    
     getData();
   }, []);
 
@@ -146,11 +150,11 @@ function StudyFramePage() {
           {nowKategorie}
         </TitleName>
         <SelectLayOut>
-          <SearchBox
+          {/* <SearchBox
             placeholder="Search…"
             value={searchValue}
             onChange={onChange}>
-          </SearchBox>
+          </SearchBox> */}
 
           <SwitchBox>
             즐겨찾기
