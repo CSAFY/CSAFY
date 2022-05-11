@@ -54,7 +54,7 @@ export default function TemporaryDrawer() {
     <div>
       {
         <React.Fragment key={'left'}>
-          <Button onClick={toggleDrawer('left', true)}>left</Button>
+          <Button onClick={toggleDrawer('left', true)}>다른 강의 선택</Button>
           <Drawer
             anchor={'left'}
             open={state['left']}
