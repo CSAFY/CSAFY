@@ -61,7 +61,8 @@ function StudyFramePage() {
     
     getData();
   }, []);
-
+  
+  // https://i.ytimg.com/vi/-M_S50Ga384/hqdefault.jpg
   const cateFilter = (data, index) => {
     if (nowKategorie === "전체"){
       return(
@@ -99,7 +100,6 @@ function StudyFramePage() {
   }
   
   const againCard = studyDatas.map((data, index) => 
-    
       {
         if (toggle === false){
           return cateFilter(data, index)
@@ -109,36 +109,6 @@ function StudyFramePage() {
       }
   )
 
-  
-
-  // <ThumbNailCard
-  //           key={data.id}
-  //           index={index}
-  //           imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
-  //           title={data.title}
-  //           videoId={data.videoId}
-  //           category2Id = {data.category2Id}
-  //           categoryId={data.categoryId}
-  //           favorites ={data.favorites}
-  //           id = {data.id}
-  //           seen = {data.seen}
-  //           >
-  //         </ThumbNailCard>
-
-
-  // (
-  //   <ThumbNailCard
-  //   key={data.id}
-  //   imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
-  //   title={data.title}
-  //   videoId={data.videoId}
-  //   category2Id = {data.category2Id}
-  //   favorites ={data.favorites}
-  //   id = {data.id}
-  //   seen = {data.seen}
-  //   >
-  // </ThumbNailCard>
-  // )
   
   const categori = useRecoilValue(category)
   
