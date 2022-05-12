@@ -70,7 +70,7 @@ public class StudyController {
         UserDto userDto = userServiceClient.getTokenUser(token);
         videoService.studyFavorites(userDto.getUser_seq(), studySeq);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
     // 강의 본 여부 받기
@@ -102,7 +102,7 @@ public class StudyController {
         UserDto userDto = userServiceClient.getTokenUser(token);
         videoService.studySeens(userDto.getUser_seq(), studySeq);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
     // 최근 본 강의 체크
@@ -118,7 +118,7 @@ public class StudyController {
         UserDto userDto = userServiceClient.getTokenUser(token);
         videoService.studyPlays(userDto.getUser_seq(), studySeq);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
 

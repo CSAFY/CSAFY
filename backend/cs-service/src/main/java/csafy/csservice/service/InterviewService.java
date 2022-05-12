@@ -6,7 +6,9 @@ import csafy.csservice.dto.interview.InterviewCreateDto;
 import csafy.csservice.dto.interview.InterviewDto;
 import csafy.csservice.dto.request.RequestCreateInterview;
 import csafy.csservice.entity.interview.*;
+import csafy.csservice.entity.profile.Statistic;
 import csafy.csservice.repository.interview.*;
+import csafy.csservice.repository.profile.StatisticsRepository;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ public class InterviewService {
     private final InterviewLikesRepository interviewLikesRepository;
     private final InterviewCommentLikesRepository interviewCommentLikesRepository;
     private final InterviewSeenRepository interviewSeenRepository;
+    private final StatisticsRepository statisticsRepository;
 
     private final UserServiceClient userServiceClient;
 
@@ -198,6 +201,23 @@ public class InterviewService {
                 interviewSeenRepository.save(interviewSeen);
             }
         }
+
+    }
+
+    @Transactional
+    public void updateInterviewCount(Long userSeq){
+
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+
+        if(statistic == null){
+            statistic = new Statistic();
+            statistic.setUserSeq(userSeq);
+            statistic.setInterviewCount(1L);
+        } else{
+            statistic.setInterviewCount(statistic.getInterviewCount() + 1);
+        }
+
+        statisticsRepository.save(statistic);
 
     }
 

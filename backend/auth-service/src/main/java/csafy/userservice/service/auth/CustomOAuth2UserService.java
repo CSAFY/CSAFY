@@ -85,8 +85,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setNickname(userInfo.getName());
         user.setIs_vip("N");
         if(user.getProfileImage() == null || user.getProfileImage().trim().equals("")){
-            int randNum = (int)(Math.random()*20) + 1;
-            user.setProfileImage("*" + randNum); // 일단 *으로 받음 나중에 교체
+            user.setProfileImage("default/default_1.PNG");
         }
 
         return userRepository.saveAndFlush(user);

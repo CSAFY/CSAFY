@@ -34,5 +34,11 @@ public class Statistic {
 
     private String isLogin = "N";
 
+    private Long studyCount = 0L;
+
+    private Long interviewCount = 0L;
+
+    private Long examCount = 0L;
+
 
 }

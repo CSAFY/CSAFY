@@ -193,6 +193,8 @@ public class TestController {
 
         testService.updateTestResult(testResultRequest, userDto);
 
+        testService.updateExamCount(userDto.getUser_seq());
+
         return ResponseEntity.status(HttpStatus.CREATED).body("Exam Result Saved");
     }
 

@@ -1,9 +1,11 @@
 package csafy.csservice.service;
 
 import csafy.csservice.dto.response.ResponseVideo;
+import csafy.csservice.entity.profile.Statistic;
 import csafy.csservice.entity.video.VideoFavorites;
 import csafy.csservice.entity.video.VideoPlay;
 import csafy.csservice.entity.video.VideoSeen;
+import csafy.csservice.repository.profile.StatisticsRepository;
 import csafy.csservice.repository.video.*;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
@@ -24,6 +26,8 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final VideoSeenRepository videoSeenRepository;
     private final VideoPlayRepository videoPlayRepository;
+
+    private final StatisticsRepository statisticsRepository;
 
     @PersistenceContext
     EntityManager em;
@@ -76,7 +80,21 @@ public class VideoService {
         else {
             videoSeen.setSeenAt(LocalDateTime.now());
         }
+
         videoSeenRepository.save(videoSeen);
+
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+
+        if(statistic == null){
+            statistic = new Statistic();
+            statistic.setUserSeq(userSeq);
+            statistic.setStudyCount(1L);
+        } else{
+            statistic.setStudyCount(statistic.getStudyCount() + 1);
+        }
+
+        statisticsRepository.save(statistic);
+
     }
 
     @Transactional

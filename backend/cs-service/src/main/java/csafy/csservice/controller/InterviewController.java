@@ -77,6 +77,8 @@ public class InterviewController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
 
+        interviewService.updateInterviewCount(userDto.getUser_seq());
+
         return ResponseEntity.status(HttpStatus.OK).body(interviewList);
     }
 
@@ -124,7 +126,7 @@ public class InterviewController {
         UserDto userDto = userServiceClient.getTokenUser(token);
         interviewService.interviewLikes(userDto.getUser_seq(), interviewSeq);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
     @GetMapping("/{interviewSeq}/memo")
@@ -272,7 +274,7 @@ public class InterviewController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
 
     }
 
@@ -300,7 +302,7 @@ public class InterviewController {
         UserDto userDto = userServiceClient.getTokenUser(token);
         interviewService.interviewCommentLikes(userDto.getUser_seq(), commentId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
 

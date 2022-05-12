@@ -6,7 +6,9 @@ import csafy.csservice.dto.interview.InterviewDto;
 import csafy.csservice.dto.request.TestResultRequest;
 import csafy.csservice.dto.response.ResponseTestRecent;
 import csafy.csservice.dto.test.*;
+import csafy.csservice.entity.profile.Statistic;
 import csafy.csservice.entity.test.*;
+import csafy.csservice.repository.profile.StatisticsRepository;
 import csafy.csservice.repository.test.*;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
@@ -35,6 +37,7 @@ public class TestService {
     private final ProblemOXRepository problemOXRepository;
     private final CardRepository cardRepository;
     private final TestRecentRepository testRecentRepository;
+    private final StatisticsRepository statisticsRepository;
 
     @PersistenceContext
     EntityManager em;
@@ -266,6 +269,23 @@ public class TestService {
         List<ResponseTestRecent> result = testRecentList.stream().map(ResponseTestRecent::new).collect(Collectors.toList());
 
         return result;
+
+    }
+
+    @Transactional
+    public void updateExamCount(Long userSeq){
+
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+
+        if(statistic == null){
+            statistic = new Statistic();
+            statistic.setUserSeq(userSeq);
+            statistic.setExamCount(1L);
+        } else{
+            statistic.setExamCount(statistic.getExamCount() + 1);
+        }
+
+        statisticsRepository.save(statistic);
 
     }
 

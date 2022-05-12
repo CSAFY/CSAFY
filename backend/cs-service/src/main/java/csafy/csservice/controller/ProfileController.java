@@ -140,7 +140,7 @@ public class ProfileController {
         UserDto userDto = userServiceClient.getTokenUser(token);
         profileService.updateHeatmap(userDto.getUser_seq());
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
 
@@ -188,7 +188,7 @@ public class ProfileController {
         UserDto userDto = userServiceClient.getTokenUser(token);
         profileService.updateScores(requestScores, userDto.getUser_seq());
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
 
