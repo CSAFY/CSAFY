@@ -31,7 +31,4 @@ public class Statistic {
     private ConcurrentHashMap<String, Integer> Scores = new ConcurrentHashMap<>();
 
 
-
-
-
 }

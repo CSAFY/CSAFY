@@ -1,17 +1,19 @@
 package csafy.csservice.service;
 
+import csafy.csservice.dto.UserDto;
 import csafy.csservice.dto.interview.InterviewCreateDto;
+import csafy.csservice.dto.interview.InterviewDto;
+import csafy.csservice.dto.request.TestResultRequest;
+import csafy.csservice.dto.response.ResponseTestRecent;
 import csafy.csservice.dto.test.*;
-import csafy.csservice.entity.test.Card;
-import csafy.csservice.entity.test.Problem;
-import csafy.csservice.entity.test.ProblemFixed;
-import csafy.csservice.entity.test.ProblemOX;
+import csafy.csservice.entity.test.*;
 import csafy.csservice.repository.test.*;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,80 +34,16 @@ public class TestService {
     private final ProblemFixedRepository problemFixedRepository;
     private final ProblemOXRepository problemOXRepository;
     private final CardRepository cardRepository;
+    private final TestRecentRepository testRecentRepository;
 
     @PersistenceContext
     EntityManager em;
 
-    public TestDto getMutipleQuiz(String category) {
-        // 카테고리에서 questionNum 가져오는 로직(생략)
-        int questionNum = 1;
-
-        // questionNum이 같은 모든 question 가져오기
-        List<Problem> problems = problemRepository.findAllByQuestionNum(questionNum);
-        int pSize = problems.size();
-
-        // 문제오류
-        if (problems.size() < 4) {
-            throw new IllegalArgumentException("이 문제로는 4지선다를 만들 수 없습니다.");
-        }
-
-        // 4개 초과일때, 4개만 불러내야 하므로 랜덤셔플 후 앞에서부터 4개를 잘라낸다.
-        problems = problems.subList(0,4);
-
-        // 틀림 후보 길이가 0보다 큼 = 틀린 문제 후보가 될 수 있음
-        List<Long> answerIdxList = new ArrayList<>();
-        List<Long> Idxs = new ArrayList<>();
-        for (int i = 0; i < problems.size(); i++) {
-            Idxs.add(problems.get(i).getQuestionSeq());
-            if (problems.get(i).getWrongNum() > 0) {
-                answerIdxList.add(problems.get(i).getQuestionSeq());
-            }
-        }
-        String question = problems.get(0).getQuestion();
-        String categoryId = problems.get(0).getCategory();
-        String categoryChapter = problems.get(0).getCategoryChapter();
-
-        // 틀린 문제 후보 중에 하나(인덱스)를 고름
-        Random random = new Random();
-        int randomIdx = random.nextInt(answerIdxList.size());
-        Long answerIdx = answerIdxList.get(randomIdx);
-        // 정답이 쓰일 문제의 인덱스 확보. answerIdx
-        // Idxs에 전체 인덱스 저장. 크기는 pSize
-
-        // 랜덤배치
-        Collections.shuffle(Idxs);
-
-        // 정답의 번째 기록
-        int answer = Idxs.indexOf(answerIdx);
-
-        // answer번째 를 제외하면 오답에서 불러와 저장
-        // testDto에 맞게 examples 내용 구성 및 정답 설정
-        List<String> examples = new ArrayList<>();
-        for (int i = 0; i < pSize; i++) {
-            if ( i == answer) {
-                examples.add(problems.get(0).getAnswer());
-            }
-            else {
-                examples.add(problems.get(0).getWrong().get(0));
-            }
-        }
-
-
-        // 반환용 testDto 추가
-        TestDto result = new TestDto();
-        result.setTestSeq(null);
-        result.setQuestion(question);
-        result.setExamples(examples);
-        result.setAnswer(answer);
-        result.setCategory(categoryId);
-        result.setCategoryChapter(categoryChapter);
-
-        return result;
-    }
-
     public List<TestDto> getMultipleQuizList(String category, int questionNum){
 
         Random random = new Random();
+
+        questionNum = questionNum + 1;
 
         JpaResultMapper jpaResultMapper = new JpaResultMapper();
         Query q = em.createNativeQuery("SELECT pr.* " +
@@ -306,5 +246,27 @@ public class TestService {
         return result;
     }
 
+    @Transactional
+    public void updateTestResult(TestResultRequest testResultRequest, UserDto userDto){
+
+        TestRecent testRecent = new TestRecent(testResultRequest, userDto);
+
+        testRecentRepository.save(testRecent);
+
+    }
+
+    public List<ResponseTestRecent> getTestResult(Long userSeq){
+
+        Page<TestRecent> testRecents = testRecentRepository.findByUserSeqOrderByExamDoneDesc(userSeq, PageRequest.of(0, 5));
+
+        if(testRecents == null) return null;
+
+        List<TestRecent> testRecentList = testRecents.getContent();
+
+        List<ResponseTestRecent> result = testRecentList.stream().map(ResponseTestRecent::new).collect(Collectors.toList());
+
+        return result;
+
+    }
 
 }

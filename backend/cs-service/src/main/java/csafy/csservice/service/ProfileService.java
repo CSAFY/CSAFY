@@ -2,14 +2,17 @@ package csafy.csservice.service;
 
 import csafy.csservice.dto.interview.InterviewDto;
 import csafy.csservice.dto.interview.InterviewSeenDto;
+import csafy.csservice.dto.profile.UserActivityDto;
 import csafy.csservice.dto.request.RequestScores;
 import csafy.csservice.dto.response.ResponseStatistic;
 import csafy.csservice.dto.video.VideoDto;
 import csafy.csservice.entity.interview.InterviewSeen;
 import csafy.csservice.entity.profile.Statistic;
+import csafy.csservice.entity.profile.UserActivity;
 import csafy.csservice.entity.video.Video;
 import csafy.csservice.repository.interview.InterviewSeenRepository;
 import csafy.csservice.repository.profile.StatisticsRepository;
+import csafy.csservice.repository.profile.UserActivityRepository;
 import csafy.csservice.repository.video.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -32,6 +36,8 @@ public class ProfileService {
     private final InterviewSeenRepository interviewSeenRepository;
 
     private final StatisticsRepository statisticsRepository;
+
+    private final UserActivityRepository userActivityRepository;
 
 
     public List<VideoDto> getLatestStudy(Long userSeq){
@@ -140,6 +146,34 @@ public class ProfileService {
         return 5;
     }
 
+    public List<UserActivityDto> getHeatmap(Long userSeq){
 
+        List<UserActivity> userActivities = userActivityRepository.findAllByUserSeqOrderByActivityTimeAsc(userSeq);
+
+        if(userActivities == null) return null;
+
+        List<UserActivityDto> result = userActivities.stream().map(UserActivityDto::new).collect(Collectors.toList());
+
+        return result;
+    }
+
+    @Transactional
+    public void updateHeatmap(Long userSeq){
+
+        UserActivity userActivity = userActivityRepository.findByUserSeqAndActivityTime(userSeq, LocalDate.now());
+
+        if(userActivity == null){
+            UserActivity nowActivity = new UserActivity();
+            nowActivity.setActivityTime(LocalDate.now());
+            nowActivity.setUserSeq(userSeq);
+            nowActivity.setActivityCount(1L);
+            userActivityRepository.save(nowActivity);
+        } else {
+            userActivity.setActivityCount(userActivity.getActivityCount() + 1);
+            userActivityRepository.save(userActivity);
+        }
+
+
+    }
 
 }

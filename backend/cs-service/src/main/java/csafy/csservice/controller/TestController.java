@@ -1,6 +1,9 @@
 package csafy.csservice.controller;
 
 import csafy.csservice.client.UserServiceClient;
+import csafy.csservice.dto.UserDto;
+import csafy.csservice.dto.request.TestResultRequest;
+import csafy.csservice.dto.response.ResponseTestRecent;
 import csafy.csservice.dto.test.KeywordDto;
 import csafy.csservice.dto.test.OXDto;
 import csafy.csservice.dto.test.TestDto;
@@ -11,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -25,18 +29,18 @@ public class TestController {
     // 4지선다 문제 하나 받아오기
     @GetMapping("/sample/multiple")
     public ResponseEntity getMultipleQuizSample(@RequestParam("category") String category) {
-        TestDto test = null;
+        List<TestDto> test = null;
         try {
-            test = testService.getMutipleQuiz(category);
+            test = testService.getMultipleQuizList(category, 1);
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        if(test == null){
+        if(test == null || test.size() == 0){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("문제가 존재하지 않습니다.");
         }
 
-        return ResponseEntity.ok().body(test);
+        return ResponseEntity.ok().body(test.get(0));
 
     }
 
@@ -137,5 +141,80 @@ public class TestController {
 //
 //        return ResponseEntity.ok().body(null);
 //    }
+
+    // 모의고사 문제 보내주기
+    @GetMapping("/test/mock")
+    public ResponseEntity getMockTest(@RequestParam("category") String category,
+                                      @RequestParam("questionNum") int questionNum){
+
+        int newQuestionNum = Math.min(20, questionNum);
+        int questionNumOX = newQuestionNum * 3 / 10;
+        int questionNumMultiple = newQuestionNum - questionNumOX;
+
+        List<Object> result = new ArrayList<>();
+
+        if(category.equals("all")){
+            int question = questionNum / 6;
+            List<String> categories = new ArrayList<>();
+            categories.add("네트워크");
+            categories.add("운영체제");
+            categories.add("자료구조");
+            categories.add("기타");
+            categories.add("데이터베이스");
+            categories.add("컴퓨터구조");
+            for(String nowCategory : categories){
+                result.addAll(testService.getMultipleQuizList(nowCategory, question));
+            }
+        }else {
+            result.addAll(testService.getMultipleProblemOX(category, questionNumOX));
+            result.addAll(testService.getMultipleQuizList(category, questionNumMultiple));
+        }
+        if(result.size() == 0){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("문제가 존재하지않습니다");
+        }
+
+        Collections.shuffle(result);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+
+    }
+
+    // 모의고사 결과 저장
+    @PostMapping("/test/result")
+    public ResponseEntity updateTestResult(@RequestHeader(value = "Authorization") String token,
+                                           @RequestBody TestResultRequest testResultRequest){
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        testService.updateTestResult(testResultRequest, userDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Exam Result Saved");
+    }
+
+    // 모의고사 결과 보내주기 ( 최근 5개 )
+    @GetMapping("/test/result")
+    public ResponseEntity getTestResult(@RequestHeader(value = "Authorization") String token){
+
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        List<ResponseTestRecent> result = testService.getTestResult(userDto.getUser_seq());
+
+        if(result == null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("null");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 
 }

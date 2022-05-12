@@ -146,7 +146,6 @@ public class UserApiController {
     @PostMapping("/signup")
     public ResponseEntity signup(@Validated @RequestBody CreateUserRequest request,
                                  BindingResult bindingResult) {
-        System.out.println("들어오냐??");
         if (bindingResult.hasErrors()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

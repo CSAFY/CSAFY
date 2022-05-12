@@ -3,10 +3,12 @@ package csafy.csservice.controller;
 import csafy.csservice.client.UserServiceClient;
 import csafy.csservice.dto.UserDto;
 import csafy.csservice.dto.interview.InterviewSeenDto;
+import csafy.csservice.dto.profile.UserActivityDto;
 import csafy.csservice.dto.request.RequestScores;
 import csafy.csservice.dto.response.ResponseStatistic;
 import csafy.csservice.dto.video.VideoDto;
 import csafy.csservice.entity.profile.Statistic;
+import csafy.csservice.entity.profile.UserActivity;
 import csafy.csservice.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -109,10 +111,38 @@ public class ProfileController {
     }
 
 
+    @GetMapping("/heatmap")
+    public ResponseEntity getHeatmap(@RequestHeader(value = "Authorization") String token){
 
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
 
+        UserDto userDto = userServiceClient.getTokenUser(token);
+        List<UserActivityDto> result = profileService.getHeatmap(userDto.getUser_seq());
 
-    // 최근 푼 모의고사 GET
+        if(result == null || result.size() == 0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PostMapping("/heatmap")
+    public ResponseEntity updateHeatmap(@RequestHeader(value = "Authorization") String token){
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+        profileService.updateHeatmap(userDto.getUser_seq());
+
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
 
 
 
@@ -163,6 +193,7 @@ public class ProfileController {
 
 
 
+    // FeignClient 전용
 
 
 
