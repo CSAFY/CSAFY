@@ -9,7 +9,30 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="setting Page"
+        android:text="설정"
+        android:textSize="24sp"
         android:background="@color/main_blue3"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="프로필 변경"
+        android:textSize="18sp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="프로필 수정은 현재 준비 중입니다."
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="30dp"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/main_blue4">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -22,15 +23,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="400dp"
+                android:paddingBottom="100dp"
                 >
 
                 <TextView
                     android:id="@+id/tx_title"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:text="CSAFY"
+                    android:layout_height="30dp"
+                    android:text="당신의 CS 공부 길잡이 CSAFY입니다."
                     android:textSize="20sp"
+                    android:textFontWeight="700"
+                    android:gravity="center"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tx_title2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="현재 분석 페이지는 리뉴얼 중으로\n잠시 기다려주세요"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="40dp"
                     android:gravity="center"
                     />
 
@@ -40,6 +54,7 @@
                     android:layout_height="300dp"
                     android:background="@color/main_green3"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
                     />
 
                 <com.github.mikephil.charting.charts.BarChart

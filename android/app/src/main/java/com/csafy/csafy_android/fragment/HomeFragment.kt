@@ -53,10 +53,10 @@ class HomeFragment : Fragment() {
         pieChart.setUsePercentValues(true)
 
         val entries = ArrayList<PieEntry>()
-        entries.add(PieEntry(1.2f, "a"))
-        entries.add(PieEntry(0.2f, "b"))
-        entries.add(PieEntry(2.2f, "c"))
-        entries.add(PieEntry(1.6f, "d"))
+        entries.add(PieEntry(1.2f, "운영체제론"))
+        entries.add(PieEntry(1.8f, "데이터베이스"))
+        entries.add(PieEntry(2.2f, "컴퓨터구조론"))
+        entries.add(PieEntry(0.6f, "기타"))
 
         val colorItems = ArrayList<Int>()
         for (c in ColorTemplate.COLORFUL_COLORS) colorItems.add(c)
@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
             data = pieData  // 이 부분이 있어야 그래프가 그려짐. 나머지는 디자인 커스
             description.isEnabled = false
             isRotationEnabled = false
-            centerText = "잘 되라아ㅏ"
+            centerText = "게스트님의\n학습현황"
             setEntryLabelColor(Color.BLUE)
             animateY(1400, Easing.EaseInOutQuad)
             animate()
@@ -93,8 +93,8 @@ class HomeFragment : Fragment() {
         val colorList = ArrayList<Int>()
         val set : BarDataSet
 
-        values.add(BarEntry(1.0f, 20.0f))
-        values.add(BarEntry(2.0f, 60.0f))
+        values.add(BarEntry(1.0f, 38.0f))
+        values.add(BarEntry(2.0f, 47.0f))
         values.add(BarEntry(3.0f, 43.0f))
 
         type.add(" ")

@@ -28,15 +28,8 @@ class CardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCardBinding.inflate(inflater, container, false)
-        val view = binding.root
-        // Inflate the layout for this fragment
 
-        webView = binding.webCard
-        webView.webViewClient = WebViewClient()  // 앱 내부에서 웹을 보여줌.
-        webView.settings.javaScriptEnabled = true
-        webView.loadUrl("https://www.naver.com")
-
-        return view
+        return binding.root
     }
 
 

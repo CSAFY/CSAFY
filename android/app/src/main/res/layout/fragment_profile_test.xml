@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="모의고사 결과"
+        android:text="아직 응시한 모의고사가 없습니다."
         android:background="@color/main_green3"
         />
 

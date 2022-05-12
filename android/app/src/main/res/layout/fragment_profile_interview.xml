@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="즐겨찾는 면접 질문 리스트"
+        android:text="아직 좋아요한 면접 리스트가 없습니다."
         android:background="@color/main_green2"
         />
 

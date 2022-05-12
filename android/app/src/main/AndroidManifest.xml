@@ -12,11 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSAFYandroid"
         android:usesCleartextTraffic="true"
-        android:name=".network.common.App">
-        <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.JoinActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.MainActivity">
+        android:name=".network.common.App"
+        >
+        <activity android:name=".activity.SettingActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activity.JoinActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activity.LoginActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activity.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
