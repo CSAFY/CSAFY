@@ -29,19 +29,19 @@ function Chatbot() {
     {
       id: '3',
       options: [
-        { value: 2, label: '유형 1', trigger: '4' },
-        { value: 3, label: '유형 2', trigger: '5' },
+        { value: 2, label: '학습', trigger: '4' },
+        { value: 3, label: '면접 대비', trigger: '5' },
         { value: 7, label: '상담사 연결하기', trigger: '7' },
       ],
     },
     {
       id: '4',
-      message: '유형 1 답변',
+      message: '학습 페이지에서는 강의를 통한 학습을 진행할 수 있습니다.',
       trigger: '6',
     },
     {
       id: '5',
-      message: '유형 2 답변',
+      message: '면접 대비 페이지에서는 면접을 대비해 준비할 수 있습니다.',
       trigger: '6',
     },
     {
@@ -50,7 +50,8 @@ function Chatbot() {
     },
     {
       id: '7',
-      message: '상담사와 연결되었습니다.',
+      message:
+        '상담사와 연결되었습니다. 상담하고 싶은 주제를 입력하고 상담을 시작하세요.',
       end: true,
     },
   ];
