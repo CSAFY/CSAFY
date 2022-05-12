@@ -7,6 +7,7 @@ import com.csafy.csafy_android.network.data.request.RequestScoreData
 import com.csafy.csafy_android.network.data.response.ResponseJoinData
 import com.csafy.csafy_android.network.data.response.ResponseLoginData
 import com.csafy.csafy_android.network.data.response.ResponseMultipleData
+import com.csafy.csafy_android.network.data.response.*
 import com.csafy.csafy_android.network.data.response.ResponseOXData
 import retrofit2.Call
 import retrofit2.http.*
@@ -25,7 +26,6 @@ interface RequestInterface {
         @Body body : RequestLoginData
     ) : Call<ResponseLoginData>
 
-<<<<<<< HEAD
     // 즐겨찾는 학습
     @GET("cs-service/profile/study/favorites")
     fun responseFavorite(
@@ -35,9 +35,7 @@ interface RequestInterface {
 
     /* 학습 탭 */
     // OX 퀴즈 받기
-=======
     // OX 퀴즈 받기 샘플
->>>>>>> 6d5f487 (S06P31A102-176 #In-progress #comment OX 퀴즈 API 적용 인터페이스)
     @GET("cs-service/unity/quizsample")
     fun quizOXSample() : Call<ResponseOXData>
 

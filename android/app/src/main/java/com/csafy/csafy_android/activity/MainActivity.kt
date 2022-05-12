@@ -130,9 +130,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             .commit()
     }
 
-<<<<<<< HEAD
-    // 바텀 네비게이션 기능
-=======
     // frag -> frag
     // 문제에서 OX, 사지선다 선택
     fun changeStudyFragment(index: Int, studyType: String){
@@ -193,7 +190,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             .commit()
     }
 
->>>>>>> b5f262e (Feature:app: 학습 액티비티 갱신)
+    // 바텀 네비게이션 기능
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_home -> {
