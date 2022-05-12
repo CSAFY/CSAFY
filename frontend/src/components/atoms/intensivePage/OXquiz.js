@@ -31,6 +31,8 @@ function OXquiz(props) {
   const [pageNumber, setPageNumber] = useState(1)
   const [selecCNT, setSelecCNT] = useState(5)
 
+  const [isCorrects, setIsCorrects] = useState([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSelectO(2)
@@ -62,11 +64,13 @@ function OXquiz(props) {
   useEffect(() => {
     if (pageNumber === 2){
       getData()
+      setIsCorrects([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
     }
   }, [pageNumber])
 
   useEffect(() => {
     setPageNumber(1)
+    
   },[props.Cate])
 
   const [selectO, setSelectO] = useState(2)
@@ -75,10 +79,25 @@ function OXquiz(props) {
   const onClickO = () => {
     setSelectO(0)
     setSelectX(2)
+    isCorrect(0)
   }
   const onClickX = () => {
     setSelectO(2)
     setSelectX(1)
+    isCorrect(1)
+  }
+
+  const isCorrect= (selectOX) => {
+    if(isCorrects[activeStep] === 0){
+      const tmp = isCorrects
+      if(oxData[activeStep].answer === selectOX){
+        tmp[activeStep] = 1
+        setIsCorrects(tmp)
+      } else {
+        tmp[activeStep] = 2
+        setIsCorrects(tmp)
+      }
+    }
   }
 
   const OXCardPack = (
@@ -143,6 +162,55 @@ function OXquiz(props) {
       )
     }
   }
+
+  const scorePostAPI = () => {
+    const Url = `https://csafy.com/api/v1/cs-service/profile/scores/update`
+    const JWT = window.localStorage.getItem("jwt")
+    const score = isCorrects.reduce((acc, data) => {
+      if(data === 1){
+        return acc + 1
+      } else {
+        return acc
+      }
+    }, 0)
+    // console.log({
+    //     "subject" : props.Cate,
+    //     "score" : score
+    // })
+    axios({
+      method: 'post',
+      url:  Url,
+      headers: {
+        Authorization: JWT
+      },
+      data: {
+        "subject" : props.Cate,
+        "score" : score
+      },
+      
+    })
+    .then((res) => {
+      console.log(res)
+      setPageNumber(1)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+
+  }
+
+
+  const scorePost = () => {
+    if (activeStep === (maxSteps -1)){
+      return(
+        <Button onClick={() => scorePostAPI()}>
+          점수 제출하기
+        </Button>
+      )
+    }
+  }
+
+
   
   
   const onClickBtn = (data) => {
@@ -203,12 +271,18 @@ function OXquiz(props) {
 
       </MeaningDiv>
         {OXCardPack}
-        <FootBar></FootBar>
+        
+        {scorePost()}
       <MobileStepper
         variant="text"
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
+        sx={{
+          margin : "20px 0 0 0",
+          borderRadius: "20px",
+          boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
+          backgroundColor: "#fff"}}
         nextButton={
           <Button
             size="small"
@@ -234,7 +308,6 @@ function OXquiz(props) {
           </Button>
         }
       />
-      
     </Box>
     )
   }
