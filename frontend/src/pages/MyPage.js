@@ -20,11 +20,11 @@ import ReactTooltip from 'react-tooltip';
 import InterviewBox from '../components/myPage/InterviewBox';
 import TestBox from '../components/myPage/TestBox';
 import VideoBox from '../components/myPage/VideoBox';
+import QuestionBox from '../components/QuestionBox';
 
 // STYLED
 import styled from 'styled-components';
 import { Button } from '@mui/material';
-import QuestionBox from '../components/QuestionBox';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -42,6 +42,32 @@ const MyPageContent = styled.div`
 const UserInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  position: relative;
+`;
+const ColorBox = styled.div`
+  display: flex;
+
+  position: absolute;
+  right: 20px;
+  bottom: 45px;
+`;
+const Color = styled.div`
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  color: grey;
+
+  padding-right: 30px;
+`;
+
+const GreenBox = styled.div`
+  width: 18px;
+  height: 18px;
+
+  border-radius: 5px;
+
+  margin-left: 10px;
 `;
 const UserInfo = styled.div`
   display: flex;
@@ -56,9 +82,6 @@ const ProfileImg = styled.img`
 const Profile = styled.div`
   margin-left: 27px;
 `;
-const HeatMap = styled.div`
-  padding-top: 30px;
-`;
 
 const StudyAnalysisWrapper = styled.div`
   padding-top: 50px;
@@ -69,6 +92,7 @@ const VideoWrapper = styled.div`
 `;
 
 function MyPage() {
+  const navigate = useNavigate();
   // Recoil
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
@@ -109,7 +133,7 @@ function MyPage() {
             email: res.data.email,
             is_vip: res.data.is_vip,
             username: res.data.username,
-            profile_image: res.data.profile_image,
+            profile_image: `https://csafy-profile.s3.amazonaws.com/${res.data.profile_image}`,
             user_seq: res.data.user_seq,
           });
         }
@@ -174,31 +198,32 @@ function MyPage() {
   const [editToggle, setEditToggle] = useState(false);
   const handleEdit = () => {
     setEditToggle(!editToggle);
+
+    //
+    const formData = new FormData();
+    formData.append('username', editUserInfo.username);
+    formData.append('image', state.image);
+
     axios
-      .put(
-        ` https://csafy.com/api/v1/user-service/update`,
-        {
-          username: editUserInfo.username,
-          profileImg: editUserInfo.profile_image,
-          // profileImg:
-          //   'https://cdn.pixabay.com/photo/2020/05/17/20/21/cat-5183427_960_720.jpg',
+      .put(` https://csafy.com/api/v1/user-service/update`, formData, {
+        headers: {
+          Authorization: token,
         },
-        {
-          headers: { Authorization: token },
-        },
-      )
+      })
       .then(res => {
         console.log(res);
         setUserName(res.data.username);
         setUserInfo({ ...userinfo, username: res.data.username });
         setEditUserInfo({
           username: res.data.username,
-          profile_image: res.data.profileImg,
+          // profile_image: res.data.profileImg,
+          profile_image: `https://csafy-profile.s3.amazonaws.com/${res.data.profileImg}`,
         });
         setUserInfo({
           ...userInfo,
           username: res.data.username,
-          profile_image: res.data.profileImg,
+          // profile_image: res.data.profileImg,
+          profile_image: `https://csafy-profile.s3.amazonaws.com/${res.data.profileImg}`,
         });
       })
       .catch(err => console.error(err));
@@ -221,19 +246,17 @@ function MyPage() {
 
   // 이미지 업로드 관련
   const [imageSrc, setImageSrc] = useState('');
-  const encodeFileToBase64 = fileBlob => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise(resolve => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        setEditUserInfo({
-          ...editUserInfo,
-          profile_image: reader.result,
-        });
-        resolve();
-      };
-    });
+  const [state, setState] = useState({});
+  const handleFile = e => {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    const file = e.target.files[0];
+    reader.onloadend = () => {
+      setImageSrc(reader.result);
+      setState({ image: file });
+    };
+    reader.readAsDataURL(file);
   };
 
   // 프리미엄 결제
@@ -269,15 +292,6 @@ function MyPage() {
                     {imageSrc ? (
                       <ProfileImg src={imageSrc} alt="Profile" />
                     ) : (
-                      // <img
-                      //   src={imageSrc}
-                      //   alt="preview-img"
-                      //   style={{
-                      //     width: '120px',
-                      //     height: '120px',
-                      //     borderRadius: '50%',
-                      //   }}
-                      // />
                       <>
                         <ProfileImg
                           // src="images/google.png"
@@ -301,7 +315,9 @@ function MyPage() {
                         id="upload-photo"
                         name="upload-photo"
                         type="file"
-                        onChange={e => encodeFileToBase64(e.target.files[0])}
+                        // onChange={e => encodeFileToBase64(e.target.files[0])}
+                        // onChange={uploadFile}
+                        onChange={handleFile}
                       />
                       <Button
                         component="span"
@@ -467,37 +483,88 @@ function MyPage() {
                 </Button>
               )}
             </UserInfo>
-            <HeatMap>
-              <CalendarHeatmap
-                startDate={shiftDate(today, -250)}
-                endDate={today}
-                values={[
-                  { date: '2022-04-19', count: 1 },
-                  { date: '2022-04-20', count: 2 },
-                ]}
-                classForValue={value => {
-                  if (!value) {
-                    return 'color-empty';
+            <CalendarHeatmap
+              startDate={shiftDate(today, -250)}
+              endDate={today}
+              values={[
+                { date: '2022-04-19', count: 1 },
+                { date: '2022-04-20', count: 2 },
+                { date: '2022-05-02', count: 3 },
+                { date: '2022-05-04', count: 4 },
+                { date: '2022-05-05', count: 5 },
+                { date: '2022-05-06', count: 6 },
+                { date: '2022-05-07', count: 7 },
+                { date: '2022-05-08', count: 8 },
+              ]}
+              classForValue={value => {
+                if (!value) {
+                  return 'color-empty';
+                } else {
+                  if (value.count === 1) {
+                    return `color-github-1`;
+                  } else if (value.count <= 3) {
+                    return `color-github-2`;
+                  } else if (value.count <= 6) {
+                    return `color-github-3`;
+                  } else {
+                    return `color-github-4`;
                   }
-                  return `color-github-${value.count}`;
-                }}
-                showWeekdayLabels={true}
-
-                // tooltip 사라지게 하는 방법...
-                // tooltipDataAttrs={(value) => {
-                //   if (value.count) {
-                //     return {
-                //       'data-tip': `${value.count} Contributions on ${value.date}`,
-                //     };
-                //   } else {
-                //     return {
-                //       'data-tip': `No Contribution`,
-                //     };
-                //   }
-                // }}
-              />
-              <ReactTooltip />
-            </HeatMap>
+                }
+                // return `color-github-${value.count}`;
+              }}
+              showWeekdayLabels={true}
+              // tooltip 사라지게 하는 방법...
+              tooltipDataAttrs={value => {
+                if (value.count) {
+                  return {
+                    'data-tip': `${value.count} Contributions on ${value.date}`,
+                  };
+                } else {
+                  return {
+                    'data-tip': `No Contribution`,
+                  };
+                }
+              }}
+            />
+            <ReactTooltip />
+            <ColorBox>
+              <Color>
+                <div>1문제</div>
+                <GreenBox
+                  style={{
+                    backgroundColor: '#D6E685',
+                    border: '1px solid #D6E685',
+                  }}
+                />
+              </Color>
+              <Color>
+                <div>2-3문제</div>
+                <GreenBox
+                  style={{
+                    backgroundColor: '#8CC665',
+                    border: '1px solid #8CC665',
+                  }}
+                />
+              </Color>
+              <Color>
+                <div>4-6문제</div>
+                <GreenBox
+                  style={{
+                    backgroundColor: '#44A340',
+                    border: '1px solid #44A340',
+                  }}
+                />
+              </Color>
+              <Color style={{ paddingRight: '0' }}>
+                <div>7-10문제</div>
+                <GreenBox
+                  style={{
+                    backgroundColor: '#1E6823',
+                    border: '1px solid #1E6823',
+                  }}
+                />
+              </Color>
+            </ColorBox>
           </UserInfoWrapper>
           <hr />
           <StudyAnalysisWrapper>
@@ -538,17 +605,35 @@ function MyPage() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+
+              position: 'relative',
             }}
           >
             <h1 style={{ textAlign: 'center' }}>최근 본 면접 질문</h1>
+            <Button
+              style={{ position: 'absolute', top: '125px', right: '105px' }}
+              sx={{
+                textAlign: 'center',
+                display: 'block',
+                bgcolor: '#008ED0',
+                ':hover': {
+                  color: '#006D9F',
+                  bgcolor: '#D5F2FC',
+                },
+
+                fontSize: '16px',
+                fontWeight: 'bold',
+                color: '#fff',
+              }}
+              onClick={() => navigate('/interview')}
+            >
+              면접 연습하러 가기
+            </Button>
             {recentInterview &&
               recentInterview.map(info => (
                 <InterviewBox key={info.id} {...info} />
                 // <QuestionBox key={info.interviewSeq} {...info} />
               ))}
-            {/* <InterviewBox question={'Q1'} />
-            <InterviewBox question={'Q2'} />
-            <InterviewBox question={'Q3'} /> */}
           </div>
           <div
             style={{
@@ -556,7 +641,7 @@ function MyPage() {
               paddingBottom: '100px',
             }}
           >
-            <h1 style={{ textAlign: 'center' }}>최근 푼 모의고사</h1>
+            <h1 style={{ textAlign: 'center' }}>내가 푼 모의고사</h1>
 
             <div
               style={{

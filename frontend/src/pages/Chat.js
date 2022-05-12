@@ -170,7 +170,7 @@ function Chat() {
               variant="dark"
               sx={{
                 ml: '10px',
-                width: '150px',
+                // width: '150px',
                 textAlign: 'center',
                 display: 'block',
                 bgcolor: '#009859',
