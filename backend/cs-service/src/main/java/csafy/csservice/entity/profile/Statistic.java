@@ -30,5 +30,9 @@ public class Statistic {
     @Column(columnDefinition = "json")
     private ConcurrentHashMap<String, Integer> Scores = new ConcurrentHashMap<>();
 
+    private Long dailyCheck = 0L;
+
+    private String isLogin = "N";
+
 
 }

@@ -195,6 +195,12 @@ public class ProfileController {
 
     // FeignClient 전용
 
+    @GetMapping("/statistic/dailycheck")
+    public void updateDailyCheck(@RequestParam("userSeq") Long userSeq){
+
+        profileService.updateDailyCheck(userSeq);
+
+    }
 
 
 

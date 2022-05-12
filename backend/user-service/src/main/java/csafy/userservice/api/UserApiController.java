@@ -1,5 +1,6 @@
 package csafy.userservice.api;
 
+import csafy.userservice.client.CsServiceClient;
 import csafy.userservice.dto.UserDto;
 import csafy.userservice.dto.request.MobileUpdateRequest;
 import csafy.userservice.dto.request.UpdateRequest;
@@ -48,6 +49,8 @@ public class UserApiController {
 
     private final S3Uploader s3Uploader;
     private final UserRepository userRepository;
+
+    private final CsServiceClient csServiceClient;
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -374,7 +377,7 @@ public class UserApiController {
 
 
         String token = jwtTokenProvider.createToken(user.getUsername(), user.getUserSeq());
-
+        csServiceClient.updateDailyCheck(user.getUserSeq());
         return ResponseEntity.ok(new LoginUserResponse(token));
     }
 

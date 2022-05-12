@@ -176,4 +176,25 @@ public class ProfileService {
 
     }
 
+    @Transactional
+    public void updateDailyCheck(Long userSeq){
+
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+
+        if(statistic == null){
+            Statistic nowStatistic = new Statistic();
+            nowStatistic.setUserSeq(userSeq);
+            nowStatistic.setDailyCheck(1L);
+            nowStatistic.setIsLogin("Y");
+            statisticsRepository.save(nowStatistic);
+        }
+        else {
+            if(statistic.getIsLogin().equals("N")) {
+                statistic.setDailyCheck(statistic.getDailyCheck() + 1);
+                statistic.setIsLogin("Y");
+                statisticsRepository.save(statistic);
+            }
+        }
+
+    }
 }
