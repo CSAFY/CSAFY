@@ -171,6 +171,10 @@ function Home() {
     }
   }, []);
 
+  const handleStart = () => {
+    navigate('/');
+  };
+
   return (
     <HomeWrapper>
       <HeroWrapper>
@@ -215,7 +219,7 @@ function Home() {
           <Button
             variant="contained"
             sx={{
-              width: '182px',
+              width: '200px',
               height: '53px',
               textAlign: 'center',
               display: 'block',
@@ -232,6 +236,7 @@ function Home() {
               //   bgcolor: 'white',
               // },
             }}
+            onClick={handleStart}
           >
             바로 시작하기
           </Button>
@@ -494,7 +499,7 @@ function Home() {
             <Button
               variant="contained"
               sx={{
-                width: '194px',
+                width: '220px',
                 height: '53px',
                 textAlign: 'center',
                 display: 'block',
@@ -515,7 +520,7 @@ function Home() {
             <Button
               variant="contained"
               sx={{
-                width: '194px',
+                width: '220px',
                 height: '53px',
                 textAlign: 'center',
                 display: 'block',
@@ -537,7 +542,7 @@ function Home() {
             <Button
               variant="contained"
               sx={{
-                width: '194px',
+                width: '220px',
                 height: '53px',
                 textAlign: 'center',
                 display: 'block',
