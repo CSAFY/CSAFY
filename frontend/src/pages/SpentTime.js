@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert2';
 
-const SpentTime = ({ mm, ss }) => {
+const SpentTime = ({ mm, ss, message }) => {
   // const navigate = useNavigate();
   const [minutes, setMinutes] = useState(parseInt(mm));
   const [seconds, setSeconds] = useState(parseInt(ss));
@@ -13,7 +13,7 @@ const SpentTime = ({ mm, ss }) => {
         swal.fire({
           icon: 'warning',
           title: '시간 종료.',
-          text: '면접 시간이 종료되었습니다.',
+          text: message,
           scrollbarPadding: false,
         });
         clearInterval(countdown);

@@ -53,15 +53,25 @@ const InfoTitle = styled.div`
   font-weight: 600;
   color: #008ed0;
 `;
+const ImageBox = styled.img`
+  width: 100px;
+  height: 100px;
 
-function TestBox({ title, exp, id }) {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+`;
+
+function TestBox({ title, exp, id, img }) {
   const navigate = useNavigate();
 
   return (
-    <Box onClick={() => navigate(`/csTestDetail/${id}`)}>
+    <Box onClick={() => navigate(`/csTestDetail/${title}`, { state: id })}>
       <Title>{title}</Title>
       <Exp>{exp}</Exp>
-      <InfoBox>
+      <ImageBox src={img} alt="IMAGE" />
+      {/* <img src={img} alt="IMAGE" /> */}
+      {/* <InfoBox>
         <Infos>
           <InfoTitle>문제 수</InfoTitle>
           <div style={{ marginTop: '10px', color: '#8e8e8e' }}>0/163</div>
@@ -83,7 +93,7 @@ function TestBox({ title, exp, id }) {
             88%
           </div>
         </Infos>
-      </InfoBox>
+      </InfoBox> */}
     </Box>
   );
 }

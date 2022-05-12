@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // STYLED
 import styled from 'styled-components';
@@ -51,7 +51,7 @@ const ScoreBox = styled.div`
   transform: translate(-50%);
 `;
 const TestScore = styled.div`
-  width: 55px;
+  width: 100px;
   height: 30px;
   font-size: 24px;
   font-weight: bold;
@@ -79,10 +79,14 @@ const ResultTitle = styled.div`
 `;
 const ResultScore = styled.div`
   height: 18px;
+  width: 100%;
   font-size: 14px;
   color: #000;
 
   margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
 `;
 const LogoImg = styled.img`
   width: 28px;
@@ -94,40 +98,62 @@ const LogoImg = styled.img`
   transform: translate(-50%);
 `;
 
-function TestBox({ info }) {
+function TestBox({ examDone, id, corrects, totals }) {
+  console.log(totals);
   // 더미 데이터
   const [testInfo, setTestInfo] = useState({
-    date: '2022.01.11',
-    testName: '모의고사 이름',
-    rightQuestions: 19,
-    totalQuestions: 20,
-    total: {
+    date: '',
+    testName: '',
+    rightQuestions: 0,
+    totalQuestions: 0,
+    corrects: {
       // 과목별 전체 문제 갯수
-      computer: 4,
-      data: 4,
-      os: 4,
-      db: 4,
-      etc: 4,
+      네트워크: 0,
+      운영체제: 0,
+      자료구조: 0,
+      기타: 0,
+      데이터베이스: 0,
+      컴퓨터구조: 0,
     },
-    result: {
+    totals: {
       // 과목별 맞은 문제 갯수
-      computer: 4,
-      data: 4,
-      os: 4,
-      db: 3,
-      etc: 4,
+      네트워크: 0,
+      운영체제: 0,
+      자료구조: 0,
+      기타: 0,
+      데이터베이스: 0,
+      컴퓨터구조: 0,
     },
   });
 
+  useEffect(() => {
+    setTestInfo({
+      data: examDone,
+      testName: id,
+      rightQuestions: getSum(corrects),
+      totalQuestions: getSum(totals),
+      corrects,
+      totals,
+    });
+  }, []);
+  console.log(testInfo);
+  // const avg = Math.ceil(testInfo.rightQuestions / testInfo.totalqu);
+
+  const getSum = corrects => Object.values(corrects).reduce((a, b) => a + b);
   const getScore = data => {
-    return (data.rightQuestions / data.totalQuestions) * 100;
+    return Math.ceil((data.rightQuestions / data.totalQuestions) * 100);
   };
 
   return (
     <>
       <Test>
         <Date>{testInfo.date}</Date>
-        <TestName>{testInfo.testName}</TestName>
+        {testInfo.testName === 'all' ? (
+          <TestName>전 과목</TestName>
+        ) : (
+          <TestName>{testInfo.testName}</TestName>
+        )}
+
         <ScoreBox>
           <TestScore>{getScore(testInfo)}점</TestScore>
           <div>
@@ -136,11 +162,105 @@ function TestBox({ info }) {
         </ScoreBox>
         <ResultBox>
           <ResultTitle>과목별 결과</ResultTitle>
-          <ResultScore>컴퓨터 구조</ResultScore>
-          <ResultScore>데이터 구조</ResultScore>
-          <ResultScore>운영체제</ResultScore>
-          <ResultScore>데이터베이스</ResultScore>
-          <ResultScore>기타</ResultScore>
+          <ResultScore>
+            네트워크 ({testInfo.corrects.네트워크} / {testInfo.totals.네트워크})
+            <div style={{ position: 'absolute', right: '10px' }}>
+              {testInfo.totals.네트워크 === 0 ? (
+                <span>0% </span>
+              ) : (
+                <span>
+                  {Math.ceil(
+                    (testInfo.corrects.네트워크 / testInfo.totals.네트워크) *
+                      100,
+                  )}
+                  %{' '}
+                </span>
+              )}
+            </div>
+          </ResultScore>
+          <ResultScore>
+            운영체제 ({testInfo.corrects.운영체제} / {testInfo.totals.운영체제})
+            <div style={{ position: 'absolute', right: '10px' }}>
+              {testInfo.totals.운영체제 === 0 ? (
+                <span>0% </span>
+              ) : (
+                <span>
+                  {Math.ceil(
+                    (testInfo.corrects.운영체제 / testInfo.totals.운영체제) *
+                      100,
+                  )}
+                  %{' '}
+                </span>
+              )}
+            </div>
+          </ResultScore>
+          <ResultScore>
+            자료구조 ({testInfo.corrects.자료구조} / {testInfo.totals.자료구조})
+            <div style={{ position: 'absolute', right: '10px' }}>
+              {testInfo.totals.자료구조 === 0 ? (
+                <span>0% </span>
+              ) : (
+                <span>
+                  {Math.ceil(
+                    (testInfo.corrects.자료구조 / testInfo.totals.자료구조) *
+                      100,
+                  )}
+                  %{' '}
+                </span>
+              )}
+            </div>
+          </ResultScore>
+          <ResultScore>
+            기타 ({testInfo.corrects.기타} / {testInfo.totals.기타})
+            <div style={{ position: 'absolute', right: '10px' }}>
+              {testInfo.totals.기타 === 0 ? (
+                <span>0% </span>
+              ) : (
+                <span>
+                  {Math.ceil(
+                    (testInfo.corrects.기타 / testInfo.totals.기타) * 100,
+                  )}
+                  %{' '}
+                </span>
+              )}
+            </div>
+          </ResultScore>
+          <ResultScore>
+            데이터베이스 ({testInfo.corrects.데이터베이스} /{' '}
+            {testInfo.totals.데이터베이스})
+            <div style={{ position: 'absolute', right: '10px' }}>
+              {testInfo.totals.데이터베이스 === 0 ? (
+                <span>0% </span>
+              ) : (
+                <span>
+                  {Math.ceil(
+                    (testInfo.corrects.데이터베이스 /
+                      testInfo.totals.데이터베이스) *
+                      100,
+                  )}
+                  %{' '}
+                </span>
+              )}
+            </div>
+          </ResultScore>
+          <ResultScore>
+            컴퓨터 구조 ({testInfo.corrects.컴퓨터구조} /{' '}
+            {testInfo.totals.컴퓨터구조})
+            <div style={{ position: 'absolute', right: '10px' }}>
+              {testInfo.totals.컴퓨터구조 === 0 ? (
+                <span>0% </span>
+              ) : (
+                <span>
+                  {Math.ceil(
+                    (testInfo.corrects.컴퓨터구조 /
+                      testInfo.totals.컴퓨터구조) *
+                      100,
+                  )}
+                  %{' '}
+                </span>
+              )}
+            </div>
+          </ResultScore>
         </ResultBox>
         <LogoImg src="images/csafy.png" alt="CSAFY" />
       </Test>
