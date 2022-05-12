@@ -2,11 +2,18 @@ package com.csafy.csafy_android.network
 
 import com.csafy.csafy_android.network.data.request.RequestJoinData
 import com.csafy.csafy_android.network.data.request.RequestLoginData
+<<<<<<< HEAD
 import com.csafy.csafy_android.network.data.response.ResponseFavoriteData
+=======
+import com.csafy.csafy_android.network.data.request.RequestScoreData
+>>>>>>> d322c8a (S06P31A102-102 #done #comment Feature:app: 레트로핏 토큰 적용)
 import com.csafy.csafy_android.network.data.response.ResponseJoinData
 import com.csafy.csafy_android.network.data.response.ResponseLoginData
+import com.csafy.csafy_android.network.data.response.ResponseMultipleData
 import com.csafy.csafy_android.network.data.response.ResponseOXData
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface RequestInterface {
@@ -34,6 +41,16 @@ interface RequestInterface {
     // OX 퀴즈 받기
     @GET("cs-service/unity/quizsample")
     fun quizOXSample() : Call<ResponseOXData>
+
+    // 4지선다 퀴즈 받기
+    @GET("cs-service/test/quizsample")
+    fun quizMultipleSample() : Call<ResponseMultipleData>
+
+    // 점수 넣기
+    @POST("cs-service/profile/scores/update")
+    fun updateScores(
+        @Body body : RequestScoreData
+    ) : Call<Void>
 
 
 
