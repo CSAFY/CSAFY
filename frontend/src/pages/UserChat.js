@@ -74,7 +74,7 @@ const ChatRoomName = styled.div`
   top: 35px;
   left: 45px;
 `;
-const SendMessage = styled.div`
+const SendMessage = styled.form`
   font-size: 20px;
 
   display: flex;
@@ -96,21 +96,28 @@ const MessageBox = styled.div`
 
   position: absolute;
   bottom: 120px;
+  left: 30px;
   right: 30px;
-  left: 140px;
 `;
 const Message = styled.div`
   min-height: 30px;
+  min-width: 120px;
+
+  display: flex;
+  align-items: center;
 
   margin-bottom: 20px;
-  padding-top: 10px;
+  padding-top: 30px;
   padding-right: 10px;
+  padding-left: 10px;
   padding-bottom: 10px;
   font-size: 15px;
   background-color: white;
   border-radius: 5px;
   color: black;
   overflow: hidden;
+
+  position: relative;
 `;
 const StartBox = styled.form`
   font-size: 20px;
@@ -144,11 +151,14 @@ function UserChat() {
 
   //
   const [toggleStart, setToggleStart] = useState(false);
+  const [enableStart, setEnableStart] = useState(false);
   const [chatRoomName, setChatRoomName] = useState('');
 
-  const handleRoomName = () => {
+  const handleRoomName = e => {
+    e.preventDefault();
     if (chatRoomName) {
       createRoom();
+      setEnableStart(true);
     } else {
       alert('주제를 입력해주세요.');
     }
@@ -297,7 +307,12 @@ function UserChat() {
             {toggleStart ? (
               <>
                 <ChatRoomName>{chatRoomInfo.roomName}</ChatRoomName>
-                <SendMessage>
+                <SendMessage
+                  onSubmit={e => {
+                    e.preventDefault();
+                    sendMessage('TALK');
+                  }}
+                >
                   <TextField
                     value={chatMessage}
                     onChange={e => setChatMessage(e.target.value)}
@@ -331,34 +346,84 @@ function UserChat() {
                 </SendMessage>
 
                 <MessageBox>
-                  {messages &&
-                    messages.map((message, idx) => (
-                      <>
-                        {message.message.includes('님이 방에 입장했습니다.') ? (
-                          <>
-                            <Message
-                              key={idx}
+                  {messages.map((message, idx) => (
+                    <>
+                      {message.message.includes('님이 방에 입장했습니다.') ||
+                      message.message.includes('님이 방에서 나갔습니다.') ? (
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                          }}
+                        >
+                          <Message
+                            key={idx}
+                            style={{
+                              height: '20px',
+                              backgroundColor: '#2f3132',
+                              color: '#fff',
+                              // margin: '0',
+                              padding: '0',
+                              overflow: 'hidden',
+                            }}
+                          >
+                            {message.message}
+                          </Message>
+                        </div>
+                      ) : (
+                        <>
+                          {message.sender === userinfo.email ? (
+                            <div
                               style={{
-                                height: '20px',
-                                backgroundColor: '#2f3132',
-                                color: '#fff',
-                                // margin: '0',
-                                padding: '0',
-                                overflow: 'hidden',
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                                position: 'relative',
                               }}
                             >
-                              {message.message}
-                            </Message>
-                          </>
-                        ) : (
-                          <>
-                            <Message key={idx}>
-                              {message.sender} - {message.message}
-                            </Message>
-                          </>
-                        )}
-                      </>
-                    ))}
+                              <Message
+                                key={idx}
+                                style={{ justifyContent: 'flex-end' }}
+                              >
+                                <div
+                                  style={{
+                                    position: 'absolute',
+                                    top: '5px',
+                                    right: '10px',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  {message.sender}
+                                </div>
+                                {message.message}
+                              </Message>
+                            </div>
+                          ) : (
+                            <div
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                position: 'relative',
+                              }}
+                            >
+                              <Message key={idx}>
+                                <div
+                                  style={{
+                                    position: 'absolute',
+                                    top: '5px',
+                                    left: '10px',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  {message.sender}
+                                </div>
+                                {message.message}
+                              </Message>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </>
+                  ))}
                 </MessageBox>
               </>
             ) : (
@@ -376,7 +441,7 @@ function UserChat() {
                     marginLeft: '10px',
                   }}
                 />
-                <StartBox>
+                <StartBox onSubmit={handleRoomName}>
                   <TextField
                     value={chatRoomName}
                     onChange={e => setChatRoomName(e.target.value)}
@@ -409,29 +474,31 @@ function UserChat() {
                     입력
                   </Button>
                 </StartBox>
-                <StartButton>
-                  <Button
-                    variant="dark"
-                    sx={{
-                      width: '100%',
-                      height: '70px',
-                      textAlign: 'center',
-                      display: 'block',
-                      bgcolor: '#009859',
-                      ':hover': {
-                        color: '#006D9F',
-                        bgcolor: '#D5F2FC',
-                      },
+                {enableStart && (
+                  <StartButton>
+                    <Button
+                      variant="dark"
+                      sx={{
+                        width: '100%',
+                        height: '70px',
+                        textAlign: 'center',
+                        display: 'block',
+                        bgcolor: '#009859',
+                        ':hover': {
+                          color: '#006D9F',
+                          bgcolor: '#D5F2FC',
+                        },
 
-                      fontSize: '16px',
-                      fontWeight: 'bold',
-                      color: '#fff',
-                    }}
-                    onClick={handleStart}
-                  >
-                    시작하기
-                  </Button>
-                </StartButton>
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                        color: '#fff',
+                      }}
+                      onClick={handleStart}
+                    >
+                      시작하기
+                    </Button>
+                  </StartButton>
+                )}
               </>
             )}
           </PhoneBG>

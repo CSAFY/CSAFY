@@ -8,6 +8,7 @@ import { defaultAPI } from '../utils/api';
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
+import { Userinfo } from '../recoils/Userinfo';
 
 // STYLED
 import styled from 'styled-components';
@@ -27,7 +28,7 @@ const ChatRoomName = styled.div`
   top: 35px;
   left: 45px;
 `;
-const SendMessage = styled.div`
+const SendMessage = styled.form`
   font-size: 20px;
 
   display: flex;
@@ -49,23 +50,29 @@ const MessageBox = styled.div`
 
   position: absolute;
   bottom: 120px;
+  left: 30px;
   right: 30px;
-  left: 140px;
 `;
 const Message = styled.div`
   min-height: 30px;
+  min-width: 120px;
+
+  display: flex;
+  align-items: center;
 
   margin-bottom: 20px;
-  padding-top: 10px;
+  padding-top: 30px;
   padding-right: 10px;
+  padding-left: 10px;
   padding-bottom: 10px;
   font-size: 15px;
   background-color: white;
   border-radius: 5px;
   color: black;
   overflow: hidden;
-`;
 
+  position: relative;
+`;
 let sock;
 let ws;
 
@@ -73,6 +80,7 @@ function TestChatRoom({ chatRoomId }) {
   // Recoil
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
+  const [userinfo, setUserinfo] = useRecoilState(Userinfo);
   // console.log('🐸', chatRoomId);
   const navigate = useNavigate();
   const [chatRoomInfo, setChatRoomInfo] = useState({
@@ -172,7 +180,12 @@ function TestChatRoom({ chatRoomId }) {
   return (
     <PhoneContent>
       <ChatRoomName>{chatRoomInfo.roomName}</ChatRoomName>
-      <SendMessage>
+      <SendMessage
+        onSubmit={e => {
+          e.preventDefault();
+          sendMessage('TALK');
+        }}
+      >
         <TextField
           value={chatMessage}
           onChange={e => setChatMessage(e.target.value)}
@@ -209,7 +222,12 @@ function TestChatRoom({ chatRoomId }) {
         {messages.map((message, idx) => (
           <>
             {message.message.includes('님이 방에 입장했습니다.') ? (
-              <>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                }}
+              >
                 <Message
                   key={idx}
                   style={{
@@ -223,10 +241,54 @@ function TestChatRoom({ chatRoomId }) {
                 >
                   {message.message}
                 </Message>
-              </>
+              </div>
             ) : (
               <>
-                <Message key={idx}>{message.message}</Message>
+                {message.sender === userinfo.email ? (
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      position: 'relative',
+                    }}
+                  >
+                    <Message key={idx} style={{ justifyContent: 'flex-end' }}>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '5px',
+                          right: '10px',
+                          fontSize: '12px',
+                        }}
+                      >
+                        {message.sender}
+                      </div>
+                      {message.message}
+                    </Message>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      position: 'relative',
+                    }}
+                  >
+                    <Message key={idx}>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '5px',
+                          left: '10px',
+                          fontSize: '12px',
+                        }}
+                      >
+                        {message.sender}
+                      </div>
+                      {message.message}
+                    </Message>
+                  </div>
+                )}
               </>
             )}
           </>
