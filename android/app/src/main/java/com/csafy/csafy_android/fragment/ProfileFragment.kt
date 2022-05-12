@@ -2,6 +2,7 @@ package com.csafy.csafy_android.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,18 +10,26 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.csafy.csafy_android.R
 import com.csafy.csafy_android.adapter.ProfilePagerAdapter
 import com.csafy.csafy_android.activity.LoginActivity
 import com.csafy.csafy_android.activity.SettingActivity
 import com.csafy.csafy_android.databinding.FragmentProfileBinding
+import com.csafy.csafy_android.network.RequestToServer
+import com.csafy.csafy_android.network.data.response.ResponseProfileData
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
+    val requestToServer = RequestToServer
 
     lateinit var profilePagerAdapter: ProfilePagerAdapter
 
@@ -74,6 +83,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getProfileData()
+
         // 로그인 버튼 누름
         binding.btnLogin.setOnClickListener{
             activity?.let{
@@ -99,8 +110,33 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-    private fun setTabLayout(){
+    private fun getProfileData() {
+        requestToServer.service.getUserInfo()
+            .enqueue(object : Callback<ResponseProfileData> {
+                override fun onResponse(
+                    call: Call<ResponseProfileData>,
+                    response: Response<ResponseProfileData>
+                ) {
+                    if (response.isSuccessful) {
+                        // 프로필 사진
+                        if (response.body()!!.profile_image == null) {
+                            Glide.with(view!!.context).load(R.drawable.cute_dog).into(binding.imgProfile)
+                        } else {
+                            Glide.with(view!!.context).load(response.body()!!.profile_image).into(binding.imgProfile)
+                        }
 
+                        // username, introduction
+                        binding.txUsername.text = response.body()!!.username
+                        binding.txComment.text = response.body()!!.introduction
+                        Log.d("유저 데이터 조회", "${response.body()!!}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseProfileData>, t: Throwable) {
+                    Log.d("유저 데이터 통신 실패", "${t}")
+                }
+
+            })
     }
 
 }

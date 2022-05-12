@@ -26,11 +26,13 @@ interface RequestInterface {
         @Body body : RequestLoginData
     ) : Call<ResponseLoginData>
 
+    // 기본 회원 정보 조회
+    @GET("user-service/userInfo")
+    fun getUserInfo() : Call<ResponseProfileData>
+
     // 즐겨찾는 학습
     @GET("cs-service/profile/study/favorites")
-    fun responseFavorite(
-        @Header("token") token: String?
-    ) : Call<ResponseFavoriteData>
+    fun getFavorite() : Call<List<ResponseFavoriteData>>
 
 
     /* 학습 탭 */

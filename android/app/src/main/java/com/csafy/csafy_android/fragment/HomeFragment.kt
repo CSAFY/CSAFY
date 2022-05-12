@@ -26,12 +26,6 @@ class HomeFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private lateinit var webView : WebView
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//    }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(

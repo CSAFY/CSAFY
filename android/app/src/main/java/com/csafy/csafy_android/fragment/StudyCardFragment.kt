@@ -60,6 +60,7 @@ class StudyCardFragment : Fragment() {
         var scale = App.ApplicationContext().resources.displayMetrics.density
         binding.cardFront.cameraDistance = 8000 * scale
         binding.cardBack.cameraDistance = 8000 * scale
+        cards_page = 0
 
         front_anim = AnimatorInflater.loadAnimator(App.ApplicationContext(), R.animator.front_animator) as AnimatorSet
         back_anim = AnimatorInflater.loadAnimator(App.ApplicationContext(), R.animator.back_animator) as AnimatorSet

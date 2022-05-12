@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import com.csafy.csafy_android.R
 import com.csafy.csafy_android.activity.MainActivity
 import com.csafy.csafy_android.databinding.FragmentStudyAutoBinding
-import com.csafy.csafy_android.databinding.FragmentStudyCardBinding
 import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.common.App
 import com.csafy.csafy_android.network.data.request.RequestScoreData
