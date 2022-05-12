@@ -25,6 +25,7 @@ interface RequestInterface {
         @Body body : RequestLoginData
     ) : Call<ResponseLoginData>
 
+<<<<<<< HEAD
     // 즐겨찾는 학습
     @GET("cs-service/profile/study/favorites")
     fun responseFavorite(
@@ -34,8 +35,18 @@ interface RequestInterface {
 
     /* 학습 탭 */
     // OX 퀴즈 받기
+=======
+    // OX 퀴즈 받기 샘플
+>>>>>>> 6d5f487 (S06P31A102-176 #In-progress #comment OX 퀴즈 API 적용 인터페이스)
     @GET("cs-service/unity/quizsample")
     fun quizOXSample() : Call<ResponseOXData>
+
+    // OX 퀴즈 리스트 받기
+    @GET("cs-service/study/multiple/ox")
+    fun quizOXList(
+        @Query("category") category:String,
+        @Query("questionNum") questionNum:Int
+    ) : Call<List<ResponseOXData2>>
 
     // 4지선다 퀴즈 받기
     @GET("cs-service/test/quizsample")
