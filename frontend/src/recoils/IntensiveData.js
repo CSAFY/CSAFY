@@ -23,9 +23,9 @@ export const keyWordDataToken = selector({
 export const fourWayRaceData = atom({
   key: 'fourWayRaceData',
   default: [{ 
-    explanation : "",
+    question : " ",
     answer : null,
-    example : [" "," "]
+    examples : [" "," "]
     },],
   effects_UNSTABLE: [localStorageEffect("four_way_wace_data_token")],
 });
