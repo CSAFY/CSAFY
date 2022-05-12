@@ -72,8 +72,8 @@ function App() {
             element={<InterviewDetail />}
           />
           <Route path="/CSTest" element={<CSTest />} />
-          <Route path="/CSTestDetail/:testId" element={<CSTestDetail />} />
-          <Route path="/CSTestResult/:testId" element={<CSTestResult />} />
+          <Route path="/CSTestDetail/:testTitle" element={<CSTestDetail />} />
+          <Route path="/CSTestResult/:testTitle" element={<CSTestResult />} />
           <Route path="/reviewNote" element={<ReviewNote />} />
           {/* <Route path="/payment" element={<Payment />} /> */}
           <Route path="/oauth/redirect" element={<AuthHandler />} />

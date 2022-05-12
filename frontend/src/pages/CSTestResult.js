@@ -1,9 +1,11 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
+import { Userinfo } from '../recoils/Userinfo';
 // STYLED
 import styled from 'styled-components';
 import CSTestResultBox from '../components/CSTestResultBox';
+import { useRecoilValue } from 'recoil';
 
 const TestResultWrapper = styled.div`
   width: 100%;
@@ -50,14 +52,18 @@ const ResultBox = styled.div`
 `;
 
 function CSTestResult() {
-  const { testId } = useParams();
+  const userInfo = useRecoilValue(Userinfo);
+  const { testTitle } = useParams();
+  const { state } = useLocation();
+
+  console.log(state);
   return (
     <TestResultWrapper>
       <TestresultContent>
-        <TitleBox>000님의 실전 모의고사 결과</TitleBox>
+        <TitleBox>{userInfo.username}님의 실전 모의고사 결과</TitleBox>
 
         <ResultBox>
-          <CSTestResultBox />
+          <CSTestResultBox state={state} />
         </ResultBox>
       </TestresultContent>
     </TestResultWrapper>

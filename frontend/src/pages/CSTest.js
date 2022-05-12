@@ -48,36 +48,50 @@ function CSTest() {
   const [dummyData, setDummyData] = useState([
     {
       id: 1,
-      img: 'images/google.png',
-      title: '입문자를 위한 문제',
+      img: 'images/subject_network.png',
+      title: '네트워크',
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 2,
-      img: 'images/google.png',
-      title: '네이버 대비',
+      img: 'images/subject_operatingsystem.png',
+      title: '운영체제',
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 3,
-      img: 'images/google.png',
-      title: '단답형 모음',
+      img: 'images/subject_datastructure.png',
+      title: '자료구조',
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 4,
-      img: 'images/google.png',
-      title: '컴퓨터 구조',
+      img: 'images/subject_extra.png',
+      title: '기타',
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 5,
-      img: 'images/google.png',
-      title: '서술형 모음',
+      img: 'images/subject_database.png',
+      title: '데이터베이스',
+      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
+    },
+    {
+      id: 6,
+      img: 'images/subject_computerarchitecture.png',
+      title: '컴퓨터구조',
+      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
+    },
+    {
+      id: 7,
+      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_long.png',
+      title: 'all',
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
@@ -119,10 +133,10 @@ function CSTest() {
             }}
           >
             <img
-              src="images/react.png"
+              src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
               alt="CSAFY"
               style={{
-                width: '191px',
+                width: '300px',
                 height: '191px',
               }}
             />
