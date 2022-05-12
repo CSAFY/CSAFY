@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LinearWithValueLabel from "./LinearProgressWithLabel";
 
 import styled, { css } from "styled-components";
 import { useEffect, useRef, useState } from "react";
@@ -14,62 +15,107 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { keyWordData } from "../../../recoils";
 
+import axios from 'axios';
 
-function KeyWordCard() {
+import {
+  FourCardDiv,
+  QuestionText,
+  ClickBtn,
+  } from "./FourWayRace"
+
+
+function KeyWordCard(props) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
-  const [steps, setSteps] = useRecoilState(keyWordData)
-  const maxSteps = steps.length;
+  const [keyWords, setKeyWords] = useRecoilState(keyWordData)
+  const maxSteps = keyWords.length;
+
+  const [selecCNT, setSelecCNT] = useState(5)
+  const [pageNumber, setPageNumber] = useState(1)
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // setNowState(false)
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    // setNowState(false)
   };
 
-  // const [nowState, setNowState] = useState(false)
-  // const OpenCard = () => {
-  //   setNowState(true)
-  // }
-  // const CloseCard = () => {
-  //   setNowState(false)
-  // }
+  const getData = async () => {
+    const Url = `https://csafy.com/api/v1/cs-service/study/keyword?category=${props.Cate}&questionNum=${selecCNT}`
+    axios({
+      method: 'get',
+      url:  Url,
+      
+    })
+    .then((res) => {
+      console.log(res.data)
+      setKeyWords(res.data)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+
+  const onClickBtn = (data) => {
+    setSelecCNT(data)
+    setPageNumber(2)
+  }
 
   useEffect(() => {
-    setSteps([
-      {
-        label: 'Select campaign settings',
-        description: `For each ad campaign that you create, you can control how much
-                  you're willing to spend on clicks and conversions, which networks
-                  and geographical locations you want your ads to show on, and more.`,
-      },
-      {
-        label: 'Create an ad group',
-        description:
-          'An ad group contains one or more ads which target a shared set of keywords.',
-      },
-      {
-        label: 'Create an ad',
-        description: `Try out different ad text to see what brings in the most customers,
-                  and learn how to enhance your ads using features like ad extensions.
-                  If you run into any problems with your ads, find out how to tell if
-                  they're running and how to resolve approval issues.`,
-      },
-    ])
-  }, [])
+    setPageNumber(1)
+  }, [props.Cate])
 
-  
+  useEffect(() => {
+    if (pageNumber === 2){
+      getData()
+    }
+  }, [pageNumber])
 
-  return (
-    <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", minWidth: "600px"}}>
+  if (pageNumber === 1) {
+    return(
+    <FourCardDiv>
+      <Title>
+        키워드 학습하기
+      </Title>
       
-     
+      <QuestionText>
+        📗 몇개의 키워드를 학습하고 싶나요?
+      </QuestionText>
+      <ClickBtn
+        able={"Y"}
+        onClick={() => onClickBtn(selecCNT)}
+        >
+        <input type={"number"} min="1" max="20" 
+        onClick={(event)=> event.stopPropagation()}
+        onChange={(event) => setSelecCNT(event.target.value)}
+        value={selecCNT}></input>
+        개
+      </ClickBtn>
+      <ClickBtn
+        able={"Y"}
+        onClick={() => {onClickBtn(5) }}
+        >
+        알아서 해주세요
+      </ClickBtn>
+    </FourCardDiv>)
+  }else if (pageNumber === 2) {
+    return(
+    <FourCardDiv >
+      <QuestionText>
+        📤 키워드를 선별 중입니다.
+        
+      </QuestionText>
+      <QuestionText>
+        잠시만 기다려 주세요 
+      </QuestionText>
+      
+      <LinearWithValueLabel   setPageNumber={setPageNumber}/>
+    </FourCardDiv>)
+  }else if (pageNumber === 3) {
+    return(
+      <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", minWidth: "600px"}}>
       <Cont>
-
         <ItemFront>
           <Paper
             square
@@ -85,9 +131,9 @@ function KeyWordCard() {
               bgcolor: 'background.default',
             }}
           >
-            <Typography sx={{width: 580}}>
+            <Typography component={'div'} sx={{width: 580}}>
               <Title>
-                {steps[activeStep].label}
+                {keyWords[activeStep].key}
               </Title>
             </Typography>
 
@@ -111,10 +157,10 @@ function KeyWordCard() {
             
           }}
         >
-          <Typography sx={{padding: "10px", fontSize: "35px"}}>{steps[activeStep].label}</Typography>
+          <Typography sx={{padding: "10px", fontSize: "35px"}}>{keyWords[activeStep].key}</Typography>
         </Paper>
         <Box sx={{ height: 400,  width: '90%', p: 2 , padding: "20px"}}>
-          {steps[activeStep].description}
+          {keyWords[activeStep].explanation}
         </Box>
         </ItemBack>
 
@@ -157,7 +203,8 @@ function KeyWordCard() {
       />
       
     </Box>
-  );
+    )
+  }
 }
 export default KeyWordCard
 
@@ -217,7 +264,7 @@ const Cont = styled.div`
   }
 `
 
-export const  Title = styled.div`
+export const Title = styled.div`
   width: 90%;
   height: 60px;
   margin: 10px auto 15px; auto;
