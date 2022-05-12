@@ -325,7 +325,7 @@ const NavBar = () => {
           >
             <Link to="/">
               <img
-                src="images/csafy.png"
+                src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
                 alt="Img"
                 style={{
                   width: '110px',

@@ -5,7 +5,7 @@ import swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { defaultAPI } from '../utils/api';
 // Recoil
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
 import { Username } from '../recoils/Username';
@@ -20,7 +20,7 @@ import ReactTooltip from 'react-tooltip';
 import InterviewBox from '../components/myPage/InterviewBox';
 import TestBox from '../components/myPage/TestBox';
 import VideoBox from '../components/myPage/VideoBox';
-import QuestionBox from '../components/QuestionBox';
+// import QuestionBox from '../components/QuestionBox';
 
 // STYLED
 import styled from 'styled-components';
@@ -92,11 +92,35 @@ const VideoWrapper = styled.div`
 `;
 
 function MyPage() {
+  // 히트맵 데이터 관련
+  const handleTest = () => {
+    axios
+      .post(`${defaultAPI}/cs-service/profile/heatmap`, null, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.error(err));
+  };
+  const handleGet = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/profile/heatmap`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.error(err));
+  };
+  //
   const navigate = useNavigate();
   // Recoil
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
-  const [token, setToken] = useRecoilState(Token);
-  const [username, setUserName] = useRecoilState(Username);
+  // const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  // const [token, setToken] = useRecoilState(Token);
+  const token = useRecoilValue(Token);
+  // const [username, setUserName] = useRecoilState(Username);
+  const setUserName = useSetRecoilState(Username);
   const [userinfo, setUserinfo] = useRecoilState(Userinfo);
   // 개인정보
   const [userInfo, setUserInfo] = useState({
@@ -179,11 +203,26 @@ function MyPage() {
       })
       .catch(err => console.error(err));
   };
+  // 최근 본 모의고사
+  const [recentTest, setRecentTest] = useState([]);
+  const getTests = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/test/result`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('최근 본 모의고사 --->', res);
+        setRecentTest(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+  // console.log(recentStudy);
   useEffect(() => {
     getInfo();
     getRecentInterviewInfo();
     getRecentStudyInfo();
     getFavorites();
+    getTests();
   }, []);
 
   // Heatmap
@@ -242,8 +281,8 @@ function MyPage() {
       username: userInfo.username,
       profile_image: userInfo.profile_image,
     });
-  }, [editToggle]);
-
+  }, [editToggle, userInfo.profile_image, userInfo.username]);
+  // console.log(editUserInfo);
   // 이미지 업로드 관련
   const [imageSrc, setImageSrc] = useState('');
   const [state, setState] = useState({});
@@ -649,12 +688,14 @@ function MyPage() {
                 alignItems: 'center',
               }}
             >
-              <TestBox />
-              <TestBox />
-              <TestBox />
-              <TestBox />
+              {recentTest &&
+                recentTest.map(test => (
+                  <TestBox key={test.testSeq} {...test} />
+                ))}
             </div>
           </div>
+          <button onClick={handleTest}>테스트</button>
+          <button onClick={handleGet}>가져오기</button>
         </MyPageContent>
       </MyPageWrapper>
     </>

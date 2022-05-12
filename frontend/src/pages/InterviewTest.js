@@ -297,7 +297,11 @@ function InterviewTest() {
       <InterviewResultContent>
         {timeLimit && (
           <TimerBox>
-            <SpentTime mm={'00'} ss={`${endTime}`} />
+            <SpentTime
+              mm={'00'}
+              ss={`${endTime}`}
+              message="면접 시간이 종료되었습니다."
+            />
           </TimerBox>
         )}
         <QuestionBox>
