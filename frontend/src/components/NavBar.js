@@ -83,6 +83,7 @@ const NavBar = () => {
   const [modal, setModal] = useState(false);
   const handleModalOpen = () => {
     setState('login');
+    setCurrentPage('/');
     setModal(true);
   };
   const handleModalClose = () => setModal(false);
@@ -111,6 +112,7 @@ const NavBar = () => {
     setToken('');
     // 이동
     navigate('/');
+    setCurrentPage('/');
     setToggleLogin('로그인');
   };
 
@@ -144,7 +146,7 @@ const NavBar = () => {
             {!isLoggedIn ? (
               <Link to="/">
                 <img
-                  src="images/csafy.png"
+                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
                   alt="Img"
                   style={{
                     width: '110px',
@@ -157,7 +159,7 @@ const NavBar = () => {
             ) : (
               <Link to="/mypage">
                 <img
-                  src="images/csafy.png"
+                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
                   alt="Img"
                   style={{
                     width: '110px',

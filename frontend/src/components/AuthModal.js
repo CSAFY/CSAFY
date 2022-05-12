@@ -48,8 +48,10 @@ const SignupWrapper = styled.div`
   position: relative;
 `;
 const Policy = styled.div`
+  text-align: center;
   position: absolute;
-  bottom: 25px;
+  bottom: 15px;
+  font-size: 15px;
 `;
 
 function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
@@ -81,7 +83,6 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
         // recoil
         setIsLoggedIn(true);
         setToken(res.data.token);
-        setUserName(res.data.username);
         // 모달 없애기
         setModal(false);
         // navigate
@@ -176,7 +177,6 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               // recoil
               setIsLoggedIn(true);
               setToken(res.data.token);
-              setUserName(res.data.username);
               // 모달 없애기
               setModal(false);
               // navigate
@@ -198,6 +198,10 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
   // 이용약관 보기
   const handleTerms = () => {
     navigate('/terms');
+    setModal(false);
+  };
+  const handlePrivacy = () => {
+    navigate('/privacy');
     setModal(false);
   };
 
@@ -222,7 +226,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               회원가입
             </span>
           </p>
-          <InputForm>
+          <InputForm onSubmit={submitLogin}>
             <TextField
               name="email"
               label="이메일"
@@ -463,7 +467,8 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
           </InputForm>
           <Policy>
             <div>
-              가입을 하면 C;SAFY의{' '}
+              가입을 하면 C;SAFY의
+              <br />
               <span
                 onClick={handleTerms}
                 style={{
@@ -474,7 +479,18 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               >
                 이용약관
               </span>
-              에 동의하게 됩니다.
+              ,{' '}
+              <span
+                onClick={handlePrivacy}
+                style={{
+                  color: '#008ed0',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                }}
+              >
+                개인정보취급방침 및 개인정보3자제공
+              </span>
+              <br />에 동의하게 됩니다.
             </div>
           </Policy>
         </SignupWrapper>
