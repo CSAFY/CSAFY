@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const PrivacyWrapper = styled.div`
   width: 100%;
-  height: 8000px;
+  height: 2800px;
   padding-bottom: 100px;
 
   display: flex;

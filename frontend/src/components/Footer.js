@@ -34,7 +34,11 @@ function Footer() {
     <>
       <FooterWrapper>
         <div style={{ paddingLeft: '3rem' }}>
-          <img src="images/csafy.png" alt="Csafy" style={{ width: '150px' }} />
+          <img
+            src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
+            alt="Csafy"
+            style={{ width: '150px' }}
+          />
           <p style={{ marginTop: '0' }}>개발자가 되기 위한 가장 빠른 방법</p>
         </div>
         <div>
