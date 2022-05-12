@@ -9,9 +9,9 @@ export const LayOut = styled.div`
 
 export const InSideLayOut = styled.div`
   width: 90%;
-  height: 100vh;
+  height: 1800px;
   margin: 0 104px 0 104px;
-  padding: 80px 0 812px 0;
+  padding: 80px 0 30px 0;
 `
 
 export const TitleName = styled.div`
@@ -53,11 +53,13 @@ export const FlexDiv = styled.div`
 
 export const CardDiv = styled.div`
   width: 1150px;
+  height : 1650px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   margin: 1em;
   justify-items: center;
-  align-items: center;
+  align-items: flex-start;
+  overflow : scroll;
 `
 
 export const SwitchBox = styled.div`

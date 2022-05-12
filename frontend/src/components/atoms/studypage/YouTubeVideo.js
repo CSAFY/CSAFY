@@ -60,8 +60,8 @@ class YouTubeVideo extends React.PureComponent {
     if(event.data ===  0){
       this.studyFinish()
     }else if(event.data ===  1){
-      // this.studyPlay()
-      console.log("play")
+      this.studyPlay()
+      // console.log("play")
     }
   };
   
@@ -75,7 +75,7 @@ class YouTubeVideo extends React.PureComponent {
       },
     })
     .then((res) => {
-      console.log(res)
+      // console.log(res)
     })
     .catch(err =>{
       console.log(err)

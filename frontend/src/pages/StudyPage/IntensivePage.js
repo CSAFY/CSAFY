@@ -43,7 +43,8 @@ function IntensivePage() {
   };
 
   const ChoiceChange = (event) => {
-    setNowChoice(event.target.value);
+    
+    setNowChoice(event.target.text);
   };
   
 
@@ -88,6 +89,7 @@ function IntensivePage() {
   return (
     <FullLayOut>
       <DetailLayOut>
+        
       {CategorySelect}
       <FlexDiv>
         <QuestionList 
@@ -99,15 +101,13 @@ function IntensivePage() {
           >
         </QuestionList>
 
-        {/* <KeyWordCard>
-
-        </KeyWordCard> */}
+        
         <Routes>
           <Route exact={true} path="/" element={<LodingPage />} />
-          <Route exact={true} path="KeyWordCard" element={<KeyWordCard />} />
-          <Route exact={true} path="FourWayRace" element={<FourWayRace />} />
+          <Route exact={true} path="KeyWordCard" element={<KeyWordCard Cate={nowCate}/>} />
+          <Route exact={true} path="FourWayRace" element={<FourWayRace Cate={nowCate}/>} />
           {/* <Route exact={true} path="ShortAnswer" element={<ShortAnswer />} /> */}
-          <Route exact={true} path="OXquiz" element={<OXquiz />} />
+          <Route exact={true} path="OXquiz" element={<OXquiz  Cate={nowCate}/>} />
         </Routes>
       </FlexDiv>
       
