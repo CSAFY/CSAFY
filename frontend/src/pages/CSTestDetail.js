@@ -1,10 +1,29 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Progress from '../components/Progress';
+
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
+import { Count } from '../recoils/Count';
+import { Toggle } from '../recoils/Toggle';
+import {
+  Right1Count,
+  Right2Count,
+  Right3Count,
+  Right4Count,
+  Right5Count,
+  Right6Count,
+} from '../recoils/TestData';
 
 // STYLED
 import styled from 'styled-components';
+import Choices from '../components/Choices';
+import axios from 'axios';
+import { defaultAPI } from '../utils/api';
+import SpentTime from './SpentTime';
 
 const TestDetailWrapper = styled.div`
   width: 100%;
@@ -80,6 +99,7 @@ const QuestionBox = styled.div`
   transform: translate(-50%);
 `;
 const TestList = styled.div`
+  width: 70%;
   position: absolute;
   top: 100px;
   left: 50%;
@@ -119,35 +139,65 @@ const SubmitButton = styled.div`
   transform: translate(-50%);
 `;
 
+const TimerBox = styled.div`
+  position: absolute;
+  top: 100px;
+  left: 200px;
+`;
+
 function CSTestDetail() {
   const navigate = useNavigate();
-  const { testId } = useParams();
-  const [testType, setTestType] = useState('normal');
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
+  const [count, setCount] = useRecoilState(Count);
+  const [right1Count, setRight1Count] = useRecoilState(Right1Count);
+  const [right2Count, setRight2Count] = useRecoilState(Right2Count);
+  const [right3Count, setRight3Count] = useRecoilState(Right3Count);
+  const [right4Count, setRight4Count] = useRecoilState(Right4Count);
+  const [right5Count, setRight5Count] = useRecoilState(Right5Count);
+  const [right6Count, setRight6Count] = useRecoilState(Right6Count);
+
+  useEffect(() => {
+    setCount(0);
+    setRight1Count(0);
+    setRight2Count(0);
+    setRight3Count(0);
+    setRight4Count(0);
+    setRight5Count(0);
+    setRight6Count(0);
+  }, []);
+
+  // console.log(count, toggle);
+  const { testTitle } = useParams();
+  const { state } = useLocation();
+
+  const [testType, setTestType] = useState('');
   const [toggleStartBox, setToggleStartBox] = useState(false);
   const [toggleStart, setToggleStart] = useState(false);
   const [testStart, setTestStart] = useState(false);
 
-  const [dummyData, setDummyData] = useState([
-    {
-      questionId: 1,
-      content: '문제 1',
-    },
-    {
-      questionId: 2,
-      content: '문제 2',
-    },
-    {
-      questionId: 3,
-      content: '문제 3',
-    },
-    {
-      questionId: 4,
-      content: '문제 4',
-    },
-  ]);
-  const testHeight = 100 + dummyData.length * 650;
+  // console.log(testTitle);
+  const [testData, setTestData] = useState([]);
+  const getTestData = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/test/mock`, {
+        params: {
+          category: testTitle,
+          questionNum: 12,
+        },
+      })
+      .then(res => {
+        console.log(res);
+        setTestData(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+
+  const testHeight = 200 + testData.length * 550;
 
   const handleStart = () => {
+    getTestData();
     setToggleStart(true);
 
     setTimeout(() => {
@@ -163,7 +213,133 @@ function CSTestDetail() {
     setTestType('normal');
     setToggleStartBox(true);
   };
+  const [testResultInfo, setTestResultInfo] = useState({
+    id: '',
+    right1: 0,
+    right2: 0,
+    right3: 0,
+    right4: 0,
+    right5: 0,
+    right6: 0,
+    total1: 0,
+    total2: 0,
+    total3: 0,
+    total4: 0,
+    total5: 0,
+    total6: 0,
+  });
+  useEffect(() => {
+    if (state === 1) {
+      setTestResultInfo({
+        ...testResultInfo,
+        id: testTitle,
+        right1: count,
+        total1: 12,
+      });
+    } else if (state === 2) {
+      setTestResultInfo({
+        ...testResultInfo,
+        id: testTitle,
+        right2: count,
+        total2: 12,
+      });
+    } else if (state === 3) {
+      setTestResultInfo({
+        ...testResultInfo,
+        id: testTitle,
+        right3: count,
+        total3: 12,
+      });
+    } else if (state === 4) {
+      setTestResultInfo({
+        ...testResultInfo,
+        id: testTitle,
+        right4: count,
+        total4: 12,
+      });
+    } else if (state === 5) {
+      setTestResultInfo({
+        ...testResultInfo,
+        id: testTitle,
+        right5: count,
+        total5: 12,
+      });
+    } else if (state === 6) {
+      setTestResultInfo({
+        ...testResultInfo,
+        id: testTitle,
+        right6: count,
+        total6: 12,
+      });
+    } else {
+      setTestResultInfo({
+        id: testTitle,
+        right1: right1Count,
+        right2: right2Count,
+        right3: right3Count,
+        right4: right4Count,
+        right5: right5Count,
+        right6: right6Count,
+        total1: 2,
+        total2: 2,
+        total3: 2,
+        total4: 2,
+        total5: 2,
+        total6: 2,
+      });
+    }
+  }, [count]);
 
+  console.log(
+    right1Count,
+    right2Count,
+    right3Count,
+    right4Count,
+    right5Count,
+    right6Count,
+  );
+  const handleSubmit = () => {
+    console.log(testResultInfo);
+    if (testTitle === 'all') {
+      axios
+        .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
+          headers: { authorization: token },
+        })
+        .then(res => {
+          console.log(res);
+          navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+        })
+        .catch(err => console.error(err));
+    } else {
+      axios
+        .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
+          headers: { authorization: token },
+        })
+        .then(res => {
+          console.log(res);
+          navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+        })
+        .catch(err => console.error(err));
+    }
+  };
+
+  // const onClickNum = (e, num) => {
+  //   e.preventDefault();
+  //   setToggle(true);
+  //   if (toggle) {
+  //     if (num === fourWayData.answer) {
+  //       setRightCnt(prev => prev + 1);
+  //       setToggle(false);
+  //     }
+  //   } else {
+  //     if (num !== fourWayData.answer) {
+  //       setRightCnt(prev => prev - 1);
+  //       setToggle(true);
+  //     }
+  //   }
+  // };
+  // 타이머 모드 - 종료 시간 일단 3초
+  const endTime = 3;
   return (
     <>
       {!testStart ? (
@@ -174,7 +350,12 @@ function CSTestDetail() {
                 <p style={{ margin: '0' }}>
                   일반 모의고사와 실전 모의고사 중 원하시는 것을 선택해주세요.
                 </p>
-                <p style={{ color: '#7f898f', fontSize: '14px' }}>
+                <p
+                  style={{
+                    color: '#7f898f',
+                    fontSize: '14px',
+                  }}
+                >
                   (실전 모의고사는 시간 제한이 있으며, 시험 결과와 분석이
                   이루어집니다)
                 </p>
@@ -247,22 +428,60 @@ function CSTestDetail() {
           </TestDetailContent>
         </TestDetailWrapper>
       ) : (
-        <TestDetailWrapper style={{ height: `${testHeight}px` }}>
-          <TestDetailContent>
-            <TestList>
-              {dummyData.map(test => (
+        <>
+          {testType === 'actual' ? (
+            <TestDetailWrapper style={{ height: `${testHeight}px` }}>
+              <TestDetailContent>
+                <TimerBox>
+                  <SpentTime
+                    mm={'00'}
+                    ss={`${endTime}`}
+                    message={'모의고사가 종료되었습니다.'}
+                  />
+                </TimerBox>
+                <TestList>
+                  {testData.map((test, idx) => (
+                    <Choices key={idx} fourWayData={test} />
+                  ))}
+                  {/* {dummyData.map((test, idx) => (
                 // <div>{test.content}</div>
-                <TestBox key={test.id}>{test.content}</TestBox>
-              ))}
-            </TestList>
-            <SubmitButton
-              style={{ top: `${testHeight - 40}px` }}
-              onClick={() => navigate(`/CSTestResult/${testId}`)}
-            >
-              제출하기
-            </SubmitButton>
-          </TestDetailContent>
-        </TestDetailWrapper>
+                // <TestBox key={test.id}>{test.content}</TestBox>
+                <Choices key={idx} test={test} />
+              ))} */}
+                </TestList>
+                <SubmitButton
+                  style={{ top: `${testHeight - 40}px` }}
+                  onClick={handleSubmit}
+                  // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
+                >
+                  제출하기
+                </SubmitButton>
+              </TestDetailContent>
+            </TestDetailWrapper>
+          ) : (
+            <TestDetailWrapper style={{ height: `${testHeight}px` }}>
+              <TestDetailContent>
+                <TestList>
+                  {testData.map((test, idx) => (
+                    <Choices key={idx} fourWayData={test} />
+                  ))}
+                  {/* {dummyData.map((test, idx) => (
+                // <div>{test.content}</div>
+                // <TestBox key={test.id}>{test.content}</TestBox>
+                <Choices key={idx} test={test} />
+              ))} */}
+                </TestList>
+                <SubmitButton
+                  style={{ top: `${testHeight - 40}px` }}
+                  onClick={handleSubmit}
+                  // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
+                >
+                  제출하기
+                </SubmitButton>
+              </TestDetailContent>
+            </TestDetailWrapper>
+          )}
+        </>
       )}
     </>
   );
