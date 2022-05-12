@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var testSubjectFragment: TestSubjectFragment
     private lateinit var testOXFragment: TestOXFragment
     private lateinit var testMultipleFragment: TestMultipleFragment
+    private lateinit var studySubjectFragment: StudySubjectFragment
+    private lateinit var studyAutoFragment: StudyAutoFragment
+    private lateinit var studyCardFragment: StudyCardFragment
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +53,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         testSubjectFragment = TestSubjectFragment()
         testOXFragment = TestOXFragment()
         testMultipleFragment = TestMultipleFragment()
+        studySubjectFragment = StudySubjectFragment()
+        studyAutoFragment = StudyAutoFragment()
+        studyCardFragment = StudyCardFragment()
 
         supportFragmentManager.beginTransaction().replace(R.id.main_frame, homeFragment)
             .commit()
@@ -60,7 +66,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     fun changeHomeFragment() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.main_frame, testFragment)
+            .replace(R.id.main_frame, homeFragment)
             .commit()
     }
 
@@ -89,7 +95,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     .commit()
                 
                 // 보낸 자료 안내
-                Toast.makeText(this, quizType + "로 진입", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, quizType + "로 진입", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -124,7 +130,70 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             .commit()
     }
 
+<<<<<<< HEAD
     // 바텀 네비게이션 기능
+=======
+    // frag -> frag
+    // 문제에서 OX, 사지선다 선택
+    fun changeStudyFragment(index: Int, studyType: String){
+        when(index){
+            1 -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_frame, testFragment)
+                    .commit()
+            }
+
+            2 -> {
+                // 자료 보내기
+                var bundle = Bundle()
+                bundle.putString("studyType", studyType)
+
+                studySubjectFragment.arguments = bundle
+
+                // 이동
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_frame, studySubjectFragment)
+                    .commit()
+
+                // 보낸 자료 안내
+                Toast.makeText(this, studyType + "로 진입", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // frag -> frag
+    // 문제에서 과목 선택
+    // 1:자료구조, 2: 컴퓨터구조, 3: 운영체제론, 4: 데이터베이스, 5: 네트워크, 6: 기타
+    fun changeStudySubjectFragment(index: Int, studyType: String?){
+        var nextFragment: Fragment
+        if (studyType == "Auto") {
+            nextFragment = studyAutoFragment
+        } else {
+            nextFragment = studyCardFragment
+        }
+
+        // 자료 보내기
+        var bundle = Bundle()
+        when(index){
+            1 -> {bundle.putString("studySubject", "자료구조")}
+            2 -> {bundle.putString("studySubject", "컴퓨터구조")}
+            3 -> {bundle.putString("studySubject", "운영체제론")}
+            4 -> {bundle.putString("studySubject", "데이터베이스")}
+            5 -> {bundle.putString("studySubject", "네트워크")}
+            6 -> {bundle.putString("studySubject", "기타")}
+        }
+        nextFragment.arguments = bundle
+
+        // 이동
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_frame, nextFragment)
+            .commit()
+    }
+
+>>>>>>> b5f262e (Feature:app: 학습 액티비티 갱신)
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_home -> {
