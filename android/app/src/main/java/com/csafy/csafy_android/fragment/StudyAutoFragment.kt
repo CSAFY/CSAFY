@@ -18,6 +18,7 @@ import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.common.App
 import com.csafy.csafy_android.network.data.request.RequestScoreData
 import com.csafy.csafy_android.network.data.response.ResponseCardData
+import com.csafy.csafy_android.network.data.response.ResponseCardData2
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,7 +40,7 @@ class StudyAutoFragment : Fragment() {
     // 정답 관련
     private lateinit var score:Number
     private lateinit var studySubject:String
-    private lateinit var cards:List<ResponseCardData>
+    private lateinit var cards:List<ResponseCardData2>
     private lateinit var cards_num:Number
     private lateinit var cards_now:Number
 
@@ -61,6 +62,11 @@ class StudyAutoFragment : Fragment() {
         }
         binding.textSubject.setText(studySubject)
 
+        // 운영체제론만 따로
+        if (studySubject == "운영체제론") {
+            studySubject = "운영체제"
+        }
+
         binding.cardBack.visibility = View.INVISIBLE
 
         // 세팅하기
@@ -68,7 +74,7 @@ class StudyAutoFragment : Fragment() {
         var correct:Int = 0
         var wrong:Int = 0
         score = 0
-        cards = listOf(ResponseCardData(key = "hi", value = "hi"))
+        cards = listOf(ResponseCardData2(key = "hi", explanation = "hi"))
         cards_now = 1
         cards_num = 1
         binding.textCards.setText(cards_now.toString() + " of " + cards_num.toString())
@@ -106,10 +112,10 @@ class StudyAutoFragment : Fragment() {
 
     // http 보내서 OX 퀴즈 정보 받기
     fun getCards() {
-        requestToServer.service.cardSample().enqueue(object : Callback<List<ResponseCardData>> {  // 콜백 등록
+        requestToServer.service.getCardList(studySubject, 999).enqueue(object : Callback<List<ResponseCardData2>> {  // 콜백 등록
             override fun onResponse(
-                call: Call<List<ResponseCardData>>,
-                response: Response<List<ResponseCardData>>
+                call: Call<List<ResponseCardData2>>,
+                response: Response<List<ResponseCardData2>>
             ) {
                 cards = response.body()!!
 
@@ -118,16 +124,17 @@ class StudyAutoFragment : Fragment() {
                 binding.textCards.setText(cards_now.toString() + " of " + cards_num.toString())
 
                 binding.cardFront.setText(cards[cards_now as Int -1].key)
-                binding.cardBack.setText(cards[cards_now as Int -1].value)
+                binding.cardBack.setText(cards[cards_now as Int -1].explanation)
 
                 // 타이머 매니저 작동
                 time = 20
                 isTimerRunning = true
                 studyAutoManager()
             }
-            override fun onFailure(call: Call<List<ResponseCardData>>, t: Throwable) {
-                Log.d("카드 확인", "실패")
+
+            override fun onFailure(call: Call<List<ResponseCardData2>>, t: Throwable) {
             }
+
         })
     }
 
@@ -168,7 +175,7 @@ class StudyAutoFragment : Fragment() {
         cards_now = cards_now as Int % cards_num as Int + 1
 
         binding.cardFront.setText(cards[cards_now as Int -1].key)
-        binding.cardBack.setText(cards[cards_now as Int -1].value)
+        binding.cardBack.setText(cards[cards_now as Int -1].explanation)
         binding.textCards.setText(cards_now.toString() + " of " + cards_num.toString())
     }
 

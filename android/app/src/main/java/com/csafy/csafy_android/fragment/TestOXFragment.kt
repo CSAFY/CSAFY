@@ -104,34 +104,34 @@ class TestOXFragment : Fragment() {
     }
 
     // http 보내서 OX 퀴즈(샘플) 정보 받기
-    fun getOXSampleQuiz() {
-        requestToServer.service.quizOXSample().enqueue(object : Callback<ResponseOXData> {  // 콜백 등록
-
-        override fun onResponse(
-            call: Call<ResponseOXData>,
-            response: Response<ResponseOXData>
-        ) {
-            // 통신 성공
-            if(response.isSuccessful){
-                binding.textQuiz.setText(response.body()!!.quiz)
-                answer = response.body()!!.answer
-            }
-            else {
-                when (response.code()) {
-                    404 -> Log.d("실패", response.message())
-                    405 -> Log.d("문제가 뭐야", response.message())
-
-                }
-            }
-        }
-        override fun onFailure(call: Call<ResponseOXData>, t: Throwable) {
-        }
-        })
-    }
+//    fun getOXSampleQuiz() {
+//        requestToServer.service.quizOXSample().enqueue(object : Callback<ResponseOXData> {  // 콜백 등록
+//
+//        override fun onResponse(
+//            call: Call<ResponseOXData>,
+//            response: Response<ResponseOXData>
+//        ) {
+//            // 통신 성공
+//            if(response.isSuccessful){
+//                binding.textQuiz.setText(response.body()!!.quiz)
+//                answer = response.body()!!.answer
+//            }
+//            else {
+//                when (response.code()) {
+//                    404 -> Log.d("실패", response.message())
+//                    405 -> Log.d("문제가 뭐야", response.message())
+//
+//                }
+//            }
+//        }
+//        override fun onFailure(call: Call<ResponseOXData>, t: Throwable) {
+//        }
+//        })
+//    }
 
     // http로 OX 진짜 퀴즈 받기
     fun getOXQuiz() {
-        requestToServer.service.quizOXList(quizSubject, 1)
+        requestToServer.service.getQuizOXList(quizSubject, 1)
             .enqueue(object : Callback<List<ResponseOXData2>> {  // 콜백 등록
                 override fun onResponse(
                     call: Call<List<ResponseOXData2>>,

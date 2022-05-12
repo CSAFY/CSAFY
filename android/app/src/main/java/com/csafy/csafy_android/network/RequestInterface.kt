@@ -38,27 +38,46 @@ interface RequestInterface {
     // OX 퀴즈 받기 샘플
     @GET("cs-service/unity/quizsample")
     fun quizOXSample() : Call<ResponseOXData>
+//    // OX 퀴즈 샘플 받기
+//    @GET("cs-service/unity/quizsample")
+//    fun quizOXSample() : Call<ResponseOXData>
+//
+//    // 카드 샘플 받아오기
+//    @GET("cs-service/test/quizsample3")
+//    fun cardSample() : Call<List<ResponseCardData>>
+//
+//    // 4지선다 퀴즈 샘플 받기
+//    @GET("cs-service/test/quizsample")
+//    fun quizMultipleSample() : Call<ResponseMultipleData>
 
     // OX 퀴즈 리스트 받기
     @GET("cs-service/study/multiple/ox")
-    fun quizOXList(
+    fun getQuizOXList(
         @Query("category") category:String,
         @Query("questionNum") questionNum:Int
     ) : Call<List<ResponseOXData2>>
 
-    // 4지선다 퀴즈 받기
-    @GET("cs-service/test/quizsample")
-    fun quizMultipleSample() : Call<ResponseMultipleData>
+    // 4지선다 퀴즈 리스트 받기
+    @GET("cs-service/test/multiple")
+    fun getQuizMultipleList(
+        @Query("category") category:String,
+        @Query("questionNum") questionNum:Int
+    ) : Call<List<ResponseMultipleData2>>
 
-    // 점수 넣기
+    // 카드 리스트 받기
+    @GET("cs-service/study/keyword")
+    fun getCardList(
+        @Query("category") category:String,
+        @Query("questionNum") questionNum:Int
+    ) : Call<List<ResponseCardData2>>
+
+    // 점수 등록
     @POST("cs-service/profile/scores/update")
     fun updateScores(
         @Body body : RequestScoreData
     ) : Call<Void>
 
-    // 카드 받아오기
-    @GET("cs-service/test/quizsample3")
-    fun cardSample() : Call<List<ResponseCardData>>
+
 
 
 
