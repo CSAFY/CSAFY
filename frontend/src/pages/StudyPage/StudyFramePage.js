@@ -61,7 +61,8 @@ function StudyFramePage() {
     
     getData();
   }, []);
-
+  
+  // https://i.ytimg.com/vi/-M_S50Ga384/hqdefault.jpg
   const cateFilter = (data, index) => {
     if (nowKategorie === "전체"){
       return(
