@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import MicIcon from '@mui/icons-material/Mic';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-
+import StopIcon from '@mui/icons-material/Stop';
 //사용자 정의 Hook - for Timer
 const useCounter = (initialValue, ms) => {
   const [count, setCount] = useState(initialValue);
@@ -122,12 +122,21 @@ function VoiceRecord() {
     setDisabled(false);
     console.log(sound); // File 정보 출력
   };
-
+  //
+  const [toggle, setToggle] = useState(true);
+  console.log(toggle);
   const play = () => {
     const audio = new Audio(URL.createObjectURL(audioUrl));
+    // if (toggle) {
     audio.loop = false;
     audio.volume = 1;
     audio.play();
+    // setToggle(!toggle);
+    // } else {
+    //   console.log('pause');
+    //   audio.pause();
+    //   setToggle(!toggle);
+    // }
   };
 
   // Timer
@@ -149,6 +158,9 @@ function VoiceRecord() {
 
   // count의 변화에 따라 timer 함수 랜더링
   useEffect(timer, [count]);
+  // useEffect(() => {
+  //   return () => end();
+  // }, []);
 
   return (
     <div style={{ position: 'relative' }}>
@@ -179,7 +191,14 @@ function VoiceRecord() {
             )}
           </>
         ) : (
-          <PlayArrowIcon fontSize="large" color="primary" onClick={play} />
+          <>
+            {toggle ? (
+              <PlayArrowIcon fontSize="large" color="primary" onClick={play} />
+            ) : (
+              <StopIcon fontSize="large" color="primary" onClick={play} />
+            )}
+          </>
+
           // <button onClick={play}>재생</button>
         )}
       </div>

@@ -56,7 +56,7 @@ function CSTestResult() {
   const { testTitle } = useParams();
   const { state } = useLocation();
 
-  console.log(state);
+  // console.log(state);
   return (
     <TestResultWrapper>
       <TestresultContent>
