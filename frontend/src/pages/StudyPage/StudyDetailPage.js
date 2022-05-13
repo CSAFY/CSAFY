@@ -14,11 +14,13 @@ import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 import Drawer from "../../components/atoms/studypage/Drawer"
 import YouTubeVideo from "../../components/atoms/studypage/YouTubeVideo"
 
+import BasicModal from '../../components/atoms/intensivePage/BasicModal';
 
+import axios from 'axios';
 
 function StudyDetailPage() {
+
   const videoDatas = useRecoilValue(videoData)
-  
   return (
     <FullLayOut>
       
@@ -30,17 +32,14 @@ function StudyDetailPage() {
         <TitleText>
           {videoDatas.title}
         </TitleText>
-        {/* <MyiFrame
-          src={Url}
-        ></MyiFrame>
-
-        <StudyDetailHr></StudyDetailHr> */}
+        
 
         <YouTubeVideo
           videoId={videoDatas.videoId}
-          id={videoDatas.id}>
+          id={videoDatas.id}
+          categoryId={videoDatas.categoryId}>
         </YouTubeVideo>
-
+      
         <StudyDetailHr></StudyDetailHr>
         
         <RelatedExam>

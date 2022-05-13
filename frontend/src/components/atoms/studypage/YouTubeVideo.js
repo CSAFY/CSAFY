@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import axios from 'axios';
+import BasicModal from '../intensivePage/BasicModal';
 
 
 class YouTubeVideo extends React.PureComponent {
@@ -9,9 +10,10 @@ class YouTubeVideo extends React.PureComponent {
   static propTypes = {
     videoId: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    categoryId: PropTypes.string.isRequired,
   };
-  
-  
+
+
   componentDidMount = () => {
     // On mount, check to see if the API script is already loaded
     if (!window.YT) { // If not, load the script asynchronously
@@ -75,7 +77,24 @@ class YouTubeVideo extends React.PureComponent {
       },
     })
     .then((res) => {
-      // console.log(res)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+
+    axios({
+      method: 'post',
+      url:  "https://csafy.com/api/v1/cs-service/profile/scores/update",
+      headers: {
+        Authorization: JWT
+      },
+      data: {
+        "subject" : this.props.categoryId,
+        "score" : 1
+      },
+    })
+    .then((res) => {
+      console.log(res)
     })
     .catch(err =>{
       console.log(err)
