@@ -6,15 +6,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-<!--    <ImageView-->
-<!--        android:id="@+id/img_thumbnail"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="250dp"-->
-<!--        android:background="@color/main_green2"-->
-<!--        app:srcCompat="@drawable/ic_outline_star_24"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        />-->
+    <ImageView
+        android:id="@+id/img_thumbnail"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:background="@color/main_green2"
+        app:srcCompat="@drawable/ic_outline_star_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="학습 강의 제목"
         android:textSize="18sp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_thumbnail"
         app:layout_constraintStart_toStartOf="parent"
         />
 

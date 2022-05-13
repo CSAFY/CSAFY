@@ -11,23 +11,19 @@ import com.csafy.csafy_android.databinding.ItemFavoriteBinding
 import com.csafy.csafy_android.databinding.ItemInterviewBinding
 import com.csafy.csafy_android.network.data.response.ResponseInterviewData
 
-class InterviewAdapter(private val context: Context) : RecyclerView.Adapter<InterviewViewHolder>() {
-
-    var datas =mutableListOf<ResponseInterviewData>()
+class InterviewAdapter(private val dataSet: MutableList<ResponseInterviewData>) : RecyclerView.Adapter<InterviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InterviewViewHolder {
-//        val view = LayoutInflater.from(context).inflate(R.layout.item_interview, parent, false)
-//        return InterviewViewHolder(view)
         val binding = ItemInterviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return InterviewViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return datas.size
+        return dataSet.size
     }
 
     override fun onBindViewHolder(holder: InterviewViewHolder, position: Int) {
-        holder.bind(datas[position])
+        holder.bind(dataSet[position])
     }
 
 }

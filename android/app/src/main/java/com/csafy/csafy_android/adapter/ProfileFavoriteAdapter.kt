@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.csafy.csafy_android.adapter.viewholder.FavoriteViewHolder
+import com.csafy.csafy_android.adapter.viewholder.InterviewViewHolder
 import com.csafy.csafy_android.databinding.ItemFavoriteBinding
+import com.csafy.csafy_android.databinding.ItemInterviewBinding
 import com.csafy.csafy_android.network.data.response.ResponseFavoriteData
+import com.csafy.csafy_android.network.data.response.ResponseInterviewData
 
 class ProfileFavoriteAdapter(private val dataSet: MutableList<ResponseFavoriteData>) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
