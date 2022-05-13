@@ -188,7 +188,7 @@ function CSTestDetail() {
         },
       })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         setTestData(res.data);
       })
       .catch(err => console.error(err));
@@ -290,23 +290,23 @@ function CSTestDetail() {
     }
   }, [count]);
 
-  console.log(
-    right1Count,
-    right2Count,
-    right3Count,
-    right4Count,
-    right5Count,
-    right6Count,
-  );
+  // console.log(
+  //   right1Count,
+  //   right2Count,
+  //   right3Count,
+  //   right4Count,
+  //   right5Count,
+  //   right6Count,
+  // );
   const handleSubmit = () => {
-    console.log(testResultInfo);
+    // console.log(testResultInfo);
     if (testTitle === 'all') {
       axios
         .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
           headers: { authorization: token },
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
         })
         .catch(err => console.error(err));
@@ -316,7 +316,7 @@ function CSTestDetail() {
           headers: { authorization: token },
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
         })
         .catch(err => console.error(err));
