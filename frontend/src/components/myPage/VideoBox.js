@@ -6,7 +6,12 @@ import styled from 'styled-components';
 const Video = styled.div`
   width: 300px;
   height: 226px;
-  border: 1px solid black;
+  flex-grow: 0;
+
+  border-radius: 14px;
+  box-shadow: 0 0 10px 0 #d7e4ec;
+  background-color: #fff;
+
   margin-left: 5px;
   margin-right: 5px;
 
@@ -29,10 +34,10 @@ const Category = styled.div`
   left: 10px;
   top: 10px;
 `;
-const Thumbnail = styled.div`
+const Thumbnail = styled.img`
   width: 274px;
   height: 154px;
-  border: 1px solid black;
+  // border: 1px solid black;
 
   position: absolute;
   top: 35px;
@@ -40,31 +45,29 @@ const Thumbnail = styled.div`
   transform: translate(-50%);
 `;
 const Title = styled.div`
-  width: 57px;
+  // width: 57px;
   height: 16px;
   font-size: 13px;
   font-weight: 600;
   color: #000;
 
   position: absolute;
-  left: 10px;
+  left: 15px;
   bottom: 10px;
 `;
 
-function VideoBox() {
-  // 더미 데이터
-  const [videoInfo, setVideoInfo] = useState({
-    category: '컴퓨터 구조',
-    url: 'https://youtube.com',
-    title: 'OSI 7계층',
-  });
+function VideoBox({ categoryId, category2Id, title, videoId }) {
+  // console.log(categoryId, category2Id, title, videoId);
 
   return (
     <>
       <Video>
-        <Category>{videoInfo.category}</Category>
-        <Thumbnail>{videoInfo.url}</Thumbnail>
-        <Title>{videoInfo.title}</Title>
+        <Category>{category2Id}</Category>
+        <Thumbnail
+          src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`}
+          alt="youtube"
+        />
+        <Title>{title}</Title>
       </Video>
     </>
   );

@@ -147,6 +147,7 @@ function MyPage() {
         setUserinfo({
           email: res.data.email,
           username: res.data.username,
+          isVip: res.data.is_vip,
         });
         console.log('🎃', res);
         if (res.data.profile_image === null) {
@@ -226,13 +227,15 @@ function MyPage() {
   const [analysisData, setAnalysisData] = useState({});
   const getAnalysisData = () => {
     axios
-      // .get(`${defaultAPI}/cs-service/profile/my/scores/get`, {
-      .get(`${defaultAPI}/cs-service/profile/scores/get`, {
-        params: {
-          email: 'mingu49699@gmail.com',
-          // email: 'test@naver.com',
-        },
+      .get(`${defaultAPI}/cs-service/profile/my/scores/get`, {
+        headers: { Authorization: token },
       })
+      // .get(`${defaultAPI}/cs-service/profile/scores/get`, {
+      //   params: {
+      //     email: 'mingu49699@gmail.com',
+      //     // email: 'test@naver.com',
+      //   },
+      // })
       .then(res => {
         // console.log(res);
         setAnalysisData(res.data);
@@ -364,6 +367,7 @@ function MyPage() {
       });
   };
   // console.log('🐸', userInfo);
+  // console.log(recentStudy);
   return (
     <>
       <MyPageWrapper>
@@ -423,7 +427,7 @@ function MyPage() {
               )}
 
               <Profile>
-                {/* is_vip === 'T'일대만 `프리미엄 이용중` 보이기 */}
+                {/* is_vip === 'Y'일대만 `프리미엄 이용중` 보이기 */}
                 {userInfo.is_vip === 'Y' && (
                   <div
                     style={{
@@ -431,8 +435,11 @@ function MyPage() {
                       height: '23px',
                       margin: '0',
                       borderRadius: '6px',
-                      backgroundColor: '#d2fae2',
+                      background:
+                        'linear-gradient(to right bottom, #008ed0, #b5fcca)',
                       fontSize: '10px',
+                      fontWeight: '600',
+                      color: 'white',
 
                       display: 'flex',
                       justifyContent: 'center',
@@ -567,6 +574,33 @@ function MyPage() {
                   Premium 버전 구독하기
                 </Button>
               )}
+              {userinfo.email === 'admin@csafy.com' && (
+                <Button
+                  variant="contained"
+                  sx={{
+                    // width: '213px',
+                    height: '40px',
+                    textAlign: 'center',
+                    display: 'block',
+                    marginLeft: '20px',
+                    border: '1px solid contained',
+                    borderRadius: '7px',
+                    backgroundColor: '#fff',
+
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: '#000',
+
+                    ':hover': {
+                      color: '#008ed0',
+                      bgcolor: 'white',
+                    },
+                  }}
+                  onClick={() => navigate('/chat')}
+                >
+                  채팅
+                </Button>
+              )}
             </UserInfo>
             <CalendarHeatmap
               startDate={shiftDate(today, -250)}
@@ -661,13 +695,13 @@ function MyPage() {
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'between',
+                justifyContent: 'center',
               }}
             >
-              <VideoBox>1</VideoBox>
-              <VideoBox>2</VideoBox>
-              <VideoBox>3</VideoBox>
-              <VideoBox>4</VideoBox>
+              {favorites &&
+                favorites.map(favorite => (
+                  <VideoBox key={favorite.id} {...favorite} />
+                ))}
             </div>
           </VideoWrapper>
           <VideoWrapper>
@@ -678,10 +712,10 @@ function MyPage() {
                 justifyContent: 'center',
               }}
             >
-              <VideoBox>1</VideoBox>
-              <VideoBox>2</VideoBox>
-              <VideoBox>3</VideoBox>
-              <VideoBox>4</VideoBox>
+              {recentStudy &&
+                recentStudy.map(recent => (
+                  <VideoBox key={recent.id} {...recent} />
+                ))}
             </div>
           </VideoWrapper>
           <div
