@@ -25,6 +25,7 @@ import VideoBox from '../components/myPage/VideoBox';
 // STYLED
 import styled from 'styled-components';
 import { Button } from '@mui/material';
+import Hamburger from '../components/Hamburger';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -142,7 +143,10 @@ function MyPage() {
       })
       .then(res => {
         setUserName(res.data.username);
-        setUserinfo({ email: res.data.email, username: res.data.username });
+        setUserinfo({
+          email: res.data.email,
+          username: res.data.username,
+        });
         console.log('🎃', res);
         if (res.data.profile_image === null) {
           setUserInfo({
@@ -216,6 +220,25 @@ function MyPage() {
       })
       .catch(err => console.error(err));
   };
+
+  // 학습 분석 데이터
+  const [analysisData, setAnalysisData] = useState({});
+  const getAnalysisData = () => {
+    axios
+      // .get(`${defaultAPI}/cs-service/profile/my/scores/get`, {
+      .get(`${defaultAPI}/cs-service/profile/scores/get`, {
+        params: {
+          email: 'mingu49699@gmail.com',
+          // email: 'test@naver.com',
+        },
+      })
+      .then(res => {
+        // console.log(res);
+        setAnalysisData(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+  // console.log(analysisData.scores['네트워크']);
   // console.log(recentStudy);
   useEffect(() => {
     getInfo();
@@ -223,6 +246,7 @@ function MyPage() {
     getRecentStudyInfo();
     getFavorites();
     getTests();
+    getAnalysisData();
   }, []);
 
   // Heatmap
@@ -250,9 +274,12 @@ function MyPage() {
         },
       })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         setUserName(res.data.username);
-        setUserInfo({ ...userinfo, username: res.data.username });
+        setUserInfo({
+          ...userinfo,
+          username: res.data.username,
+        });
         setEditUserInfo({
           username: res.data.username,
           // profile_image: res.data.profileImg,
@@ -324,6 +351,7 @@ function MyPage() {
       <MyPageWrapper>
         <MyPageContent>
           <UserInfoWrapper>
+            {/* <Hamburger /> */}
             <UserInfo>
               {editToggle ? (
                 <div style={{ position: 'relative' }}>
@@ -607,7 +635,7 @@ function MyPage() {
           </UserInfoWrapper>
           <hr />
           <StudyAnalysisWrapper>
-            <StudyAnalysis userInfo={userInfo} />
+            <StudyAnalysis userInfo={userInfo} analysisData={analysisData} />
           </StudyAnalysisWrapper>
 
           <VideoWrapper>
@@ -650,7 +678,11 @@ function MyPage() {
           >
             <h1 style={{ textAlign: 'center' }}>최근 본 면접 질문</h1>
             <Button
-              style={{ position: 'absolute', top: '125px', right: '105px' }}
+              style={{
+                position: 'absolute',
+                top: '125px',
+                right: '105px',
+              }}
               sx={{
                 textAlign: 'center',
                 display: 'block',
@@ -694,8 +726,8 @@ function MyPage() {
                 ))}
             </div>
           </div>
-          <button onClick={handleTest}>테스트</button>
-          <button onClick={handleGet}>가져오기</button>
+          {/* <button onClick={handleTest}>테스트</button>
+          <button onClick={handleGet}>가져오기</button> */}
         </MyPageContent>
       </MyPageWrapper>
     </>

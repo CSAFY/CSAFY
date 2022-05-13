@@ -25,8 +25,8 @@ const Date = styled.div`
 `;
 const TestName = styled.div`
   width: 121px;
-  height: 18px;
-  font-size: 14px;
+  height: 30px;
+  font-size: 18px;
   font-weight: 600;
   text-align: center;
 
@@ -36,7 +36,7 @@ const TestName = styled.div`
   transform: translate(-50%);
 `;
 const ScoreBox = styled.div`
-  width: 86px;
+  width: 100px;
   height: 50px;
   text-align: center;
 
@@ -46,7 +46,7 @@ const ScoreBox = styled.div`
   align-items: center;
 
   position: absolute;
-  top: 110px;
+  top: 100px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -99,49 +99,18 @@ const LogoImg = styled.img`
 `;
 
 function TestBox({ examDone, id, corrects, totals }) {
-  console.log(totals);
-  // 더미 데이터
-  const [testInfo, setTestInfo] = useState({
-    date: '',
-    testName: '',
-    rightQuestions: 0,
-    totalQuestions: 0,
-    corrects: {
-      // 과목별 전체 문제 갯수
-      네트워크: 0,
-      운영체제: 0,
-      자료구조: 0,
-      기타: 0,
-      데이터베이스: 0,
-      컴퓨터구조: 0,
-    },
-    totals: {
-      // 과목별 맞은 문제 갯수
-      네트워크: 0,
-      운영체제: 0,
-      자료구조: 0,
-      기타: 0,
-      데이터베이스: 0,
-      컴퓨터구조: 0,
-    },
-  });
-
-  useEffect(() => {
-    setTestInfo({
-      data: examDone,
-      testName: id,
-      rightQuestions: getSum(corrects),
-      totalQuestions: getSum(totals),
-      corrects,
-      totals,
-    });
-  }, []);
-  console.log(testInfo);
-  // const avg = Math.ceil(testInfo.rightQuestions / testInfo.totalqu);
-
   const getSum = corrects => Object.values(corrects).reduce((a, b) => a + b);
   const getScore = data => {
     return Math.ceil((data.rightQuestions / data.totalQuestions) * 100);
+  };
+
+  const testInfo = {
+    data: examDone,
+    testName: id,
+    rightQuestions: getSum(corrects),
+    totalQuestions: getSum(totals),
+    corrects,
+    totals,
   };
 
   return (

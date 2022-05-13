@@ -95,7 +95,7 @@ function Chat() {
   // 핸드폰 화면 채팅용
   const [chatRoomId, setChatRoomId] = useState('');
 
-  console.log(chatrooms);
+  // console.log(chatrooms);
   // 채팅방 개설
   const createRoom = () => {
     // post query parameters - **null값 추가 꼭 필요**
