@@ -87,6 +87,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
         setModal(false);
         // navigate
         navigate('/mypage');
+        // navigate('/');
         setToggleLogin('로그아웃');
       })
       .catch(err => console.error(err));
@@ -180,7 +181,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               // 모달 없애기
               setModal(false);
               // navigate
-              navigate('/mypage');
+              // navigate('/mypage');
               setToggleLogin('로그아웃');
             })
             .catch(err => console.error(err));

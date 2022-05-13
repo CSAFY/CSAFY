@@ -26,6 +26,7 @@ import VideoBox from '../components/myPage/VideoBox';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
 import Hamburger from '../components/Hamburger';
+import ReactBurger from '../components/ReactBurger';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -259,13 +260,22 @@ function MyPage() {
 
   // 프로필 변경 관련
   const [editToggle, setEditToggle] = useState(false);
+  // const FileSaver = require('file-saver');
   const handleEdit = () => {
     setEditToggle(!editToggle);
-
     //
     const formData = new FormData();
     formData.append('username', editUserInfo.username);
-    formData.append('image', state.image);
+    if (state.image) {
+      formData.append('image', state.image);
+    } else {
+      formData.append(
+        'image',
+        `https://csafy-profile.s3.amazonaws.com/default/default_1.PNG`,
+      );
+    }
+
+    console.log('🐸', state.image);
 
     axios
       .put(` https://csafy.com/api/v1/user-service/update`, formData, {
@@ -297,33 +307,41 @@ function MyPage() {
 
   const handleEditToggle = () => {
     setEditToggle(!editToggle);
+    // const file = FileSaver.saveAs(userInfo.profile_image, 'profile.jpg');
+    // setState({ image: file });
   };
   const [editUserInfo, setEditUserInfo] = useState({
     username: '',
     profile_image: '',
   });
   // console.log(editUserInfo);
+
   useEffect(() => {
     setEditUserInfo({
       username: userInfo.username,
       profile_image: userInfo.profile_image,
     });
-  }, [editToggle, userInfo.profile_image, userInfo.username]);
+  }, [editToggle]);
+
   // console.log(editUserInfo);
   // 이미지 업로드 관련
   const [imageSrc, setImageSrc] = useState('');
   const [state, setState] = useState({});
+
   const handleFile = e => {
     e.preventDefault();
 
     let reader = new FileReader();
     const file = e.target.files[0];
+    console.log(e.target.files[0]);
     reader.onloadend = () => {
       setImageSrc(reader.result);
       setState({ image: file });
     };
     reader.readAsDataURL(file);
   };
+  useEffect(() => {}, []);
+  console.log(userInfo);
 
   // 프리미엄 결제
   const buyPremium = () => {
@@ -345,13 +363,13 @@ function MyPage() {
         });
       });
   };
-
+  console.log('🐸', state);
   return (
     <>
       <MyPageWrapper>
         <MyPageContent>
           <UserInfoWrapper>
-            {/* <Hamburger /> */}
+            <ReactBurger />
             <UserInfo>
               {editToggle ? (
                 <div style={{ position: 'relative' }}>
