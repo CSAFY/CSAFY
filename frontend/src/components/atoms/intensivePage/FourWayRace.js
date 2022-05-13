@@ -13,15 +13,18 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useRecoilState } from "recoil";
 import { fourWayRaceData } from "../../../recoils";
 
-function FourWayRace() {
-  const [selecCNT, setSelecCNT] = useState(5)
+import axios from 'axios';
 
+function FourWayRace(props) {
+  const [selecCNT, setSelecCNT] = useState(5)
   const [pageNumber, setPageNumber] = useState(1)
 
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
   const [fourWayData, setFourWayData] = useRecoilState(fourWayRaceData)
   const maxSteps = fourWayData.length;
+
+  const [isCorrects, setIsCorrects] = useState([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -39,32 +42,48 @@ function FourWayRace() {
     setSelectFour(0)
   };
 
-  useEffect(() => {
-    setFourWayData([
-      { 
-      explanation : "단어에 대한 설명을 제시해 줍니다 . 한줄일지 두줄일지 모르고 여튼...11",
-      answer : 1,
-      example : ["보기 1번", "보기 2번", "보기 3번", "보기 4번"]
-      },
-      { 
-        explanation : " . 모르고 여튼...22",
-        answer : 2,
-        example : ["1번", " 2번", " 3번", " 4번"]
-      },
-      { 
-        explanation : "단어에 대한 설명을 제시해 . 모르고 여튼...33",
-        answer : 3,
-        example : ["보 ", "보", "보", "보"]
-      },
-      { 
-        explanation : "단어에 대한  . 모르고 여튼...44",
-        answer : 4,
-        example : ["보기 1", "보기 2", "보기 3", "보기 4"]
+  const isCorrect= (selectCorrect) => {
+    if(isCorrects[activeStep] === 0){
+      const tmp = isCorrects
+      if(fourWayData[activeStep].answer === selectCorrect){
+        tmp[activeStep] = 1
+        setIsCorrects(tmp)
+      } else {
+        tmp[activeStep] = 2
+        setIsCorrects(tmp)
       }
-    ])
-  }, [])
-  
+    }
+  }
+
+  const getData = async () => {
+    const Url = `https://csafy.com/api/v1/cs-service/test/multiple?category=${props.Cate}&questionNum=${selecCNT}`
+    axios({
+      method: 'get',
+      url:  Url,
+    })
+    .then((res) => {
+      console.log(res.data)
+      setFourWayData(res.data)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+
+  useEffect(() => {
+    if (pageNumber === 2){
+      getData()
+      setIsCorrects([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+    }
+  }, [pageNumber])
+
+  useEffect(() => {
+    setPageNumber(1)
+    
+  },[props.Cate])
+
   const onClickBtn = (data) => {
+    setSelecCNT(data)
     setPageNumber(2)
   }
 
@@ -77,24 +96,74 @@ function FourWayRace() {
     setSelectTwo(0)
     setSelectThree(0)
     setSelectFour(0)
+    isCorrect(1)
   }
   const onClickTwo = () => {
     setSelectOne(0)
     setSelectTwo(2)
     setSelectThree(0)
     setSelectFour(0)
+    isCorrect(2)
   }
   const onClickThree = () => {
     setSelectOne(0)
     setSelectTwo(0)
     setSelectThree(3)
     setSelectFour(0)
+    isCorrect(3)
   }
   const onClickFour = () => {
     setSelectOne(0)
     setSelectTwo(0)
     setSelectThree(0)
     setSelectFour(4)
+    isCorrect(4)
+  }
+
+  const scorePostAPI = () => {
+    const Url = `https://csafy.com/api/v1/cs-service/profile/scores/update`
+    const JWT = window.localStorage.getItem("jwt")
+    const score = isCorrects.reduce((acc, data) => {
+      if(data === 1){
+        return acc + 2
+      } else {
+        return acc
+      }
+    }, 0)
+    // console.log({
+    //     "subject" : props.Cate,
+    //     "score" : score
+    // })
+    axios({
+      method: 'post',
+      url:  Url,
+      headers: {
+        Authorization: JWT
+      },
+      data: {
+        "subject" : props.Cate,
+        "score" : score
+      },
+      
+    })
+    .then((res) => {
+      console.log(res)
+      setPageNumber(1)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+
+  }
+
+  const scorePost = () => {
+    if (activeStep === (maxSteps -1)){
+      return(
+        <Button onClick={() => scorePostAPI()}>
+          점수 제출하기
+        </Button>
+      )
+    }
   }
 
 
@@ -108,7 +177,7 @@ function FourWayRace() {
           backgroundColor={selectOne === 0 ?  "#fff;" 
           : selectOne === fourWayData[activeStep].answer ? "#f2fbf6;"
           : "#FFD5D2;"}>
-            {fourWayData[activeStep].example[0]}
+            {fourWayData[activeStep].examples[0]}
         </OXCard>
       </CardCoverDiv>
 
@@ -120,7 +189,7 @@ function FourWayRace() {
         backgroundColor={selectTwo === 0 ?  "#fff;" 
         : selectTwo === fourWayData[activeStep].answer ? "#f2fbf6;"
         : "#FFD5D2;"}>
-          {fourWayData[activeStep].example[1]}
+          {fourWayData[activeStep].examples[1]}
         </OXCard>
       </CardCoverDiv>
 
@@ -132,7 +201,7 @@ function FourWayRace() {
         backgroundColor={selectThree === 0 ?  "#fff;" 
         : selectThree === fourWayData[activeStep].answer ? "#f2fbf6;"
         : "#FFD5D2;"}>
-          {fourWayData[activeStep].example[2]}
+          {fourWayData[activeStep].examples[2]}
         </OXCard>
       </CardCoverDiv>
 
@@ -144,7 +213,7 @@ function FourWayRace() {
         backgroundColor={selectFour === 0 ?  "#fff;" 
         : selectFour === fourWayData[activeStep].answer ? "#f2fbf6;"
         : "#FFD5D2;"}>
-          {fourWayData[activeStep].example[3]}
+          {fourWayData[activeStep].examples[3]}
         </OXCard>
       </CardCoverDiv>
     </FlexDiv>
@@ -153,6 +222,9 @@ function FourWayRace() {
   if (pageNumber === 1) {
     return(
     <FourCardDiv>
+      <Title>
+        4지선다 문제풀기
+      </Title>
       <QuestionText>
         📗 몇 문제를 풀기를 원하시나요?
       </QuestionText>
@@ -194,17 +266,14 @@ function FourWayRace() {
       backgroundColor: "#fff"}}>
       
       <MeaningDiv>
-        {fourWayData[activeStep].explanation}/
-        answer : {fourWayData[activeStep].answer}/
-        one:{selectOne}/
-        two:{selectTwo}/
-        th:{selectThree}/
-        fo:{selectFour}
+        <QuestionTextDiv>
+          {fourWayData[activeStep].question}
+        </QuestionTextDiv>
       </MeaningDiv>
 
 
       {OXCardPack}
-
+      {scorePost()}
 
       <FootBar></FootBar>
       <MobileStepper
@@ -244,9 +313,9 @@ function FourWayRace() {
 }
 export default FourWayRace
 
-const FourCardDiv = styled.div`
+export const FourCardDiv = styled.div`
   width: 60%;
-  height: 150px;
+  height: 210px;
   flex-grow: 0;
   margin: 10px auto 10px auto;
   padding: 20px 7px 11px 13px;
@@ -255,10 +324,27 @@ const FourCardDiv = styled.div`
   background-color: #fff;
 `
 
-const QuestionText = styled.div`
+export const  Title = styled.div`
   width: 300px;
+  height: 60px;
+  margin: 10px auto 15px; auto;
+  flex-grow: 0;
+  font-family: SUIT;
+  font-size: 32px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #000;
+`
+
+
+export const QuestionText = styled.div`
+  width: 350px;
   height: 30px;
-  margin:auto;
+  margin: 0 auto 20px auto;
   flex-grow: 0;
   font-family: SUIT;
   font-size: 18px;
@@ -271,7 +357,7 @@ const QuestionText = styled.div`
   color: #000;
 `
 
-const ClickBtn = styled.button`  
+export const ClickBtn = styled.button`  
   
   flex-grow: 0;
   margin: 0 5px 0 5px;
@@ -326,13 +412,32 @@ const CardCoverDiv = styled.div`
 `
 
 const OXCard = styled.div`
-  width: 230px;
-  height: 154px;
+  width: 400px;
+  height: 155px;
   flex-grow: 0;
-  
-  padding: 0 0.1px 0 0;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
   border-radius: 11px;
-  
+  font-size: 20px;
+  text-align: left;
   border: ${(props) => props.border}
   background-color: ${(props) => props.backgroundColor}
+`
+
+const QuestionTextDiv = styled.div`
+  width: 100%;
+  height: 170px;
+  margin: 10px auto 15px; auto;
+  padding: 15px 0;
+  flex-grow: 0;
+  font-family: SUIT;
+  font-size: 32px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #000;
 `
