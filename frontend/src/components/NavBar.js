@@ -146,7 +146,7 @@ const NavBar = () => {
             {!isLoggedIn ? (
               <Link to="/">
                 <img
-                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
+                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
                   alt="Img"
                   style={{
                     width: '110px',
@@ -159,7 +159,7 @@ const NavBar = () => {
             ) : (
               <Link to="/mypage">
                 <img
-                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
+                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
                   alt="Img"
                   style={{
                     width: '110px',
@@ -325,7 +325,7 @@ const NavBar = () => {
           >
             <Link to="/">
               <img
-                src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
+                src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
                 alt="Img"
                 style={{
                   width: '110px',

@@ -35,7 +35,7 @@ function Footer() {
       <FooterWrapper>
         <div style={{ paddingLeft: '3rem' }}>
           <img
-            src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
+            src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
             alt="Csafy"
             style={{ width: '150px' }}
           />
