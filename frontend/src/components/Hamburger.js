@@ -49,15 +49,7 @@ const Content = styled.div`
   left: 50%;
   transform: translate(-50%, -35%);
 `;
-const Likes = styled.div`
-  position: absolute;
-  right: 20px;
-  bottom: 40px;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 const AttitudeCategory = styled.div`
   width: 78px;
   height: 31px;
@@ -97,20 +89,7 @@ const Icon = styled.div`
   cursor: pointer;
 `;
 
-const ModalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '840px',
-  height: '530px',
-  bgcolor: '#fff',
-  boxShadow: '0 0 11px 1px rgba(0, 142, 208, 0.12)',
-  borderRadius: '9px',
-  // p: 4,
-};
-
-export default function Hamburger() {
+export default function Hamburger({ getInterviewInfo, interviewInfo }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
   //
@@ -134,40 +113,14 @@ export default function Hamburger() {
     setAnchorEl(null);
   };
 
-  //
-  const [interviewInfo, setInterviewInfo] = React.useState({});
-  const [token, setToken] = useRecoilState(Token);
-  const [randSeq, setRandSeq] = React.useState(1);
-  // console.log(randSeq);
-  // 좋아요 정보 가져오기(갱신)
-  const getInterviewInfo = () => {
-    axios
-      .get(`${defaultAPI}/cs-service/interview/${randSeq}/info`, {
-        headers: { Authorization: token },
-      })
-      .then(res => {
-        console.log(res);
-        setInterviewInfo(res.data);
-      })
-      .catch(err => console.error(err));
-  };
-  const handleLikes = () => {
-    axios
-      .post(`${defaultAPI}/cs-service/interview/${randSeq}/likes`, null, {
-        headers: { Authorization: token },
-      })
-      .then(res => {
-        // isliked 갱신
-        getInterviewInfo();
-      })
-      .catch(err => console.error(err));
-  };
-
   React.useEffect(() => {
     // 1부터 10 사이 정수
-    setRandSeq(Math.floor(Math.random() * 10 + 1));
+    // setRandSeq(Math.floor(Math.random() * 10 + 1));
     getInterviewInfo();
   }, [modal]);
+
+  // console.log(interviewInfo);
+  // console.log(interviewInfo.category);
 
   return (
     <div>
@@ -205,7 +158,6 @@ export default function Hamburger() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        {/* <Box sx={ModalStyle}> */}
         <DetailBox>
           {interviewInfo.category === '인성' ? (
             <AttitudeCategory>{interviewInfo.category}</AttitudeCategory>
@@ -216,30 +168,20 @@ export default function Hamburger() {
           <Icon>
             <VoiceRecord />
           </Icon>
-          <Likes>
-            {interviewInfo.liked ? (
-              <ThumbUpIcon
-                color="primary"
-                sx={{
-                  marginRight: '10px',
-                  cursor: 'pointer',
-                }}
-                onClick={handleLikes}
-              />
-            ) : (
-              <ThumbUpOffAltIcon
-                color="primary"
-                sx={{
-                  marginRight: '10px',
-                  cursor: 'pointer',
-                }}
-                onClick={handleLikes}
-              />
-            )}
-            {interviewInfo.interviewLikes}
-          </Likes>
+          {/* <ButtonDiv> */}
+          <Button
+            style={{ position: 'absolute', bottom: '30px', left: '80px' }}
+            onClick={handleModalClose}
+          >
+            면접 종료
+          </Button>
+          <Button
+            style={{ position: 'absolute', bottom: '30px', right: '80px' }}
+            onClick={getInterviewInfo}
+          >
+            다음문제
+          </Button>
         </DetailBox>
-        {/* </Box> */}
       </Modal>
     </div>
   );

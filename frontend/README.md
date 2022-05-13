@@ -31,6 +31,12 @@ npm install chart.js
 
 npm install react-chartjs-2
 
+npm install hamburger-react
+
+npm install react-burger-menu
+
+npm install file-saver
+
 // npm install react-calendar-heatmap react-tooltip 에러로 인해 yarn add 사용
 yarn add react-calendar-heatmap react-tooltip
 

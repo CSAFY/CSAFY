@@ -164,12 +164,12 @@ const ButtonBox = styled.div`
 function Home() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      navigate('/mypage');
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('jwt');
+  //   if (token) {
+  //     navigate('/mypage');
+  //   }
+  // }, []);
 
   const handleStart = () => {
     navigate('/');
