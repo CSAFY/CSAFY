@@ -363,7 +363,7 @@ function MyPage() {
         });
       });
   };
-  // console.log('🐸', state);
+  // console.log('🐸', userInfo);
   return (
     <>
       <MyPageWrapper>
