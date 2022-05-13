@@ -15,6 +15,8 @@ import { fourWayRaceData } from "../../../recoils";
 
 import axios from 'axios';
 
+import BasicModal from './BasicModal';
+
 function FourWayRace(props) {
   const [selecCNT, setSelecCNT] = useState(5)
   const [pageNumber, setPageNumber] = useState(1)
@@ -147,8 +149,9 @@ function FourWayRace(props) {
       
     })
     .then((res) => {
-      console.log(res)
-      setPageNumber(1)
+      console.log(res.data)
+      setResData(res.data)
+      handleOpen()
     })
     .catch(err =>{
       console.log(err)
@@ -165,6 +168,14 @@ function FourWayRace(props) {
       )
     }
   }
+
+  const [open, setOpen] = useState(false);
+  const [resData, setResData] = useState({"prevScore": null, "nowScore":null});
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false)
+    setPageNumber(1)
+  };
 
 
   const OXCardPack = (
@@ -274,7 +285,14 @@ function FourWayRace(props) {
 
       {OXCardPack}
       {scorePost()}
-
+      <BasicModal 
+        isOpen={open} 
+        handleClose={handleClose} 
+        prevScore={resData.prevScore} 
+        nowScore={resData.nowScore} 
+        Cate={props.Cate}
+        >
+      </BasicModal>
       <FootBar></FootBar>
       <MobileStepper
         variant="text"
