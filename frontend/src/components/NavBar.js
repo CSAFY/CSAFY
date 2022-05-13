@@ -527,7 +527,10 @@ const NavBar = () => {
                       // bgcolor: '#D5F2FC',
                     },
                   }}
-                  onClick={() => navigate('/myPage')}
+                  onClick={() => {
+                    navigate('/myPage');
+                    setCurrentPage('/myPage');
+                  }}
                 >
                   <AccountCircleIcon />
                 </Button>

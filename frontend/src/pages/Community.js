@@ -105,11 +105,40 @@ function Community() {
         // 인성 문제 받아오기
         // getCharInterview();
         setCategory('character');
+        axios
+          .post(
+            `${defaultAPI}/cs-service/interview/create`,
+            {
+              category: 'character',
+              question: 1,
+            },
+            { headers: { Authorization: token } },
+          )
+          .then(res => {
+            console.log(res);
+            setInterviewInfo(res.data[0]);
+          })
+          .catch(err => console.error(err));
       } else {
         // 기술 문제 받아오기
         // openInterviewModal();
         // getTechInterview();
         setCategory('tech');
+
+        axios
+          .post(
+            `${defaultAPI}/cs-service/interview/create`,
+            {
+              category: 'tech',
+              question: 1,
+            },
+            { headers: { Authorization: token } },
+          )
+          .then(res => {
+            console.log(res);
+            setInterviewInfo(res.data[0]);
+          })
+          .catch(err => console.error(err));
       }
       // 모달 띄우기
       setModal(true);
@@ -155,10 +184,11 @@ function Community() {
   //     })
   //     .catch(err => console.error(err));
   // };
-
+  console.log(category);
   // test
   const [interviewInfo, setInterviewInfo] = React.useState({});
   const getInterviewInfo = () => {
+    console.log(category);
     if (category === 'character') {
       axios
         .post(
