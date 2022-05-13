@@ -13,6 +13,8 @@ import { oxquizData } from "../../../recoils";
 
 import axios from 'axios';
 
+import BasicModal from './BasicModal';
+
 import {
   FourCardDiv,
   QuestionText,
@@ -173,10 +175,6 @@ function OXquiz(props) {
         return acc
       }
     }, 0)
-    // console.log({
-    //     "subject" : props.Cate,
-    //     "score" : score
-    // })
     axios({
       method: 'post',
       url:  Url,
@@ -187,11 +185,12 @@ function OXquiz(props) {
         "subject" : props.Cate,
         "score" : score
       },
-      
     })
     .then((res) => {
-      console.log(res)
-      setPageNumber(1)
+      console.log(res.data)
+      setResData(res.data)
+      handleOpen()
+      
     })
     .catch(err =>{
       console.log(err)
@@ -210,13 +209,18 @@ function OXquiz(props) {
     }
   }
 
-
-  
-  
   const onClickBtn = (data) => {
     setSelecCNT(data)
     setPageNumber(2)
   }
+
+  const [open, setOpen] = useState(false);
+  const [resData, setResData] = useState({"prevScore": null, "nowScore":null});
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false)
+    setPageNumber(1)
+  };
 
   if (pageNumber === 1) {
     return(
@@ -273,6 +277,14 @@ function OXquiz(props) {
         {OXCardPack}
         
         {scorePost()}
+        <BasicModal 
+          isOpen={open} 
+          handleClose={handleClose} 
+          prevScore={resData.prevScore} 
+          nowScore={resData.nowScore} 
+          Cate={props.Cate}
+          >
+          </BasicModal>
       <MobileStepper
         variant="text"
         steps={maxSteps}
