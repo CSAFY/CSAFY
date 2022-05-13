@@ -18,6 +18,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { Tooltip } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // MODAL
 import Modal from '@mui/material/Modal';
@@ -54,7 +55,7 @@ const pages = [
   { name: '면접 대비', link: 'interview' },
   // { name: '기술 스택', link: 'classification' },
   { name: '메타버스', link: 'community' },
-  // { name: '결제', link: 'payment' },
+  { name: '실력 테스트', link: 'CSTest' },
 ];
 const settings = [
   { name: '문제집', link: 'CSTest' },
@@ -143,7 +144,19 @@ const NavBar = () => {
               setToggle(false);
             }}
           >
-            {!isLoggedIn ? (
+            <Link to="/">
+              <img
+                src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
+                alt="Img"
+                style={{
+                  width: '110px',
+                  height: '35px',
+                  paddingTop: '10px',
+                  backgroundColor: 'none',
+                }}
+              />
+            </Link>
+            {/* {!isLoggedIn ? (
               <Link to="/">
                 <img
                   src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
@@ -169,7 +182,7 @@ const NavBar = () => {
                   }}
                 />
               </Link>
-            )}
+            )} */}
           </Typography>
 
           {/* 반응형 - 넓은 화면 navbar */}
@@ -240,7 +253,7 @@ const NavBar = () => {
               }
             })}
             {/* 실력테스트 */}
-            <Tooltip title="Open settings">
+            {/* <Tooltip title="Open settings">
               {toggle ? (
                 <Button
                   onClick={handleOpenUserMenu}
@@ -279,7 +292,7 @@ const NavBar = () => {
                   실력 테스트
                 </Button>
               )}
-            </Tooltip>
+            </Tooltip> */}
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -496,24 +509,47 @@ const NavBar = () => {
             }}
           >
             {isLoggedIn ? (
-              <Button
-                sx={{
-                  textAlign: 'center',
-                  mx: 1,
-                  my: 2,
-                  color: 'black',
-                  display: 'block',
-                  ':hover': {
-                    color: '#006D9F',
-                    bgcolor: '#ffffff',
-                    // bgcolor: '#D5F2FC',
-                  },
-                }}
-                onClick={handleLogout}
-              >
-                로그아웃
-                {/* {toggleLogin} */}
-              </Button>
+              <>
+                <Button
+                  sx={{
+                    textAlign: 'center',
+                    // mx: 1,
+                    // my: 2,
+                    color: 'black',
+                    display: {
+                      md: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    },
+                    ':hover': {
+                      color: '#006D9F',
+                      bgcolor: '#ffffff',
+                      // bgcolor: '#D5F2FC',
+                    },
+                  }}
+                  onClick={() => navigate('/myPage')}
+                >
+                  <AccountCircleIcon />
+                </Button>
+                <Button
+                  sx={{
+                    textAlign: 'center',
+                    mx: 1,
+                    my: 2,
+                    color: 'black',
+                    display: 'block',
+                    ':hover': {
+                      color: '#006D9F',
+                      bgcolor: '#ffffff',
+                      // bgcolor: '#D5F2FC',
+                    },
+                  }}
+                  onClick={handleLogout}
+                >
+                  로그아웃
+                  {/* {toggleLogin} */}
+                </Button>
+              </>
             ) : (
               <Button
                 sx={{
