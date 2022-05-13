@@ -275,7 +275,7 @@ function MyPage() {
       );
     }
 
-    console.log('🐸', state.image);
+    // console.log('🐸', state.image);
 
     axios
       .put(` https://csafy.com/api/v1/user-service/update`, formData, {
@@ -341,7 +341,7 @@ function MyPage() {
     reader.readAsDataURL(file);
   };
   useEffect(() => {}, []);
-  console.log(userInfo);
+  // console.log(userInfo);
 
   // 프리미엄 결제
   const buyPremium = () => {
@@ -363,13 +363,13 @@ function MyPage() {
         });
       });
   };
-  console.log('🐸', state);
+  // console.log('🐸', state);
   return (
     <>
       <MyPageWrapper>
         <MyPageContent>
           <UserInfoWrapper>
-            <ReactBurger />
+            {/* <ReactBurger /> */}
             <UserInfo>
               {editToggle ? (
                 <div style={{ position: 'relative' }}>
