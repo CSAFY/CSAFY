@@ -90,7 +90,7 @@ function CSTest() {
     },
     {
       id: 7,
-      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_long.png',
+      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_test.png',
       title: 'all',
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
@@ -133,7 +133,7 @@ function CSTest() {
             }}
           >
             <img
-              src="https://csafy-profile.s3.amazonaws.com/logo/logo_long.png"
+              src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
               alt="CSAFY"
               style={{
                 width: '300px',

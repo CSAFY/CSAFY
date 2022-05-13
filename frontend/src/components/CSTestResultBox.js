@@ -99,7 +99,7 @@ function CSTestResultBox({ state }) {
       컴퓨터구조: state.total6,
     },
   };
-  console.log(result);
+  // console.log(result);
 
   const getScore = data => {
     return Math.ceil((data.rightQuestions / data.totalQuestions) * 100);

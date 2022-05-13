@@ -58,7 +58,7 @@ const TechCategory = styled.div`
 function QuestionBox(props) {
   const navigate = useNavigate();
   const handleQuestion = () => {
-    console.log(props.interviewSeq);
+    // console.log(props.interviewSeq);
     navigate(`/interviewDetail/${props.interviewSeq}`, { state: props });
   };
   return (

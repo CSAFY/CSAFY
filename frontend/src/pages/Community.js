@@ -1,3 +1,4 @@
+import { Box, Button, Modal } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Unity, { UnityContext } from 'react-unity-webgl';
@@ -41,7 +42,7 @@ const UnityWrapper = styled.div`
   position: relative;
 `;
 const Menu = styled.div`
-  width: 50px;
+  width: 150px;
   height: 50px;
   border: 1px solid black;
   background-color: white;
