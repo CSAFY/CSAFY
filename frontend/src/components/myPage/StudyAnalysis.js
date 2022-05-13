@@ -26,11 +26,11 @@ function StudyAnalysis({ userInfo, analysisData }) {
         {analysisData.scores && <RadarChart analysisData={analysisData} />}
 
         <div style={{ flexGrow: '1', marginLeft: '100px' }}>
-          <h1>학습 시간 분석</h1>
-          <p>총 CS 학습 시간: {analysisData.exp} 포인트</p>
+          <h1>학습 포인트 분석</h1>
+          <p>총 CS 학습 포인트: {analysisData.exp} 포인트</p>
           {analysisData.scores && (
             <div>
-              <p>과목별 학습 시간</p>
+              <p>과목별 학습 포인트</p>
               <ul>
                 <li>네트워크: {analysisData.scores.네트워크} 포인트</li>
                 <li>운영체제: {analysisData.scores.운영체제} 포인트</li>
