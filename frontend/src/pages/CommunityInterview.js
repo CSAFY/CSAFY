@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import styled from 'styled-components';
 import { Button, Modal } from '@mui/material';
-import VoiceRecord from '../components/VoiceRecord';
+import AudioRecorder from '../components/AudioRecorder';
 
 const DetailBox = styled.div`
   width: 840px;
@@ -97,7 +97,7 @@ function CommunityInterview({
           )}
           <Content>Q. {interviewInfo.question}</Content>
           <Icon>
-            <VoiceRecord />
+            <AudioRecorder cnt={interviewInfo.question} />
           </Icon>
           {/* <ButtonDiv> */}
           <Button
