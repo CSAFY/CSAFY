@@ -9,6 +9,7 @@ export const Userinfo = atom({
     {
       email: '',
       username: '',
+      isVip: false,
     },
   ],
   effects_UNSTABLE: [persistAtom],
