@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.csafy.csafy_android.R
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.csafy.csafy_android.adapter.ProfileFavoriteAdapter
-import com.csafy.csafy_android.adapter.viewholder.FavoriteViewHolder
 import com.csafy.csafy_android.databinding.FragmentProfileStudyBinding
 import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.data.response.ResponseFavoriteData
@@ -32,18 +32,22 @@ class ProfileStudyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_study, container, false)
+        _binding = FragmentProfileStudyBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getfavoriteData()  // 즐겨찾기 학습 정보 불러오기
+//        getfavoriteData()  // 즐겨찾기 학습 정보 불러오기
 
-        profileFavoriteAdapter = ProfileFavoriteAdapter(view.context)
-        binding.rvFavorite.adapter = profileFavoriteAdapter  // 리사이클러뷰의 어댑터를 profileAdapter로 지정해줌
+        profileFavoriteAdapter = ProfileFavoriteAdapter(datas)  // 어댑터 초기화
+        binding.rvFavorite.layoutManager = LinearLayoutManager(context)
+        binding.rvFavorite.adapter = ProfileFavoriteAdapter(datas)  // 리사이클러뷰의 어댑터를 profileAdapter로 지정해줌
+        binding.rvFavorite.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         loadDatas()  // 데이터 생성, 어댑터에 전달
+
     }
 
     // 데이터 생성
@@ -52,8 +56,8 @@ class ProfileStudyFragment : Fragment() {
             add(
                 ResponseFavoriteData(
                     id = 1,
-                    title = "운영체제론을 배워보자",
-                    categoryId = "1번 카테고리",
+                    title = "운영체제론을 배워보자123123",
+                    categoryId = "11231번 카테고리",
                     category2Id = "2번 카테고리",
                     videoId = "비디오 아이디 1"
             ))
@@ -63,11 +67,12 @@ class ProfileStudyFragment : Fragment() {
                     title = "운영체제론을 배워보자",
                     categoryId = "1번 카테고리",
                     category2Id = "2번 카테고리",
-                    videoId = "비디오 아이디 1"
+                    videoId = "비디오 아이디 22"
             ))
         }
-        profileFavoriteAdapter.datas = datas
-        profileFavoriteAdapter.notifyDataSetChanged()
+//        ProfileFavoriteAdapter.datas = datas
+//        ProfileFavoriteAdapter.notifyDataSetChanged()
+
     }
 
     // 즐겨찾기 학습 정보 불러오기

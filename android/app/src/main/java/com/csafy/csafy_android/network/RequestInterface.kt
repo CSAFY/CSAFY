@@ -6,7 +6,6 @@ import com.csafy.csafy_android.network.data.response.ResponseFavoriteData
 import com.csafy.csafy_android.network.data.request.RequestScoreData
 import com.csafy.csafy_android.network.data.response.ResponseJoinData
 import com.csafy.csafy_android.network.data.response.ResponseLoginData
-import com.csafy.csafy_android.network.data.response.ResponseMultipleData
 import com.csafy.csafy_android.network.data.response.*
 import com.csafy.csafy_android.network.data.response.ResponseOXData
 import retrofit2.Call
@@ -33,6 +32,12 @@ interface RequestInterface {
     // 즐겨찾는 학습
     @GET("cs-service/profile/study/favorites")
     fun getFavorite() : Call<List<ResponseFavoriteData>>
+
+
+    /* 메인 탭 */
+    // 차트 데이터 받아오기
+    @GET("cs-service/profile/my/scores/get")
+    fun getChartData() : Call<List<ResponseChartData>>
 
 
     /* 학습 탭 */
@@ -78,6 +83,16 @@ interface RequestInterface {
     fun updateScores(
         @Body body : RequestScoreData
     ) : Call<Void>
+
+
+    /* 면접 질문 탭 */
+    // 면접 질문 리스트 받기
+    @GET("cs-service/interview/list/get")
+    fun getInterviewList(
+        @Query("category") category: String
+    ) : Call<List<ResponseInterviewData>>
+
+
 
 
 

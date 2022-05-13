@@ -3,6 +3,7 @@ package com.csafy.csafy_android.fragment
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.csafy.csafy_android.databinding.FragmentHomeBinding
+import com.csafy.csafy_android.network.RequestToServer
+import com.csafy.csafy_android.network.data.response.ResponseChartData
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -18,6 +21,9 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class HomeFragment : Fragment() {
@@ -25,6 +31,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
+
+    val requestToServer = RequestToServer
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -34,10 +42,36 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        getChartData()
         pieChart()
         barChart()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    // 차트 데이터 받아오기
+    private fun getChartData() {
+        requestToServer.service.getChartData()
+            .enqueue(object : Callback<List<ResponseChartData>> {
+                override fun onResponse(
+                    call: Call<List<ResponseChartData>>,
+                    response: Response<List<ResponseChartData>>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d("메인 차트 데이터 통신 성공", "${response.body()!!}")
+
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ResponseChartData>>, t: Throwable) {
+                    Log.d("메인 차트 데이터 통신 실패", "${t}")
+                }
+
+            })
     }
 
     // pie chart 생성

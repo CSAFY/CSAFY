@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.csafy.csafy_android.fragment.*
 import com.csafy.csafy_android.R
 import com.csafy.csafy_android.databinding.ActivityMainBinding
+import com.csafy.csafy_android.network.RequestToServer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     // fragment 처리 객체
     private lateinit var homeFragment: HomeFragment
-    private lateinit var cardFragment: CardFragment
+    private lateinit var interviewFragment: InterviewFragment
     private lateinit var studyFragment: StudyFragment
     private lateinit var testFragment: TestFragment
     private lateinit var profileFragment: ProfileFragment
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         // fragment 처리 객체 : 없으면 FATAL EXCEPTION 남..
         homeFragment = HomeFragment()
         studyFragment = StudyFragment()
-        cardFragment = CardFragment()
+        interviewFragment = InterviewFragment()
         testFragment = TestFragment()
         profileFragment = ProfileFragment()
 
@@ -70,7 +71,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onBackPressed() {
         // 기존의 뒤로가기 버튼의 기능
         //super.onBackPressed();
-        var backTemp = System.currentTimeMillis()
 
         // 2초 안에 한 번 더 누르면 나가게 하기
         if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
@@ -222,7 +222,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     .commit()
             }
             R.id.menu_item_card -> {
-                supportFragmentManager.beginTransaction().replace(R.id.main_frame, cardFragment)
+                supportFragmentManager.beginTransaction().replace(R.id.main_frame, interviewFragment)
                     .commit()
             }
             R.id.menu_item_test -> {

@@ -4,25 +4,27 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.csafy.csafy_android.R
 import com.csafy.csafy_android.adapter.viewholder.FavoriteViewHolder
+import com.csafy.csafy_android.databinding.ItemFavoriteBinding
 import com.csafy.csafy_android.network.data.response.ResponseFavoriteData
 
-class ProfileFavoriteAdapter(private val context : Context) : RecyclerView.Adapter<FavoriteViewHolder>() {
+class ProfileFavoriteAdapter(private val dataSet: MutableList<ResponseFavoriteData>) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
-    var datas = mutableListOf<ResponseFavoriteData>()
+//    var datas = mutableListOf<ResponseFavoriteData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_favorite, parent, false)
-        return FavoriteViewHolder(view)
+//        val view = LayoutInflater.from(context).inflate(R.layout.item_favorite, parent, false)
+//        return FavoriteViewHolder(view)
+        val binding = ItemFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FavoriteViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
-        holder.bind(datas[position])
+        holder.bind(dataSet[position])
     }
 
     override fun getItemCount(): Int {
-        return datas.size
+        return dataSet.size
     }
 
 }

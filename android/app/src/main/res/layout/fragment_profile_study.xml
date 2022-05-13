@@ -11,16 +11,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="즐겨찾는 학습"
+            android:textSize="24sp"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_favorite"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:background="@color/main_blue4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:background="@color/main_blue4"
             android:orientation="vertical"
-            tools:listitem="@layout/item_favorite"
-            />
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_favorite" />
 
     </LinearLayout>
 
