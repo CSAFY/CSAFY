@@ -48,8 +48,8 @@
                     android:gravity="center"
                     />
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pie_chart"
+                <com.github.mikephil.charting.charts.RadarChart
+                    android:id="@+id/radar_chart"
                     android:layout_width="300dp"
                     android:layout_height="300dp"
                     android:background="@color/main_green3"

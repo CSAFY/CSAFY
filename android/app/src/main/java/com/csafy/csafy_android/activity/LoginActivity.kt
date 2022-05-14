@@ -43,6 +43,12 @@ class LoginActivity : AppCompatActivity() {
             else {
                 Toast.makeText(this, "login 1", Toast.LENGTH_SHORT).show()
 
+                // 기간 만료 토큰 보내기 방지를 위해 토큰 지우고 보내기
+                val sharedPreference = getSharedPreferences("Login", MODE_PRIVATE)
+                val editor: SharedPreferences.Editor = sharedPreference.edit()
+                editor.clear()
+                editor.apply()
+
                 // 회원가입 요청
                 requestToServer.service.requestLogin(
                     RequestLoginData(
@@ -59,8 +65,8 @@ class LoginActivity : AppCompatActivity() {
                             Log.d("성공", response.toString())
 
                             // 토큰부터 저장해보자
-                            val sharedPreference = getSharedPreferences("Login", MODE_PRIVATE)
-                            val editor: SharedPreferences.Editor = sharedPreference.edit()
+//                            val sharedPreference = getSharedPreferences("Login", MODE_PRIVATE)
+//                            val editor: SharedPreferences.Editor = sharedPreference.edit()
                             editor.putString("token", response.body()!!.token)
                             editor.commit()
 

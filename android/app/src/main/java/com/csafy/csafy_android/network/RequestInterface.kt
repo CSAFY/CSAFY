@@ -37,7 +37,7 @@ interface RequestInterface {
     /* 메인 탭 */
     // 차트 데이터 받아오기
     @GET("cs-service/profile/my/scores/get")
-    fun getChartData() : Call<List<ResponseChartData>>
+    fun getChartData() : Call<ResponseChartData>
 
 
     /* 학습 탭 */

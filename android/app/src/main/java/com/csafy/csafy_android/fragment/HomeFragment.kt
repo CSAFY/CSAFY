@@ -14,9 +14,11 @@ import android.webkit.WebViewClient
 import com.csafy.csafy_android.databinding.FragmentHomeBinding
 import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.data.response.ResponseChartData
+import com.csafy.csafy_android.network.data.response.ScoreData
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
@@ -24,6 +26,8 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
@@ -34,6 +38,7 @@ class HomeFragment : Fragment() {
 
     val requestToServer = RequestToServer
 
+    var score: ScoreData? = null
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
@@ -42,32 +47,36 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        getChartData()
-        pieChart()
-        barChart()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        getChartData()  // 데이터 받아오기
+        radarChart()  // 차트 그리기
+        barChart()  // 차트 그리기
+
     }
 
     // 차트 데이터 받아오기
     private fun getChartData() {
         requestToServer.service.getChartData()
-            .enqueue(object : Callback<List<ResponseChartData>> {
+            .enqueue(object : Callback<ResponseChartData> {
                 override fun onResponse(
-                    call: Call<List<ResponseChartData>>,
-                    response: Response<List<ResponseChartData>>
+                    call: Call<ResponseChartData>,
+                    response: Response<ResponseChartData>
                 ) {
                     if (response.isSuccessful) {
-                        Log.d("메인 차트 데이터 통신 성공", "${response.body()!!}")
+                        var chartData = response.body()!!
+                        score = chartData.scores
+
+                        Log.e("메인 차트 데이터 통신 성공", "${response.body()!!}")
 
                     }
                 }
 
-                override fun onFailure(call: Call<List<ResponseChartData>>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseChartData>, t: Throwable) {
                     Log.d("메인 차트 데이터 통신 실패", "${t}")
                 }
 
@@ -75,16 +84,24 @@ class HomeFragment : Fragment() {
     }
 
     // pie chart 생성
-    private fun pieChart() {
-        var pieChart: PieChart = binding.pieChart
+    private fun radarChart() {
+        var radarChart: RadarChart = binding.radarChart
 
-        pieChart.setUsePercentValues(true)
-
-        val entries = ArrayList<PieEntry>()
-        entries.add(PieEntry(1.2f, "운영체제론"))
-        entries.add(PieEntry(1.8f, "데이터베이스"))
-        entries.add(PieEntry(2.2f, "컴퓨터구조론"))
-        entries.add(PieEntry(0.6f, "기타"))
+        val entries = ArrayList<RadarEntry>()
+        var computerArchitectureData: Float = 0.0f
+//        if (score!!.computerArchitecture == 0) {
+//            computerArchitectureData = 0.0f
+//        } else {
+//        Log.d("확인", "${score!!.computerArchitecture}")
+//        Log.d("확인", "${score!!.computerArchitecture}")
+//        Log.d("확인2", "${score!!.computerArchitecture!!.toFloat()}")
+//        computerArchitectureData = score!!.computerArchitecture!!.toFloat()
+//        }
+//        entries.add(RadarEntry(computerArchitectureData, "운영체제론"))
+        entries.add(RadarEntry(1.8f, "데이터베이스"))
+        entries.add(RadarEntry(1.8f, "데이터베이스"))
+        entries.add(RadarEntry(2.2f, "컴퓨터구조론"))
+        entries.add(RadarEntry(3.6f, "기타"))
 
         val colorItems = ArrayList<Int>()
         for (c in ColorTemplate.COLORFUL_COLORS) colorItems.add(c)
@@ -93,23 +110,16 @@ class HomeFragment : Fragment() {
         for (c in ColorTemplate.PASTEL_COLORS) colorItems.add(c)
         colorItems.add(ColorTemplate.getHoloBlue())
 
-        val pieDataSet = PieDataSet(entries, "")
-        pieDataSet.apply {
+        val radarDataSet = RadarDataSet(entries, "")
+        radarDataSet.apply {
             colors = colorItems
             valueTextColor = Color.BLACK
             valueTextSize = 16f
         }
 
-        val pieData = PieData(pieDataSet)
-        pieChart.apply {
-            data = pieData  // 이 부분이 있어야 그래프가 그려짐. 나머지는 디자인 커스
-            description.isEnabled = false
-            isRotationEnabled = false
-            centerText = "게스트님의\n학습현황"
-            setEntryLabelColor(Color.BLUE)
-            animateY(1400, Easing.EaseInOutQuad)
-            animate()
-        }
+        radarChart.data = RadarData(radarDataSet)
+        radarChart.invalidate()
+
     }
 
     // bar chart 생성
@@ -159,7 +169,7 @@ class HomeFragment : Fragment() {
                 isGranularityEnabled = true
                 valueFormatter = IndexAxisValueFormatter(type)
             }
-            barChart.invalidate()  // 그래프 그리
+            barChart.invalidate()  // 그래프 그리기
         }
 
     }

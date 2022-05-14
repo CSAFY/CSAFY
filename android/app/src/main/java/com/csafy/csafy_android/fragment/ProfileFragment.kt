@@ -119,11 +119,13 @@ class ProfileFragment : Fragment() {
                 ) {
                     if (response.isSuccessful) {
                         // 프로필 사진
-                        if (response.body()!!.profile_image == null) {
-                            Glide.with(view!!.context).load(R.drawable.cute_dog).into(binding.imgProfile)
-                        } else {
-                            Glide.with(view!!.context).load(response.body()!!.profile_image).into(binding.imgProfile)
-                        }
+                        Glide.with(view!!.context).load(R.drawable.cute_dog).into(binding.imgProfile)
+                        // 파일 처리
+//                        if (response.body()!!.profile_image == null) {
+//                            Glide.with(view!!.context).load(R.drawable.cute_dog).into(binding.imgProfile)
+//                        } else {
+//                            Glide.with(view!!.context).load(response.body()!!.profile_image).into(binding.imgProfile)
+//                        }
 
                         // username, introduction
                         binding.txUsername.text = response.body()!!.username

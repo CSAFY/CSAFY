@@ -11,9 +11,7 @@ import com.csafy.csafy_android.databinding.ItemInterviewBinding
 import com.csafy.csafy_android.network.data.response.ResponseFavoriteData
 import com.csafy.csafy_android.network.data.response.ResponseInterviewData
 
-class ProfileFavoriteAdapter(private val dataSet: MutableList<ResponseFavoriteData>) : RecyclerView.Adapter<FavoriteViewHolder>() {
-
-//    var datas = mutableListOf<ResponseFavoriteData>()
+class ProfileFavoriteAdapter(private val context: Context, private val dataSet: MutableList<ResponseFavoriteData>) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
 //        val view = LayoutInflater.from(context).inflate(R.layout.item_favorite, parent, false)

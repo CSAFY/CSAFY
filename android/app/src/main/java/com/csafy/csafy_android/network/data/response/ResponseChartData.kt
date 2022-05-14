@@ -7,7 +7,7 @@ data class ResponseChartData(
     val rank2: Int?,
     val username: String?,
     val exp: Int?,
-    val scores: List<ScoreData>
+    val scores: ScoreData
 )
 
 data class ScoreData (
