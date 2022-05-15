@@ -317,10 +317,22 @@ function CSTestDetail() {
         })
         .then(res => {
           // console.log(res);
-          navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+          sendHeatmapData();
+          
         })
         .catch(err => console.error(err));
     }
+  };
+  const sendHeatmapData = () => {
+    axios
+      .post(`${defaultAPI}/cs-service/profile/heatmap`, null, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        // console.log(res);
+        navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+      })
+      .catch(err => console.error(err));
   };
 
   // const onClickNum = (e, num) => {

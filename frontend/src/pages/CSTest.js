@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
 
 // STYLED
 import styled from 'styled-components';
@@ -6,6 +10,7 @@ import axios from 'axios';
 import TestBox from '../components/TestBox';
 import { Grid } from '@mui/material';
 import CompanyBox from '../components/companyClassification/CompanyBox';
+import NeedLogin from './handler/NeedLogin';
 
 const CSTestWrapper = styled.div`
   width: 100%;
@@ -45,6 +50,8 @@ const ContentTitle = styled.div`
 `;
 
 function CSTest() {
+    // Recoil
+    const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [dummyData, setDummyData] = useState([
     {
       id: 1,
@@ -100,6 +107,7 @@ function CSTest() {
   return (
     <CSTestWrapper>
       <CSTestContent>
+        {isLoggedIn ? (<>
         <ContentTitle>
           <div
             style={{
@@ -152,6 +160,10 @@ function CSTest() {
             ))}
           </Grid>
         </TestBoxWrapper>
+        </>) : ( <>
+            <NeedLogin />
+          </>)}
+        
       </CSTestContent>
     </CSTestWrapper>
   );

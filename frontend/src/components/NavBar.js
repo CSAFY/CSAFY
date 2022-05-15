@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
 import { Userinfo } from '../recoils/Userinfo';
+import { CurrentPage } from '../recoils/CurrentPage';
 
 // MUI
 // inherit 흰색 default 회색 primary 파랑 secondary 보라 error 빨강 info 파랑 success 초록 warning 주황 string 적용안됨
@@ -95,6 +96,8 @@ const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
   const [userinfo, setUserinfo] = useRecoilState(Userinfo);
+  const [currentPage, setCurrentPage] = useRecoilState(CurrentPage);
+  
   // 실력테스트 anchor
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [toggle, setToggle] = useState(false);
@@ -121,7 +124,7 @@ const NavBar = () => {
   // nav
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [currentPage, setCurrentPage] = useState('Home');
+  // const [currentPage, setCurrentPage] = useState('Home');
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);

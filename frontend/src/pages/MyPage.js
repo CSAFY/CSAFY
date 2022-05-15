@@ -94,27 +94,7 @@ const VideoWrapper = styled.div`
 `;
 
 function MyPage() {
-  // 히트맵 데이터 관련
-  const handleTest = () => {
-    axios
-      .post(`${defaultAPI}/cs-service/profile/heatmap`, null, {
-        headers: { Authorization: token },
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.error(err));
-  };
-  const handleGet = () => {
-    axios
-      .get(`${defaultAPI}/cs-service/profile/heatmap`, {
-        headers: { Authorization: token },
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.error(err));
-  };
+
   //
   const navigate = useNavigate();
   // Recoil
@@ -170,6 +150,20 @@ function MyPage() {
       })
       .catch(err => console.error(err));
   };
+    // 히트맵 데이터 관련
+    const [heatmapData, setHeatmapData] = useState([]);
+    const getHeatmapData = () => {
+      axios
+        .get(`${defaultAPI}/cs-service/profile/heatmap`, {
+          headers: { Authorization: token },
+        })
+        .then(res => {
+          console.log(res);
+          setHeatmapData(res.data)
+        })
+        .catch(err => console.error(err));
+    };
+    console.log(heatmapData)
   // 최근 본 면접 질문
   const [recentInterview, setRecentInterview] = useState([]);
   const getRecentInterviewInfo = () => {
@@ -246,6 +240,7 @@ function MyPage() {
   // console.log(recentStudy);
   useEffect(() => {
     getInfo();
+    getHeatmapData();
     getRecentInterviewInfo();
     getRecentStudyInfo();
     getFavorites();
@@ -602,19 +597,21 @@ function MyPage() {
                 </Button>
               )}
             </UserInfo>
-            <CalendarHeatmap
+            
+            {/* <CalendarHeatmap
               startDate={shiftDate(today, -250)}
               endDate={today}
-              values={[
-                { date: '2022-04-19', count: 1 },
-                { date: '2022-04-20', count: 2 },
-                { date: '2022-05-02', count: 3 },
-                { date: '2022-05-04', count: 4 },
-                { date: '2022-05-05', count: 5 },
-                { date: '2022-05-06', count: 6 },
-                { date: '2022-05-07', count: 7 },
-                { date: '2022-05-08', count: 8 },
-              ]}
+              // values={[
+              //   { date: '2022-04-19', count: 1 },
+              //   { date: '2022-04-20', count: 2 },
+              //   { date: '2022-05-02', count: 3 },
+              //   { date: '2022-05-04', count: 4 },
+              //   { date: '2022-05-05', count: 5 },
+              //   { date: '2022-05-06', count: 6 },
+              //   { date: '2022-05-07', count: 7 },
+              //   { date: '2022-05-08', count: 8 },
+              // ]}
+              values={heatmapData}
               classForValue={value => {
                 if (!value) {
                   return 'color-empty';
@@ -645,7 +642,7 @@ function MyPage() {
                 }
               }}
             />
-            <ReactTooltip />
+            <ReactTooltip /> */}
             <ColorBox>
               <Color>
                 <div>1문제</div>
@@ -778,8 +775,6 @@ function MyPage() {
                 ))}
             </div>
           </div>
-          {/* <button onClick={handleTest}>테스트</button>
-          <button onClick={handleGet}>가져오기</button> */}
         </MyPageContent>
       </MyPageWrapper>
     </>

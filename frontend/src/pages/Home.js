@@ -25,13 +25,17 @@
 
 import { Button } from '@mui/material';
 import React, { useEffect } from 'react';
+import swal from 'sweetalert2';
+
+import { Token } from '../recoils/Token';
 
 // REACT-REVEAL
 import Fade from 'react-reveal/Fade';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // STYLED
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 
 // background-color: #d5f2fc;
 const HomeWrapper = styled.div`
@@ -170,10 +174,29 @@ function Home() {
   //     navigate('/mypage');
   //   }
   // }, []);
-
+  const token = useRecoilValue(Token);
   const handleStart = () => {
-    navigate('/');
+    if (token) {
+      navigate('/studyframepage');
+    } else {
+      swal.fire({
+        icon: 'warning',
+        title: '로그인이 필요합니다.',
+        text: '로그인이 필요합니다. 회원가입 또는 로그인을 진행해주세요.',
+      });
+    }
   };
+  const handleStudy = () => {
+    if (token) {
+      navigate('/intensivepage');
+    } else {
+      swal.fire({
+        icon: 'warning',
+        title: '로그인이 필요합니다.',
+        text: '로그인이 필요합니다. 회원가입 또는 로그인을 진행해주세요.',
+      });
+    }
+  }
 
   return (
     <HomeWrapper>
@@ -514,6 +537,7 @@ function Home() {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
+              onClick={handleStudy}
             >
               학습 시작하기
             </Button>
@@ -557,9 +581,10 @@ function Home() {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
+              onClick={()=>window.open('https://play.google.com/store/apps/details?id=com.csafy.csafy_android', '_blank') }
             >
               모바일 버전 시작하기
-            </Button>
+              </Button>
           </ButtonBox>
         </PlusContent>
       </PlusWrapper>
