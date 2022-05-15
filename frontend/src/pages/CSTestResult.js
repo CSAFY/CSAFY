@@ -1,11 +1,12 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { Userinfo } from '../recoils/Userinfo';
 // STYLED
 import styled from 'styled-components';
 import CSTestResultBox from '../components/CSTestResultBox';
+// Recoil
 import { useRecoilValue } from 'recoil';
+import { Userinfo } from '../recoils/Userinfo';
 
 const TestResultWrapper = styled.div`
   width: 100%;
@@ -52,11 +53,13 @@ const ResultBox = styled.div`
 `;
 
 function CSTestResult() {
+  // Recoil
   const userInfo = useRecoilValue(Userinfo);
+
   const { testTitle } = useParams();
   const { state } = useLocation();
 
-  // console.log(state);
+  console.log(state);
   return (
     <TestResultWrapper>
       <TestresultContent>

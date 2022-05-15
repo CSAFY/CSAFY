@@ -35,8 +35,14 @@ const unityContext = new UnityContext({
   },
 });
 const CommunityWrapper = styled.div`
+  display: block;
   width: 100vw;
   height: 100vh;
+  // backgroundcolor: #1f1f1f;
+  // width: 100vw;
+  // height: 56.25vw;
+  // max-height: 100vh;
+  // max-width: 177.78vh;
   overflow: hidden;
 
   display: flex;
@@ -46,7 +52,12 @@ const CommunityWrapper = styled.div`
 const UnityWrapper = styled.div`
   width: 100%;
   height: 100vh;
-  background: grey;
+  // display: block;
+  // width: 100vw;
+  // height: 56.25vw;
+  // max-height: 100vh;
+  // max-width: 177.78vh;
+  overflow: hidden;
 
   position: relative;
 `;
@@ -70,6 +81,8 @@ function Community() {
   const [nickname, SetNickname] = useState('Noname'); // 유니티 내에서의 닉네임 = 안쓸수도 있음
   const username = useRecoilValue(Username); // 회원정보
 
+  const FileSaver = require('file-saver');
+
   //
 
   const [token, setToken] = useRecoilState(Token);
@@ -77,13 +90,26 @@ function Community() {
   // const [randSeq, setRandSeq] = React.useState(
   //   Math.floor(Math.random() * 10 + 1),
   // );
+  // 스샷 버튼 누르면 현재 화면 찍음
+  function handleClickTakeScreenshot() {
+    const data = unityContext.takeScreenshot('image/jpeg', 1.0);
+    console.log(data);
+    if (data !== null) {
+      FileSaver.saveAs(data, 'screenshot.jpg');
+    }
+  }
+
+  // 풀 스크린 만들기
+  const handleClickFullscreen = () => {
+    unityContext.setFullscreen(true);
+  };
 
   // 로딩 완료시 유저네임 -> 닉네임 옮기기
   useEffect(function() {
     unityContext.on('GetNickName', function(name) {
       if (name === 'start') {
         unityContext.send('NetworkManager', 'SetNickNameReact', username);
-        unityContext.send('NetworkManager', 'SetTokenReact', token)
+        unityContext.send('NetworkManager', 'SetTokenReact', token);
       } else {
         SetNickname(name);
       }
@@ -96,6 +122,11 @@ function Community() {
       console.log(name);
     });
   }, []);
+
+  // 면접 종료 버튼 누르면 작동하는 함수
+  const onHandleEnd = () => {
+    unityContext.send('InterviewManager', 'EndInterviewReact');
+  };
 
   // 방 들어갔을때 작동, 방 이름 얻어오고 관련 로직 수행
   const [modal, setModal] = useState(false);
@@ -243,7 +274,10 @@ function Community() {
               interviewInfo={interviewInfo}
             /> */}
             {/* <button onClick={() => setModal(!modal)}>test</button> */}
-            <ReactBurger />
+            <ReactBurger
+              handleClickTakeScreenshot={handleClickTakeScreenshot}
+              handleClickFullscreen={handleClickFullscreen}
+            />
           </Menu>
           <div>
             <CommunityInterview
@@ -251,6 +285,7 @@ function Community() {
               setModal={setModal}
               getInterviewInfo={getInterviewInfo}
               interviewInfo={interviewInfo}
+              onHandleEnd={onHandleEnd}
             />
           </div>
           <Unity
@@ -274,6 +309,8 @@ function Community() {
             METABUS
           </div> */}
         </UnityWrapper>
+        {/* <button onClick={handleClickTakeScreenshot}> 스샷</button>
+        <button onClick={handleClickFullscreen}> 전체 화면</button> */}
       </CommunityWrapper>
     </>
   );
