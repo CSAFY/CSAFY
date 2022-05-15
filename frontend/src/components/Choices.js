@@ -8,6 +8,8 @@ import {
   Right4Count,
   Right5Count,
   Right6Count,
+  ChoiceArray,
+  TestArray,
 } from '../recoils/TestData';
 
 import styled, { css } from 'styled-components';
@@ -17,84 +19,105 @@ import Box from '@mui/material/Box';
 import { useRecoilState } from 'recoil';
 import { oxquizData } from '../recoils';
 
-function Choices({ fourWayData }) {
+function Choices({ test, idx }) {
   // Recoil
-  const [count, setCount] = useRecoilState(Count);
-
-  const [right1Count, setRight1Count] = useRecoilState(Right1Count);
-  const [right2Count, setRight2Count] = useRecoilState(Right2Count);
-  const [right3Count, setRight3Count] = useRecoilState(Right3Count);
-  const [right4Count, setRight4Count] = useRecoilState(Right4Count);
-  const [right5Count, setRight5Count] = useRecoilState(Right5Count);
-  const [right6Count, setRight6Count] = useRecoilState(Right6Count);
-  // const [toggle, setToggle] = useRecoilState(Toggle);
-
+  const [choiceArray, setChoiceArray] = useRecoilState(ChoiceArray);
+  const [testArray, setTestArray] = useRecoilState(TestArray);
+  // const [count, setCount] = useRecoilState(Count);
+  // const [right1Count, setRight1Count] = useRecoilState(Right1Count);
+  // const [right2Count, setRight2Count] = useRecoilState(Right2Count);
+  // const [right3Count, setRight3Count] = useRecoilState(Right3Count);
+  // const [right4Count, setRight4Count] = useRecoilState(Right4Count);
+  // const [right5Count, setRight5Count] = useRecoilState(Right5Count);
+  // const [right6Count, setRight6Count] = useRecoilState(Right6Count);
   // 4지선다 퀴즈 관련
   const [selectOne, setSelectOne] = useState(0);
   const [selectTwo, setSelectTwo] = useState(0);
   const [selectThree, setSelectThree] = useState(0);
   const [selectFour, setSelectFour] = useState(0);
-
-  const checkCategory = () => {
-    if (fourWayData.category === '네트워크') {
-      setRight1Count(prev => prev + 1);
-    } else if (fourWayData.category === '운영체제') {
-      setRight2Count(prev => prev + 1);
-      // setTestData({ ...testData, right2: right2Count + 1 });
-    } else if (fourWayData.category === '자료구조') {
-      setRight3Count(prev => prev + 1);
-      // setTestData({ ...testData, right3: right3Count + 1 });
-    } else if (fourWayData.category === '기타') {
-      setRight4Count(prev => prev + 1);
-      // setTestData({ ...testData, right4: right4Count + 1 });
-    } else if (fourWayData.category === '데이터베이스') {
-      setRight5Count(prev => prev + 1);
-      // setTestData({ ...testData, right5: right5Count + 1 });
-    } else if (fourWayData.category === '컴퓨터구조') {
-      setRight6Count(prev => prev + 1);
-      // setTestData({ ...testData, right6: right6Count + 1 });
-    }
-  };
-
   const onClickOne = () => {
     setSelectOne(1);
     setSelectTwo(0);
     setSelectThree(0);
     setSelectFour(0);
-    if (fourWayData.answer === 1) {
-      setCount(prev => prev + 1);
-      checkCategory();
-    }
+    setChoiceArray({
+      ...choiceArray,
+      [idx]: 1,
+    });
+    setTestArray(
+      testArray.map(array =>
+        array.id === idx
+          ? {
+              ...array,
+              choice: 1,
+              // category: test.category,
+            }
+          : array,
+      ),
+    );
   };
   const onClickTwo = () => {
     setSelectOne(0);
     setSelectTwo(2);
     setSelectThree(0);
     setSelectFour(0);
-    if (fourWayData.answer === 2) {
-      setCount(prev => prev + 1);
-      checkCategory();
-    }
+    setChoiceArray({
+      ...choiceArray,
+      [idx]: 2,
+    });
+    setTestArray(
+      testArray.map(array =>
+        array.id === idx
+          ? {
+              ...array,
+              choice: 2,
+              // category: test.category,
+            }
+          : array,
+      ),
+    );
   };
   const onClickThree = () => {
     setSelectOne(0);
     setSelectTwo(0);
     setSelectThree(3);
     setSelectFour(0);
-    if (fourWayData.answer === 3) {
-      setCount(prev => prev + 1);
-      checkCategory();
-    }
+    setChoiceArray({
+      ...choiceArray,
+      [idx]: 3,
+    });
+    setTestArray(
+      testArray.map(array =>
+        array.id === idx
+          ? {
+              ...array,
+              choice: 3,
+              // category: test.category,
+            }
+          : array,
+      ),
+    );
   };
   const onClickFour = () => {
     setSelectOne(0);
     setSelectTwo(0);
     setSelectThree(0);
     setSelectFour(4);
-    if (fourWayData.answer === 4) {
-      setCount(prev => prev + 1);
-      checkCategory();
-    }
+    setChoiceArray({
+      ...choiceArray,
+      [idx]: 4,
+    });
+    setTestArray(
+      testArray.map(array =>
+        array.id === idx
+          ? {
+              ...array,
+              choice: 4,
+              // category: test.category,
+            }
+          : array,
+      ),
+    );
   };
 
   // OX 퀴즈 관련
@@ -103,25 +126,63 @@ function Choices({ fourWayData }) {
   const [selectO, setSelectO] = useState(0);
   const [selectX, setSelectX] = useState(0);
 
-  // 1이 O, 0이 X
+  //  // 1이 O, 0이 X
+  //  const onClickO = () => {
+  //    setSelectO(1);
+  //    setSelectX(0);
+  //    if (fourWayData.answer === 1) {
+  //      setCount(prev => prev + 1);
+  //    }
+  //  };
+  //  const onClickX = () => {
+  //    setSelectO(0);
+  //    setSelectX(2);
+  //    if (fourWayData.answer === 0) {
+  //      setCount(prev => prev + 1);
+  //    }
+  //  };
   const onClickO = () => {
     setSelectO(1);
     setSelectX(0);
-    if (fourWayData.answer === 1) {
-      setCount(prev => prev + 1);
-    }
+    setChoiceArray({
+      ...choiceArray,
+      [idx]: 0,
+    });
+    setTestArray(
+      testArray.map(array =>
+        array.id === idx
+          ? {
+              ...array,
+              choice: 0,
+              // category: test.category,
+            }
+          : array,
+      ),
+    );
   };
   const onClickX = () => {
     setSelectO(0);
     setSelectX(2);
-    if (fourWayData.answer === 0) {
-      setCount(prev => prev + 1);
-    }
+    setChoiceArray({
+      ...choiceArray,
+      [idx]: 1,
+    });
+    setTestArray(
+      testArray.map(array =>
+        array.id === idx
+          ? {
+              ...array,
+              choice: 1,
+              // category: test.category,
+            }
+          : array,
+      ),
+    );
   };
 
   const OXCardPack = (
     <>
-      {'explanation' in fourWayData ? (
+      {'explanation' in test ? (
         <FlexDiv style={{ height: '300px' }}>
           <CardCoverDiv>
             <OXCard
@@ -175,19 +236,19 @@ function Choices({ fourWayData }) {
               border={
                 selectOne === 0
                   ? 'solid 2px #ebeef4;'
-                  : selectOne === fourWayData.answer
+                  : selectOne === test.answer
                   ? 'solid 2px #008ed0;'
                   : 'solid 2px  #008ed0;'
               }
               backgroundColor={
                 selectOne === 0
                   ? '#fff;'
-                  : selectOne === fourWayData.answer
+                  : selectOne === test.answer
                   ? '#def9ff;'
                   : '#def9ff;'
               }
             >
-              <CardContent>{fourWayData.examples[0]}</CardContent>
+              <CardContent>{test.examples[0]}</CardContent>
             </OXCard>
           </CardCoverDiv>
 
@@ -199,19 +260,19 @@ function Choices({ fourWayData }) {
               border={
                 selectTwo === 0
                   ? 'solid 2px #ebeef4;'
-                  : selectTwo === fourWayData.answer
+                  : selectTwo === test.answer
                   ? 'solid 2px #008ed0;'
                   : 'solid 2px  #008ed0;'
               }
               backgroundColor={
                 selectTwo === 0
                   ? '#fff;'
-                  : selectTwo === fourWayData.answer
+                  : selectTwo === test.answer
                   ? '#def9ff;'
                   : '#def9ff;'
               }
             >
-              <CardContent>{fourWayData.examples[1]}</CardContent>
+              <CardContent>{test.examples[1]}</CardContent>
             </OXCard>
           </CardCoverDiv>
 
@@ -223,19 +284,19 @@ function Choices({ fourWayData }) {
               border={
                 selectThree === 0
                   ? 'solid 2px #ebeef4;'
-                  : selectThree === fourWayData.answer
+                  : selectThree === test.answer
                   ? 'solid 2px #008ed0;'
                   : 'solid 2px  #008ed0;'
               }
               backgroundColor={
                 selectThree === 0
                   ? '#fff;'
-                  : selectThree === fourWayData.answer
+                  : selectThree === test.answer
                   ? '#def9ff;'
                   : '#def9ff;'
               }
             >
-              <CardContent>{fourWayData.examples[2]}</CardContent>
+              <CardContent>{test.examples[2]}</CardContent>
             </OXCard>
           </CardCoverDiv>
 
@@ -247,19 +308,19 @@ function Choices({ fourWayData }) {
               border={
                 selectFour === 0
                   ? 'solid 2px #ebeef4;'
-                  : selectFour === fourWayData.answer
+                  : selectFour === test.answer
                   ? 'solid 2px #008ed0;'
                   : 'solid 2px  #008ed0;'
               }
               backgroundColor={
                 selectFour === 0
                   ? '#fff;'
-                  : selectFour === fourWayData.answer
+                  : selectFour === test.answer
                   ? '#def9ff;'
                   : '#def9ff;'
               }
             >
-              <CardContent>{fourWayData.examples[3]}</CardContent>
+              <CardContent>{test.examples[3]}</CardContent>
             </OXCard>
           </CardCoverDiv>
         </FlexDiv>
@@ -268,7 +329,7 @@ function Choices({ fourWayData }) {
   );
   return (
     <>
-      {Object.keys(fourWayData).includes('explanation') ? (
+      {Object.keys(test).includes('explanation') ? (
         <Box
           sx={{
             flexGrow: 1,
@@ -291,8 +352,8 @@ function Choices({ fourWayData }) {
                 transform: 'translate(-50%, -50%)',
               }}
             >
-              {fourWayData.explanation}
-              {fourWayData.answer}
+              {test.explanation}
+              {test.answer}
             </div>
           </MeaningDiv>
           {OXCardPack}
@@ -321,8 +382,8 @@ function Choices({ fourWayData }) {
                 transform: 'translate(-50%, -50%)',
               }}
             >
-              {fourWayData.question}
-              {fourWayData.answer}
+              {test.question}
+              {test.answer}
             </div>
           </MeaningDiv>
 

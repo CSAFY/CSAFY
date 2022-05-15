@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
 import { Userinfo } from '../recoils/Userinfo';
+import { Username } from '../recoils/Username';
 import { CurrentPage } from '../recoils/CurrentPage';
 
 // MUI
@@ -96,8 +97,9 @@ const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
   const [userinfo, setUserinfo] = useRecoilState(Userinfo);
+  const [usename, setUsername] = useRecoilState(Username);
   const [currentPage, setCurrentPage] = useRecoilState(CurrentPage);
-  
+
   // 실력테스트 anchor
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [toggle, setToggle] = useState(false);
@@ -144,6 +146,7 @@ const NavBar = () => {
     setIsLoggedIn(false);
     setToken('');
     setUserinfo({});
+    setUsername('');
     // 이동
     navigate('/');
     setCurrentPage('/');

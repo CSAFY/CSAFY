@@ -2,20 +2,23 @@ import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Progress from '../components/Progress';
+import swal from 'sweetalert2';
 
 // Recoil
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
 import { Count } from '../recoils/Count';
-import { Toggle } from '../recoils/Toggle';
 import {
+  ChoiceArray,
   Right1Count,
   Right2Count,
   Right3Count,
   Right4Count,
   Right5Count,
   Right6Count,
+  TestArray,
+  ReviewNote,
 } from '../recoils/TestData';
 
 // STYLED
@@ -24,6 +27,7 @@ import Choices from '../components/Choices';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
 import SpentTime from './SpentTime';
+import Temp from '../components/Temp';
 
 const TestDetailWrapper = styled.div`
   width: 100%;
@@ -146,19 +150,62 @@ const TimerBox = styled.div`
 `;
 
 function CSTestDetail() {
+  // const [tmp, setTmp] = useState([
+  //   { id: 0, choice: 1, category: 'all' },
+  //   { id: 1, choice: 5, category: '네트워크' },
+  //   { id: 2, choice: 3, category: '운영체제' },
+  // ]);
+  // const testE = idx => {
+  //   setTmp(tmp.map(t => (t.id === idx ? { ...t, choice: 9 } : t)));
+  // };
+  // console.log(tmp);
+  // useEffect(() => {
+  //   testE(1);
+  // }, []);
+
   const navigate = useNavigate();
   // Recoil
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
   const [count, setCount] = useRecoilState(Count);
+  const [choiceArray, setChoiceArray] = useRecoilState(ChoiceArray);
+  const [testArray, setTestArray] = useRecoilState(TestArray);
+  const [reviewNote, setReviewNote] = useRecoilState(ReviewNote);
   const [right1Count, setRight1Count] = useRecoilState(Right1Count);
   const [right2Count, setRight2Count] = useRecoilState(Right2Count);
   const [right3Count, setRight3Count] = useRecoilState(Right3Count);
   const [right4Count, setRight4Count] = useRecoilState(Right4Count);
   const [right5Count, setRight5Count] = useRecoilState(Right5Count);
   const [right6Count, setRight6Count] = useRecoilState(Right6Count);
-
   useEffect(() => {
+    setChoiceArray({
+      0: 9,
+      1: 9,
+      2: 9,
+      3: 9,
+      4: 9,
+      5: 9,
+      6: 9,
+      7: 9,
+      8: 9,
+      9: 9,
+      10: 9,
+      11: 9,
+    });
+    setTestArray([
+      // { id: 0, choice: 9, category: '' },
+      // { id: 1, choice: 9, category: '' },
+      // { id: 2, choice: 9, category: '' },
+      // { id: 3, choice: 9, category: '' },
+      // { id: 4, choice: 9, category: '' },
+      // { id: 5, choice: 9, category: '' },
+      // { id: 6, choice: 9, category: '' },
+      // { id: 7, choice: 9, category: '' },
+      // { id: 8, choice: 9, category: '' },
+      // { id: 9, choice: 9, category: '' },
+      // { id: 10, choice: 9, category: '' },
+      // { id: 11, choice: 9, category: '' },
+    ]);
+    setReviewNote([]);
     setCount(0);
     setRight1Count(0);
     setRight2Count(0);
@@ -168,7 +215,85 @@ function CSTestDetail() {
     setRight6Count(0);
   }, []);
 
-  // console.log(count, toggle);
+  // // 체크 안한부분 있는지 확인
+  // const [isChecked, setIsChecked] = useState(false);
+  // const checkNone = () => {
+  //   for (var i = 0; i < testArray.length; i++) {
+  //     if (testArray[i].choice === 9) {
+  //       console.log(i);
+  //       setIsChecked(false);
+  //     } else {
+  //       setIsChecked(true);
+  //     }
+  //   }
+  //   // for (var i = 0; i < testArray.length; i++) {
+  //   //   if (Object.values(testArray[i]).includes(9)) {
+  //   //     setIsChecked(false);
+  //   //   } else {
+  //   //     setIsChecked(true);
+  //   //   }
+  //   // }
+  // };
+  // useEffect(() => {
+  //   checkNone();
+  // }, [testArray]);
+
+  // console.log(isChecked);
+
+  console.log(testArray);
+  const checkAnswers = () => {
+    // 체크 안한부분이 남아있으면 alert
+    // if (!isChecked) {
+    //   alert('문제를 모두 풀어주세요.');
+    // } else {
+    for (var i = 0; i < testData.length; i++) {
+      // 정답 비교
+      if (testArray[i].choice === testData[i].answer) {
+        if (testArray[i].category === '네트워크') {
+          setRight1Count(prev => prev + 1);
+        } else if (testArray[i].category === '운영체제') {
+          setRight2Count(prev => prev + 1);
+        } else if (testArray[i].category === '자료구조') {
+          setRight3Count(prev => prev + 1);
+        } else if (testArray[i].category === '기타') {
+          setRight4Count(prev => prev + 1);
+        } else if (testArray[i].category === '데이터베이스') {
+          setRight5Count(prev => prev + 1);
+        } else {
+          setRight6Count(prev => prev + 1);
+        }
+      } else {
+        // console.log(testData[i]);
+        setReviewNote(prev => [...prev, testData[i]]);
+      }
+    }
+    setGetResult(true);
+    // calculateResult();
+    // swal
+    //   .fire({
+    //     icon: 'warning',
+    //     position: 'middle',
+    //     title: '정말 제출하시겠습니까?',
+
+    //     // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+    //     confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+    //     // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+    //     confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+    //     // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+    //   })
+    //   .then(result => {
+    //     // 만약 Promise리턴을 받으면,
+    //     if (result.isConfirmed) {
+    //       // 만약 모달창에서 confirm 버튼을 눌렀다면
+    //       // setCurrentPage('/');
+    //       // navigate('/');
+    //       console.log('🎃', right1Count);
+    //       // handleSubmit();
+    //     }
+    //   });
+    // }
+  };
+  console.log(reviewNote);
   const { testTitle } = useParams();
   const { state } = useLocation();
 
@@ -193,8 +318,9 @@ function CSTestDetail() {
       })
       .catch(err => console.error(err));
   };
+  // console.log('testData', testData);
 
-  const testHeight = 200 + testData.length * 550;
+  const testHeight = 300 + testData.length * 550;
 
   const handleStart = () => {
     getTestData();
@@ -228,47 +354,49 @@ function CSTestDetail() {
     total5: 0,
     total6: 0,
   });
+  const [getResult, setGetResult] = useState(false);
+  // const calculateResult = () => {
   useEffect(() => {
     if (state === 1) {
       setTestResultInfo({
         ...testResultInfo,
         id: testTitle,
-        right1: count,
+        right1: right1Count,
         total1: 12,
       });
     } else if (state === 2) {
       setTestResultInfo({
         ...testResultInfo,
         id: testTitle,
-        right2: count,
+        right2: right2Count,
         total2: 12,
       });
     } else if (state === 3) {
       setTestResultInfo({
         ...testResultInfo,
         id: testTitle,
-        right3: count,
+        right3: right3Count,
         total3: 12,
       });
     } else if (state === 4) {
       setTestResultInfo({
         ...testResultInfo,
         id: testTitle,
-        right4: count,
+        right4: right4Count,
         total4: 12,
       });
     } else if (state === 5) {
       setTestResultInfo({
         ...testResultInfo,
         id: testTitle,
-        right5: count,
+        right5: right5Count,
         total5: 12,
       });
     } else if (state === 6) {
       setTestResultInfo({
         ...testResultInfo,
         id: testTitle,
-        right6: count,
+        right6: right6Count,
         total6: 12,
       });
     } else {
@@ -288,18 +416,9 @@ function CSTestDetail() {
         total6: 2,
       });
     }
-  }, [count]);
+  }, [getResult]);
 
-  // console.log(
-  //   right1Count,
-  //   right2Count,
-  //   right3Count,
-  //   right4Count,
-  //   right5Count,
-  //   right6Count,
-  // );
   const handleSubmit = () => {
-    // console.log(testResultInfo);
     if (testTitle === 'all') {
       axios
         .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
@@ -318,7 +437,6 @@ function CSTestDetail() {
         .then(res => {
           // console.log(res);
           sendHeatmapData();
-          
         })
         .catch(err => console.error(err));
     }
@@ -335,23 +453,18 @@ function CSTestDetail() {
       .catch(err => console.error(err));
   };
 
-  // const onClickNum = (e, num) => {
-  //   e.preventDefault();
-  //   setToggle(true);
-  //   if (toggle) {
-  //     if (num === fourWayData.answer) {
-  //       setRightCnt(prev => prev + 1);
-  //       setToggle(false);
-  //     }
-  //   } else {
-  //     if (num !== fourWayData.answer) {
-  //       setRightCnt(prev => prev - 1);
-  //       setToggle(true);
-  //     }
-  //   }
-  // };
   // 타이머 모드 - 종료 시간 일단 3초
   const endTime = 3;
+  // console.log(testData, testArray);
+  console.log(testArray, testResultInfo);
+  useEffect(() => {
+    for (var i = 0; i < testData.length; i++) {
+      setTestArray(prev => [
+        ...prev,
+        { id: i, choice: 9, category: testData[i].category },
+      ]);
+    }
+  }, [testData]);
   return (
     <>
       {!testStart ? (
@@ -453,7 +566,7 @@ function CSTestDetail() {
                 </TimerBox>
                 <TestList>
                   {testData.map((test, idx) => (
-                    <Choices key={idx} fourWayData={test} />
+                    <Choices key={idx} test={test} idx={idx} />
                   ))}
                   {/* {dummyData.map((test, idx) => (
                 // <div>{test.content}</div>
@@ -463,11 +576,20 @@ function CSTestDetail() {
                 </TestList>
                 <SubmitButton
                   style={{ top: `${testHeight - 40}px` }}
-                  onClick={handleSubmit}
+                  // onClick={handleSubmit}
+                  onClick={checkAnswers}
                   // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
                 >
                   제출하기
                 </SubmitButton>
+                {getResult && (
+                  <SubmitButton
+                    style={{ top: `${testHeight + 20}px` }}
+                    onClick={handleSubmit}
+                  >
+                    결과 확인하기
+                  </SubmitButton>
+                )}
               </TestDetailContent>
             </TestDetailWrapper>
           ) : (
@@ -475,7 +597,8 @@ function CSTestDetail() {
               <TestDetailContent>
                 <TestList>
                   {testData.map((test, idx) => (
-                    <Choices key={idx} fourWayData={test} />
+                    <Choices key={idx} test={test} idx={idx} />
+                    // <Temp key={idx} test={test} idx={idx} />
                   ))}
                   {/* {dummyData.map((test, idx) => (
                 // <div>{test.content}</div>
@@ -485,11 +608,20 @@ function CSTestDetail() {
                 </TestList>
                 <SubmitButton
                   style={{ top: `${testHeight - 40}px` }}
-                  onClick={handleSubmit}
+                  // onClick={handleSubmit}
+                  onClick={checkAnswers}
                   // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
                 >
                   제출하기
                 </SubmitButton>
+                {getResult && (
+                  <SubmitButton
+                    style={{ top: `${testHeight + 20}px` }}
+                    onClick={handleSubmit}
+                  >
+                    결과 확인하기
+                  </SubmitButton>
+                )}
               </TestDetailContent>
             </TestDetailWrapper>
           )}
@@ -499,4 +631,4 @@ function CSTestDetail() {
   );
 }
 
-export default CSTestDetail;
+export default React.memo(CSTestDetail);
