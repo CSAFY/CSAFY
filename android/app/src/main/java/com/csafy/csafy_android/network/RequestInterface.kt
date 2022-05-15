@@ -2,7 +2,7 @@ package com.csafy.csafy_android.network
 
 import com.csafy.csafy_android.network.data.request.RequestJoinData
 import com.csafy.csafy_android.network.data.request.RequestLoginData
-import com.csafy.csafy_android.network.data.response.ResponseFavoriteData
+import com.csafy.csafy_android.network.data.response.ResponseProfileFavoriteData
 import com.csafy.csafy_android.network.data.request.RequestScoreData
 import com.csafy.csafy_android.network.data.response.ResponseJoinData
 import com.csafy.csafy_android.network.data.response.ResponseLoginData
@@ -31,7 +31,19 @@ interface RequestInterface {
 
     // 즐겨찾는 학습
     @GET("cs-service/profile/study/favorites")
-    fun getFavorite() : Call<List<ResponseFavoriteData>>
+    fun getFavorite() : Call<List<ResponseProfileFavoriteData>>
+
+    // 최근 본 면접 리스트
+    @GET("cs-service/profile/interview/seen")
+    fun getProfileInterview() : Call<List<ResponseProfileInterviewData>>
+
+    // 나의 모의고사 결과 리스트
+    @GET("cs-service/test/result")
+    fun getProfileTest(): Call<List<ResponseProfileTestData>>
+
+    // 최근 본 학습 리스트
+//    @GET("cs-service/profile/study/seen")
+//    fun getProfile() : Call<List<ResponseProfileInterviewData>>
 
 
     /* 메인 탭 */

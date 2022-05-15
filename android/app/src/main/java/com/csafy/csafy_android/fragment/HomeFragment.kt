@@ -40,6 +40,15 @@ class HomeFragment : Fragment() {
 
     var score: ScoreData? = null
 
+    // 과목 별 경험치
+    var network: Float = 0.0f
+    var operatingSystem: Float = 0.0f
+    var dataSystem: Float = 0.0f
+    var computerArchitecture: Float = 0.0f
+    var database: Float = 0.0f
+    var etc: Float = 0.0f
+
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,9 +62,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getChartData()  // 데이터 받아오기
-        radarChart()  // 차트 그리기
+//        radarChart()  // 차트 그리기
         barChart()  // 차트 그리기
+        getChartData()  // 데이터 받아오기
 
     }
 
@@ -71,7 +80,20 @@ class HomeFragment : Fragment() {
                         var chartData = response.body()!!
                         score = chartData.scores
 
+                        network = score!!.network!!.toFloat()
+                        operatingSystem = score!!.network!!.toFloat()
+                        dataSystem = score!!.dataSystem!!.toFloat()
+                        etc = score!!.etc!!.toFloat()
+                        database = score!!.etc!!.toFloat()
+                        computerArchitecture = score!!.computerArchitecture!!.toFloat()
+
+
                         Log.e("메인 차트 데이터 통신 성공", "${response.body()!!}")
+                        Log.e("메인 차트 데이터 통신 성공", "${computerArchitecture!!}")
+
+//                        radarChart()
+                        pieChart()
+                        barChart()
 
                     }
                 }
@@ -84,61 +106,107 @@ class HomeFragment : Fragment() {
     }
 
     // pie chart 생성
-    private fun radarChart() {
-        var radarChart: RadarChart = binding.radarChart
+    private fun pieChart() {
+//        getChartData()
+        val pieChart: PieChart = binding.pieChart
 
-        val entries = ArrayList<RadarEntry>()
-        var computerArchitectureData: Float = 0.0f
-//        if (score!!.computerArchitecture == 0) {
-//            computerArchitectureData = 0.0f
-//        } else {
-//        Log.d("확인", "${score!!.computerArchitecture}")
-//        Log.d("확인", "${score!!.computerArchitecture}")
-//        Log.d("확인2", "${score!!.computerArchitecture!!.toFloat()}")
-//        computerArchitectureData = score!!.computerArchitecture!!.toFloat()
-//        }
-//        entries.add(RadarEntry(computerArchitectureData, "운영체제론"))
-        entries.add(RadarEntry(1.8f, "데이터베이스"))
-        entries.add(RadarEntry(1.8f, "데이터베이스"))
-        entries.add(RadarEntry(2.2f, "컴퓨터구조론"))
-        entries.add(RadarEntry(3.6f, "기타"))
+        val entries_pie = ArrayList<PieEntry>()
+
+        entries_pie.add(PieEntry(network, "네트워크"))
+        entries_pie.add(PieEntry(operatingSystem, "운영체제"))
+        entries_pie.add(PieEntry(dataSystem, "데이터구조"))
+        entries_pie.add(PieEntry(etc, "기타"))
+        entries_pie.add(PieEntry(database, "데이터베이스"))
+        entries_pie.add(PieEntry(computerArchitecture, "컴퓨터구조"))
 
         val colorItems = ArrayList<Int>()
-        for (c in ColorTemplate.COLORFUL_COLORS) colorItems.add(c)
+//        for (c in ColorTemplate.COLORFUL_COLORS) colorItems.add(c)
         for (c in ColorTemplate.JOYFUL_COLORS) colorItems.add(c)
-        for (c in ColorTemplate.LIBERTY_COLORS) colorItems.add(c)
-        for (c in ColorTemplate.PASTEL_COLORS) colorItems.add(c)
-        colorItems.add(ColorTemplate.getHoloBlue())
+//        for (c in ColorTemplate.LIBERTY_COLORS) colorItems.add(c)
+//        for (c in ColorTemplate.PASTEL_COLORS) colorItems.add(c)
+        colorItems.add(Color.GRAY)
 
-        val radarDataSet = RadarDataSet(entries, "")
-        radarDataSet.apply {
+        val pieDataSet = PieDataSet(entries_pie, "학습 데이터")
+        pieDataSet.apply {
             colors = colorItems
             valueTextColor = Color.BLACK
-            valueTextSize = 16f
+            valueTextSize = 12f
         }
-
-        radarChart.data = RadarData(radarDataSet)
-        radarChart.invalidate()
-
+        val labels = mutableListOf<String>()
+        labels.add("네트워크")
+        labels.add("운영체제")
+        labels.add("데이터구조")
+        labels.add("기타")
+        labels.add("데이터베이스")
+        labels.add("컴퓨터구조")
+//        pieChart.xAxis.valueFormatter=IndexAxisValueFormatter(labels)
+        pieChart.data = PieData(pieDataSet)
+        pieChart.invalidate()
     }
+
+
+    // radar chart 생성
+//    private fun radarChart() {
+//        val radarChart: RadarChart = binding.radarChart
+//
+//        val entries = ArrayList<RadarEntry>()
+//
+//        entries.add(RadarEntry(network, "네트워크"))
+//        entries.add(RadarEntry(operatingSystem, "운영체제"))
+//        entries.add(RadarEntry(dataSystem, "데이터구조"))
+//        entries.add(RadarEntry(etc, "기타"))
+//        entries.add(RadarEntry(database, "데이터베이스"))
+//        entries.add(RadarEntry(computerArchitecture, "컴퓨터구조"))
+//
+//        val colorItems = ArrayList<Int>()
+////        for (c in ColorTemplate.COLORFUL_COLORS) colorItems.add(c)
+////        for (c in ColorTemplate.JOYFUL_COLORS) colorItems.add(c)
+////        for (c in ColorTemplate.LIBERTY_COLORS) colorItems.add(c)
+////        for (c in ColorTemplate.PASTEL_COLORS) colorItems.add(c)
+//        colorItems.add(Color.RED)
+//
+//        val radarDataSet = RadarDataSet(entries, "학습 데이터")
+//        radarDataSet.apply {
+//            colors = colorItems
+//            valueTextColor = Color.BLACK
+//            valueTextSize = 12f
+//        }
+//        val labels = mutableListOf<String>()
+//        labels.add("네트워크")
+//        labels.add("운영체제")
+//        labels.add("데이터구조")
+//        labels.add("기타")
+//        labels.add("데이터베이스")
+//        labels.add("컴퓨터구조")
+//        radarChart.xAxis.valueFormatter=IndexAxisValueFormatter(labels)
+//        radarChart.data = RadarData(radarDataSet)
+//        radarChart.invalidate()
+//    }
+
 
     // bar chart 생성
    private fun barChart() {
-        var barChart: BarChart = binding.barChart
+        val barChart: BarChart = binding.barChart
 
         val values = ArrayList<BarEntry>()
         val type = ArrayList<String>()
         val colorList = ArrayList<Int>()
         val set : BarDataSet
 
-        values.add(BarEntry(1.0f, 38.0f))
-        values.add(BarEntry(2.0f, 47.0f))
-        values.add(BarEntry(3.0f, 43.0f))
+        values.add(BarEntry(0.5f, network))
+        values.add(BarEntry(1.0f, operatingSystem))
+        values.add(BarEntry(1.5f, dataSystem))
+        values.add(BarEntry(2.0f, etc))
+        values.add(BarEntry(2.5f, database))
+        values.add(BarEntry(3.0f, computerArchitecture))
 
         type.add(" ")
-        type.add("a")
-        type.add("b")
-        type.add("c")
+        type.add("네트워크")
+        type.add("운영체제")
+        type.add("데이터구조")
+        type.add("기타")
+        type.add("데이터베이스")
+        type.add("컴퓨터구조")
 
         colorList.add(Color.parseColor("#f5c700"))
         colorList.add(Color.parseColor("#ff8e7f"))

@@ -1,7 +1,6 @@
 package com.csafy.csafy_android.adapter.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
-import com.csafy.csafy_android.databinding.ItemFavoriteBinding
 import com.csafy.csafy_android.databinding.ItemInterviewBinding
 import com.csafy.csafy_android.network.data.response.ResponseInterviewData
 

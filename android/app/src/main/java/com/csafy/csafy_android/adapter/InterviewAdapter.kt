@@ -1,13 +1,9 @@
 package com.csafy.csafy_android.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.csafy.csafy_android.R
-import com.csafy.csafy_android.adapter.viewholder.FavoriteViewHolder
 import com.csafy.csafy_android.adapter.viewholder.InterviewViewHolder
-import com.csafy.csafy_android.databinding.ItemFavoriteBinding
 import com.csafy.csafy_android.databinding.ItemInterviewBinding
 import com.csafy.csafy_android.network.data.response.ResponseInterviewData
 

@@ -118,8 +118,9 @@ class ProfileFragment : Fragment() {
                     response: Response<ResponseProfileData>
                 ) {
                     if (response.isSuccessful) {
+                        var imgUrl:String = "https://csafy-profile.s3.amazonaws.com/${response.body()!!.profile_image}"
                         // 프로필 사진
-                        Glide.with(view!!.context).load(R.drawable.cute_dog).into(binding.imgProfile)
+                        Glide.with(view!!.context).load(imgUrl).into(binding.imgProfile)
                         // 파일 처리
 //                        if (response.body()!!.profile_image == null) {
 //                            Glide.with(view!!.context).load(R.drawable.cute_dog).into(binding.imgProfile)

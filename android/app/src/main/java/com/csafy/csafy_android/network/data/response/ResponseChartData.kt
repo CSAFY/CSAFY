@@ -11,10 +11,10 @@ data class ResponseChartData(
 )
 
 data class ScoreData (
-    @SerializedName("운영체제")
-    val operatingSystem: Int?,
     @SerializedName("네트워크")
     val network: Int?,
+    @SerializedName("운영체제")
+    val operatingSystem: Int?,
     @SerializedName("자료구조")
     val dataSystem: Int?,
     @SerializedName("기타")

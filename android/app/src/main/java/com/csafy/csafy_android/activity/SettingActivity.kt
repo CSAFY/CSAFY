@@ -31,6 +31,11 @@ class SettingActivity : AppCompatActivity() {
             finish()
         }
 
+        // 회원 탈퇴
+        binding.txWithdraw.setOnClickListener {
+
+        }
+
     }
 
 }

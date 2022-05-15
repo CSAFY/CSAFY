@@ -1,60 +1,66 @@
 package com.csafy.csafy_android.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.csafy.csafy_android.R
+import com.csafy.csafy_android.adapter.ProfileTestAdapter
+import com.csafy.csafy_android.databinding.FragmentProfileTestBinding
+import com.csafy.csafy_android.network.RequestToServer
+import com.csafy.csafy_android.network.data.response.ResponseProfileTestData
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileTestFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileTestFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding : FragmentProfileTestBinding? = null
+    private val binding get() = _binding!!
+
+    val requestToServer = RequestToServer
+
+    lateinit var profileTestAdapter: ProfileTestAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_test, container, false)
+        _binding = FragmentProfileTestBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileTestFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileTestFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        getTestData()
+
+        binding.rvProfileTest.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
+
+    // 모의고사 결과 data
+    private fun getTestData() {
+        requestToServer.service.getProfileTest()
+                .enqueue(object : Callback<List<ResponseProfileTestData>> {
+                    override fun onResponse(call: Call<List<ResponseProfileTestData>>, response: Response<List<ResponseProfileTestData>>) {
+                        if (response.isSuccessful) {
+                            Log.d("모의고사 결과 통신 성공", "${response.body()!!}")
+                            profileTestAdapter = ProfileTestAdapter(response.body()!! as MutableList<ResponseProfileTestData>)
+                            binding.rvProfileTest.adapter = profileTestAdapter
+                            profileTestAdapter.notifyDataSetChanged()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<ResponseProfileTestData>>, t: Throwable) {
+                        Log.d("모의고사 결과 통신 실패", "${t}")
+                    }
+
+                })
+    }
+
+
 }
