@@ -78,9 +78,15 @@ function CommunityInterview({
   interviewInfo,
   modal,
   setModal,
+  onHandleEnd,
 }) {
   // const [modal, setModal] = useState(true);
-  const handleModalClose = () => setModal(false);
+  const handleModalClose = () => {
+    setModal(false);
+    console.log('1. end');
+    onHandleEnd();
+    console.log('2. end');
+  };
   return (
     <div>
       <Modal
