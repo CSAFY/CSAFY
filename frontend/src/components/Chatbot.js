@@ -3,9 +3,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 // chatbot
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
 
 function Chatbot() {
   const navigate = useNavigate();
+    // Recoil
+    const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
 
   const contactAdmin = () => {
     navigate('/userChat');
@@ -70,13 +75,14 @@ function Chatbot() {
 
   return (
     <ThemeProvider theme={theme}>
-      <ChatBot
+      {isLoggedIn && <ChatBot
         handleEnd={contactAdmin}
         steps={steps}
         floating={true}
         headerTitle={'C;SAFY'}
         placeholder={'채팅이 불가능한 채널입니다.'}
-      />
+      />}
+      
     </ThemeProvider>
   );
 }

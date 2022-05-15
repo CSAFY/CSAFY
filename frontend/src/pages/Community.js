@@ -83,6 +83,7 @@ function Community() {
     unityContext.on('GetNickName', function(name) {
       if (name === 'start') {
         unityContext.send('NetworkManager', 'SetNickNameReact', username);
+        unityContext.send('NetworkManager', 'SetTokenReact', token)
       } else {
         SetNickname(name);
       }
