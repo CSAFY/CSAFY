@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Spin as SHamburger } from 'hamburger-react';
 import { slide as Menu } from 'react-burger-menu';
+
 // STYLED
 import styled from 'styled-components';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
-// import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
-import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
+import ScreenshotMonitorIcon from '@mui/icons-material/ScreenshotMonitor';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { CurrentPage } from '../recoils/CurrentPage';
 
 const MenuItem = styled.div`
   width: 50px;
@@ -23,31 +26,72 @@ const MenuItem = styled.div`
   cursor: pointer;
 `;
 
-function ReactBurger() {
+function ReactBurger(props) {
   const navigate = useNavigate();
   const [isOpen, setOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useRecoilState(CurrentPage);
 
   const handleHome = () => {
+    setCurrentPage('/');
     navigate('/');
   };
-  const handleQuiz = () => {};
-  const handleExit = () => {};
+  const handleScreenShot = () => {
+    props.handleClickTakeScreenshot();
+  };
+  const handleFullScreen = () => {
+    props.handleClickFullscreen();
+  };
 
   return (
     <>
-      <MenuItem>
-        <SHamburger toggled={isOpen} toggle={setOpen} color="#009859" />
+      <MenuItem style={{ backgroundColor: '#009859' }}>
+        <SHamburger toggled={isOpen} toggle={setOpen} color="#f0f9fa" />
       </MenuItem>
       {isOpen && (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <MenuItem style={{ backgroundColor: '#b5fcca' }} onClick={handleHome}>
-            <HomeOutlinedIcon sx={{ width: '80%', height: '80%' }} />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <MenuItem
+            style={{
+              backgroundColor: '#b5fcca',
+            }}
+            onClick={handleHome}
+          >
+            <HomeOutlinedIcon
+              sx={{
+                width: '80%',
+                height: '80%',
+              }}
+            />
           </MenuItem>
-          <MenuItem style={{ backgroundColor: '#d2fae2' }}>
-            <QuizOutlinedIcon sx={{ width: '80%', height: '80%' }} />
+          <MenuItem
+            style={{
+              backgroundColor: '#d2fae2',
+            }}
+          >
+            <ScreenshotMonitorIcon
+              sx={{
+                width: '80%',
+                height: '80%',
+              }}
+              onClick={handleScreenShot}
+            />
           </MenuItem>
-          <MenuItem style={{ backgroundColor: '#dcfff3' }}>
-            <ExitToAppOutlinedIcon sx={{ width: '80%', height: '80%' }} />
+          <MenuItem
+            style={{
+              backgroundColor: '#dcfff3',
+            }}
+          >
+            <FullscreenIcon
+              sx={{
+                width: '80%',
+                height: '80%',
+              }}
+              onClick={handleFullScreen}
+            />
           </MenuItem>
         </div>
       )}
