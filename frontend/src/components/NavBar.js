@@ -120,6 +120,7 @@ const NavBar = () => {
     setState('login');
     setCurrentPage('/');
     setModal(true);
+    setToggle(false);
   };
   const handleModalClose = () => setModal(false);
 
@@ -151,6 +152,7 @@ const NavBar = () => {
     navigate('/');
     setCurrentPage('/');
     setToggleLogin('로그인');
+    setToggle(false);
   };
 
   return (
