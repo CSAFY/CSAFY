@@ -55,7 +55,7 @@ function OXquiz(props) {
       
     })
     .then((res) => {
-      console.log(res.data)
+      // console.log(res.data)
       setOXData(res.data)
     })
     .catch(err =>{
@@ -72,7 +72,7 @@ function OXquiz(props) {
 
   useEffect(() => {
     setPageNumber(1)
-    
+    setSelecCNT(5)
   },[props.Cate])
 
   const [selectO, setSelectO] = useState(2)

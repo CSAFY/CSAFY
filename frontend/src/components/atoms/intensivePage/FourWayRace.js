@@ -64,7 +64,7 @@ function FourWayRace(props) {
       url:  Url,
     })
     .then((res) => {
-      console.log(res.data)
+      // console.log(res.data)
       setFourWayData(res.data)
     })
     .catch(err =>{
@@ -81,7 +81,7 @@ function FourWayRace(props) {
 
   useEffect(() => {
     setPageNumber(1)
-    
+    setSelecCNT(5)
   },[props.Cate])
 
   const onClickBtn = (data) => {
