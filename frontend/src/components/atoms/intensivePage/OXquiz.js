@@ -19,7 +19,10 @@ import {
   FourCardDiv,
   QuestionText,
   ClickBtn,
-  Title
+  Title,
+  BtnDiv,
+  BtnText,
+  CusInput
   } from "./FourWayRace"
 
 
@@ -232,22 +235,25 @@ function OXquiz(props) {
       <QuestionText>
         📗 몇 문제를 풀기를 원하시나요?
       </QuestionText>
-      <ClickBtn
-        able={"Y"}
-        onClick={() => onClickBtn(selecCNT)}
-        >
-        <MyInput type={"number"} min="1" max="20" 
-        onClick={(event)=> event.stopPropagation()}
-        onChange={(event) => setSelecCNT(event.target.value)}
-        value={selecCNT}></MyInput>
-        문제
-      </ClickBtn>
-      <ClickBtn
-        able={"Y"}
-        onClick={() => {onClickBtn(5) }}
-        >
-        알아서 해주세요
-      </ClickBtn>
+      <BtnDiv>
+        <ClickBtn
+          able={"Y"}
+          onClick={() => onClickBtn(selecCNT)}
+          >
+          <CusInput type={"number"} min="1" max="20" 
+          onClick={(event)=> event.stopPropagation()}
+          onChange={(event) => setSelecCNT(event.target.value)}
+          value={selecCNT}></CusInput>
+          <BtnText>문제</BtnText>
+          
+        </ClickBtn>
+        <ClickBtn
+          able={"Y"}
+          onClick={() => {onClickBtn(5) }}
+          >
+          알아서 해주세요
+        </ClickBtn>
+      </BtnDiv>
     </FourCardDiv>)
   }else if (pageNumber === 2) {
     return(
@@ -326,13 +332,7 @@ function OXquiz(props) {
 }
 export default OXquiz
 
-const MyInput = styled.input`
 
-  appearance: none;
-  -moz-appearance: none; 
-  -webkit-appearance: none;
-
-`
 
 const MeaningDiv = styled.div`
   width : 90%;
