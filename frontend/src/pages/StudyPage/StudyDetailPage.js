@@ -40,7 +40,7 @@ function StudyDetailPage() {
           categoryId={videoDatas.categoryId}>
         </YouTubeVideo>
       
-        <StudyDetailHr></StudyDetailHr>
+        {/* <StudyDetailHr></StudyDetailHr>
         
         <RelatedExam>
         </RelatedExam>
@@ -48,7 +48,7 @@ function StudyDetailPage() {
         <StudyDetailHr></StudyDetailHr>
 
         <RelatedQuestions>
-        </RelatedQuestions>
+        </RelatedQuestions> */}
 
       </DetailLayOut>
     </FullLayOut>

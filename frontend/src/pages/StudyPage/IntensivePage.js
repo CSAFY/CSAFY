@@ -113,7 +113,7 @@ function IntensivePage() {
         </Routes>
       </FlexDiv>
       
-        {relatedDisPlay()}
+        {/* {relatedDisPlay()} */}
         
       </DetailLayOut>
     </FullLayOut>

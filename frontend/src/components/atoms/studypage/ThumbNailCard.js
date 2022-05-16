@@ -165,5 +165,5 @@ const CategoryShowDiv = styled.div`
   flex-grow: 0;
   padding: 4px 10px 4px 10px;
   border-radius: 48px;
-  background-color: #84c2ea;
+  background-color: #DEF9FF;
 `
