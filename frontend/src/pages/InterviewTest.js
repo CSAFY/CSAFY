@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
 
@@ -192,6 +192,7 @@ const MyMemo = styled.div`
 `;
 
 function InterviewTest() {
+  const navigate = useNavigate();
   // Recoil
   const [timeLimit, setTimeLimit] = useRecoilState(TimeLimit);
   const [token, setToken] = useRecoilState(Token);
@@ -235,9 +236,10 @@ function InterviewTest() {
   };
   // 처음 문제로 돌아가기
   const toStart = () => {
-    setCnt(1);
-    setQuestion(testData[0]['question']);
-    setSeq(testData[0]['interviewSeq']);
+    // setCnt(1);
+    // setQuestion(testData[0]['question']);
+    // setSeq(testData[0]['interviewSeq']);
+    navigate('/interviewList');
   };
   // const prevQuestion = () => {
   //   setQuestion(dummyData[cnt]['question']);
@@ -385,7 +387,7 @@ function InterviewTest() {
           {cnt !== testData.length ? (
             <NextButton onClick={nextQuestion}>다음</NextButton>
           ) : (
-            <NextButton onClick={toStart}>처음으로</NextButton>
+            <NextButton onClick={toStart}>면접 종료</NextButton>
           )}
 
           <Question>{question}</Question>

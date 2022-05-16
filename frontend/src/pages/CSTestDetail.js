@@ -85,7 +85,7 @@ const TypeButton = styled.div`
 `;
 const QuestionBox = styled.div`
   width: 543px;
-  height: 151px;
+  height: 180px;
   border-radius: 9px;
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
   background-color: #fff;
@@ -97,10 +97,10 @@ const QuestionBox = styled.div`
   justify-content: center;
   align-items: center;
 
-  position: absolute;
-  top: 249px;
-  left: 50%;
-  transform: translate(-50%);
+  // position: absolute;
+  // top: 249px;
+  // left: 50%;
+  // transform: translate(-50%);
 `;
 const TestList = styled.div`
   width: 70%;
@@ -150,19 +150,6 @@ const TimerBox = styled.div`
 `;
 
 function CSTestDetail() {
-  // const [tmp, setTmp] = useState([
-  //   { id: 0, choice: 1, category: 'all' },
-  //   { id: 1, choice: 5, category: '네트워크' },
-  //   { id: 2, choice: 3, category: '운영체제' },
-  // ]);
-  // const testE = idx => {
-  //   setTmp(tmp.map(t => (t.id === idx ? { ...t, choice: 9 } : t)));
-  // };
-  // console.log(tmp);
-  // useEffect(() => {
-  //   testE(1);
-  // }, []);
-
   const navigate = useNavigate();
   // Recoil
   const [token, setToken] = useRecoilState(Token);
@@ -191,20 +178,7 @@ function CSTestDetail() {
       10: 9,
       11: 9,
     });
-    setTestArray([
-      // { id: 0, choice: 9, category: '' },
-      // { id: 1, choice: 9, category: '' },
-      // { id: 2, choice: 9, category: '' },
-      // { id: 3, choice: 9, category: '' },
-      // { id: 4, choice: 9, category: '' },
-      // { id: 5, choice: 9, category: '' },
-      // { id: 6, choice: 9, category: '' },
-      // { id: 7, choice: 9, category: '' },
-      // { id: 8, choice: 9, category: '' },
-      // { id: 9, choice: 9, category: '' },
-      // { id: 10, choice: 9, category: '' },
-      // { id: 11, choice: 9, category: '' },
-    ]);
+    setTestArray([]);
     setReviewNote([]);
     setCount(0);
     setRight1Count(0);
@@ -214,31 +188,6 @@ function CSTestDetail() {
     setRight5Count(0);
     setRight6Count(0);
   }, []);
-
-  // // 체크 안한부분 있는지 확인
-  // const [isChecked, setIsChecked] = useState(false);
-  // const checkNone = () => {
-  //   for (var i = 0; i < testArray.length; i++) {
-  //     if (testArray[i].choice === 9) {
-  //       console.log(i);
-  //       setIsChecked(false);
-  //     } else {
-  //       setIsChecked(true);
-  //     }
-  //   }
-  //   // for (var i = 0; i < testArray.length; i++) {
-  //   //   if (Object.values(testArray[i]).includes(9)) {
-  //   //     setIsChecked(false);
-  //   //   } else {
-  //   //     setIsChecked(true);
-  //   //   }
-  //   // }
-  // };
-  // useEffect(() => {
-  //   checkNone();
-  // }, [testArray]);
-
-  // console.log(isChecked);
 
   console.log(testArray);
   const checkAnswers = () => {
@@ -269,30 +218,6 @@ function CSTestDetail() {
       }
     }
     setGetResult(true);
-    // calculateResult();
-    // swal
-    //   .fire({
-    //     icon: 'warning',
-    //     position: 'middle',
-    //     title: '정말 제출하시겠습니까?',
-
-    //     // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-    //     confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-    //     // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-    //     confirmButtonText: '확인', // confirm 버튼 텍스트 지정
-    //     // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
-    //   })
-    //   .then(result => {
-    //     // 만약 Promise리턴을 받으면,
-    //     if (result.isConfirmed) {
-    //       // 만약 모달창에서 confirm 버튼을 눌렀다면
-    //       // setCurrentPage('/');
-    //       // navigate('/');
-    //       console.log('🎃', right1Count);
-    //       // handleSubmit();
-    //     }
-    //   });
-    // }
   };
   console.log(reviewNote);
   const { testTitle } = useParams();
@@ -431,11 +356,12 @@ function CSTestDetail() {
     //     .catch(err => console.error(err));
     // } else {
     axios
-      .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
+      .post(`${defaultAPI}/cs-service/test/8/result`, testResultInfo, {
         headers: { authorization: token },
       })
       .then(res => {
         // console.log(res);
+        sendReviewData();
         sendHeatmapData();
       })
       .catch(err => console.error(err));
@@ -449,6 +375,45 @@ function CSTestDetail() {
       .then(res => {
         // console.log(res);
         navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+      })
+      .catch(err => console.error(err));
+  };
+
+  const sendReviewData = () => {
+    // console.log('🐸', reviewNote);
+    axios
+      .post(
+        `${defaultAPI}/cs-service/study/problem/wrong`,
+        { requestWrongProblems: reviewNote },
+        { headers: { Authorization: token } },
+        // reviewNote,
+        // {
+        //   headers: { Authorization: token },
+        // },
+      )
+      .then(res => {
+        console.log('🐸', res);
+        // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+      })
+      .catch(err => console.error(err));
+  };
+  const getFixedTest = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/fixed/mock`, { params: { examNum: 1 } })
+      .then(res => {
+        console.log('🎃', res);
+        // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+      })
+      .catch(err => console.error(err));
+  };
+  const getReviewData = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/study/problem/wrong`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('🎃', res);
+        // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
       })
       .catch(err => console.error(err));
   };
@@ -475,65 +440,71 @@ function CSTestDetail() {
         <TestDetailWrapper>
           <TestDetailContent>
             <DetailBox>
-              <Content>
-                <p style={{ margin: '0' }}>
-                  일반 모의고사와 실전 모의고사 중 원하시는 것을 선택해주세요.
-                </p>
-                <p
-                  style={{
-                    color: '#7f898f',
-                    fontSize: '14px',
-                  }}
-                >
-                  (실전 모의고사는 시간 제한이 있으며, 시험 결과와 분석이
-                  이루어집니다)
-                </p>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+              {!toggleStartBox && (
+                <>
+                  <Content>
+                    <p style={{ margin: '0' }}>
+                      일반 모의고사와 실전 모의고사 중 원하시는 것을
+                      선택해주세요.
+                    </p>
+                    <p
+                      style={{
+                        color: '#7f898f',
+                        fontSize: '14px',
+                      }}
+                    >
+                      (실전 모의고사는 시간 제한이 있으며, 시험 결과와 분석이
+                      이루어집니다)
+                    </p>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
 
-                    marginTop: '30px',
-                  }}
-                >
-                  {testType === 'actual' ? (
-                    <TypeButton
-                      style={{
-                        marginRight: '20px',
-                        backgroundColor: '#008ed0',
-                        color: '#fff',
-                      }}
-                      onClick={handleActual}
-                    >
-                      실전 모의고사
-                    </TypeButton>
-                  ) : (
-                    <TypeButton
-                      style={{ marginRight: '20px' }}
-                      onClick={handleActual}
-                    >
-                      실전 모의고사
-                    </TypeButton>
-                  )}
-                  {testType === 'normal' ? (
-                    <TypeButton
-                      onClick={handleNormal}
-                      style={{
-                        marginRight: '20px',
-                        backgroundColor: '#008ed0',
-                        color: '#fff',
+                        marginTop: '30px',
                       }}
                     >
-                      일반 모의고사
-                    </TypeButton>
-                  ) : (
-                    <TypeButton onClick={handleNormal}>
-                      일반 모의고사
-                    </TypeButton>
-                  )}
-                </div>
-              </Content>
+                      {testType === 'actual' ? (
+                        <TypeButton
+                          style={{
+                            marginRight: '20px',
+                            backgroundColor: '#008ed0',
+                            color: '#fff',
+                          }}
+                          onClick={handleActual}
+                        >
+                          실전 모의고사
+                        </TypeButton>
+                      ) : (
+                        <TypeButton
+                          style={{ marginRight: '20px' }}
+                          onClick={handleActual}
+                        >
+                          실전 모의고사
+                        </TypeButton>
+                      )}
+                      {testType === 'normal' ? (
+                        <TypeButton
+                          onClick={handleNormal}
+                          style={{
+                            marginRight: '20px',
+                            backgroundColor: '#008ed0',
+                            color: '#fff',
+                          }}
+                        >
+                          일반 모의고사
+                        </TypeButton>
+                      ) : (
+                        <TypeButton onClick={handleNormal}>
+                          일반 모의고사
+                        </TypeButton>
+                      )}
+                    </div>
+                  </Content>
+                </>
+              )}
+
               {toggleStartBox ? (
                 <>
                   {toggleStart ? (
@@ -632,6 +603,9 @@ function CSTestDetail() {
           )}
         </>
       )}
+      {/* <button onClick={sendReviewData}>test</button>
+      <button onClick={getFixedTest}>fixedtest</button>
+      <button onClick={getReviewData}>getreview</button> */}
     </>
   );
 }

@@ -139,12 +139,12 @@ function Community() {
         setCategory('character');
         axios
           .post(
-            `${defaultAPI}/cs-service/interview/create`,
+            `${defaultAPI}/cs-service/interview/simple/create`,
             {
               category: 'character',
               question: 1,
             },
-            { headers: { Authorization: token } },
+            // { headers: { Authorization: token } },
           )
           .then(res => {
             console.log(res);
@@ -159,12 +159,12 @@ function Community() {
 
         axios
           .post(
-            `${defaultAPI}/cs-service/interview/create`,
+            `${defaultAPI}/cs-service/interview/simple/create`,
             {
               category: 'tech',
               question: 1,
             },
-            { headers: { Authorization: token } },
+            // { headers: { Authorization: token } },
           )
           .then(res => {
             console.log(res);
@@ -224,12 +224,12 @@ function Community() {
     if (category === 'character') {
       axios
         .post(
-          `${defaultAPI}/cs-service/interview/create`,
+          `${defaultAPI}/cs-service/interview/simple/create`,
           {
             category: 'character',
             question: 1,
           },
-          { headers: { Authorization: token } },
+          // { headers: { Authorization: token } },
         )
         .then(res => {
           console.log(res);
@@ -239,12 +239,12 @@ function Community() {
     } else {
       axios
         .post(
-          `${defaultAPI}/cs-service/interview/create`,
+          `${defaultAPI}/cs-service/interview/simple/create`,
           {
             category: 'tech',
             question: 1,
           },
-          { headers: { Authorization: token } },
+          // { headers: { Authorization: token } },
         )
         .then(res => {
           console.log(res);

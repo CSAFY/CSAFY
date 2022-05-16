@@ -7,7 +7,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 import { useLocation } from 'react-router-dom';
 
 const FooterWrapper = styled.footer`
-  height: 347px;
+  height: 230px;
   width: 100vw;
   background-color: #f8f8f8;
   color: #7f898f;
