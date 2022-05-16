@@ -239,22 +239,26 @@ function FourWayRace(props) {
       <QuestionText>
         📗 몇 문제를 풀기를 원하시나요?
       </QuestionText>
-      <ClickBtn
-        able={"Y"}
-        onClick={() => onClickBtn(selecCNT)}
-        >
-        <input type={"number"} min="1" max="15" 
-        onClick={(event)=> event.stopPropagation()}
-        onChange={(event) => setSelecCNT(event.target.value)}
-        value={selecCNT}></input>
-        문제
-      </ClickBtn>
-      <ClickBtn
-        able={"Y"}
-        onClick={() => onClickBtn(5)}
-        >
-        알아서 해주세요
-      </ClickBtn>
+      <BtnDiv>
+        <ClickBtn
+          able={"Y"}
+          onClick={() => onClickBtn(selecCNT)}
+          >
+          <CusInput type={"number"} min="1" max="20" 
+          onClick={(event)=> event.stopPropagation()}
+          onChange={(event) => setSelecCNT(event.target.value)}
+          value={selecCNT}
+          ></CusInput>
+          <BtnText>문제</BtnText>
+          
+        </ClickBtn>
+        <ClickBtn
+          able={"Y"}
+          onClick={() => onClickBtn(5)}
+          >
+          알아서 해주세요
+        </ClickBtn>
+      </BtnDiv>
     </FourCardDiv>)
   }else if (pageNumber === 2) {
     return(
@@ -345,7 +349,7 @@ export const FourCardDiv = styled.div`
 export const  Title = styled.div`
   width: 300px;
   height: 60px;
-  margin: 10px auto 15px; auto;
+  margin: 15px auto 5px; auto;
   flex-grow: 0;
   font-family: SUIT;
   font-size: 32px;
@@ -362,7 +366,7 @@ export const  Title = styled.div`
 export const QuestionText = styled.div`
   width: 350px;
   height: 30px;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 10px auto;
   flex-grow: 0;
   font-family: SUIT;
   font-size: 18px;
@@ -400,7 +404,13 @@ export const ClickBtn = styled.button`
   }}
 `
 
+export const BtnDiv = styled.div`
+margin-top: 25px;
+`
 
+export const BtnText = styled.span` 
+  margin: 0 0 0 5px;
+`
 
 const FootBar = styled.div`
   width: 100%;
@@ -458,4 +468,9 @@ const QuestionTextDiv = styled.div`
   letter-spacing: normal;
   text-align: center;
   color: #000;
+`
+
+export const CusInput = styled.input`  
+  width: 25px;
+  border:none;
 `
