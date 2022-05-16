@@ -71,7 +71,7 @@ function Classification() {
       <StackContent>
         <PageTitle>
           <div style={{ fontSize: '24px', fontWeight: '600' }}>기업별 스택</div>
-          <div
+          {/* <div
             style={{
               marginLeft: '50px',
               marginRight: '50px',
@@ -84,7 +84,7 @@ function Classification() {
             style={{ fontSize: '16px', fontWeight: '300', color: '#8a8888' }}
           >
             총 215개의 기업
-          </div>
+          </div> */}
         </PageTitle>
         <Grid container>
           {dummyData.map(v => (

@@ -264,6 +264,7 @@ function CSTestDetail() {
         }
       } else {
         // console.log(testData[i]);
+        // 오답노트
         setReviewNote(prev => [...prev, testData[i]]);
       }
     }
@@ -319,8 +320,6 @@ function CSTestDetail() {
       .catch(err => console.error(err));
   };
   // console.log('testData', testData);
-
-  const testHeight = 300 + testData.length * 550;
 
   const handleStart = () => {
     getTestData();
@@ -419,27 +418,28 @@ function CSTestDetail() {
   }, [getResult]);
 
   const handleSubmit = () => {
-    if (testTitle === 'all') {
-      axios
-        .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
-          headers: { authorization: token },
-        })
-        .then(res => {
-          // console.log(res);
-          navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
-        })
-        .catch(err => console.error(err));
-    } else {
-      axios
-        .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
-          headers: { authorization: token },
-        })
-        .then(res => {
-          // console.log(res);
-          sendHeatmapData();
-        })
-        .catch(err => console.error(err));
-    }
+    // if (testTitle === 'all') {
+    //   axios
+    //     .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
+    //       headers: { authorization: token },
+    //     })
+    //     .then(res => {
+    //       // console.log(res);
+    //       sendHeatmapData();
+    //       // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+    //     })
+    //     .catch(err => console.error(err));
+    // } else {
+    axios
+      .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
+        headers: { authorization: token },
+      })
+      .then(res => {
+        // console.log(res);
+        sendHeatmapData();
+      })
+      .catch(err => console.error(err));
+    // }
   };
   const sendHeatmapData = () => {
     axios
@@ -453,10 +453,9 @@ function CSTestDetail() {
       .catch(err => console.error(err));
   };
 
-  // 타이머 모드 - 종료 시간 일단 3초
-  const endTime = 3;
   // console.log(testData, testArray);
   console.log(testArray, testResultInfo);
+  // 초기에 카테고리값 넣어두기
   useEffect(() => {
     for (var i = 0; i < testData.length; i++) {
       setTestArray(prev => [
@@ -465,6 +464,11 @@ function CSTestDetail() {
       ]);
     }
   }, [testData]);
+
+  // 타이머 모드 - 종료 시간 일단 3초
+  const endTime = 3;
+  const testHeight = 250 + testData.length * 550;
+
   return (
     <>
       {!testStart ? (
@@ -605,23 +609,24 @@ function CSTestDetail() {
                 // <TestBox key={test.id}>{test.content}</TestBox>
                 <Choices key={idx} test={test} />
               ))} */}
-                </TestList>
-                <SubmitButton
-                  style={{ top: `${testHeight - 40}px` }}
-                  // onClick={handleSubmit}
-                  onClick={checkAnswers}
-                  // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
-                >
-                  제출하기
-                </SubmitButton>
-                {getResult && (
                   <SubmitButton
-                    style={{ top: `${testHeight + 20}px` }}
-                    onClick={handleSubmit}
+                    style={{ marginTop: '40px' }}
+                    // style={{ top: `${testHeight - 80}px` }}
+                    // onClick={handleSubmit}
+                    onClick={checkAnswers}
+                    // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
                   >
-                    결과 확인하기
+                    제출하기
                   </SubmitButton>
-                )}
+                  {getResult && (
+                    <SubmitButton
+                      style={{ marginTop: `120px` }}
+                      onClick={handleSubmit}
+                    >
+                      결과 확인하기
+                    </SubmitButton>
+                  )}
+                </TestList>
               </TestDetailContent>
             </TestDetailWrapper>
           )}
