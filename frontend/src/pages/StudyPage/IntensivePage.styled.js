@@ -52,11 +52,11 @@ export const StudyDetailText = styled.div`
 `
 
 export const DetailLayOut = styled.div`
-  width: 80%;
-  height : 80%;
-  margin: 20px 20px 20px 20px;
+  height : 700px;
+  margin: 20px auto 20px auto;
   padding: 22px 115px 98px 115px;
   border-radius: 31px;
   background-color: #fff;
   text-align: center;
+  width: 1200px;
 `
