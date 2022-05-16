@@ -7,8 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.csafy.csafy_android.R
@@ -18,7 +16,6 @@ import com.csafy.csafy_android.activity.SettingActivity
 import com.csafy.csafy_android.databinding.FragmentProfileBinding
 import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.data.response.ResponseProfileData
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Callback

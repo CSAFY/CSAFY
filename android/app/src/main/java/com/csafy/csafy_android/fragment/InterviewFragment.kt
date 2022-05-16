@@ -77,27 +77,5 @@ class InterviewFragment : Fragment() {
                 })
     }
 
-    // 데이터 생성
-//    private fun loadDatas() {
-//        datas.apply {
-//            add(
-//                ResponseInterviewData(
-//                    category = "인성",
-//                    question = "인성면접 질문입니다아아아아아아",
-//                    interviewLikes = 13,
-//                    liked = false
-//                )
-//            )
-//            add(
-//                ResponseInterviewData(
-//                    category = "기술",
-//                    question = "기술면접 질문입니다다아아아",
-//                    interviewLikes = 63,
-//                    liked = true
-//                )
-//            )
-//        }
-//
-//    }
 
 }

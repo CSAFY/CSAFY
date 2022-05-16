@@ -46,31 +46,9 @@ class ProfileFavortieFragment : Fragment() {
         binding.rvFavorite.layoutManager = LinearLayoutManager(context)
 //        binding.rvFavorite.adapter = ProfileFavoriteAdapter(datas)  // 리사이클러뷰의 어댑터를 profileAdapter로 지정해줌
 //        binding.rvFavorite.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-//        loadDatas()  // 데이터 생성, 어댑터에 전달
 
     }
 
-    // 데이터 생성
-    private fun loadDatas(){
-        datas.apply {
-            add(
-                ResponseProfileFavoriteData(
-                    id = 1,
-                    title = "운영체제론을 배워보자123123",
-                    categoryId = "11231번 카테고리",
-                    category2Id = "2번 카테고리",
-                    videoId = "비디오 아이디 1"
-            ))
-            add(
-                ResponseProfileFavoriteData(
-                    id = 2,
-                    title = "운영체제론을 배워보자",
-                    categoryId = "1번 카테고리",
-                    category2Id = "2번 카테고리",
-                    videoId = "비디오 아이디 22"
-            ))
-        }
-    }
 
     // 즐겨찾기 학습 정보 불러오기
     private fun getfavoriteData() {

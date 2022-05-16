@@ -18,8 +18,6 @@
             android:id="@+id/img_thumbnail"
             android:layout_width="350dp"
             android:layout_height="200dp"
-            android:background="@color/main_green2"
-            app:srcCompat="@drawable/ic_outline_star_24"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             />
