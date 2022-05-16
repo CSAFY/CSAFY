@@ -36,7 +36,7 @@ export const SearchBox = styled.input`
 
 export const SelectLayOut = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: right;
   align-items: center;
 `;
 
