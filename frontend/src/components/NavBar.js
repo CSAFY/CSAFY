@@ -21,7 +21,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { Tooltip } from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 // STYLED
 import styled from 'styled-components';
@@ -84,8 +84,8 @@ const pages = [
   // { name: '채팅', link: 'chat' },
   { name: '면접 대비', link: 'interview' },
   // { name: '기술 스택', link: 'classification' },
-  { name: '메타버스', link: 'community' },
-  { name: '실력 테스트', link: 'CSTest' },
+  // { name: '메타버스', link: 'community' },
+  // { name: '실력 테스트', link: 'CSTest' },
 ];
 const settings = [
   { name: '문제집', link: 'CSTest' },
@@ -288,8 +288,32 @@ const NavBar = () => {
                 );
               }
             })}
+            {/* 메타버스 */}
+            <Button
+              onClick={() => {
+                navigate(`/community`);
+                setCurrentPage('/community');
+                setToggle(false);
+              }}
+              sx={{
+                textAlign: 'center',
+                mx: 1,
+                my: 2,
+                color: 'black',
+                display: 'flex',
+                ':hover': {
+                  color: '#006D9F',
+                  bgcolor: '#ffffff',
+                  // bgcolor: '#D5F2FC',
+                },
+              }}
+            >
+              메타버스
+              <ViewInArIcon />
+            </Button>
+
             {/* 실력테스트 */}
-            {/* <Tooltip title="Open settings">
+            <Tooltip title="Open settings">
               {toggle ? (
                 <Button
                   onClick={handleOpenUserMenu}
@@ -328,7 +352,8 @@ const NavBar = () => {
                   실력 테스트
                 </Button>
               )}
-            </Tooltip> */}
+            </Tooltip>
+
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -551,6 +576,7 @@ const NavBar = () => {
                     onClick={() => {
                       navigate('/myPage');
                       setCurrentPage('/myPage');
+                      setToggle(false);
                     }}
                   >
                     <PermIdentityOutlinedIcon
@@ -562,6 +588,7 @@ const NavBar = () => {
                     onClick={() => {
                       navigate('/myPage');
                       setCurrentPage('/myPage');
+                      setToggle(false);
                     }}
                   >
                     <PermIdentityOutlinedIcon

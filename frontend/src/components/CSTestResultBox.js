@@ -162,9 +162,9 @@ function CSTestResultBox({ state }) {
         <Result>
           <Score>
             {result.totals.네트워크 === 0 ? (
-              <span>0% </span>
+              <span style={{ color: '#008ed0' }}>0% </span>
             ) : (
-              <span>
+              <span style={{ color: '#008ed0' }}>
                 {Math.ceil(
                   (result.corrects.네트워크 / result.totals.네트워크) * 100,
                 )}
@@ -175,9 +175,9 @@ function CSTestResultBox({ state }) {
           </Score>
           <Score style={{ top: '57px' }}>
             {result.totals.운영체제 === 0 ? (
-              <span>0% </span>
+              <span style={{ color: '#008ed0' }}>0% </span>
             ) : (
-              <span>
+              <span style={{ color: '#008ed0' }}>
                 {Math.ceil(
                   (result.corrects.운영체제 / result.totals.운영체제) * 100,
                 )}
@@ -188,22 +188,22 @@ function CSTestResultBox({ state }) {
           </Score>
           <Score style={{ top: '84px' }}>
             {result.totals.자료구조 === 0 ? (
-              <span>0% </span>
+              <span style={{ color: '#008ed0' }}>0% </span>
             ) : (
-              <span>
+              <span style={{ color: '#008ed0' }}>
                 {Math.ceil(
                   (result.corrects.자료구조 / result.totals.자료구조) * 100,
                 )}
                 %{' '}
               </span>
-            )}
+            )}{' '}
             ({result.corrects.자료구조} / {result.totals.자료구조})
           </Score>
           <Score style={{ top: '111px' }}>
             {result.totals.기타 === 0 ? (
-              <span>0% </span>
+              <span style={{ color: '#008ed0' }}>0% </span>
             ) : (
-              <span>
+              <span style={{ color: '#008ed0' }}>
                 {Math.ceil((result.corrects.기타 / result.totals.기타) * 100)}%{' '}
               </span>
             )}{' '}
@@ -211,9 +211,9 @@ function CSTestResultBox({ state }) {
           </Score>
           <Score style={{ top: '138px' }}>
             {result.totals.데이터베이스 === 0 ? (
-              <span>0% </span>
+              <span style={{ color: '#008ed0' }}>0% </span>
             ) : (
-              <span>
+              <span style={{ color: '#008ed0' }}>
                 {Math.ceil(
                   (result.corrects.데이터베이스 / result.totals.데이터베이스) *
                     100,
@@ -225,9 +225,9 @@ function CSTestResultBox({ state }) {
           </Score>
           <Score style={{ top: '165px' }}>
             {result.totals.컴퓨터구조 === 0 ? (
-              <span>0% </span>
+              <span style={{ color: '#008ed0' }}>0% </span>
             ) : (
-              <span>
+              <span style={{ color: '#008ed0' }}>
                 {Math.ceil(
                   (result.corrects.컴퓨터구조 / result.totals.컴퓨터구조) * 100,
                 )}
