@@ -44,7 +44,7 @@ function ReactBurger(props) {
 
   return (
     <>
-      <MenuItem style={{ backgroundColor: '#009859' }}>
+      <MenuItem style={{ backgroundColor: '#008ed0' }}>
         <SHamburger toggled={isOpen} toggle={setOpen} color="#f0f9fa" />
       </MenuItem>
       {isOpen && (
@@ -56,7 +56,7 @@ function ReactBurger(props) {
         >
           <MenuItem
             style={{
-              backgroundColor: '#b5fcca',
+              backgroundColor: '#84c2ea',
             }}
             onClick={handleHome}
           >
@@ -64,12 +64,13 @@ function ReactBurger(props) {
               sx={{
                 width: '80%',
                 height: '80%',
+                // color: 'white'
               }}
             />
           </MenuItem>
           <MenuItem
             style={{
-              backgroundColor: '#d2fae2',
+              backgroundColor: '#def9ff',
             }}
           >
             <ScreenshotMonitorIcon
@@ -82,7 +83,7 @@ function ReactBurger(props) {
           </MenuItem>
           <MenuItem
             style={{
-              backgroundColor: '#dcfff3',
+              backgroundColor: '#f0f9fa',
             }}
           >
             <FullscreenIcon
