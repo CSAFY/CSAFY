@@ -49,7 +49,7 @@ function IntensivePage() {
   };
   
 
-  const CategoryItems = categorys.slice(1).map((data) => 
+  const CategoryItems = categorys.map((data) => 
     <MenuItem key={data} value={data}>{data}</MenuItem>
   )
   

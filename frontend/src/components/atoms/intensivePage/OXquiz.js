@@ -236,10 +236,10 @@ function OXquiz(props) {
         able={"Y"}
         onClick={() => onClickBtn(selecCNT)}
         >
-        <input type={"number"} min="1" max="20" 
+        <MyInput type={"number"} min="1" max="20" 
         onClick={(event)=> event.stopPropagation()}
         onChange={(event) => setSelecCNT(event.target.value)}
-        value={selecCNT}></input>
+        value={selecCNT}></MyInput>
         문제
       </ClickBtn>
       <ClickBtn
@@ -326,6 +326,13 @@ function OXquiz(props) {
 }
 export default OXquiz
 
+const MyInput = styled.input`
+
+  appearance: none;
+  -moz-appearance: none; 
+  -webkit-appearance: none;
+
+`
 
 const MeaningDiv = styled.div`
   width : 90%;

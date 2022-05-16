@@ -31,22 +31,23 @@ export default function DrawerInList(props) {
 
   const ListItems = (categoryId) =>  {
     return(
-      studyDatas.map((data, index) => {
-        if (categoryId === "전체") {
-          return(
-            <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
-              "imgSrc":`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`,
-              "title": data.title,
-              "videoId":data.videoId,
-              "category2Id" : data.category2Id,
-              "categoryId": data.categoryId,
-              "favorites" : data.favorites,
-              "id" : data.id,
-              "seen" : data.seen })}} >
-              <ListItemText primary={data.title} />
-            </ListItem>
-          )
-        } else if (categoryId === data.categoryId){
+      studyDatas.slice(1).map((data, index) => {
+        // if (categoryId === "전체") {
+        //   return(
+        //     <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
+        //       "imgSrc":`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`,
+        //       "title": data.title,
+        //       "videoId":data.videoId,
+        //       "category2Id" : data.category2Id,
+        //       "categoryId": data.categoryId,
+        //       "favorites" : data.favorites,
+        //       "id" : data.id,
+        //       "seen" : data.seen })}} >
+        //       <ListItemText sx={{width: "250px;"}} primary={data.title} />
+        //     </ListItem>
+        //   )
+        // } else 
+        if (categoryId === data.categoryId){
           return(
             <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
               "imgSrc":`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`,
@@ -66,7 +67,7 @@ export default function DrawerInList(props) {
   }
   
   
-  const DrawerInList = props.data.map((categoryId, index) => 
+  const DrawerInList = props.data.slice(1).map((categoryId, index) => 
     <Accordion 
       expanded={expanded === `panel${index + 1}`} 
       onChange={handleChange(`panel${index + 1}`)}
@@ -76,7 +77,7 @@ export default function DrawerInList(props) {
         aria-controls={`panel${index + 1}bh-content`}
         id={`panel${index + 1}bh-header`}
       >
-        <Typography sx={{ width: '33%', flexShrink: 0 }}>{categoryId}</Typography>
+        <Typography sx={{ width: "90%;", flexShrink: 0 }}>{categoryId}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         

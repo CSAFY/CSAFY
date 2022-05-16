@@ -22,11 +22,12 @@ export const FullLayOut = styled.div`
 
 export const DetailLayOut = styled.div`
   height : 80%;
-  margin: 20px 20px 20px 20px;
+  margin: 20px auto 20px auto;
   padding: 22px 115px 98px 116px;
   border-radius: 31px;
   background-color: #fff;
   text-align: center;
+  width: 1200px;
 `
 
 export const TitleText = styled.div`
