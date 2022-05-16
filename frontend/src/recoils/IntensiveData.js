@@ -27,7 +27,7 @@ export const fourWayRaceData = atom({
     answer : null,
     examples : [" "," "]
     },],
-  effects_UNSTABLE: [localStorageEffect("four_way_wace_data_token")],
+  effects_UNSTABLE: [localStorageEffect("four_way_Race_data_token")],
 });
 
 export const fourWayRaceDataToken = selector({

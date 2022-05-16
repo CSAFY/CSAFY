@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 // Recoil
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
+import { keyWordData,
+  fourWayRaceData,
+  oxquizData,
+  videoData,
+  studyData } from '../recoils'
 
 // MUI
 // inherit 흰색 default 회색 primary 파랑 secondary 보라 error 빨강 info 파랑 success 초록 warning 주황 string 적용안됨
@@ -65,6 +70,15 @@ const NavBar = () => {
   // recoil 상태관리
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
+
+  //reset용 recoil
+  const resetKeyWordData = useResetRecoilState(keyWordData)
+  const resetFourWayRaceData = useResetRecoilState(fourWayRaceData) 
+  const resetOXQuizData = useResetRecoilState(oxquizData)
+  const resetVideoData = useResetRecoilState(videoData)
+  const resetStudyData = useResetRecoilState(studyData)
+
+
   // 실력테스트 anchor
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [toggle, setToggle] = useState(false);
@@ -110,6 +124,19 @@ const NavBar = () => {
     // Recoil
     setIsLoggedIn(false);
     setToken('');
+
+    resetKeyWordData()
+    resetFourWayRaceData()
+    resetOXQuizData()
+    resetVideoData()
+    resetStudyData()
+    localStorage.removeItem('study_data_token');
+    localStorage.removeItem('four_way_Race_data_token');
+    localStorage.removeItem('keyWord_data_token');
+    localStorage.removeItem('oxquiz_data_token');
+    localStorage.removeItem('video_data_token');
+
+    
     // 이동
     navigate('/');
     setCurrentPage('/');
