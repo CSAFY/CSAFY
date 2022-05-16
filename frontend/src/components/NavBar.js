@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 // Recoil
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
+import { keyWordData,
+  fourWayRaceData,
+  oxquizData,
+  videoData,
+  studyData } from '../recoils'
 import { Userinfo } from '../recoils/Userinfo';
 import { Username } from '../recoils/Username';
 import { CurrentPage } from '../recoils/CurrentPage';
@@ -96,6 +101,14 @@ const NavBar = () => {
   // recoil 상태관리
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
+
+  //reset용 recoil
+  const resetKeyWordData = useResetRecoilState(keyWordData)
+  const resetFourWayRaceData = useResetRecoilState(fourWayRaceData) 
+  const resetOXQuizData = useResetRecoilState(oxquizData)
+  const resetVideoData = useResetRecoilState(videoData)
+  const resetStudyData = useResetRecoilState(studyData)
+
   const [userinfo, setUserinfo] = useRecoilState(Userinfo);
   const [usename, setUsername] = useRecoilState(Username);
   const [currentPage, setCurrentPage] = useRecoilState(CurrentPage);
@@ -145,6 +158,19 @@ const NavBar = () => {
     // Recoil
     setIsLoggedIn(false);
     setToken('');
+
+    resetKeyWordData()
+    resetFourWayRaceData()
+    resetOXQuizData()
+    resetVideoData()
+    resetStudyData()
+    localStorage.removeItem('study_data_token');
+    localStorage.removeItem('four_way_Race_data_token');
+    localStorage.removeItem('keyWord_data_token');
+    localStorage.removeItem('oxquiz_data_token');
+    localStorage.removeItem('video_data_token');
+
+    
     setUserinfo({});
     setUsername('');
     // 이동
