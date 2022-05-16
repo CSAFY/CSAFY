@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 // STYLED
 import styled from 'styled-components';
 
@@ -11,6 +12,8 @@ const Box = styled.div`
   background-color: #fff;
 
   position: relative;
+
+  cursor: pointer;
 `;
 const CategoryInfo = styled.div`
   height: 50px;
@@ -20,24 +23,37 @@ const CategoryInfo = styled.div`
   justify-content: center;
 
   position: absolute;
-  top: 33px;
-  left: 100px;
+  top: 50px;
+  left: 30px;
 `;
 const QuestionInfo = styled.div`
+  height: 34px;
+  width: 80%;
+
+  display: flex;
+  align-items: center;
+
+  position: absolute;
+  top: 100px;
+  left: 33px;
+`;
+const RoundInfo = styled.div`
   height: 34px;
 
   display: flex;
   align-items: center;
 
   position: absolute;
-  top: 120px;
-  left: 33px;
+  top: 20px;
+  left: 30px;
 `;
-function ReviewNoteBox({ category, question }) {
+function ReviewNoteBox({ category, question, round }) {
+  const navigate = useNavigate();
   return (
-    <Box>
-      <CategoryInfo>{category}</CategoryInfo>
-      <QuestionInfo>{question}</QuestionInfo>
+    <Box onClick={() => navigate(`/reviewNote/${round}`)}>
+      <CategoryInfo>분류: {category}</CategoryInfo>
+      <QuestionInfo>Q: {question}</QuestionInfo>
+      <RoundInfo>round: {round}</RoundInfo>
     </Box>
   );
 }

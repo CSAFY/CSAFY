@@ -146,24 +146,6 @@ function InterviewList() {
           >
             면접 질문
           </div>
-          {/* <div
-            style={{
-              marginLeft: '50px',
-              marginRight: '50px',
-              color: '#8a8888',
-            }}
-          >
-            |
-          </div>
-          <div
-            style={{
-              fontSize: '16px',
-              fontWeight: '300',
-              color: '#8a8888',
-            }}
-          >
-            총 215개의 기업
-          </div> */}
         </PageTitle>
         <TypeBox>
           <div

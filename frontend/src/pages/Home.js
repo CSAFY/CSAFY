@@ -1,48 +1,53 @@
-// // import { Button } from '@mui/material';
-// import React from 'react';
-// import BeforeLogin from '../components/Home/BeforeLogin';
-// import MyPage from './MyPage';
-
-// // STYLED
-// import styled from 'styled-components';
-
-// const HomeWrapper = styled.div`
-//   background-color: #d5f2fc;
-//   width: 100vw;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// `;
-
-// function Home() {
-//   // jwt
-//   const token = localStorage.getItem('jwt');
-
-//   return <HomeWrapper>{token ? <MyPage /> : <BeforeLogin />}</HomeWrapper>;
-// }
-
-// export default Home;
-
-import { Button } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Box, Button, Modal } from '@mui/material';
+import React, { useState } from 'react';
 import swal from 'sweetalert2';
 
+// Recoil
+import { useRecoilValue } from 'recoil';
 import { Token } from '../recoils/Token';
+
+// Components
+import AuthModal from '../components/AuthModal';
 
 // REACT-REVEAL
 import Fade from 'react-reveal/Fade';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // STYLED
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+
+const loginStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '517px',
+  height: '697px',
+  bgcolor: '#fff',
+  boxShadow: 24,
+  p: 4,
+};
+const signupStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '517px',
+  height: '834px',
+  bgcolor: '#fff',
+  boxShadow: 24,
+  p: 4,
+};
 
 // background-color: #d5f2fc;
 const HomeWrapper = styled.div`
   background-image: url(/images/main-background.png);
   background-size: contain;
+  // background-size: cover;
   background-repeat: no-repeat;
   width: 100vw;
+  // min-height: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -102,14 +107,6 @@ const InfoContent = styled.div`
 
   position: relative;
 `;
-// const InfoImage = styled.img`
-//   width: 663px;
-//   height: 453px;
-//   border: 1px solid black;
-
-//   position: absolute;
-//   top: 50px;
-// `;
 
 const MetaWrapper = styled.section`
   width: 100%;
@@ -168,22 +165,15 @@ const ButtonBox = styled.div`
 function Home() {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('jwt');
-  //   if (token) {
-  //     navigate('/mypage');
-  //   }
-  // }, []);
   const token = useRecoilValue(Token);
+  const [modal, setModal] = useState(false);
+  const [state, setState] = useState('signup');
+  const handleModalClose = () => setModal(false);
   const handleStart = () => {
     if (token) {
       navigate('/studyframepage');
     } else {
-      swal.fire({
-        icon: 'warning',
-        title: '로그인이 필요합니다.',
-        text: '로그인이 필요합니다. 회원가입 또는 로그인을 진행해주세요.',
-      });
+      setModal(true);
     }
   };
   const handleStudy = () => {
@@ -196,11 +186,35 @@ function Home() {
         text: '로그인이 필요합니다. 회원가입 또는 로그인을 진행해주세요.',
       });
     }
-  }
+  };
 
   return (
     <HomeWrapper>
       <HeroWrapper>
+        <Modal
+          open={modal}
+          onClose={handleModalClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          {state === 'login' ? (
+            <Box sx={loginStyle}>
+              <AuthModal
+                state={state}
+                setState={setState}
+                setModal={setModal}
+              />
+            </Box>
+          ) : (
+            <Box sx={signupStyle}>
+              <AuthModal
+                state={state}
+                setState={setState}
+                setModal={setModal}
+              />
+            </Box>
+          )}
+        </Modal>
         <HeroContent>
           <HeroMain>
             <div
@@ -231,7 +245,7 @@ function Home() {
               </p>
               <br />
               <p style={{ margin: 'auto' }}>
-                시험부터 면접까지
+                시험부터 면접까지{' '}
                 <strong style={{ color: '#008ED0', fontWeight: '800' }}>
                   C;SAFY
                 </strong>
@@ -346,6 +360,7 @@ function Home() {
           </Fade>
         </DataContent>
       </DataWrapper>
+
       <InfoWrapper>
         <InfoContent>
           <Fade left>
@@ -417,7 +432,7 @@ function Home() {
               }}
             >
               <p style={{ margin: 'auto' }}>
-                단지 기억력을 높여주는 방식을 통해 빠르게 습득할 수 있습니다.
+                단기 기억력을 높여주는 방식을 통해 빠르게 습득할 수 있습니다.
               </p>
               <p style={{ margin: 'auto' }}>
                 학습한 내용을 바탕으로 진행 가능한 모의고사를 통해
@@ -466,7 +481,7 @@ function Home() {
               }}
             >
               <p style={{ margin: 'auto' }}>
-                단지 기억력을 높여주는 방식을 통해 빠르게 습득할 수 있습니다.
+                단기 기억력을 높여주는 방식을 통해 빠르게 습득할 수 있습니다.
               </p>
               <p style={{ margin: 'auto' }}>
                 학습한 내용을 바탕으로 진행 가능한 모의고사를 통해
@@ -581,10 +596,15 @@ function Home() {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
-              onClick={()=>window.open('https://play.google.com/store/apps/details?id=com.csafy.csafy_android', '_blank') }
+              onClick={() =>
+                window.open(
+                  'https://play.google.com/store/apps/details?id=com.csafy.csafy_android',
+                  '_blank',
+                )
+              }
             >
               모바일 버전 시작하기
-              </Button>
+            </Button>
           </ButtonBox>
         </PlusContent>
       </PlusWrapper>

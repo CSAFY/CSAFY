@@ -27,6 +27,7 @@ import styled from 'styled-components';
 import { Button } from '@mui/material';
 import Hamburger from '../components/Hamburger';
 import ReactBurger from '../components/ReactBurger';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -36,6 +37,7 @@ const MyPageWrapper = styled.div`
   align-items: center;
 
   background-color: #f5f5f5;
+  // background-color: white;
 `;
 const MyPageContent = styled.div`
   width: 1232px;
@@ -51,8 +53,8 @@ const ColorBox = styled.div`
   display: flex;
 
   position: absolute;
-  right: 20px;
-  bottom: 45px;
+  right: 0px;
+  bottom: 100px;
 `;
 const Color = styled.div`
   font-size: 14px;
@@ -90,7 +92,7 @@ const StudyAnalysisWrapper = styled.div`
 `;
 
 const VideoWrapper = styled.div`
-  padding-top: 100px;
+  // padding-top: 50px;
 `;
 
 function MyPage() {
@@ -150,19 +152,22 @@ function MyPage() {
       .catch(err => console.error(err));
   };
   // 히트맵 데이터 관련
-  const [heatmapData, setHeatmapData] = useState([]);
+  const [heatmapData, setHeatmapData] = useState([
+    { date: '1994-03-22', count: 0 },
+  ]);
   const getHeatmapData = () => {
     axios
       .get(`${defaultAPI}/cs-service/profile/heatmap`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log(res);
-        setHeatmapData(res.data);
+        console.log('히트맵 데이터 --->', res);
+        if (res.data) {
+          setHeatmapData(res.data);
+        }
       })
       .catch(err => console.error(err));
   };
-  console.log(heatmapData);
   // 최근 본 면접 질문
   const [recentInterview, setRecentInterview] = useState([]);
   const getRecentInterviewInfo = () => {
@@ -428,6 +433,7 @@ function MyPage() {
                       width: '85px',
                       height: '23px',
                       margin: '0',
+                      marginBottom: '5px',
                       borderRadius: '6px',
                       background:
                         'linear-gradient(to right bottom, #008ed0, #b5fcca)',
@@ -596,52 +602,65 @@ function MyPage() {
                 </Button>
               )}
             </UserInfo>
-
-            <CalendarHeatmap
-              startDate={shiftDate(today, -250)}
-              endDate={today}
-              // values={[
-              //   { date: '2022-04-19', count: 1 },
-              //   { date: '2022-04-20', count: 2 },
-              //   { date: '2022-05-02', count: 3 },
-              //   { date: '2022-05-04', count: 4 },
-              //   { date: '2022-05-05', count: 5 },
-              //   { date: '2022-05-06', count: 6 },
-              //   { date: '2022-05-07', count: 7 },
-              //   { date: '2022-05-08', count: 8 },
-              // ]}
-              values={heatmapData}
-              classForValue={value => {
-                if (!value) {
-                  return 'color-empty';
-                } else {
-                  if (value.count === 1) {
-                    return `color-github-1`;
-                  } else if (value.count <= 3) {
-                    return `color-github-2`;
-                  } else if (value.count <= 6) {
-                    return `color-github-3`;
-                  } else {
-                    return `color-github-4`;
-                  }
-                }
-                // return `color-github-${value.count}`;
-              }}
-              showWeekdayLabels={true}
-              // tooltip 사라지게 하는 방법...
-              tooltipDataAttrs={value => {
-                if (value.count) {
-                  return {
-                    'data-tip': `${value.count} Contributions on ${value.date}`,
-                  };
-                } else {
-                  return {
-                    'data-tip': `No Contribution`,
-                  };
-                }
-              }}
+          </UserInfoWrapper>
+          <hr />
+          <StudyAnalysisWrapper>
+            <StudyAnalysis
+              userInfo={userInfo}
+              analysisData={analysisData}
+              recentTest={recentTest}
             />
-            <ReactTooltip />
+          </StudyAnalysisWrapper>
+          <div
+            style={{
+              width: '80%',
+              height: '350px',
+              // border: '1px solid black',
+              position: 'relative',
+              left: '50%',
+              transform: 'translate(-50%)',
+            }}
+          >
+            {heatmapData && (
+              <>
+                <CalendarHeatmap
+                  startDate={shiftDate(today, -250)}
+                  endDate={today}
+                  values={heatmapData}
+                  classForValue={value => {
+                    if (!value) {
+                      return 'color-empty';
+                    } else {
+                      if (value.count === 1) {
+                        return `color-github-1`;
+                      } else if (value.count <= 3) {
+                        return `color-github-2`;
+                      } else if (value.count <= 6) {
+                        return `color-github-3`;
+                      } else {
+                        return `color-github-4`;
+                      }
+                    }
+                    // return `color-github-${value.count}`;
+                  }}
+                  showWeekdayLabels={true}
+                  // tooltip 사라지게 하는 방법...
+                  tooltipDataAttrs={value => {
+                    if (value.count) {
+                      return {
+                        'data-tip': `${value.count} Contributions on ${value.date}`,
+                      };
+                    } else {
+                      return {
+                        'data-tip': `No Contribution`,
+                      };
+                    }
+                  }}
+                />
+                <ReactTooltip />
+              </>
+            )}
+
             <ColorBox>
               <Color>
                 <div>1문제</div>
@@ -680,18 +699,14 @@ function MyPage() {
                 />
               </Color>
             </ColorBox>
-          </UserInfoWrapper>
-          <hr />
-          <StudyAnalysisWrapper>
-            <StudyAnalysis userInfo={userInfo} analysisData={analysisData} />
-          </StudyAnalysisWrapper>
-
+          </div>
           <VideoWrapper>
             <h1 style={{ textAlign: 'center' }}>즐겨찾는 학습</h1>
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'center',
+                paddingTop: '20px',
+                // justifyContent: 'center',
               }}
             >
               {favorites &&
@@ -700,12 +715,13 @@ function MyPage() {
                 ))}
             </div>
           </VideoWrapper>
-          <VideoWrapper>
+          <VideoWrapper style={{ marginTop: '100px' }}>
             <h1 style={{ textAlign: 'center' }}>최근 본 강의</h1>
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'center',
+                paddingTop: '20px',
+                // justifyContent: 'center',
               }}
             >
               {recentStudy &&
@@ -725,29 +741,22 @@ function MyPage() {
             }}
           >
             <h1 style={{ textAlign: 'center' }}>최근 본 면접 질문</h1>
-            <Button
+            <div
               style={{
                 position: 'absolute',
-                top: '125px',
+                top: '135px',
                 right: '105px',
-              }}
-              sx={{
-                textAlign: 'center',
-                display: 'block',
-                bgcolor: '#008ED0',
-                ':hover': {
-                  color: '#006D9F',
-                  bgcolor: '#D5F2FC',
-                },
-
-                fontSize: '16px',
-                fontWeight: 'bold',
-                color: '#fff',
+                textDecoration: 'none',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '13px',
               }}
               onClick={() => navigate('/interview')}
             >
               면접 연습하러 가기
-            </Button>
+              <ArrowForwardIosIcon fontSize="small" />
+            </div>
             {recentInterview &&
               recentInterview.map(info => (
                 <InterviewBox key={info.id} {...info} />
@@ -769,9 +778,9 @@ function MyPage() {
               }}
             >
               {recentTest &&
-                recentTest.map(test => (
-                  <TestBox key={test.testSeq} {...test} />
-                ))}
+                recentTest
+                  .slice(0, 4)
+                  .map(test => <TestBox key={test.testSeq} {...test} />)}
             </div>
           </div>
         </MyPageContent>

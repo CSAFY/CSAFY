@@ -26,12 +26,12 @@ const Date = styled.div`
 const TestName = styled.div`
   width: 121px;
   height: 30px;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 500;
   text-align: center;
 
   position: absolute;
-  top: 60px;
+  top: 40px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -46,7 +46,7 @@ const ScoreBox = styled.div`
   align-items: center;
 
   position: absolute;
-  top: 100px;
+  top: 80px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -54,7 +54,8 @@ const TestScore = styled.div`
   width: 100px;
   height: 30px;
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 600;
+  margin-bottom: 5px;
 `;
 const ResultBox = styled.div`
   width: 80%;
@@ -74,19 +75,17 @@ const ResultTitle = styled.div`
   font-size: 12px;
   font-weight: 600;
   color: #a4a4a4;
-
-  margin-bottom: 10px;
 `;
-const ResultScore = styled.div`
-  height: 18px;
-  width: 100%;
-  font-size: 14px;
-  color: #000;
+const ResultScore = styled.li`
+  // height: 18px;
+  // width: 100%;
+  // font-size: 14px;
+  // color: #000;
 
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
 
   display: flex;
-  align-items: center;
+  // align-items: center;
 `;
 const LogoImg = styled.img`
   width: 28px;
@@ -112,6 +111,12 @@ function TestBox({ examDone, id, corrects, totals }) {
     corrects,
     totals,
   };
+  // const labels = testInfo.map(test => test.id);
+  // const scores = testInfo.map(test =>
+  //   Math.ceil((getSum(test.corrects) / getSum(test.totals)) * 100),
+  // );
+  // console.log(testInfo, labels, scores);
+  console.log(testInfo);
 
   return (
     <>
@@ -131,105 +136,132 @@ function TestBox({ examDone, id, corrects, totals }) {
         </ScoreBox>
         <ResultBox>
           <ResultTitle>과목별 결과</ResultTitle>
-          <ResultScore>
-            네트워크 ({testInfo.corrects.네트워크} / {testInfo.totals.네트워크})
-            <div style={{ position: 'absolute', right: '10px' }}>
-              {testInfo.totals.네트워크 === 0 ? (
-                <span>0% </span>
-              ) : (
-                <span>
-                  {Math.ceil(
-                    (testInfo.corrects.네트워크 / testInfo.totals.네트워크) *
-                      100,
-                  )}
-                  %{' '}
-                </span>
-              )}
-            </div>
-          </ResultScore>
-          <ResultScore>
-            운영체제 ({testInfo.corrects.운영체제} / {testInfo.totals.운영체제})
-            <div style={{ position: 'absolute', right: '10px' }}>
-              {testInfo.totals.운영체제 === 0 ? (
-                <span>0% </span>
-              ) : (
-                <span>
-                  {Math.ceil(
-                    (testInfo.corrects.운영체제 / testInfo.totals.운영체제) *
-                      100,
-                  )}
-                  %{' '}
-                </span>
-              )}
-            </div>
-          </ResultScore>
-          <ResultScore>
-            자료구조 ({testInfo.corrects.자료구조} / {testInfo.totals.자료구조})
-            <div style={{ position: 'absolute', right: '10px' }}>
-              {testInfo.totals.자료구조 === 0 ? (
-                <span>0% </span>
-              ) : (
-                <span>
-                  {Math.ceil(
-                    (testInfo.corrects.자료구조 / testInfo.totals.자료구조) *
-                      100,
-                  )}
-                  %{' '}
-                </span>
-              )}
-            </div>
-          </ResultScore>
-          <ResultScore>
-            기타 ({testInfo.corrects.기타} / {testInfo.totals.기타})
-            <div style={{ position: 'absolute', right: '10px' }}>
-              {testInfo.totals.기타 === 0 ? (
-                <span>0% </span>
-              ) : (
-                <span>
-                  {Math.ceil(
-                    (testInfo.corrects.기타 / testInfo.totals.기타) * 100,
-                  )}
-                  %{' '}
-                </span>
-              )}
-            </div>
-          </ResultScore>
-          <ResultScore>
-            데이터베이스 ({testInfo.corrects.데이터베이스} /{' '}
-            {testInfo.totals.데이터베이스})
-            <div style={{ position: 'absolute', right: '10px' }}>
-              {testInfo.totals.데이터베이스 === 0 ? (
-                <span>0% </span>
-              ) : (
-                <span>
-                  {Math.ceil(
-                    (testInfo.corrects.데이터베이스 /
-                      testInfo.totals.데이터베이스) *
-                      100,
-                  )}
-                  %{' '}
-                </span>
-              )}
-            </div>
-          </ResultScore>
-          <ResultScore>
-            컴퓨터 구조 ({testInfo.corrects.컴퓨터구조} /{' '}
-            {testInfo.totals.컴퓨터구조})
-            <div style={{ position: 'absolute', right: '10px' }}>
-              {testInfo.totals.컴퓨터구조 === 0 ? (
-                <span>0% </span>
-              ) : (
-                <span>
-                  {Math.ceil(
-                    (testInfo.corrects.컴퓨터구조 /
-                      testInfo.totals.컴퓨터구조) *
-                      100,
-                  )}
-                  %{' '}
-                </span>
-              )}
-            </div>
-          </ResultScore>
+          {/* <ul>
+            <li>네트워크</li>
+          </ul> */}
+          <ul style={{ paddingLeft: '20px' }}>
+            <ResultScore>
+              {/* <div>네트워크</div> */}
+              네트워크
+              <div style={{ position: 'absolute', right: '10px' }}>
+                {testInfo.totals.네트워크 === 0 ? (
+                  <span style={{ color: '#008ed0' }}>0% </span>
+                ) : (
+                  <span>
+                    <span style={{ color: '#008ed0' }}>
+                      {Math.ceil(
+                        (testInfo.corrects.네트워크 /
+                          testInfo.totals.네트워크) *
+                          100,
+                      )}
+                      %
+                    </span>{' '}
+                    ({testInfo.corrects.네트워크} / {testInfo.totals.네트워크})
+                  </span>
+                )}
+              </div>
+            </ResultScore>
+            <ResultScore>
+              운영체제
+              <div style={{ position: 'absolute', right: '10px' }}>
+                {testInfo.totals.운영체제 === 0 ? (
+                  <span style={{ color: '#008ed0' }}>0% </span>
+                ) : (
+                  <span>
+                    <span style={{ color: '#008ed0' }}>
+                      {Math.ceil(
+                        (testInfo.corrects.운영체제 /
+                          testInfo.totals.운영체제) *
+                          100,
+                      )}
+                      %
+                    </span>{' '}
+                    ({testInfo.corrects.운영체제} / {testInfo.totals.운영체제})
+                  </span>
+                )}
+              </div>
+            </ResultScore>
+            <ResultScore>
+              자료구조
+              <div style={{ position: 'absolute', right: '10px' }}>
+                {testInfo.totals.자료구조 === 0 ? (
+                  <span style={{ color: '#008ed0' }}>0% </span>
+                ) : (
+                  <span>
+                    <span style={{ color: '#008ed0' }}>
+                      {Math.ceil(
+                        (testInfo.corrects.자료구조 /
+                          testInfo.totals.자료구조) *
+                          100,
+                      )}
+                      %
+                    </span>{' '}
+                    ({testInfo.corrects.자료구조} / {testInfo.totals.자료구조})
+                  </span>
+                )}
+              </div>
+            </ResultScore>
+            <ResultScore>
+              데이터베이스
+              <div style={{ position: 'absolute', right: '10px' }}>
+                {testInfo.totals.데이터베이스 === 0 ? (
+                  <span style={{ color: '#008ed0' }}>0% </span>
+                ) : (
+                  <span>
+                    <span style={{ color: '#008ed0' }}>
+                      {Math.ceil(
+                        (testInfo.corrects.데이터베이스 /
+                          testInfo.totals.데이터베이스) *
+                          100,
+                      )}
+                      %
+                    </span>{' '}
+                    ({testInfo.corrects.데이터베이스} /{' '}
+                    {testInfo.totals.데이터베이스})
+                  </span>
+                )}
+              </div>
+            </ResultScore>
+            <ResultScore>
+              컴퓨터 구조
+              <div style={{ position: 'absolute', right: '10px' }}>
+                {testInfo.totals.컴퓨터구조 === 0 ? (
+                  <span style={{ color: '#008ed0' }}>0% </span>
+                ) : (
+                  <span>
+                    <span style={{ color: '#008ed0' }}>
+                      {Math.ceil(
+                        (testInfo.corrects.컴퓨터구조 /
+                          testInfo.totals.컴퓨터구조) *
+                          100,
+                      )}
+                      %
+                    </span>{' '}
+                    ({testInfo.corrects.컴퓨터구조} /{' '}
+                    {testInfo.totals.컴퓨터구조})
+                  </span>
+                )}
+              </div>
+            </ResultScore>
+            <ResultScore>
+              기타
+              <div style={{ position: 'absolute', right: '10px' }}>
+                {testInfo.totals.기타 === 0 ? (
+                  <span style={{ color: '#008ed0' }}>0% </span>
+                ) : (
+                  <span>
+                    <span style={{ color: '#008ed0' }}>
+                      {Math.ceil(
+                        (testInfo.corrects.기타 / testInfo.totals.기타) * 100,
+                      )}
+                      %
+                    </span>{' '}
+                    ({testInfo.corrects.기타} / {testInfo.totals.기타})
+                  </span>
+                )}
+              </div>
+            </ResultScore>
+          </ul>
         </ResultBox>
         <LogoImg src="images/csafy.png" alt="CSAFY" />
       </Test>

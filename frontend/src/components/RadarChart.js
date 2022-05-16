@@ -5,8 +5,8 @@ import styled from 'styled-components';
 ChartJS.register(...registerables);
 
 const RadarGraph = styled.div`
-  width: 346px;
-  height: 346px;
+  width: 420px;
+  height: 420px;
   margin-left: 37px;
 `;
 

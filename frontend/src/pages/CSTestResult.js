@@ -1,5 +1,10 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 
 // STYLED
 import styled from 'styled-components';
@@ -7,6 +12,7 @@ import CSTestResultBox from '../components/CSTestResultBox';
 // Recoil
 import { useRecoilValue } from 'recoil';
 import { Userinfo } from '../recoils/Userinfo';
+import { Button } from '@mui/material';
 
 const TestResultWrapper = styled.div`
   width: 100%;
@@ -51,8 +57,15 @@ const ResultBox = styled.div`
   left: 50%;
   transform: translate(-50%);
 `;
+const ButtonBox = styled.div`
+  position: absolute;
+  top: 800px;
+  left: 50%;
+  transform: translate(-50%);
+`;
 
 function CSTestResult() {
+  const navigate = useNavigate();
   // Recoil
   const userInfo = useRecoilValue(Userinfo);
 
@@ -64,10 +77,29 @@ function CSTestResult() {
     <TestResultWrapper>
       <TestresultContent>
         <TitleBox>{userInfo.username}님의 실전 모의고사 결과</TitleBox>
-
         <ResultBox>
           <CSTestResultBox state={state} />
         </ResultBox>
+        <ButtonBox>
+          <Button
+            sx={{
+              width: '150px',
+              height: '50px',
+              textAlign: 'center',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              color: '#fff',
+              bgcolor: '#008ED0',
+              ':hover': {
+                color: '#006D9F',
+                bgcolor: '#D5F2FC',
+              },
+            }}
+            onClick={() => navigate('/reviewnote')}
+          >
+            오답노트 가기
+          </Button>
+        </ButtonBox>
       </TestresultContent>
     </TestResultWrapper>
   );

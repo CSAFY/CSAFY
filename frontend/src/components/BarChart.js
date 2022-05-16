@@ -11,13 +11,19 @@ const BarGraph = styled.div`
   // flex-grow: 2;
 `;
 
-const BarChart = () => {
+const BarChart = ({ recentTest }) => {
+  const getSum = corrects => Object.values(corrects).reduce((a, b) => a + b);
+  const labels = recentTest.map(test => test.id).reverse();
+  const scores = recentTest.map(test =>
+    Math.ceil((getSum(test.corrects) / getSum(test.totals)) * 100),
+  );
+  // console.log(d);
   const data = {
-    labels: ['#1', '#2', '#3', '#4', '#5'],
+    labels,
     datasets: [
       {
         label: '모의고사 결과',
-        data: [65, 59, 90, 81, 56],
+        data: scores,
         backgroundColor: ['rgba(54, 162, 235, 0.2)'],
         borderColor: ['rgba(54, 162, 235)'],
         borderWidth: 1,

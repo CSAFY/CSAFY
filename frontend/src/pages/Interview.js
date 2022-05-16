@@ -64,25 +64,6 @@ const TypeButton = styled.div`
   cursor: pointer;
 `;
 
-const QuestionBox = styled.div`
-  width: 543px;
-  height: 151px;
-  border-radius: 9px;
-  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
-  background-color: #fff;
-  font-size: 18px;
-  font-weight: 600;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  position: absolute;
-  top: 549px;
-  left: 50%;
-  transform: translate(-50%);
-`;
 const ButtonBox = styled.div`
   display: flex;
   padding-top: 15px;
@@ -92,13 +73,28 @@ const SwitchBox = styled.div`
   right: 0;
   top: 135px;
 `;
-const ToolTip = styled.div`
+const ToolTip = styled.img`
   width: 231px;
   height: 62px;
-  border-radius: 34px;
-  background-color: #d7e4ec;
+  // border-radius: 34px;
+  // background-color: #d7e4ec;
+  // font-size: 14px;
+  // font-weight: 600;
+
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+
+  position: absolute;
+  right: 0;
+  top: 70px;
+`;
+const ToolTipInput = styled.div`
+  width: 231px;
+  height: 62px;
   font-size: 14px;
-  font-weight: 600;
+  // font-weight: 600;
 
   display: flex;
   flex-direction: column;
@@ -107,7 +103,7 @@ const ToolTip = styled.div`
 
   position: absolute;
   right: 0;
-  top: 70px;
+  top: 68px;
 `;
 
 function Interview() {
@@ -119,6 +115,7 @@ function Interview() {
   // API
   const [interviewCat, setInterviewCat] = useState('');
   const [questionNum, setQuestionNum] = useState('');
+  console.log(interviewCat, questionNum);
   const getTestData = () => {
     axios
       .post(
@@ -169,138 +166,356 @@ function Interview() {
   const [toggleQuestionBox, setToggleQuestionBox] = useState(false);
   const [toggleStartBox, setToggleStartBox] = useState(false);
 
+  console.log(toggleQuestionBox, toggleStart);
   return (
     <InterviewDetailWrapper>
       <InterviewDetailContent>
         {isLoggedIn ? (
           <>
-            <ToolTip>
-              스위치를 눌러 <br />
-              시간 제한 모드로 변경할 수 있어요.
-            </ToolTip>
+            <div>
+              <ToolTip
+                src="images/talk.png"
+                alt="talk"
+                style={{ width: '231px', height: '62px' }}
+              />
+              <ToolTipInput>
+                스위치를 눌러 <br />
+                시간 제한 모드로 변경할 수 있어요.
+              </ToolTipInput>
+            </div>
             <SwitchBox>
               <MuiSwitch />
             </SwitchBox>
-            <TypeBox>
-              <div>어떤 질문 유형을 원하시나요?</div>
-              {interviewCat === 'character' ? (
-                <TypeButton
-                  onClick={handleAttClick}
-                  style={{
-                    backgroundColor: '#008ed0',
-                    color: '#fff',
-                  }}
-                >
-                  인성 면접
-                </TypeButton>
-              ) : (
-                <TypeButton onClick={handleAttClick}>인성 면접</TypeButton>
-              )}
-              {interviewCat === 'tech' ? (
-                <TypeButton
-                  onClick={handleTechClick}
-                  style={{
-                    backgroundColor: '#008ed0',
-                    color: '#fff',
-                  }}
-                >
-                  기술 면접
-                </TypeButton>
-              ) : (
-                <TypeButton onClick={handleTechClick}>기술 면접</TypeButton>
-              )}
-              {interviewCat === 'all' ? (
-                <TypeButton
-                  style={{
-                    backgroundColor: '#008ed0',
-                    color: '#fff',
-                  }}
-                  onClick={handleRandomClick}
-                >
-                  알아서 해주세요
-                </TypeButton>
-              ) : (
-                <TypeButton onClick={handleRandomClick}>
-                  알아서 해주세요
-                </TypeButton>
-              )}
 
-              <div
-                onClick={() => navigate('/interviewList')}
-                style={{
-                  cursor: 'pointer',
-                  fontSize: '13px',
-                  fontWeight: '300',
-                }}
-              >
-                면접 질문만 보고 싶어요
-              </div>
-            </TypeBox>
-            {toggleQuestionBox && (
-              <QuestionBox>
-                <div>몇 가지 면접 질문을 원하시나요?</div>
-                <ButtonBox>
-                  {questionNum === '3' ? (
+            {!toggleQuestionBox ? (
+              <>
+                <TypeBox>
+                  <div>어떤 질문 유형을 원하시나요?</div>
+                  {interviewCat === 'character' ? (
                     <TypeButton
+                      onClick={handleAttClick}
                       style={{
-                        marginRight: '15px',
                         backgroundColor: '#008ed0',
                         color: '#fff',
                       }}
-                      onClick={handleQuestionCount}
                     >
-                      3개요!
+                      인성 면접
                     </TypeButton>
                   ) : (
+                    <TypeButton onClick={handleAttClick}>인성 면접</TypeButton>
+                  )}
+
+                  {interviewCat === 'tech' ? (
                     <TypeButton
-                      style={{ marginRight: '15px' }}
-                      onClick={handleQuestionCount}
+                      onClick={handleTechClick}
+                      style={{
+                        backgroundColor: '#008ed0',
+                        color: '#fff',
+                      }}
                     >
-                      3개요!
+                      기술 면접
                     </TypeButton>
+                  ) : (
+                    <TypeButton onClick={handleTechClick}>기술 면접</TypeButton>
+                  )}
+
+                  {interviewCat === 'all' ? (
+                    <TypeButton
+                      style={{
+                        backgroundColor: '#008ed0',
+                        color: '#fff',
+                      }}
+                      onClick={handleRandomClick}
+                    >
+                      알아서 해주세요
+                    </TypeButton>
+                  ) : (
+                    <TypeButton onClick={handleRandomClick}>
+                      알아서 해주세요
+                    </TypeButton>
+                  )}
+
+                  <div
+                    onClick={() => navigate('/interviewList')}
+                    style={{
+                      cursor: 'pointer',
+                      fontSize: '13px',
+                      fontWeight: '300',
+                    }}
+                  >
+                    면접 질문만 보고 싶어요
+                  </div>
+                </TypeBox>
+              </>
+            ) : (
+              <>
+                {!toggleStart ? (
+                  <>
+                    <TypeBox>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '50px',
+                          left: '50%',
+                          transform: 'translate(-50%)',
+                        }}
+                      >
+                        몇 가지 면접 질문을 원하시나요?
+                      </div>
+                      <ButtonBox
+                        style={{
+                          position: 'absolute',
+                          top: '100px',
+                          left: '50%',
+                          transform: 'translate(-50%)',
+                        }}
+                      >
+                        {questionNum === '3' ? (
+                          <>
+                            <TypeButton
+                              style={{
+                                marginRight: '15px',
+                                backgroundColor: '#008ed0',
+                                color: '#fff',
+                              }}
+                              onClick={handleQuestionCount}
+                            >
+                              3개요!
+                            </TypeButton>
+                          </>
+                        ) : (
+                          <>
+                            <TypeButton
+                              style={{ marginRight: '15px' }}
+                              onClick={handleQuestionCount}
+                            >
+                              3개요!
+                            </TypeButton>
+                          </>
+                        )}
+                        {questionNum !== '3' && questionNum !== '' ? (
+                          <>
+                            <TypeButton
+                              style={{
+                                backgroundColor: '#008ed0',
+                                color: '#fff',
+                              }}
+                              onClick={handleRandomCount}
+                            >
+                              알아서 해주세요
+                            </TypeButton>
+                          </>
+                        ) : (
+                          <>
+                            <TypeButton onClick={handleRandomCount}>
+                              알아서 해주세요
+                            </TypeButton>
+                          </>
+                        )}
+                      </ButtonBox>
+                      {toggleStartBox && (
+                        <TypeButton
+                          style={{
+                            position: 'absolute',
+                            bottom: '50px',
+                            left: '50%',
+                            transform: 'translate(-50%)',
+                          }}
+                          onClick={handleStart}
+                        >
+                          면접 시작하기
+                        </TypeButton>
+                      )}
+                    </TypeBox>
+                  </>
+                ) : (
+                  <>
+                    <TypeBox>
+                      <div>문제를 선별 중입니다.</div>
+                      <div>잠시만 기다려 주세요.</div>
+                      <Progress />
+                    </TypeBox>
+                  </>
+                )}
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <NeedLogin></NeedLogin>
+          </>
+        )}
+
+        {/* {isLoggedIn ? (
+          <>
+            <div>
+              <ToolTip
+                src="images/talk.png"
+                alt="talk"
+                style={{ width: '231px', height: '62px' }}
+              />
+              <ToolTipInput>
+                스위치를 눌러 <br />
+                시간 제한 모드로 변경할 수 있어요.
+              </ToolTipInput>
+            </div>
+            <SwitchBox>
+              <MuiSwitch />
+            </SwitchBox>
+            {!toggleQuestionBox && (
+              <TypeBox>
+                <div>어떤 질문 유형을 원하시나요?</div>
+                {interviewCat === 'character' ? (
+                  <TypeButton
+                    onClick={handleAttClick}
+                    style={{
+                      backgroundColor: '#008ed0',
+                      color: '#fff',
+                    }}
+                  >
+                    인성 면접
+                  </TypeButton>
+                ) : (
+                  <TypeButton onClick={handleAttClick}>인성 면접</TypeButton>
+                )}
+
+                {interviewCat === 'tech' ? (
+                  <TypeButton
+                    onClick={handleTechClick}
+                    style={{
+                      backgroundColor: '#008ed0',
+                      color: '#fff',
+                    }}
+                  >
+                    기술 면접
+                  </TypeButton>
+                ) : (
+                  <TypeButton onClick={handleTechClick}>기술 면접</TypeButton>
+                )}
+
+                {interviewCat === 'all' ? (
+                  <TypeButton
+                    style={{
+                      backgroundColor: '#008ed0',
+                      color: '#fff',
+                    }}
+                    onClick={handleRandomClick}
+                  >
+                    알아서 해주세요
+                  </TypeButton>
+                ) : (
+                  <TypeButton onClick={handleRandomClick}>
+                    알아서 해주세요
+                  </TypeButton>
+                )}
+
+                <div
+                  onClick={() => navigate('/interviewList')}
+                  style={{
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: '300',
+                  }}
+                >
+                  면접 질문만 보고 싶어요
+                </div>
+              </TypeBox>
+            )}
+
+            {toggleQuestionBox && !toggleStart ? (
+              <TypeBox style={{ display: 'block', position: 'relative' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '50px',
+                    left: '50%',
+                    transform: 'translate(-50%)',
+                  }}
+                >
+                  몇 가지 면접 질문을 원하시나요?
+                </div>
+                <ButtonBox
+                  style={{
+                    position: 'absolute',
+                    top: '100px',
+                    left: '50%',
+                    transform: 'translate(-50%)',
+                  }}
+                >
+                  {questionNum === '3' ? (
+                    <>
+                      <TypeButton
+                        style={{
+                          marginRight: '15px',
+                          backgroundColor: '#008ed0',
+                          color: '#fff',
+                        }}
+                        onClick={handleQuestionCount}
+                      >
+                        3개요!
+                      </TypeButton>
+                    </>
+                  ) : (
+                    <>
+                      <TypeButton
+                        style={{ marginRight: '15px' }}
+                        onClick={handleQuestionCount}
+                      >
+                        3개요!
+                      </TypeButton>
+                    </>
                   )}
                   {questionNum !== '3' && questionNum !== '' ? (
-                    <TypeButton
-                      style={{
-                        backgroundColor: '#008ed0',
-                        color: '#fff',
-                      }}
-                      onClick={handleRandomCount}
-                    >
-                      알아서 해주세요
-                    </TypeButton>
+                    <>
+                      <TypeButton
+                        style={{
+                          backgroundColor: '#008ed0',
+                          color: '#fff',
+                        }}
+                        onClick={handleRandomCount}
+                      >
+                        알아서 해주세요
+                      </TypeButton>
+                    </>
                   ) : (
-                    <TypeButton onClick={handleRandomCount}>
-                      알아서 해주세요
-                    </TypeButton>
+                    <>
+                      <TypeButton onClick={handleRandomCount}>
+                        알아서 해주세요
+                      </TypeButton>
+                    </>
                   )}
                 </ButtonBox>
-              </QuestionBox>
-            )}
-            {toggleStartBox ? (
+                {toggleStartBox && (
+                  <TypeButton
+                    style={{
+                      position: 'absolute',
+                      bottom: '50px',
+                      left: '50%',
+                      transform: 'translate(-50%)',
+                    }}
+                    onClick={handleStart}
+                  >
+                    면접 시작하기
+                  </TypeButton>
+                )}
+              </TypeBox>
+            ) : (
               <>
-                {toggleStart ? (
-                  <QuestionBox style={{ top: '789px' }}>
+                {toggleStart && (
+                  <TypeBox>
                     <div>문제를 선별 중입니다.</div>
                     <div>잠시만 기다려 주세요.</div>
                     <Progress />
-                  </QuestionBox>
-                ) : (
-                  <QuestionBox style={{ top: '789px' }}>
-                    <TypeButton onClick={handleStart}>면접 시작하기</TypeButton>
-                  </QuestionBox>
+                  </TypeBox>
                 )}
               </>
-            ) : (
-              <></>
             )}
           </>
         ) : (
           <>
             <NeedLogin />
-            {/* <div>asdf</div> */}
           </>
-        )}
+        )} */}
       </InterviewDetailContent>
     </InterviewDetailWrapper>
   );
