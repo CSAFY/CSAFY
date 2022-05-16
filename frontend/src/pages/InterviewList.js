@@ -146,7 +146,7 @@ function InterviewList() {
           >
             면접 질문
           </div>
-          <div
+          {/* <div
             style={{
               marginLeft: '50px',
               marginRight: '50px',
@@ -163,7 +163,7 @@ function InterviewList() {
             }}
           >
             총 215개의 기업
-          </div>
+          </div> */}
         </PageTitle>
         <TypeBox>
           <div

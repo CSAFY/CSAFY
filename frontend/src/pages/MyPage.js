@@ -94,7 +94,6 @@ const VideoWrapper = styled.div`
 `;
 
 function MyPage() {
-
   //
   const navigate = useNavigate();
   // Recoil
@@ -150,20 +149,20 @@ function MyPage() {
       })
       .catch(err => console.error(err));
   };
-    // 히트맵 데이터 관련
-    const [heatmapData, setHeatmapData] = useState([]);
-    const getHeatmapData = () => {
-      axios
-        .get(`${defaultAPI}/cs-service/profile/heatmap`, {
-          headers: { Authorization: token },
-        })
-        .then(res => {
-          console.log(res);
-          setHeatmapData(res.data)
-        })
-        .catch(err => console.error(err));
-    };
-    console.log(heatmapData)
+  // 히트맵 데이터 관련
+  const [heatmapData, setHeatmapData] = useState([]);
+  const getHeatmapData = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/profile/heatmap`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log(res);
+        setHeatmapData(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+  console.log(heatmapData);
   // 최근 본 면접 질문
   const [recentInterview, setRecentInterview] = useState([]);
   const getRecentInterviewInfo = () => {
@@ -597,8 +596,8 @@ function MyPage() {
                 </Button>
               )}
             </UserInfo>
-            
-            {/* <CalendarHeatmap
+
+            <CalendarHeatmap
               startDate={shiftDate(today, -250)}
               endDate={today}
               // values={[
@@ -642,7 +641,7 @@ function MyPage() {
                 }
               }}
             />
-            <ReactTooltip /> */}
+            <ReactTooltip />
             <ColorBox>
               <Color>
                 <div>1문제</div>
