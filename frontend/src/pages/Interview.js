@@ -98,7 +98,7 @@ const ToolTip = styled.div`
   border-radius: 34px;
   background-color: #d7e4ec;
   font-size: 14px;
-  font-weight: 600;
+  // font-weight: 600;
 
   display: flex;
   flex-direction: column;
@@ -174,7 +174,9 @@ function Interview() {
       <InterviewDetailContent>
         {isLoggedIn ? (
           <>
+            {/* {toggleQuestionBox &&} */}
             <ToolTip>
+              <img src="images/talk.png" alt="talk" />
               스위치를 눌러 <br />
               시간 제한 모드로 변경할 수 있어요.
             </ToolTip>

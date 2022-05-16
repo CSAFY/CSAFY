@@ -9,8 +9,8 @@ import { LoginState } from '../recoils/LoginState';
 
 function Chatbot() {
   const navigate = useNavigate();
-    // Recoil
-    const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
 
   const contactAdmin = () => {
     navigate('/userChat');
@@ -63,7 +63,7 @@ function Chatbot() {
 
   const theme = {
     width: '370px',
-    height: '680px',
+    height: '780px',
     borderRadius: '30px',
     background: 'white',
   };
@@ -75,14 +75,16 @@ function Chatbot() {
 
   return (
     <ThemeProvider theme={theme}>
-      {isLoggedIn && <ChatBot
-        handleEnd={contactAdmin}
-        steps={steps}
-        floating={true}
-        headerTitle={'C;SAFY'}
-        placeholder={'채팅이 불가능한 채널입니다.'}
-      />}
-      
+      {isLoggedIn && (
+        <ChatBot
+          handleEnd={contactAdmin}
+          steps={steps}
+          floating={true}
+          // floatingStyle={'left'}
+          headerTitle={'C;SAFY'}
+          placeholder={'채팅이 불가능한 채널입니다.'}
+        />
+      )}
     </ThemeProvider>
   );
 }

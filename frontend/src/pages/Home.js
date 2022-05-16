@@ -41,8 +41,11 @@ import { useRecoilValue } from 'recoil';
 const HomeWrapper = styled.div`
   background-image: url(/images/main-background.png);
   background-size: contain;
+  // background-size: cover;
   background-repeat: no-repeat;
   width: 100vw;
+  // min-height: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -196,7 +199,7 @@ function Home() {
         text: '로그인이 필요합니다. 회원가입 또는 로그인을 진행해주세요.',
       });
     }
-  }
+  };
 
   return (
     <HomeWrapper>
@@ -231,7 +234,7 @@ function Home() {
               </p>
               <br />
               <p style={{ margin: 'auto' }}>
-                시험부터 면접까지
+                시험부터 면접까지{' '}
                 <strong style={{ color: '#008ED0', fontWeight: '800' }}>
                   C;SAFY
                 </strong>
@@ -346,6 +349,7 @@ function Home() {
           </Fade>
         </DataContent>
       </DataWrapper>
+
       <InfoWrapper>
         <InfoContent>
           <Fade left>
@@ -417,7 +421,7 @@ function Home() {
               }}
             >
               <p style={{ margin: 'auto' }}>
-                단지 기억력을 높여주는 방식을 통해 빠르게 습득할 수 있습니다.
+                단기 기억력을 높여주는 방식을 통해 빠르게 습득할 수 있습니다.
               </p>
               <p style={{ margin: 'auto' }}>
                 학습한 내용을 바탕으로 진행 가능한 모의고사를 통해
@@ -466,7 +470,7 @@ function Home() {
               }}
             >
               <p style={{ margin: 'auto' }}>
-                단지 기억력을 높여주는 방식을 통해 빠르게 습득할 수 있습니다.
+                단기 기억력을 높여주는 방식을 통해 빠르게 습득할 수 있습니다.
               </p>
               <p style={{ margin: 'auto' }}>
                 학습한 내용을 바탕으로 진행 가능한 모의고사를 통해
@@ -581,10 +585,15 @@ function Home() {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
-              onClick={()=>window.open('https://play.google.com/store/apps/details?id=com.csafy.csafy_android', '_blank') }
+              onClick={() =>
+                window.open(
+                  'https://play.google.com/store/apps/details?id=com.csafy.csafy_android',
+                  '_blank',
+                )
+              }
             >
               모바일 버전 시작하기
-              </Button>
+            </Button>
           </ButtonBox>
         </PlusContent>
       </PlusWrapper>

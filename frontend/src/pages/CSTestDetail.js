@@ -436,6 +436,7 @@ function CSTestDetail() {
       })
       .then(res => {
         // console.log(res);
+        sendReviewData();
         sendHeatmapData();
       })
       .catch(err => console.error(err));
@@ -449,6 +450,45 @@ function CSTestDetail() {
       .then(res => {
         // console.log(res);
         navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+      })
+      .catch(err => console.error(err));
+  };
+
+  const sendReviewData = () => {
+    console.log('🐸', reviewNote);
+    axios
+      .post(
+        `${defaultAPI}/cs-service/study/problem/wrong`,
+        { requestWrongProblems: reviewNote },
+        { headers: { Authorization: token } },
+        // reviewNote,
+        // {
+        //   headers: { Authorization: token },
+        // },
+      )
+      .then(res => {
+        console.log('🐸', res);
+        // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+      })
+      .catch(err => console.error(err));
+  };
+  const getFixedTest = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/fixed/mock`, { params: { examNum: 1 } })
+      .then(res => {
+        console.log('🎃', res);
+        // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+      })
+      .catch(err => console.error(err));
+  };
+  const getReviewData = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/study/problem/wrong`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('🎃', res);
+        // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
       })
       .catch(err => console.error(err));
   };
@@ -632,6 +672,9 @@ function CSTestDetail() {
           )}
         </>
       )}
+      <button onClick={sendReviewData}>test</button>
+      <button onClick={getFixedTest}>fixedtest</button>
+      <button onClick={getReviewData}>getreview</button>
     </>
   );
 }

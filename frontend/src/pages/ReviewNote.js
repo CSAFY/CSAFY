@@ -6,6 +6,7 @@ import { Grid } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Choices from '../components/Choices';
 import ReviewChoices from '../components/ReviewChoices';
+import axios from 'axios';
 
 const ReviewNoteWrapper = styled.div`
   width: 100%;
@@ -44,6 +45,9 @@ const TestList = styled.div`
 
 function ReviewNote() {
   const naviagte = useNavigate();
+  // const getReviewData = () => {
+  //   axios.get()
+  // }
   const [dummyData, setDummyData] = useState([
     {
       key: null,
@@ -189,7 +193,7 @@ function ReviewNote() {
     <ReviewNoteWrapper style={{ height: `${testHeight}px` }}>
       <ReviewNoteContent>
         {/* 카테고리 분류 버전 */}
-        {/* <PageTitle>
+        <PageTitle>
           <div style={{ fontSize: '24px', fontWeight: '600' }}>오답노트</div>
         </PageTitle>
         <Grid container>
@@ -198,16 +202,16 @@ function ReviewNote() {
               <ReviewNoteBox key={idx} {...data} onClick={() => naviagte()} />
             </Grid>
           ))}
-        </Grid> */}
+        </Grid>
         {/* 분류 없이 계속 쌓는 버전 */}
-        <PageTitle>
+        {/* <PageTitle>
           <div>오답노트</div>
         </PageTitle>
         <TestList>
           {dummyData.map((test, idx) => (
             <ReviewChoices key={idx} test={test} idx={idx} />
           ))}
-        </TestList>
+        </TestList> */}
       </ReviewNoteContent>
     </ReviewNoteWrapper>
   );
