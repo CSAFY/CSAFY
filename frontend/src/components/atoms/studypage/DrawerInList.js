@@ -57,7 +57,8 @@ export default function DrawerInList(props) {
               "categoryId": data.categoryId,
               "favorites" : data.favorites,
               "id" : data.id,
-              "seen" : data.seen })}} >
+              "seen" : data.seen })}} 
+              >
               <ListItemText primary={data.title} />
             </ListItem>
           )
@@ -71,15 +72,19 @@ export default function DrawerInList(props) {
     <Accordion 
       expanded={expanded === `panel${index + 1}`} 
       onChange={handleChange(`panel${index + 1}`)}
-      key ={index}>
+      key ={index}
+      sx={{ margin: "0 auto 0 auto;"}}>
       <AccordionSummary
+        
         expandIcon={<ExpandMoreIcon />}
         aria-controls={`panel${index + 1}bh-content`}
         id={`panel${index + 1}bh-header`}
+        sx={{ margin:"10px 0 0 0;"}}
       >
-        <Typography sx={{ width: "90%;", flexShrink: 0 }}>{categoryId}</Typography>
+        <Typography sx={{ width: "90%;", flexShrink: 0,  }}>{categoryId}</Typography>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails
+        sx={{background: "#84c2ea;", overflowY : "scroll;", maxHeight: "500px;"}}>
         
         {ListItems(categoryId)}
         
