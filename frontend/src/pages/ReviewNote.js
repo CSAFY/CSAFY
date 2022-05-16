@@ -6,6 +6,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import ReviewNoteBox from '../components/ReviewNoteBox';
 import Choices from '../components/Choices';
 import ReviewChoices from '../components/ReviewChoices';
+import NeedLogin from './handler/NeedLogin';
 // Recoil
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
@@ -53,6 +54,7 @@ function ReviewNote() {
   const navigate = useNavigate();
   // Recoil
   const [token, setToken] = useRecoilState(Token);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
 
   // 회차 상관없이 오답노트 전체
   const [reviewData, setReviewData] = useState([]);
@@ -105,24 +107,34 @@ function ReviewNote() {
     <ReviewNoteWrapper style={{ height: `${testHeight}px` }}>
       <ReviewNoteContent>
         {/* 카테고리 분류 버전 */}
-        <PageTitle>
-          <div
-            style={{
-              fontSize: '24px',
-              fontWeight: '600',
-            }}
-          >
-            오답노트
-          </div>
-        </PageTitle>
-        <Grid container>
-          {roundReviewData &&
-            roundReviewData.map((data, idx) => (
-              <Grid item xs={4}>
-                <ReviewNoteBox key={idx} {...data} />
-              </Grid>
-            ))}
-        </Grid>
+        {isLoggedIn ? (
+          <>
+            {' '}
+            <PageTitle>
+              <div
+                style={{
+                  fontSize: '24px',
+                  fontWeight: '600',
+                }}
+              >
+                오답노트
+              </div>
+            </PageTitle>
+            <Grid container>
+              {roundReviewData &&
+                roundReviewData.map((data, idx) => (
+                  <Grid item xs={4}>
+                    <ReviewNoteBox key={idx} {...data} />
+                  </Grid>
+                ))}
+            </Grid>
+          </>
+        ) : (
+          <>
+            <NeedLogin />
+          </>
+        )}
+
         {/* 분류 없이 계속 쌓는 버전 */}
         {/* <PageTitle>
           <div>오답노트</div>
