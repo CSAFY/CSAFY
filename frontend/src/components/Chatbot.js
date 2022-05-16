@@ -66,6 +66,10 @@ function Chatbot() {
     height: '780px',
     borderRadius: '30px',
     background: 'white',
+    botBubbleColor: '#008ed0',
+    botFontColor: '#FFF',
+    userBubbleColor: '#f0f9fa',
+    userFontColor: '#000',
   };
 
   // 커뮤니티 페이지에서 안보이게 하기
