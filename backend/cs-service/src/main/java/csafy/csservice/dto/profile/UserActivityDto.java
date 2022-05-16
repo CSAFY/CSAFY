@@ -15,12 +15,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UserActivityDto {
 
-    private LocalDate activityDate;
-    private Long activityCount;
+    private LocalDate date;
+    private Long count;
 
     public UserActivityDto(UserActivity userActivity){
-        this.activityCount = userActivity.getActivityCount();
-        this.activityDate = userActivity.getActivityTime();
+        this.count = userActivity.getActivityCount();
+        this.date = userActivity.getActivityTime();
     }
 
 }

@@ -77,6 +77,29 @@ public class InterviewService {
         }
     }
 
+    @Transactional
+    public List<InterviewCreateDto> createSimpleInterviewList(RequestCreateInterview requestCreateInterview){
+        if(requestCreateInterview.getCategory().equalsIgnoreCase("all")){
+
+            JpaResultMapper jpaResultMapper = new JpaResultMapper();
+            Query q = em.createNativeQuery("select i.*, m.memo from interview i" +
+                    " order by rand() limit " + requestCreateInterview.getQuestion());
+            List<InterviewCreateDto> list = jpaResultMapper.list(q, InterviewCreateDto.class);
+            return list;
+//            return interviewRepository.findInterviewLimit(requestCreateInterview.getQuestion(), userSeq);
+        }
+        else {
+            String category = requestCreateInterview.getCategory().equalsIgnoreCase("character") ? "인성" : "기술";
+            JpaResultMapper jpaResultMapper = new JpaResultMapper();
+            Query q = em.createNativeQuery("select i.*, m.memo from Interview i" +
+                    " where i.category = " + "\'" + category + "\'" +
+                    " order by rand() limit " + requestCreateInterview.getQuestion());
+            List<InterviewCreateDto> list = jpaResultMapper.list(q, InterviewCreateDto.class);
+            return list;
+//            return interviewRepository.findInterviewLimitCategory(category, requestCreateInterview.getQuestion(), userSeq);
+        }
+    }
+
     public int interviewLikesCount(Long interviewSeq){
 
         return interviewLikesRepository.isLikedCount(interviewSeq);

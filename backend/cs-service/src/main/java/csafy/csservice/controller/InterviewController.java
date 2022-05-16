@@ -16,6 +16,8 @@ import csafy.csservice.service.InterviewService;
 import feign.FeignException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +34,12 @@ public class InterviewController {
 
     private final UserServiceClient userServiceClient;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @GetMapping("/welcome")
     public String welcome(){
+
+        logger.info(" request URL : {} , request Method : {} ", "cs-service/interview/welcome", "GET");
         return "welcome";
     }
 
@@ -78,6 +84,22 @@ public class InterviewController {
         }
 
         interviewService.updateInterviewCount(userDto.getUser_seq());
+
+        return ResponseEntity.status(HttpStatus.OK).body(interviewList);
+    }
+
+    // 사용자가 원하는 면접 유형, 문제 수, 시간 모드 여부 POST ( 토큰 X )
+    @PostMapping("/simple/create")
+    public ResponseEntity createSimpleInterviewList(@RequestBody RequestCreateInterview createInterview){
+
+
+        List<InterviewCreateDto> interviewList = interviewService.createSimpleInterviewList(createInterview);
+
+
+        if(interviewList == null || interviewList.size() == 0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
 
         return ResponseEntity.status(HttpStatus.OK).body(interviewList);
     }

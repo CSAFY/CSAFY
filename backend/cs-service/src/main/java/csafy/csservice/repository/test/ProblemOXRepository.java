@@ -21,4 +21,9 @@ public interface ProblemOXRepository extends JpaRepository<ProblemOX, Long> {
             "where p.category =:category " +
             "order by rand() limit :num", nativeQuery = true)
     List<ProblemOX> findMultiple(@Param("category") String category, @Param("num") int num);
+
+    @Query(value = "select p.* from problem_ox p " +
+            "where p.question_seq in :nums", nativeQuery = true)
+    List<ProblemOX> findMultipleFixed(@Param("nums") List<Long> nums);
+
 }

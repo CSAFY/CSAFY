@@ -3,20 +3,23 @@ package csafy.csservice.controller;
 import csafy.csservice.client.UserServiceClient;
 import csafy.csservice.dto.UserDto;
 import csafy.csservice.dto.interview.InterviewSeenDto;
+import csafy.csservice.dto.profile.BadgeDto;
+import csafy.csservice.dto.profile.Petdto;
+import csafy.csservice.dto.profile.ScoreUpdateDto;
 import csafy.csservice.dto.profile.UserActivityDto;
 import csafy.csservice.dto.request.RequestScores;
 import csafy.csservice.dto.response.ResponseStatistic;
 import csafy.csservice.dto.video.VideoDto;
-import csafy.csservice.entity.profile.Statistic;
-import csafy.csservice.entity.profile.UserActivity;
+import csafy.csservice.entity.profile.UserBadge;
 import csafy.csservice.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -186,10 +189,89 @@ public class ProfileController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
+        int prevScore = profileService.getCategoryStatistics(requestScores.getSubject(), userDto.getUser_seq());
         profileService.updateScores(requestScores, userDto.getUser_seq());
 
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        int nowScore = prevScore + requestScores.getScore();
+        ScoreUpdateDto scoreUpdateDto = new ScoreUpdateDto();
+        scoreUpdateDto.setNowScore(nowScore);
+        scoreUpdateDto.setPrevScore(prevScore);
+
+        return ResponseEntity.status(HttpStatus.OK).body(scoreUpdateDto);
     }
+
+    @GetMapping("/pet/test")
+    public ResponseEntity petTest(){
+
+        List<String> pets = new ArrayList<>();
+        pets.add("Pet11");
+        pets.add("Pet13");
+
+        Petdto petdto = new Petdto();
+        petdto.setPetType(pets);
+
+        return ResponseEntity.status(HttpStatus.OK).body(petdto);
+    }
+
+    /**
+     * 펫 등록하기
+     * @param token
+     * @param petType
+     * @return
+     */
+    @PostMapping("/pet/change/{petType}")
+    public ResponseEntity petChange(@RequestHeader(value = "Authorization") String token,
+                                    @PathVariable("petType") String petType){
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+        profileService.petChange(userDto.getUser_seq(), petType);
+
+        return ResponseEntity.ok().body(null);
+    }
+
+    /**
+     * 펫 정보 가져오기
+     * @param token
+     * @return
+     */
+    @GetMapping("/pet")
+    public ResponseEntity petChange(@RequestHeader(value = "Authorization") String token){
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+        String petType = profileService.petGet(userDto.getUser_seq());
+
+        return ResponseEntity.ok().body(petType);
+    }
+
+
+
+    // 유저의 뱃지 리스트 받아오기
+    @GetMapping("/badge")
+    public ResponseEntity getBadgeList(@RequestHeader(value = "Authorization") String token){
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+        List<UserBadge> badgeList = profileService.getBadgeList(userDto.getUser_seq());
+        if(badgeList == null || badgeList.size() == 0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+        List<BadgeDto> result = badgeList.stream().map(BadgeDto::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(result);
+    }
+
+
 
 
 

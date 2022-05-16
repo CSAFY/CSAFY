@@ -7,16 +7,21 @@ import csafy.csservice.dto.response.ResponseTestRecent;
 import csafy.csservice.dto.test.KeywordDto;
 import csafy.csservice.dto.test.OXDto;
 import csafy.csservice.dto.test.TestDto;
+import csafy.csservice.entity.test.Card;
+import csafy.csservice.entity.test.CardLikes;
 import csafy.csservice.service.TestService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,15 +49,6 @@ public class TestController {
 
     }
 
-    // 4지선다(고정) 문제 가져오기
-    @GetMapping("/sample/multiple/fixed")
-    public ResponseEntity getMultipleFixedQuizSample(@RequestParam("category") String category) {
-
-        TestDto result = testService.getFixedMultipleQuiz(category);
-
-        return ResponseEntity.ok().body(result);
-    }
-
     // 4지 선다 여러문제 가져오기
     @GetMapping("/test/multiple")
     public ResponseEntity getMultipleQuiz(@RequestParam("category") String category,
@@ -75,16 +71,99 @@ public class TestController {
         return ResponseEntity.ok().body(result);
     }
 
-    // 키워드 학습
+    // 키워드 학습 (회원 + 비회원)
     @GetMapping("/study/keyword")
     public ResponseEntity getKeywordStudy(@RequestParam("category") String category,
-                                          @RequestParam("questionNum") Integer questionNum){
-
-        List<KeywordDto> result = testService.getKeywordStudy(category, questionNum);
-
-        if(result == null || result.size() == 0){
+                                          @RequestParam("questionNum") Integer questionNum,
+                                          HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        // 비회원이거나 토큰이 유효하지 않음
+        if (!resultCode.equals("OK")) {
+            List<KeywordDto> result = testService.getKeywordStudy(category, questionNum);
+            if(result == null || result.size() == 0){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        // 회원이고 토큰이 유효함
+        UserDto userDto = userServiceClient.getTokenUser(token);
+        List<Card> cards = testService.getKeywordCard(category, questionNum);
+        if(cards == null || cards.size() == 0){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
+        List<KeywordDto> result = cards.stream().map(c -> new KeywordDto(c, userDto)).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    // 키워드 검색 = 백과사전
+    @GetMapping("/study/keyword/search")
+    public ResponseEntity searchKeywordStudy(@RequestParam("keyword") String keyword) {
+
+        List<Card> cards = testService.getKeywordStudySearch(keyword);
+        if (cards == null) return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        List<KeywordDto> result = cards.stream().map(c -> new KeywordDto(c)).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    /**
+     * 카드 좋아요 여부 확인
+     * @param token
+     * @param cardSeq
+     * @return
+     */
+    @GetMapping("/study/keyword/{cardSeq}/likes")
+    public ResponseEntity getCardLike(@RequestHeader(value = "Authorization") String token,
+                                      @PathVariable("cardSeq") Long cardSeq) {
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        CardLikes cardLikes = testService.getCardLike(userDto.getUser_seq(), cardSeq);
+        if (cardLikes == null) return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body("ok");
+    }
+
+    /**
+     * 카드 좋아요/ 좋아요 취소
+     * @param token
+     * @param cardSeq
+     * @return
+     */
+    @PostMapping("/study/keyword/{cardSeq}/likes")
+    public ResponseEntity cardLikes(@RequestHeader(value = "Authorization") String token,
+                                         @PathVariable("cardSeq") Long cardSeq) {
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        testService.cardLikes(userDto.getUser_seq(), cardSeq);
+
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
+    }
+
+    /**
+     * 내가 좋아요 한 모든 카드 반환
+     * @param token
+     * @return
+     */
+    @GetMapping("/study/keyword/likes/all")
+    public ResponseEntity cardLikesAll(@RequestHeader(value = "Authorization") String token) {
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        List<Card> cards = testService.getLikedCards(userDto.getUser_seq());
+        List<KeywordDto> result = cards.stream().map(c -> new KeywordDto(c)).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -141,6 +220,24 @@ public class TestController {
 //
 //        return ResponseEntity.ok().body(null);
 //    }
+
+    // FIXED 모의고사 문제 보내주기 ( 모의고사 번호 지정 ) 4지선다
+    @GetMapping("/fixed/mock")
+    public ResponseEntity getFixedMockTest(@RequestParam("examNum") Long examNum){
+
+        List<Object> result = new ArrayList<>();
+        result.addAll(testService.getMultipleQuizFixedList(examNum));
+        result.addAll(testService.getMultipleProblemOXFixed(examNum));
+
+        if(result.size() == 0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        Collections.shuffle(result);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+
+    }
 
     // 모의고사 문제 보내주기
     @GetMapping("/test/mock")

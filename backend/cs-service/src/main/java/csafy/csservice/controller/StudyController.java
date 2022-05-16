@@ -2,14 +2,20 @@ package csafy.csservice.controller;
 
 import csafy.csservice.client.UserServiceClient;
 import csafy.csservice.dto.UserDto;
+import csafy.csservice.dto.request.RequestWrongProblem;
 import csafy.csservice.dto.response.ResponseVideo;
+import csafy.csservice.dto.response.ResponseWrongProblem;
+import csafy.csservice.entity.test.WrongProblem;
+import csafy.csservice.service.ProfileService;
 import csafy.csservice.service.VideoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +25,8 @@ public class StudyController {
     private final UserServiceClient userServiceClient;
 
     private final VideoService videoService;
+
+    private final ProfileService profileService;
 
     // 강의 리스트 받아오기
     @GetMapping("/list/get")
@@ -121,30 +129,46 @@ public class StudyController {
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
+    // 오답 노트 받아오기
+    @GetMapping("/problem/wrong")
+    public ResponseEntity getWrongProblem(@RequestHeader(value = "Authorization") String token){
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
 
-    // 일반 학습 페이지
+        UserDto userDto = userServiceClient.getTokenUser(token);
 
-    // 카테고리별 강의 선택 ( +썸네일 ) GET
+        List<WrongProblem> wrongs = profileService.getWrongProblem(userDto.getUser_seq());
+
+        if(wrongs == null || wrongs.size() == 0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        List<ResponseWrongProblem> result = wrongs.stream().map(r -> new ResponseWrongProblem(r, userDto.getUser_seq())).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    // 오답 노트 저장
+    @PostMapping("/problem/wrong")
+    public ResponseEntity updateWrongProblem(@RequestHeader(value = "Authorization") String token,
+                            @RequestBody List<RequestWrongProblem> requestWrongProblems){
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        profileService.updateWrongProblem(requestWrongProblems, userDto.getUser_seq());
 
 
-
-    // 선택한 강의의 관련 모의고사(문제) 키워드에 따른 검색 GET
-
-    // 선택한 강의의 관련 질문 GET
-
-    // 학습 완료한 강의 서버에 체크 POST
+        return ResponseEntity.status(HttpStatus.OK).body("OK");
+    }
 
 
-
-    // 집중 학습 페이지
-
-    // 키워드 학습 GET
-
-    // 학습 확인 문제 GET
-
-    // 단답형 문제 GET
-
-    // OX퀴즈 GET
 
 
 

@@ -40,5 +40,7 @@ public class Statistic {
 
     private Long examCount = 0L;
 
+    private String petType = "";
+
 
 }

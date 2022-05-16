@@ -6,6 +6,7 @@ import csafy.csservice.dto.interview.InterviewDto;
 import csafy.csservice.dto.request.TestResultRequest;
 import csafy.csservice.dto.response.ResponseTestRecent;
 import csafy.csservice.dto.test.*;
+import csafy.csservice.entity.interview.InterviewLikes;
 import csafy.csservice.entity.profile.Statistic;
 import csafy.csservice.entity.test.*;
 import csafy.csservice.repository.profile.StatisticsRepository;
@@ -36,8 +37,10 @@ public class TestService {
     private final ProblemFixedRepository problemFixedRepository;
     private final ProblemOXRepository problemOXRepository;
     private final CardRepository cardRepository;
+    private final CardLikesRepository cardLikesRepository;
     private final TestRecentRepository testRecentRepository;
     private final StatisticsRepository statisticsRepository;
+    private final QuizFixedRepository quizFixedRepository;
 
     @PersistenceContext
     EntityManager em;
@@ -92,6 +95,7 @@ public class TestService {
                 testDto.setQuestion(nowTest.getQuestion());
                 testDto.setCategory(nowTest.getCategory());
                 testDto.setCategoryChapter(nowTest.getCategoryChapter());
+                testDto.setTestSeq(nowTest.getQuestionNum().longValue());
             }
 
             if (nowTest.getWrongNum() > 0 && flag){
@@ -104,6 +108,92 @@ public class TestService {
             }
 
                 numCount++;
+
+        }
+        return result;
+    }
+
+    public List<TestDto> getMultipleQuizFixedList(Long problemNum){
+
+        Random random = new Random();
+
+        QuizFixedList quizFixedList = quizFixedRepository.findById(problemNum).orElse(null);
+
+        if(quizFixedList == null) return null;
+
+        if(quizFixedList.getQuestions() == null || quizFixedList.getQuestions().size() == 0) return null;
+
+
+        List<Long> problemLists = quizFixedList.getQuestions();
+
+        String inputProblem = "";
+
+        int len = problemLists.size();
+        for(int i = 0; i < len; i++){
+            if(i == 0){
+                inputProblem += String.valueOf(problemLists.get(i));
+            } else{
+                inputProblem += ", " + String.valueOf(problemLists.get(i));
+            }
+
+        }
+
+        JpaResultMapper jpaResultMapper = new JpaResultMapper();
+        Query q = em.createNativeQuery(" SELECT pr.* FROM problem pr JOIN " +
+                "(SELECT distinct p.question_num FROM problem p WHERE p.question_num IN (" + inputProblem + ") ORDER BY RAND()) pp " +
+                "ON pr.question_num = pp.question_num WHERE pr.question_num ORDER BY pr.question_num ASC, RAND();");
+
+        List<TestResultDto> list = jpaResultMapper.list(q, TestResultDto.class);
+        List<ProblemDto> problemList = new ArrayList<>();
+
+        for(TestResultDto nowTest:list){
+            problemList.add(new ProblemDto(nowTest));
+        }
+
+        List<TestDto> result = new ArrayList<>();
+        int numCount = 0;
+        int prevNum = problemList.get(0).getQuestionNum();
+        int wrongIndex = 0;
+        List<String> nowExamples = new ArrayList<>();
+        TestDto testDto = new TestDto();
+        Boolean flag = true;
+
+        for(ProblemDto nowTest:problemList){
+            if(numCount > 3 && prevNum == nowTest.getQuestionNum()) continue;
+
+            if(numCount > 3 && prevNum != nowTest.getQuestionNum()) {
+                int count = random.nextInt(4);
+                String wrongTmp = nowExamples.remove(wrongIndex);
+                nowExamples.add(count, wrongTmp);
+                testDto.setExamples(nowExamples);
+                testDto.setAnswer(count + 1);
+                result.add(testDto);
+
+                numCount = 0;
+                prevNum = nowTest.getQuestionNum();
+                testDto = new TestDto();
+                nowExamples = new ArrayList<>();
+                flag = true;
+                wrongIndex = 0;
+            }
+
+            if(numCount == 0){
+                testDto.setQuestion(nowTest.getQuestion());
+                testDto.setCategory(nowTest.getCategory());
+                testDto.setCategoryChapter(nowTest.getCategoryChapter());
+                testDto.setTestSeq(nowTest.getQuestionNum().longValue());
+            }
+
+            if (nowTest.getWrongNum() > 0 && flag){
+                int count = random.nextInt(nowTest.getWrongNum());
+                nowExamples.add(nowTest.getWrong().get(count));
+                wrongIndex = count;
+                flag = false;
+            } else{
+                nowExamples.add(nowTest.getAnswer());
+            }
+
+            numCount++;
 
         }
         return result;
@@ -196,10 +286,12 @@ public class TestService {
             OXDto oxDto = new OXDto();
             if(count == 0){
                 oxDto.setAnswer(0);
+                oxDto.setCategory(nowOXResult.getCategory());
                 oxDto.setKey(nowOXResult.getCardKey());
                 oxDto.setExplanation(nowOXResult.getCardValue());
             }else{
                 oxDto.setAnswer(1);
+                oxDto.setCategory(nowOXResult.getCategory());
                 oxDto.setKey(nowOXResult.getCardKey());
                 oxDto.setExplanation(nowOXResult.getWrongValue());
             }
@@ -223,9 +315,48 @@ public class TestService {
             OXDto oxDto = new OXDto();
             if (count == 0) {
                 oxDto.setAnswer(0);
+                oxDto.setCategory(nowProblemOX.getCategory());
                 oxDto.setExplanation(nowProblemOX.getAnswer());
             } else {
                 oxDto.setAnswer(1);
+                oxDto.setCategory(nowProblemOX.getCategory());
+                oxDto.setExplanation(nowProblemOX.getWrong());
+            }
+            result.add(oxDto);
+        }
+
+        return result;
+
+    }
+
+    // 고정된 OX 문제 반환
+    public List<OXDto> getMultipleProblemOXFixed(Long num){
+
+        Random random = new Random();
+
+        QuizFixedList quizFixedList = quizFixedRepository.findById(num).orElse(null);
+
+        if(quizFixedList == null) return null;
+
+        if(quizFixedList.getQuestionsOX() == null || quizFixedList.getQuestionsOX().size() == 0) return null;
+
+
+        List<Long> numOX = quizFixedList.getQuestionsOX();
+
+        List<ProblemOX> resultOXList = problemOXRepository.findMultipleFixed(numOX);
+
+        List<OXDto> result = new ArrayList<>();
+
+        for (ProblemOX nowProblemOX : resultOXList) {
+            int count = random.nextInt(2);
+            OXDto oxDto = new OXDto();
+            if (count == 0) {
+                oxDto.setAnswer(0);
+                oxDto.setCategory(nowProblemOX.getCategory());
+                oxDto.setExplanation(nowProblemOX.getAnswer());
+            } else {
+                oxDto.setAnswer(1);
+                oxDto.setCategory(nowProblemOX.getCategory());
                 oxDto.setExplanation(nowProblemOX.getWrong());
             }
             result.add(oxDto);
@@ -247,6 +378,12 @@ public class TestService {
         }
 
         return result;
+    }
+
+    // 카드 반환
+    public List<Card> getKeywordCard(String category, int num){
+        List<Card> cards = cardRepository.findCardByCategoryLimit(category, num);
+        return cards;
     }
 
     @Transactional
@@ -289,4 +426,33 @@ public class TestService {
 
     }
 
+    @Transactional
+    public List<Card> getKeywordStudySearch(String keyword) {
+        return cardRepository.findTop25ByCardKeyContainingIgnoreCase(keyword);
+    }
+
+    @Transactional
+    public void cardLikes(Long userSeq, Long cardSeq) {
+        CardLikes cardLikes = cardLikesRepository.isLiked(userSeq, cardSeq);
+
+        // 없으면 POST
+        if (cardLikes == null) {
+            cardLikes = new CardLikes();
+            cardLikes.setCard(cardRepository.findById(cardSeq).orElse(null));
+            cardLikes.setUserSeq(userSeq);
+            cardLikesRepository.save(cardLikes);
+        // 있으면 delete
+        } else {
+            cardLikesRepository.delete(cardLikes);
+
+        }
+    }
+
+    public List<Card> getLikedCards(Long userSeq) {
+        return cardRepository.findLikedCards(userSeq);
+    }
+
+    public CardLikes getCardLike(Long userSeq, Long cardSeq) {
+        return cardLikesRepository.isLiked(userSeq, cardSeq);
+    }
 }
