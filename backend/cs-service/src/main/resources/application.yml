@@ -6,6 +6,12 @@ spring:
   application:
     name: cs-service
 
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://zipkin:9411
+
   # 마리아 DB(배포)
   datasource:
     url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S06P31A102?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
@@ -57,3 +63,5 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+

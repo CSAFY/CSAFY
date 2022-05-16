@@ -42,6 +42,8 @@ public class TestService {
     private final StatisticsRepository statisticsRepository;
     private final QuizFixedRepository quizFixedRepository;
 
+    private final BadgeService badgeService;
+
     @PersistenceContext
     EntityManager em;
 
@@ -386,10 +388,33 @@ public class TestService {
         return cards;
     }
 
+    // 모의고사 회차 받아오기
+    public Long getRoundTest(Long userSeq){
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+        if(statistic == null) return 0L;
+        return statistic.getExamCount();
+    }
+
+    // 모의고사 회차별 결과
+
+    public TestRecent getTestRoundResult(int round, Long userSeq){
+
+        return testRecentRepository.findByUserSeqAndRound(userSeq, round);
+
+    }
+
     @Transactional
     public void updateTestResult(TestResultRequest testResultRequest, UserDto userDto){
 
         TestRecent testRecent = new TestRecent(testResultRequest, userDto);
+        Statistic statistic = statisticsRepository.findByUserSeq(userDto.getUser_seq());
+        int round = 1;
+
+        if(statistic != null){
+            round = statistic.getExamCount().intValue() + 1;
+        }
+
+        testRecent.setRound(round);
 
         testRecentRepository.save(testRecent);
 
@@ -421,6 +446,8 @@ public class TestService {
         } else{
             statistic.setExamCount(statistic.getExamCount() + 1);
         }
+
+        badgeService.checkExamCount(userSeq, statistic.getExamCount());
 
         statisticsRepository.save(statistic);
 

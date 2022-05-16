@@ -7,11 +7,16 @@ import csafy.csservice.dto.response.ResponseTestRecent;
 import csafy.csservice.dto.test.KeywordDto;
 import csafy.csservice.dto.test.OXDto;
 import csafy.csservice.dto.test.TestDto;
+import csafy.csservice.entity.profile.Statistic;
 import csafy.csservice.entity.test.Card;
 import csafy.csservice.entity.test.CardLikes;
+import csafy.csservice.entity.test.TestRecent;
+import csafy.csservice.service.BadgeService;
+import csafy.csservice.service.ProfileService;
 import csafy.csservice.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +35,8 @@ public class TestController {
 
     private final TestService testService;
     private final UserServiceClient userServiceClient;
+
+    private final ProfileService profileService;
 
     // 4지선다 문제 하나 받아오기
     @GetMapping("/sample/multiple")
@@ -52,21 +59,35 @@ public class TestController {
     // 4지 선다 여러문제 가져오기
     @GetMapping("/test/multiple")
     public ResponseEntity getMultipleQuiz(@RequestParam("category") String category,
-                                          @RequestParam("questionNum") Integer questionNum) {
+                                          @RequestParam("questionNum") Integer questionNum,
+                                          HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        String resultCode = userServiceClient.checkTokenValidated(token);
 
         Integer newQuestionNum = Math.min(20, questionNum);
         Integer questionNumfixed = newQuestionNum * 3 / 10;
         Integer questionNumNormal = newQuestionNum - questionNumfixed;
 
+        // 비회원이거나 토큰이 유효하지 않음
+        if (!resultCode.equals("OK")) {
+            List<TestDto> result = new ArrayList<>();
+
+            result.addAll(testService.getMultipleQuizList(category, questionNum));
+            if(result.size() == 0){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        // 회원이고 토큰이 유효함
+        UserDto userDto = userServiceClient.getTokenUser(token);
         List<TestDto> result = new ArrayList<>();
 
         result.addAll(testService.getMultipleQuizList(category, questionNum));
-//        for (int i = 0; i < questionNumfixed; i++) {
-//            result.add(testService.getFixedMultipleQuiz(category));
-//        }
-//        for (int i = 0; i < questionNumNormal ; i++) {
-//            result.add(testService.getMutipleQuiz(category));
-//        }
+        if(result.size() == 0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        profileService.updateMultipleCount(userDto.getUser_seq(), questionNum);
 
         return ResponseEntity.ok().body(result);
     }
@@ -195,15 +216,39 @@ public class TestController {
     // OX 문제 여러개
     @GetMapping("/study/multiple/ox")
     public ResponseEntity getMultipleProblemOX(@RequestParam("category") String category,
-                                               @RequestParam("questionNum") Integer questionNum){
+                                               @RequestParam("questionNum") Integer questionNum,
+                                               HttpServletRequest httpServletRequest){
+
+        String token = httpServletRequest.getHeader("Authorization");
+        String resultCode = userServiceClient.checkTokenValidated(token);
+
         Integer newQuestionNum = Math.min(20, questionNum);
         Integer problemOXNum = newQuestionNum * 2 / 10;
         Integer cardOXNum = newQuestionNum - problemOXNum;
+
+        // 비회원이거나 토큰이 유효하지 않음
+        if (!resultCode.equals("OK")) {
+            List<OXDto> oxDtoList = new ArrayList<>();
+
+            oxDtoList.addAll(testService.getMultipleProblemOXCard(category, cardOXNum));
+            oxDtoList.addAll(testService.getMultipleProblemOX(category, problemOXNum));
+            if(oxDtoList.size() == 0){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(oxDtoList);
+        }
+        // 회원이고 토큰이 유효함
+        UserDto userDto = userServiceClient.getTokenUser(token);
 
         List<OXDto> oxDtoList = new ArrayList<>();
 
         oxDtoList.addAll(testService.getMultipleProblemOXCard(category, cardOXNum));
         oxDtoList.addAll(testService.getMultipleProblemOX(category, problemOXNum));
+        if(oxDtoList.size() == 0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        profileService.updateOXCount(userDto.getUser_seq(), questionNum);
 
         return ResponseEntity.status(HttpStatus.OK).body(oxDtoList);
     }
@@ -293,6 +338,27 @@ public class TestController {
         testService.updateExamCount(userDto.getUser_seq());
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Exam Result Saved");
+    }
+
+    // 모의고사 회차 별 결과
+    @PostMapping("/test/{round}/result")
+    public ResponseEntity getTestRoundResult(@RequestHeader(value = "Authorization") String token,
+                                           @PathVariable("round") int round){
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        TestRecent testRecent = testService.getTestRoundResult(round, userDto.getUser_seq());
+
+        if(testRecent == null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("null");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseTestRecent(testRecent));
     }
 
     // 모의고사 결과 보내주기 ( 최근 5개 )

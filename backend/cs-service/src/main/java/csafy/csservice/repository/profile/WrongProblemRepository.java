@@ -15,10 +15,14 @@ public interface WrongProblemRepository extends JpaRepository<WrongProblem, Long
 
     List<WrongProblem> findByUserSeqOrderByRoundAsc(Long userSeq);
 
-    @Query("select w from WrongProblem w " +
-            "where w.userSeq =:userSeq " +
-            "order by w.round DESC")
-    Page<WrongProblem> findRound(@Param("userSeq") Long userSeq, Pageable pageable);
+    List<WrongProblem> findByUserSeqAndRound(Long userSeq, int round);
+
+
+
+//    @Query("select w from WrongProblem w " +
+//            "where w.userSeq =:userSeq " +
+//            "order by w.round DESC")
+//    Page<WrongProblem> findRound(@Param("userSeq") Long userSeq, Pageable pageable);
 
 
 }

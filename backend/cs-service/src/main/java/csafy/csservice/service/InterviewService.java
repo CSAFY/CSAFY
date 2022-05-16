@@ -3,6 +3,7 @@ package csafy.csservice.service;
 import csafy.csservice.client.UserServiceClient;
 import csafy.csservice.dto.interview.InterviewCommentResponseDto;
 import csafy.csservice.dto.interview.InterviewCreateDto;
+import csafy.csservice.dto.interview.InterviewCreateSimpleDto;
 import csafy.csservice.dto.interview.InterviewDto;
 import csafy.csservice.dto.request.RequestCreateInterview;
 import csafy.csservice.entity.interview.*;
@@ -33,6 +34,8 @@ public class InterviewService {
     private final StatisticsRepository statisticsRepository;
 
     private final UserServiceClient userServiceClient;
+
+    private final BadgeService badgeService;
 
     @PersistenceContext
     EntityManager em;
@@ -78,23 +81,23 @@ public class InterviewService {
     }
 
     @Transactional
-    public List<InterviewCreateDto> createSimpleInterviewList(RequestCreateInterview requestCreateInterview){
+    public List<InterviewCreateSimpleDto> createSimpleInterviewList(RequestCreateInterview requestCreateInterview){
         if(requestCreateInterview.getCategory().equalsIgnoreCase("all")){
 
             JpaResultMapper jpaResultMapper = new JpaResultMapper();
-            Query q = em.createNativeQuery("select i.*, m.memo from interview i" +
+            Query q = em.createNativeQuery("select i.* from interview i" +
                     " order by rand() limit " + requestCreateInterview.getQuestion());
-            List<InterviewCreateDto> list = jpaResultMapper.list(q, InterviewCreateDto.class);
+            List<InterviewCreateSimpleDto> list = jpaResultMapper.list(q, InterviewCreateSimpleDto.class);
             return list;
 //            return interviewRepository.findInterviewLimit(requestCreateInterview.getQuestion(), userSeq);
         }
         else {
             String category = requestCreateInterview.getCategory().equalsIgnoreCase("character") ? "인성" : "기술";
             JpaResultMapper jpaResultMapper = new JpaResultMapper();
-            Query q = em.createNativeQuery("select i.*, m.memo from Interview i" +
+            Query q = em.createNativeQuery("select i.* from Interview i" +
                     " where i.category = " + "\'" + category + "\'" +
                     " order by rand() limit " + requestCreateInterview.getQuestion());
-            List<InterviewCreateDto> list = jpaResultMapper.list(q, InterviewCreateDto.class);
+            List<InterviewCreateSimpleDto> list = jpaResultMapper.list(q, InterviewCreateSimpleDto.class);
             return list;
 //            return interviewRepository.findInterviewLimitCategory(category, requestCreateInterview.getQuestion(), userSeq);
         }
@@ -239,6 +242,9 @@ public class InterviewService {
         } else{
             statistic.setInterviewCount(statistic.getInterviewCount() + 1);
         }
+
+
+        badgeService.checkInterviewCount(userSeq, statistic.getInterviewCount());
 
         statisticsRepository.save(statistic);
 

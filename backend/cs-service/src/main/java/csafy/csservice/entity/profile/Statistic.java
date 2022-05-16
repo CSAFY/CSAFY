@@ -40,7 +40,18 @@ public class Statistic {
 
     private Long examCount = 0L;
 
+    private Long oxCount = 0L;
+
+    private Long multipleCount = 0L;
+
+    private boolean isApp = false;
+
+    private boolean isWinner = false;
+
     private String petType = "";
+
+
+
 
 
 }

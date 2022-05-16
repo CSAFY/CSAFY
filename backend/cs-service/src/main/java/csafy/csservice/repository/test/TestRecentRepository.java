@@ -9,4 +9,6 @@ public interface TestRecentRepository extends JpaRepository<TestRecent, Long> {
 
 
     Page<TestRecent> findByUserSeqOrderByExamDoneDesc(Long userSeq, Pageable pageable);
+
+    TestRecent findByUserSeqAndRound(Long userSeq, int round);
 }

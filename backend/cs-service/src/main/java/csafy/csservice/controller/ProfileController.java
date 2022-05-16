@@ -11,6 +11,7 @@ import csafy.csservice.dto.request.RequestScores;
 import csafy.csservice.dto.response.ResponseStatistic;
 import csafy.csservice.dto.video.VideoDto;
 import csafy.csservice.entity.profile.UserBadge;
+import csafy.csservice.service.BadgeService;
 import csafy.csservice.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,8 @@ public class ProfileController {
     private final UserServiceClient userServiceClient;
 
     private final ProfileService profileService;
+
+    private final BadgeService badgeService;
 
     // 프리미엄 버전 구독 POST
 
@@ -196,6 +199,29 @@ public class ProfileController {
         ScoreUpdateDto scoreUpdateDto = new ScoreUpdateDto();
         scoreUpdateDto.setNowScore(nowScore);
         scoreUpdateDto.setPrevScore(prevScore);
+
+        switch (requestScores.getSubject()){
+            case "운영체제":
+                badgeService.checkCategoryOS(userDto.getUser_seq(), nowScore);
+                break;
+            case "데이터베이스":
+                badgeService.checkCategoryDB(userDto.getUser_seq(), nowScore);
+                break;
+            case "네트워크":
+                badgeService.checkCategoryNetwork(userDto.getUser_seq(), nowScore);
+                break;
+            case "자료구조":
+                badgeService.checkCategoryStructure(userDto.getUser_seq(), nowScore);
+                break;
+            case "컴퓨터구조":
+                badgeService.checkCategoryComputer(userDto.getUser_seq(), nowScore);
+                break;
+            case "기타":
+                badgeService.checkCategoryEtc(userDto.getUser_seq(), nowScore);
+                break;
+            default:
+                break;
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(scoreUpdateDto);
     }

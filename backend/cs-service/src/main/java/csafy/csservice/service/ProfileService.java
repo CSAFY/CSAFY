@@ -5,6 +5,7 @@ import csafy.csservice.dto.interview.InterviewSeenDto;
 import csafy.csservice.dto.profile.UserActivityDto;
 import csafy.csservice.dto.request.RequestScores;
 import csafy.csservice.dto.request.RequestWrongProblem;
+import csafy.csservice.dto.request.RequestWrongProblemList;
 import csafy.csservice.dto.response.ResponseStatistic;
 import csafy.csservice.dto.video.VideoDto;
 import csafy.csservice.entity.interview.InterviewSeen;
@@ -14,10 +15,7 @@ import csafy.csservice.entity.profile.UserBadge;
 import csafy.csservice.entity.test.WrongProblem;
 import csafy.csservice.entity.video.Video;
 import csafy.csservice.repository.interview.InterviewSeenRepository;
-import csafy.csservice.repository.profile.StatisticsRepository;
-import csafy.csservice.repository.profile.UserActivityRepository;
-import csafy.csservice.repository.profile.UserBadgeRepository;
-import csafy.csservice.repository.profile.WrongProblemRepository;
+import csafy.csservice.repository.profile.*;
 import csafy.csservice.repository.video.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,6 +46,9 @@ public class ProfileService {
 
     private final UserBadgeRepository userBadgeRepository;
 
+    private final BadgeRepository badgeRepository;
+
+    private final BadgeService badgeService;
 
     public List<VideoDto> getLatestStudy(Long userSeq) {
         Pageable pageable = PageRequest.of(0, 4);
@@ -96,6 +97,16 @@ public class ProfileService {
             }
             statistic.setScores(inputMap);
         }
+
+        ConcurrentHashMap<String, Integer> nowMap = statistic.getScores();
+
+        Long exp = 0L;
+
+        for(ConcurrentHashMap.Entry<String, Integer> entry : nowMap.entrySet()){
+            exp += entry.getValue();
+        }
+
+        badgeService.checkRank(userSeq, exp);
 
         statisticsRepository.save(statistic);
     }
@@ -207,11 +218,17 @@ public class ProfileService {
             nowStatistic.setUserSeq(userSeq);
             nowStatistic.setDailyCheck(1L);
             nowStatistic.setIsLogin("Y");
+            UserBadge userBadge = new UserBadge();
+            userBadge.setBadge(badgeRepository.findById(1L).orElse(null));
+            userBadge.setUserSeq(userSeq);
+            userBadge.setGetTime(LocalDate.now());
             statisticsRepository.save(nowStatistic);
+            userBadgeRepository.save(userBadge);
         } else {
             if (statistic.getIsLogin().equals("N")) {
                 statistic.setDailyCheck(statistic.getDailyCheck() + 1);
                 statistic.setIsLogin("Y");
+                badgeService.checkBadgeLogin(userSeq, statistic.getDailyCheck() + 1);
                 statisticsRepository.save(statistic);
             }
         }
@@ -239,28 +256,61 @@ public class ProfileService {
 
     }
 
-
+    // 모든 오답노트
     public List<WrongProblem> getWrongProblem(Long userSeq){
 
         return wrongProblemRepository.findByUserSeqOrderByRoundAsc(userSeq);
 
     }
 
+    // 회차 별 오답노트
+    public List<WrongProblem> getWrongProblemRound(int round, Long userSeq){
+
+        return wrongProblemRepository.findByUserSeqAndRound(userSeq, round);
+    }
+
+    // 오답노트 등록
     @Transactional
-    public void updateWrongProblem(List<RequestWrongProblem> requestWrongProblems, Long userSeq){
+    public void updateWrongProblem(RequestWrongProblemList requestWrongProblemList, Long userSeq){
 
-        Page<WrongProblem> wrongProblems = wrongProblemRepository.findRound(userSeq, PageRequest.of(0, 1));
-        WrongProblem wrongProblem = null;
-        if(wrongProblems != null)
-        wrongProblem = wrongProblems.getContent().get(0);
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
         int round = 1;
-        if(wrongProblem != null) round = wrongProblem.getRound();
+        if(statistic != null) round = statistic.getExamCount().intValue();
         int roundresult = round;
+        List<RequestWrongProblem> requestWrongProblems = requestWrongProblemList.getRequestWrongProblems();
         List<WrongProblem> inputWrong = requestWrongProblems.stream().map(r -> new WrongProblem(r, userSeq, roundresult)).collect(Collectors.toList());
-
         wrongProblemRepository.saveAllAndFlush(inputWrong);
 
     }
+
+    @Transactional
+    public void updateMultipleCount(Long userSeq, int questionNum){
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+        if(statistic == null){
+            statistic.setUserSeq(userSeq);
+            statistic.setMultipleCount((long) questionNum);
+        } else {
+            statistic.setMultipleCount(statistic.getMultipleCount() + (long) questionNum);
+        }
+        statisticsRepository.save(statistic);
+
+        badgeService.checkMultipleCount(userSeq, statistic.getMultipleCount());
+    }
+
+    @Transactional
+    public void updateOXCount(Long userSeq, int questionNum){
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+        if(statistic == null){
+            statistic.setUserSeq(userSeq);
+            statistic.setOxCount((long) questionNum);
+        } else {
+            statistic.setOxCount(statistic.getOxCount() + (long) questionNum);
+        }
+        statisticsRepository.save(statistic);
+
+        badgeService.checkOXCount(userSeq, statistic.getMultipleCount());
+    }
+
 
     // 뱃지 리스트
 

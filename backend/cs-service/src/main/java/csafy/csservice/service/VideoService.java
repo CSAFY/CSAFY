@@ -1,6 +1,7 @@
 package csafy.csservice.service;
 
 import csafy.csservice.dto.response.ResponseVideo;
+import csafy.csservice.entity.profile.Badge;
 import csafy.csservice.entity.profile.Statistic;
 import csafy.csservice.entity.video.VideoFavorites;
 import csafy.csservice.entity.video.VideoPlay;
@@ -28,6 +29,8 @@ public class VideoService {
     private final VideoPlayRepository videoPlayRepository;
 
     private final StatisticsRepository statisticsRepository;
+
+    private final BadgeService badgeService;
 
     @PersistenceContext
     EntityManager em;
@@ -92,6 +95,9 @@ public class VideoService {
         } else{
             statistic.setStudyCount(statistic.getStudyCount() + 1);
         }
+
+        Long studyCount = statistic.getStudyCount();
+        badgeService.checkStudyCount(userSeq, studyCount);
 
         statisticsRepository.save(statistic);
 

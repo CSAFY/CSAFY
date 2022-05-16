@@ -43,6 +43,8 @@ public class TestRecent {
     @Column(columnDefinition = "json")
     private ConcurrentHashMap<String, Integer> Totals = new ConcurrentHashMap<>();
 
+    private int round;
+
     public TestRecent(TestResultRequest testResultRequest, UserDto userDto){
         this.id = testResultRequest.getId();
         this.userSeq = userDto.getUser_seq();

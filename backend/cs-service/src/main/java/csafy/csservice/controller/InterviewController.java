@@ -12,6 +12,7 @@ import csafy.csservice.dto.response.ResponseInterviewLikes;
 import csafy.csservice.entity.interview.Interview;
 import csafy.csservice.entity.interview.InterviewComment;
 import csafy.csservice.entity.interview.InterviewMemo;
+import csafy.csservice.service.BadgeService;
 import csafy.csservice.service.InterviewService;
 import feign.FeignException;
 import lombok.Data;
@@ -33,6 +34,8 @@ public class InterviewController {
     private final InterviewService interviewService;
 
     private final UserServiceClient userServiceClient;
+
+    private final BadgeService badgeService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -58,7 +61,6 @@ public class InterviewController {
         if(interviewList == null || interviewList.size() == 0){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-
         List<InterviewDto> result = interviewList.stream().map(i -> new InterviewDto(i, userDto)).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
@@ -93,7 +95,7 @@ public class InterviewController {
     public ResponseEntity createSimpleInterviewList(@RequestBody RequestCreateInterview createInterview){
 
 
-        List<InterviewCreateDto> interviewList = interviewService.createSimpleInterviewList(createInterview);
+        List<InterviewCreateSimpleDto> interviewList = interviewService.createSimpleInterviewList(createInterview);
 
 
         if(interviewList == null || interviewList.size() == 0){
