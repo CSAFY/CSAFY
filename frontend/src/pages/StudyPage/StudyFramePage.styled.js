@@ -76,3 +76,4 @@ export const SwitchBox = styled.div`
   
   margin : 0 0 10px 300px;
 `;
+

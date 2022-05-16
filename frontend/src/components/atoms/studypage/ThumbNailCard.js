@@ -89,14 +89,14 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
   return (
     <CardBox>
       <InforDiv>
-        <Pp>
+        <FlexSpan>
           <CategoryShowDiv>
             {categoryId}
           </CategoryShowDiv>
           <CategoryShowDiv>
             {category2Id}
           </CategoryShowDiv>
-        </Pp>
+        </FlexSpan>
         
         <span>
           {isEnd()}
@@ -124,8 +124,7 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
 }
 export default ThumbNailCard
 
-const Pp = styled.span`  
-
+const FlexSpan = styled.span`  
   display: flex;
 `
 
