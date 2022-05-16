@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
-import VoiceRecord from '../components/VoiceRecord';
 
 // Recoil
 import { useRecoilState } from 'recoil';
@@ -13,6 +12,7 @@ import { TimeLimit } from '../recoils/TimeLimit';
 // STYLED
 import styled from 'styled-components';
 import SpentTime from './SpentTime';
+import AudioRecorder from '../components/AudioRecorder';
 
 const InterviewResultWrapper = styled.div`
   width: 100%;
@@ -292,6 +292,79 @@ function InterviewTest() {
   // const endTime = (state.length - 1) * 60;
   const endTime = 3;
 
+  //
+  const [stream, setStream] = useState({
+    access: false,
+    recorder: null,
+    error: '',
+  });
+
+  const [recording, setRecording] = useState({
+    active: false,
+    available: false,
+    url: '',
+  });
+
+  const chunks = useRef([]);
+
+  function getAccess() {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then(mic => {
+        let mediaRecorder;
+
+        try {
+          mediaRecorder = new MediaRecorder(mic, {
+            mimeType: 'audio/webm',
+          });
+        } catch (err) {
+          console.log(err);
+        }
+
+        const track = mediaRecorder.stream.getTracks()[0];
+        track.onended = () => console.log('ended');
+
+        mediaRecorder.onstart = function() {
+          setRecording({
+            active: true,
+            available: false,
+            url: '',
+          });
+        };
+
+        mediaRecorder.ondataavailable = function(e) {
+          console.log('data available');
+          chunks.current.push(e.data);
+        };
+
+        mediaRecorder.onstop = async function() {
+          console.log('stopped');
+
+          const url = URL.createObjectURL(chunks.current[0]);
+          chunks.current = [];
+
+          setRecording({
+            active: false,
+            available: true,
+            url,
+          });
+        };
+
+        setStream({
+          ...stream,
+          access: true,
+          recorder: mediaRecorder,
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        setStream({ ...stream, error });
+      });
+  }
+  useEffect(() => {
+    getAccess();
+  }, []);
+
   return (
     <InterviewResultWrapper>
       <InterviewResultContent>
@@ -318,7 +391,7 @@ function InterviewTest() {
           <Question>{question}</Question>
 
           <Icon>
-            <VoiceRecord />
+            <AudioRecorder cnt={cnt} />
           </Icon>
 
           <Progress>

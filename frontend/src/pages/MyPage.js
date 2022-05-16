@@ -26,6 +26,7 @@ import VideoBox from '../components/myPage/VideoBox';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
 import Hamburger from '../components/Hamburger';
+import ReactBurger from '../components/ReactBurger';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -93,27 +94,7 @@ const VideoWrapper = styled.div`
 `;
 
 function MyPage() {
-  // 히트맵 데이터 관련
-  const handleTest = () => {
-    axios
-      .post(`${defaultAPI}/cs-service/profile/heatmap`, null, {
-        headers: { Authorization: token },
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.error(err));
-  };
-  const handleGet = () => {
-    axios
-      .get(`${defaultAPI}/cs-service/profile/heatmap`, {
-        headers: { Authorization: token },
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.error(err));
-  };
+
   //
   const navigate = useNavigate();
   // Recoil
@@ -146,6 +127,7 @@ function MyPage() {
         setUserinfo({
           email: res.data.email,
           username: res.data.username,
+          isVip: res.data.is_vip,
         });
         console.log('🎃', res);
         if (res.data.profile_image === null) {
@@ -168,6 +150,20 @@ function MyPage() {
       })
       .catch(err => console.error(err));
   };
+    // 히트맵 데이터 관련
+    const [heatmapData, setHeatmapData] = useState([]);
+    const getHeatmapData = () => {
+      axios
+        .get(`${defaultAPI}/cs-service/profile/heatmap`, {
+          headers: { Authorization: token },
+        })
+        .then(res => {
+          console.log(res);
+          setHeatmapData(res.data)
+        })
+        .catch(err => console.error(err));
+    };
+    console.log(heatmapData)
   // 최근 본 면접 질문
   const [recentInterview, setRecentInterview] = useState([]);
   const getRecentInterviewInfo = () => {
@@ -225,13 +221,15 @@ function MyPage() {
   const [analysisData, setAnalysisData] = useState({});
   const getAnalysisData = () => {
     axios
-      // .get(`${defaultAPI}/cs-service/profile/my/scores/get`, {
-      .get(`${defaultAPI}/cs-service/profile/scores/get`, {
-        params: {
-          email: 'mingu49699@gmail.com',
-          // email: 'test@naver.com',
-        },
+      .get(`${defaultAPI}/cs-service/profile/my/scores/get`, {
+        headers: { Authorization: token },
       })
+      // .get(`${defaultAPI}/cs-service/profile/scores/get`, {
+      //   params: {
+      //     email: 'mingu49699@gmail.com',
+      //     // email: 'test@naver.com',
+      //   },
+      // })
       .then(res => {
         // console.log(res);
         setAnalysisData(res.data);
@@ -242,6 +240,7 @@ function MyPage() {
   // console.log(recentStudy);
   useEffect(() => {
     getInfo();
+    getHeatmapData();
     getRecentInterviewInfo();
     getRecentStudyInfo();
     getFavorites();
@@ -259,13 +258,22 @@ function MyPage() {
 
   // 프로필 변경 관련
   const [editToggle, setEditToggle] = useState(false);
+  // const FileSaver = require('file-saver');
   const handleEdit = () => {
     setEditToggle(!editToggle);
-
     //
     const formData = new FormData();
     formData.append('username', editUserInfo.username);
-    formData.append('image', state.image);
+    if (state.image) {
+      formData.append('image', state.image);
+    } else {
+      formData.append(
+        'image',
+        `https://csafy-profile.s3.amazonaws.com/default/default_1.PNG`,
+      );
+    }
+
+    // console.log('🐸', state.image);
 
     axios
       .put(` https://csafy.com/api/v1/user-service/update`, formData, {
@@ -297,33 +305,41 @@ function MyPage() {
 
   const handleEditToggle = () => {
     setEditToggle(!editToggle);
+    // const file = FileSaver.saveAs(userInfo.profile_image, 'profile.jpg');
+    // setState({ image: file });
   };
   const [editUserInfo, setEditUserInfo] = useState({
     username: '',
     profile_image: '',
   });
   // console.log(editUserInfo);
+
   useEffect(() => {
     setEditUserInfo({
       username: userInfo.username,
       profile_image: userInfo.profile_image,
     });
-  }, [editToggle, userInfo.profile_image, userInfo.username]);
+  }, [editToggle]);
+
   // console.log(editUserInfo);
   // 이미지 업로드 관련
   const [imageSrc, setImageSrc] = useState('');
   const [state, setState] = useState({});
+
   const handleFile = e => {
     e.preventDefault();
 
     let reader = new FileReader();
     const file = e.target.files[0];
+    console.log(e.target.files[0]);
     reader.onloadend = () => {
       setImageSrc(reader.result);
       setState({ image: file });
     };
     reader.readAsDataURL(file);
   };
+  useEffect(() => {}, []);
+  // console.log(userInfo);
 
   // 프리미엄 결제
   const buyPremium = () => {
@@ -345,13 +361,14 @@ function MyPage() {
         });
       });
   };
-
+  // console.log('🐸', userInfo);
+  // console.log(recentStudy);
   return (
     <>
       <MyPageWrapper>
         <MyPageContent>
           <UserInfoWrapper>
-            {/* <Hamburger /> */}
+            {/* <ReactBurger /> */}
             <UserInfo>
               {editToggle ? (
                 <div style={{ position: 'relative' }}>
@@ -405,7 +422,7 @@ function MyPage() {
               )}
 
               <Profile>
-                {/* is_vip === 'T'일대만 `프리미엄 이용중` 보이기 */}
+                {/* is_vip === 'Y'일대만 `프리미엄 이용중` 보이기 */}
                 {userInfo.is_vip === 'Y' && (
                   <div
                     style={{
@@ -413,8 +430,11 @@ function MyPage() {
                       height: '23px',
                       margin: '0',
                       borderRadius: '6px',
-                      backgroundColor: '#d2fae2',
+                      background:
+                        'linear-gradient(to right bottom, #008ed0, #b5fcca)',
                       fontSize: '10px',
+                      fontWeight: '600',
+                      color: 'white',
 
                       display: 'flex',
                       justifyContent: 'center',
@@ -549,20 +569,49 @@ function MyPage() {
                   Premium 버전 구독하기
                 </Button>
               )}
+              {userinfo.email === 'admin@csafy.com' && (
+                <Button
+                  variant="contained"
+                  sx={{
+                    // width: '213px',
+                    height: '40px',
+                    textAlign: 'center',
+                    display: 'block',
+                    marginLeft: '20px',
+                    border: '1px solid contained',
+                    borderRadius: '7px',
+                    backgroundColor: '#fff',
+
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: '#000',
+
+                    ':hover': {
+                      color: '#008ed0',
+                      bgcolor: 'white',
+                    },
+                  }}
+                  onClick={() => navigate('/chat')}
+                >
+                  채팅
+                </Button>
+              )}
             </UserInfo>
-            <CalendarHeatmap
+            
+            {/* <CalendarHeatmap
               startDate={shiftDate(today, -250)}
               endDate={today}
-              values={[
-                { date: '2022-04-19', count: 1 },
-                { date: '2022-04-20', count: 2 },
-                { date: '2022-05-02', count: 3 },
-                { date: '2022-05-04', count: 4 },
-                { date: '2022-05-05', count: 5 },
-                { date: '2022-05-06', count: 6 },
-                { date: '2022-05-07', count: 7 },
-                { date: '2022-05-08', count: 8 },
-              ]}
+              // values={[
+              //   { date: '2022-04-19', count: 1 },
+              //   { date: '2022-04-20', count: 2 },
+              //   { date: '2022-05-02', count: 3 },
+              //   { date: '2022-05-04', count: 4 },
+              //   { date: '2022-05-05', count: 5 },
+              //   { date: '2022-05-06', count: 6 },
+              //   { date: '2022-05-07', count: 7 },
+              //   { date: '2022-05-08', count: 8 },
+              // ]}
+              values={heatmapData}
               classForValue={value => {
                 if (!value) {
                   return 'color-empty';
@@ -593,7 +642,7 @@ function MyPage() {
                 }
               }}
             />
-            <ReactTooltip />
+            <ReactTooltip /> */}
             <ColorBox>
               <Color>
                 <div>1문제</div>
@@ -643,13 +692,13 @@ function MyPage() {
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'between',
+                justifyContent: 'center',
               }}
             >
-              <VideoBox>1</VideoBox>
-              <VideoBox>2</VideoBox>
-              <VideoBox>3</VideoBox>
-              <VideoBox>4</VideoBox>
+              {favorites &&
+                favorites.map(favorite => (
+                  <VideoBox key={favorite.id} {...favorite} />
+                ))}
             </div>
           </VideoWrapper>
           <VideoWrapper>
@@ -660,10 +709,10 @@ function MyPage() {
                 justifyContent: 'center',
               }}
             >
-              <VideoBox>1</VideoBox>
-              <VideoBox>2</VideoBox>
-              <VideoBox>3</VideoBox>
-              <VideoBox>4</VideoBox>
+              {recentStudy &&
+                recentStudy.map(recent => (
+                  <VideoBox key={recent.id} {...recent} />
+                ))}
             </div>
           </VideoWrapper>
           <div
@@ -726,8 +775,6 @@ function MyPage() {
                 ))}
             </div>
           </div>
-          {/* <button onClick={handleTest}>테스트</button>
-          <button onClick={handleGet}>가져오기</button> */}
         </MyPageContent>
       </MyPageWrapper>
     </>

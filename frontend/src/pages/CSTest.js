@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+// Recoil
+import { useRecoilState } from 'recoil';
+import { LoginState } from '../recoils/LoginState';
+import { Token } from '../recoils/Token';
 
 // STYLED
 import styled from 'styled-components';
@@ -6,6 +10,7 @@ import axios from 'axios';
 import TestBox from '../components/TestBox';
 import { Grid } from '@mui/material';
 import CompanyBox from '../components/companyClassification/CompanyBox';
+import NeedLogin from './handler/NeedLogin';
 
 const CSTestWrapper = styled.div`
   width: 100%;
@@ -45,6 +50,8 @@ const ContentTitle = styled.div`
 `;
 
 function CSTest() {
+  // Recoil
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [dummyData, setDummyData] = useState([
     {
       id: 1,
@@ -95,63 +102,85 @@ function CSTest() {
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
+    {
+      id: 8,
+      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_test.png',
+      title: '입문자를 위한 문제',
+      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
+    },
+    {
+      id: 9,
+      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_test.png',
+      title: '중급자를 위한 문제',
+      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
+    },
   ]);
 
   return (
     <CSTestWrapper>
       <CSTestContent>
-        <ContentTitle>
-          <div
-            style={{
-              fontSize: '24px',
-              fontWeight: '800',
-              position: 'absolute',
-              left: '20px',
-              top: '30px',
-              color: '#008ed0',
-            }}
-          >
-            CS 실력 테스트
-          </div>
-          <div
-            style={{
-              fontSize: '16px',
-              color: '#008ed0',
-              position: 'absolute',
-              left: '20px',
-              top: '90px',
-            }}
-          >
-            실력을 테스트해보세요
-          </div>
-          <div
-            style={{
-              position: 'absolute',
-              right: '20px',
-              top: '50%',
-              transform: 'translateY( -50%)',
-            }}
-          >
-            <img
-              src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
-              alt="CSAFY"
-              style={{
-                width: '300px',
-                height: '191px',
-              }}
-            />
-          </div>
-        </ContentTitle>
+        {isLoggedIn ? (
+          <>
+            <ContentTitle>
+              <div
+                style={{
+                  fontSize: '24px',
+                  fontWeight: '800',
+                  position: 'absolute',
+                  left: '20px',
+                  top: '30px',
+                  color: '#008ed0',
+                }}
+              >
+                CS 실력 테스트
+              </div>
+              <div
+                style={{
+                  fontSize: '16px',
+                  color: '#008ed0',
+                  position: 'absolute',
+                  left: '20px',
+                  top: '90px',
+                }}
+              >
+                실력을 테스트해보세요
+              </div>
+              <div
+                style={{
+                  position: 'absolute',
+                  right: '20px',
+                  top: '50%',
+                  transform: 'translateY( -50%)',
+                }}
+              >
+                <img
+                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
+                  alt="CSAFY"
+                  style={{
+                    width: '300px',
+                    height: '191px',
+                  }}
+                />
+              </div>
+            </ContentTitle>
 
-        <TestBoxWrapper>
-          <Grid container>
-            {dummyData.map(v => (
-              <Grid item xs={4}>
-                <TestBox key={v.id} {...v} />
+            <TestBoxWrapper>
+              <Grid container>
+                {dummyData.map(v => (
+                  <Grid item xs={4}>
+                    <TestBox key={v.id} {...v} />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-        </TestBoxWrapper>
+            </TestBoxWrapper>
+          </>
+        ) : (
+          <>
+            <NeedLogin />
+          </>
+        )}
       </CSTestContent>
     </CSTestWrapper>
   );

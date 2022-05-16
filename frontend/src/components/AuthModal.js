@@ -87,6 +87,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
         setModal(false);
         // navigate
         navigate('/mypage');
+        // navigate('/');
         setToggleLogin('로그아웃');
       })
       .catch(err => console.error(err));

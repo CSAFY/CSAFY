@@ -4,6 +4,8 @@ import MicIcon from '@mui/icons-material/Mic';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
+import PublishIcon from '@mui/icons-material/Publish';
+
 //사용자 정의 Hook - for Timer
 const useCounter = (initialValue, ms) => {
   const [count, setCount] = useState(initialValue);
@@ -89,8 +91,9 @@ function VoiceRecord() {
   };
 
   // 사용자가 음성 녹음을 중지 했을 때
+  const [audio, setAudio] = useState('');
   const offRecAudio = () => {
-    stop();
+    // stop();
     // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
     media.ondataavailable = function(e) {
       setAudioUrl(e.data);
@@ -105,14 +108,16 @@ function VoiceRecord() {
     // 미디어 캡처 중지
     media.stop();
 
-    // 메서드가 호출 된 노드 연결 해제
-    analyser.disconnect();
-    source.disconnect();
+    onSubmitAudioFile();
+  };
 
+  const onSubmitAudioFile = () => {
     if (audioUrl) {
-      URL.createObjectURL(audioUrl); // 출력된 링크에서 녹음된 오디오 확인 가능
+      // console.log(audioUrl);
+      // blob 파일
+      console.log(URL.createObjectURL(audioUrl)); // 출력된 링크에서 녹음된 오디오 확인 가능
+      setAudio(new Audio(URL.createObjectURL(audioUrl)));
     }
-
     // File 생성자를 사용해 파일로 변환
     const sound = new File([audioUrl], 'soundBlob', {
       lastModified: new Date().getTime(),
@@ -120,23 +125,37 @@ function VoiceRecord() {
     });
 
     setDisabled(false);
+    // setToggleUpload(false);
+    // setToggle(true);
     console.log(sound); // File 정보 출력
   };
+  // console.log(audio);
+  const saveFile = () => {
+    const FileSaver = require('file-saver');
+    FileSaver.saveAs(
+      URL.createObjectURL(audioUrl),
+      `${URL.createObjectURL(audioUrl)}`,
+    );
+  };
+
   //
   const [toggle, setToggle] = useState(true);
-  console.log(toggle);
+  const [toggleUpload, setToggleUpload] = useState(true);
+  // console.log(toggle, toggleUpload);
+
   const play = () => {
-    const audio = new Audio(URL.createObjectURL(audioUrl));
-    // if (toggle) {
-    audio.loop = false;
-    audio.volume = 1;
-    audio.play();
-    // setToggle(!toggle);
-    // } else {
-    //   console.log('pause');
-    //   audio.pause();
-    //   setToggle(!toggle);
-    // }
+    // console.log(audio);
+    // const audio = new Audio(URL.createObjectURL(audioUrl));
+    if (toggle) {
+      audio.loop = false;
+      audio.volume = 1;
+      audio.play();
+      setToggle(!toggle);
+    } else {
+      console.log('pause');
+      audio.pause();
+      setToggle(!toggle);
+    }
   };
 
   // Timer
@@ -182,20 +201,36 @@ function VoiceRecord() {
               <MicIcon fontSize="large" color="primary" onClick={onRecAudio} />
             ) : (
               // <button onClick={onRecAudio}>녹음</button>
+
               <MicNoneIcon
                 fontSize="large"
                 color="primary"
                 onClick={offRecAudio}
               />
-              // <button onClick={offRecAudio}>녹음 중지</button>
             )}
           </>
         ) : (
           <>
-            {toggle ? (
-              <PlayArrowIcon fontSize="large" color="primary" onClick={play} />
+            {toggleUpload ? (
+              <PublishIcon
+                onClick={() => {
+                  onSubmitAudioFile();
+                  saveFile();
+                  setToggleUpload(false);
+                }}
+              />
             ) : (
-              <StopIcon fontSize="large" color="primary" onClick={play} />
+              <>
+                {toggle ? (
+                  <PlayArrowIcon
+                    fontSize="large"
+                    color="primary"
+                    onClick={play}
+                  />
+                ) : (
+                  <StopIcon fontSize="large" color="primary" onClick={play} />
+                )}
+              </>
             )}
           </>
 

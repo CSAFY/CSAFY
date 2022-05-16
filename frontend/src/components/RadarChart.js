@@ -22,7 +22,7 @@ function RadarChart({ analysisData }) {
     ],
     datasets: [
       {
-        label: '학습 시간 분석',
+        label: '학습 포인트 분석',
         data: [0, 0, 0, 0, 0, 0],
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
@@ -42,7 +42,7 @@ function RadarChart({ analysisData }) {
       ],
       datasets: [
         {
-          label: '학습 시간 분석',
+          label: '학습 포인트 분석',
           data: [
             parseInt(`${analysisData.scores.네트워크}`),
             parseInt(`${analysisData.scores.운영체제}`),

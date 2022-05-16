@@ -30,7 +30,7 @@ const ResultBox = styled.div`
 `;
 const ScoreBox = styled.div`
   height: 110px;
-  width: 130px;
+  width: 200px;
 
   position: absolute;
 
@@ -137,6 +137,7 @@ function CSTestResultBox({ state }) {
           <div
             style={{
               fontSize: '24px',
+
               position: 'absolute',
               top: '40px',
               left: '50%',
