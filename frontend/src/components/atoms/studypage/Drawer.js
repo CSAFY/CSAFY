@@ -34,13 +34,8 @@ export default function TemporaryDrawer() {
 
   const list = (anchor) => (
     <Box
-      sx={{ width:  250 , 
-        paddingTop: 10, 
-        background: "#84c2ea;",
-        height : "100%;",
-      }}
+      sx={{ width:  250 , paddingTop: 10}}
       role="presentation"
-      
     >
       <List>
         <DrawerInList
@@ -64,7 +59,6 @@ export default function TemporaryDrawer() {
             anchor={'left'}
             open={state['left']}
             onClose={toggleDrawer('left', false)}
-            
           >
             {list('left')}
           </Drawer>

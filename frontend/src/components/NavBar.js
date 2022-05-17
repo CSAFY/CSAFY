@@ -85,7 +85,7 @@ const ProfileVip = styled.div`
 // Navbar에 페이지 추가하려면 pages 안에 요소 추가
 const pages = [
   { name: '일반 학습', link: 'StudyFramePage' },
-  { name: '집중 학습', link: 'IntensivePage/KeyWordCard' },
+  { name: '집중 학습', link: 'IntensivePage' },
   // { name: '채팅', link: 'chat' },
   { name: '면접 대비', link: 'interview' },
   // { name: '기술 스택', link: 'classification' },
