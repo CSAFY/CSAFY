@@ -58,6 +58,7 @@ const TechCategory = styled.div`
 
 function InterviewBox({ interview }) {
   const navigate = useNavigate();
+  // 인터뷰 질문 가져오기
   const handleQuestion = () => {
     navigate(`/interviewDetail/${interview.interviewSeq}`, {
       state: interview,

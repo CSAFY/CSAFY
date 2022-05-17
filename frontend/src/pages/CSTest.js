@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-// Recoil
-import { useRecoilState } from 'recoil';
+import React, { useEffect } from 'react';
+
+// RECOIL
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
-import { Token } from '../recoils/Token';
+import { NavToggle } from '../recoils/NavToggle';
+
+// COMPONENTS
+import TestBox from '../components/TestBox';
+import NeedLogin from './handler/NeedLogin';
 
 // STYLED
 import styled from 'styled-components';
-import axios from 'axios';
-import TestBox from '../components/TestBox';
 import { Grid } from '@mui/material';
-import CompanyBox from '../components/companyClassification/CompanyBox';
-import NeedLogin from './handler/NeedLogin';
 
 const CSTestWrapper = styled.div`
   width: 100%;
@@ -51,8 +52,15 @@ const ContentTitle = styled.div`
 
 function CSTest() {
   // Recoil
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
-  const [dummyData, setDummyData] = useState([
+  const isLoggedIn = useRecoilValue(LoginState);
+  const setToggle = useSetRecoilState(NavToggle);
+
+  // 네브바 toggle처리
+  useEffect(() => {
+    setToggle(true);
+  }, []);
+
+  const categoryData = [
     {
       id: 1,
       img: 'images/subject_network.png',
@@ -97,26 +105,26 @@ function CSTest() {
     },
     {
       id: 7,
-      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_test.png',
-      title: 'all',
+      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_short.png',
+      title: '전 과목',
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 8,
-      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_test.png',
+      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_short.png',
       title: '입문자를 위한 문제',
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 9,
-      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_test.png',
+      img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_short.png',
       title: '중급자를 위한 문제',
       exp: '컴퓨터 구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
-  ]);
+  ];
 
   return (
     <CSTestWrapper>
@@ -168,9 +176,9 @@ function CSTest() {
 
             <TestBoxWrapper>
               <Grid container>
-                {dummyData.map(v => (
-                  <Grid item xs={4}>
-                    <TestBox key={v.id} {...v} />
+                {categoryData.map(test => (
+                  <Grid item xs={4} key={test.id}>
+                    <TestBox {...test} />
                   </Grid>
                 ))}
               </Grid>
