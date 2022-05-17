@@ -1,20 +1,22 @@
-import { Box, Button, Modal } from '@mui/material';
-import React, { useState } from 'react';
-import swal from 'sweetalert2';
+import React, { useEffect, useState } from 'react';
+import { defaultAPI } from '../utils/api';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // Recoil
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Token } from '../recoils/Token';
+import { Username } from '../recoils/Username';
+import { Userinfo } from '../recoils/Userinfo';
 
 // Components
 import AuthModal from '../components/AuthModal';
 
-// REACT-REVEAL
-import Fade from 'react-reveal/Fade';
-import { useNavigate } from 'react-router-dom';
-
 // STYLED
 import styled from 'styled-components';
+import Fade from 'react-reveal/Fade';
+import { Box, Button, Modal } from '@mui/material';
+import swal from 'sweetalert2';
 
 const loginStyle = {
   position: 'absolute',
@@ -39,7 +41,6 @@ const signupStyle = {
   p: 4,
 };
 
-// background-color: #d5f2fc;
 const HomeWrapper = styled.div`
   background-image: url(/images/main-background.png);
   background-size: contain;
@@ -165,10 +166,19 @@ const ButtonBox = styled.div`
 function Home() {
   const navigate = useNavigate();
 
+  // Recoil
   const token = useRecoilValue(Token);
+  const setUserName = useSetRecoilState(Username);
+  const setUserinfo = useSetRecoilState(Userinfo);
+  // State
   const [modal, setModal] = useState(false);
   const [state, setState] = useState('signup');
-  const handleModalClose = () => setModal(false);
+
+  // 모달 닫기
+  const handleModalClose = () => {
+    setModal(false);
+  };
+  // '바로 시작하기' 버튼 클릭
   const handleStart = () => {
     if (token) {
       navigate('/studyframepage');
@@ -176,6 +186,7 @@ function Home() {
       setModal(true);
     }
   };
+  // '학습 시작하기' 버튼
   const handleStudy = () => {
     if (token) {
       navigate('/intensivepage');
@@ -187,6 +198,40 @@ function Home() {
       });
     }
   };
+  // '메타버스 체험하기' 버튼
+  const handleMeta = () => {
+    navigate('/community');
+  };
+  // '모바일 버전' 버튼
+  const handleMobile = () => {
+    window.open(
+      'https://play.google.com/store/apps/details?id=com.csafy.csafy_android',
+      '_blank',
+    );
+  };
+
+  // 사용자 정보 리코일 저장 - for google login
+  const getInfo = () => {
+    axios
+      .get(`${defaultAPI}/user-service/token/user`, {
+        params: {
+          inputToken: token,
+        },
+      })
+      .then(res => {
+        setUserName(res.data.username);
+        setUserinfo({
+          email: res.data.email,
+          username: res.data.username,
+          isVip: res.data.is_vip,
+        });
+      })
+      .catch(err => console.error(err));
+  };
+
+  useEffect(() => {
+    getInfo();
+  }, [token]);
 
   return (
     <HomeWrapper>
@@ -219,7 +264,6 @@ function Home() {
           <HeroMain>
             <div
               style={{
-                // width: '598px',
                 height: '140px',
                 fontSize: '56px',
                 fontWeight: 'bold',
@@ -231,7 +275,6 @@ function Home() {
             </div>
             <div
               style={{
-                // width: '341px',
                 height: '92px',
                 margin: '39px 128px 0 129px',
                 fontSize: '18px',
@@ -246,7 +289,12 @@ function Home() {
               <br />
               <p style={{ margin: 'auto' }}>
                 시험부터 면접까지{' '}
-                <strong style={{ color: '#008ED0', fontWeight: '800' }}>
+                <strong
+                  style={{
+                    color: '#008ED0',
+                    fontWeight: '800',
+                  }}
+                >
                   C;SAFY
                 </strong>
                 에서 준비했습니다.
@@ -398,7 +446,13 @@ function Home() {
               }}
             />
           </Fade>
-          <div style={{ position: 'absolute', top: '100px', right: '10px' }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: '100px',
+              right: '10px',
+            }}
+          >
             <p
               style={{
                 // width: '198px',
@@ -574,7 +628,7 @@ function Home() {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
-              onClick={() => navigate('/community')}
+              onClick={handleMeta}
             >
               메타버스 체험하기
             </Button>
@@ -596,12 +650,7 @@ function Home() {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
-              onClick={() =>
-                window.open(
-                  'https://play.google.com/store/apps/details?id=com.csafy.csafy_android',
-                  '_blank',
-                )
-              }
+              onClick={handleMobile}
             >
               모바일 버전 시작하기
             </Button>
