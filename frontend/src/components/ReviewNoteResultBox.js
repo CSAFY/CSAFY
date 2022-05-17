@@ -1,29 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // STYLED
 import styled from 'styled-components';
 
-const Test = styled.div`
-  width: 285px;
-  height: 400px;
-  border-radius: 10px;
-  background-color: #fff;
-  margin: 10px;
-
-  cursor: pointer;
-
-  position: relative;
-`;
-const Date = styled.div`
-  width: 60px;
-  height: 14px;
-  font-size: 11px;
+const TitleBox = styled.div`
+  font-size: 20px;
   font-weight: 600;
+
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%);
+`;
+const SubTitleBox = styled.div`
+  font-size: 14px;
   color: #000;
 
   position: absolute;
-  top: 15px;
+  top: 110px;
+  left: 50%;
+  transform: translate(-50%);
+`;
+
+const Test = styled.div`
+  height: 550px;
+  width: 67%;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
+  margin: 10px;
+
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translate(-50%);
+`;
+const Date = styled.div`
+  width: 53px;
+  height: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: red;
+
+  position: absolute;
+  top: 25px;
   left: 15px;
 `;
 const TestName = styled.div`
@@ -49,7 +69,7 @@ const ScoreBox = styled.div`
   align-items: center;
 
   position: absolute;
-  top: 80px;
+  top: 180px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -61,9 +81,9 @@ const TestScore = styled.div`
   margin-bottom: 5px;
 `;
 const ResultBox = styled.div`
-  width: 80%;
+  width: 40%;
   position: absolute;
-  bottom: 40px;
+  bottom: 70px;
   left: 50%;
   transform: translate(-50%);
 
@@ -91,8 +111,8 @@ const ResultScore = styled.li`
   // align-items: center;
 `;
 const LogoImg = styled.img`
-  width: 28px;
-  height: 14px;
+  width: 50px;
+  height: 20px;
 
   position: absolute;
   bottom: 15px;
@@ -100,33 +120,54 @@ const LogoImg = styled.img`
   transform: translate(-50%);
 `;
 
-function ReviewNoteBox({ examDone, id, corrects, totals, round }) {
-  console.log(examDone);
-  const navigate = useNavigate();
+function ReviewNoteResultBox({ props }) {
+  // console.log(props);
   const getSum = corrects => Object.values(corrects).reduce((a, b) => a + b);
   const getScore = data => {
     return Math.ceil((data.rightQuestions / data.totalQuestions) * 100);
   };
 
   const testInfo = {
-    testName: id,
-    rightQuestions: getSum(corrects),
-    totalQuestions: getSum(totals),
-    corrects,
-    totals,
+    // data: props.examDone,
+    // testName: id,
+    rightQuestions: getSum(props.corrects),
+    totalQuestions: getSum(props.totals),
+    corrects: props.corrects,
+    totals: props.totals,
   };
+  // console.log(testInfo);
+  // console.log(rightQuestions);
 
   return (
     <>
-      <Test onClick={() => navigate(`/reviewNote/${round}`)}>
-        <Date>{examDone}</Date>
-        {testInfo.testName === 'all' ? (
-          <TestName>전 과목</TestName>
+      <Test>
+        {getScore(testInfo) > 90 ? (
+          <>
+            <TitleBox>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                🎉
+              </div>{' '}
+              <div>정말 열심히 공부하셨군요!</div>
+            </TitleBox>
+            <SubTitleBox>
+              조금만 더 노력하면 완벽한 CS 마스터가 되실 것 같아요!
+            </SubTitleBox>
+          </>
         ) : (
-          <TestName>{testInfo.testName}</TestName>
+          <>
+            <TitleBox>
+              {' '}
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                🎉
+              </div>
+              <div>열심히 공부하셨군요!</div>
+            </TitleBox>
+            <SubTitleBox>C;SAFY가 여러분의 꿈을 응원합니다.</SubTitleBox>
+          </>
         )}
-
+        <Date>{testInfo.date}</Date>
         <ScoreBox>
+          <div style={{ marginBottom: '10px' }}>결과</div>
           <TestScore>{getScore(testInfo)}점</TestScore>
           <div>
             ({testInfo.rightQuestions} / {testInfo.totalQuestions})
@@ -134,9 +175,7 @@ function ReviewNoteBox({ examDone, id, corrects, totals, round }) {
         </ScoreBox>
         <ResultBox>
           <ResultTitle>과목별 결과</ResultTitle>
-          {/* <ul>
-            <li>네트워크</li>
-          </ul> */}
+
           <ul style={{ paddingLeft: '20px' }}>
             <ResultScore>
               {/* <div>네트워크</div> */}
@@ -261,10 +300,13 @@ function ReviewNoteBox({ examDone, id, corrects, totals, round }) {
             </ResultScore>
           </ul>
         </ResultBox>
-        <LogoImg src="images/csafy.png" alt="CSAFY" />
+        <LogoImg
+          src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
+          alt="CSAFY"
+        />
       </Test>
     </>
   );
 }
 
-export default ReviewNoteBox;
+export default ReviewNoteResultBox;

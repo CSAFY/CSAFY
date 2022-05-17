@@ -356,7 +356,7 @@ function CSTestDetail() {
     //     .catch(err => console.error(err));
     // } else {
     axios
-      .post(`${defaultAPI}/cs-service/test/8/result`, testResultInfo, {
+      .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
         headers: { authorization: token },
       })
       .then(res => {
