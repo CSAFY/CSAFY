@@ -67,6 +67,12 @@ class VideoSeen(Base):
     id = Column(Integer, primary_key=True)
     user_seq = Column(Integer)
 
+class UserBadge(Base):
+    __tablename__ = 'user_badge'
+
+    id = Column(Integer, primary_key=True)
+    user_seq = Column(Integer)
+
 
 BACKGROUND_COLOR = {
     'Bronze': ['#F49347', '#984400', '#492000'],
@@ -390,6 +396,10 @@ def get_card(email):
     # 본 영상(강의) 수 가져오기
     videos = VideoSeen.query.filter(VideoSeen.user_seq == user_seq)[:]
     video_num = len(videos)
+
+    # 뱃지 수 가져오기
+    badges = UserBadge.query.filter(UserBadge.user_seq == user_seq)[:]
+    badge_num = len(badges)
     
     # 카드용 자료 계산
     exp_calc = exp
@@ -538,7 +548,7 @@ def get_card(email):
                tier_title=tier,
                tier_rank=rank,
                exp=exp,
-               badge_num='배지 수',
+               badge_num=badge_num,
                video_num=video_num,
                now_rate=exp_calc,
                needed_rate=300,
