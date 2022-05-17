@@ -54,7 +54,7 @@ const ColorBox = styled.div`
 
   position: absolute;
   right: 0px;
-  bottom: 100px;
+  bottom: 90px;
 `;
 const Color = styled.div`
   font-size: 14px;
@@ -614,13 +614,14 @@ function MyPage() {
           <div
             style={{
               width: '80%',
-              height: '350px',
+              height: '380px',
               // border: '1px solid black',
               position: 'relative',
               left: '50%',
               transform: 'translate(-50%)',
             }}
           >
+            <h2 style={{ marginLeft: '50px' }}>나의 학습일지</h2>
             {heatmapData && (
               <>
                 <CalendarHeatmap
@@ -660,7 +661,6 @@ function MyPage() {
                 <ReactTooltip />
               </>
             )}
-
             <ColorBox>
               <Color>
                 <div>1문제</div>
@@ -751,6 +751,7 @@ function MyPage() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 fontSize: '13px',
+                cursor: 'pointer',
               }}
               onClick={() => navigate('/interview')}
             >
