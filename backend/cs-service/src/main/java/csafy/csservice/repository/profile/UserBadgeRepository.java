@@ -12,5 +12,5 @@ public interface UserBadgeRepository extends JpaRepository<UserBadge, Long> {
     List<UserBadge> findByUserSeqOrderByGetTime(Long userSeq);
 
     @Query("select b from UserBadge b where b.userSeq =:userSeq and b.badge.id >= :min and b.badge.id <= :max")
-    List<UserBadge> findByUserSeqOrderByIdAsc(@Param("userSeq") Long UserSeq, @Param("min") int min, @Param("max") int max);
+    List<UserBadge> findUserBadgeList(@Param("userSeq") Long UserSeq, @Param("min") Long min, @Param("max") Long max);
 }

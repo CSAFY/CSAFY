@@ -228,8 +228,8 @@ public class ProfileService {
             if (statistic.getIsLogin().equals("N")) {
                 statistic.setDailyCheck(statistic.getDailyCheck() + 1);
                 statistic.setIsLogin("Y");
-                badgeService.checkBadgeLogin(userSeq, statistic.getDailyCheck() + 1);
                 statisticsRepository.save(statistic);
+                badgeService.checkBadgeLogin(userSeq, statistic.getDailyCheck());
             }
         }
 
@@ -310,6 +310,58 @@ public class ProfileService {
 
         badgeService.checkOXCount(userSeq, statistic.getMultipleCount());
     }
+
+
+    @Transactional
+    public void updateApp(Long userSeq){
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+
+        if(statistic == null){
+            statistic.setUserSeq(userSeq);
+        }
+        if(statistic.getIsApp() == 1L) return;
+        statistic.setIsApp(1L);
+        statisticsRepository.save(statistic);
+
+        UserBadge userBadge = new UserBadge();
+        userBadge.setUserSeq(userSeq);
+        userBadge.setGetTime(LocalDate.now());
+        userBadge.setBadge(badgeRepository.findById(45L).orElse(null));
+    }
+
+    @Transactional
+    public void updateVip(Long userSeq){
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+
+        if(statistic == null){
+            statistic.setUserSeq(userSeq);
+        }
+        if(userBadgeRepository.findUserBadgeList(userSeq, 46L, 46L) != null) return;
+
+        UserBadge userBadge = new UserBadge();
+        userBadge.setUserSeq(userSeq);
+        userBadge.setGetTime(LocalDate.now());
+        userBadge.setBadge(badgeRepository.findById(46L).orElse(null));
+
+    }
+
+    @Transactional
+    public void updateOX(Long userSeq){
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+
+        if(statistic == null){
+            statistic.setUserSeq(userSeq);
+        }
+        if(statistic.getIsWinner() == 1L) return;
+        statistic.setIsWinner(1L);
+        statisticsRepository.save(statistic);
+
+        UserBadge userBadge = new UserBadge();
+        userBadge.setUserSeq(userSeq);
+        userBadge.setGetTime(LocalDate.now());
+        userBadge.setBadge(badgeRepository.findById(47L).orElse(null));
+    }
+
 
 
     // 뱃지 리스트

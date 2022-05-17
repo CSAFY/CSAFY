@@ -44,9 +44,9 @@ public class Statistic {
 
     private Long multipleCount = 0L;
 
-    private boolean isApp = false;
+    private Long isApp = 0L;
 
-    private boolean isWinner = false;
+    private Long isWinner = 0L;
 
     private String petType = "";
 

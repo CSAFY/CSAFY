@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
-    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
-    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
-    <!-- If there is no ENV var FLUENTD_HOST then use localhost -->
-<!--    <property name="FLUENTD_HOST" value="${FLUENTD_HOST:127.0.0.1}"/>-->
-<!--    <property name="FLUENTD_PORT" value="${FLUENTD_PORT:24224}"/>-->
-
+    <property name="FLUENTD_HOST" value="${FLUENTD_HOST:-${DOCKER_HOST:-localhost}}"/>
+    <property name="FLUENTD_PORT" value="${FLUENTD_PORT:-24224}"/>
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
@@ -14,13 +10,13 @@
         </layout>
     </appender>
 
-    <springProfile name="dev, stg, prod">
+<!--    <springProfile name="dev, stg, prod">-->
         <appender name="fluentd" class="ch.qos.logback.more.appenders.DataFluentAppender">
             <!-- Check tag and label fluentd info: https://docs.fluentd.org/configuration/config-file-->
-            <tag>servicelog</tag>
-            <label>logback</label>
-            <remoteHost>172.26.2.107</remoteHost>
-            <port>24224</port>
+            <tag>cs-service</tag>
+            <label>log</label>
+            <remoteHost>${FLUENTD_HOST}</remoteHost>
+            <port>${FLUENTD_PORT}</port>
 
             <additionalField>
                 <key>foo</key>
@@ -63,7 +59,7 @@
             <appender-ref ref="fluentd" />
         </appender>
 
-    </springProfile>
+<!--    </springProfile>-->
 
 
 
@@ -81,8 +77,8 @@
 
     <root level="INFO">
         <appender-ref ref="stdout" />
-        <springProfile name="dev, stg, prod">
-            <appender-ref ref="fluentd" />
-        </springProfile>
+<!--        <springProfile name="dev, stg, prod">-->
+        <appender-ref ref="fluentd" />
+<!--        </springProfile>-->
     </root>
 </configuration>

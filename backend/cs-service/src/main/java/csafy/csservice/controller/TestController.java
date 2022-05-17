@@ -62,14 +62,15 @@ public class TestController {
                                           @RequestParam("questionNum") Integer questionNum,
                                           HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        String resultCode = userServiceClient.checkTokenValidated(token);
+        String resultCode = null;
+        if(token != null) resultCode = userServiceClient.checkTokenValidated(token);
 
-        Integer newQuestionNum = Math.min(20, questionNum);
-        Integer questionNumfixed = newQuestionNum * 3 / 10;
-        Integer questionNumNormal = newQuestionNum - questionNumfixed;
+        int newQuestionNum = Math.min(20, questionNum);
+        int questionNumfixed = newQuestionNum * 3 / 10;
+        int questionNumNormal = newQuestionNum - questionNumfixed;
 
         // 비회원이거나 토큰이 유효하지 않음
-        if (!resultCode.equals("OK")) {
+        if (token == null || token.equals("") || !resultCode.equals("OK")) {
             List<TestDto> result = new ArrayList<>();
 
             result.addAll(testService.getMultipleQuizList(category, questionNum));
@@ -98,9 +99,11 @@ public class TestController {
                                           @RequestParam("questionNum") Integer questionNum,
                                           HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        String resultCode = userServiceClient.checkTokenValidated(token);
+        String resultCode = null;
+        if(token != null) resultCode = userServiceClient.checkTokenValidated(token);
+
         // 비회원이거나 토큰이 유효하지 않음
-        if (!resultCode.equals("OK")) {
+        if (token == null || token.equals("") || !resultCode.equals("OK")) {
             List<KeywordDto> result = testService.getKeywordStudy(category, questionNum);
             if(result == null || result.size() == 0){
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -220,14 +223,16 @@ public class TestController {
                                                HttpServletRequest httpServletRequest){
 
         String token = httpServletRequest.getHeader("Authorization");
-        String resultCode = userServiceClient.checkTokenValidated(token);
 
-        Integer newQuestionNum = Math.min(20, questionNum);
-        Integer problemOXNum = newQuestionNum * 2 / 10;
-        Integer cardOXNum = newQuestionNum - problemOXNum;
+        String resultCode = null;
+        if(token != null) resultCode = userServiceClient.checkTokenValidated(token);
+
+        int newQuestionNum = Math.min(20, questionNum);
+        int problemOXNum = newQuestionNum * 2 / 10;
+        int cardOXNum = newQuestionNum - problemOXNum;
 
         // 비회원이거나 토큰이 유효하지 않음
-        if (!resultCode.equals("OK")) {
+        if (token == null || token.equals("") || !resultCode.equals("OK")) {
             List<OXDto> oxDtoList = new ArrayList<>();
 
             oxDtoList.addAll(testService.getMultipleProblemOXCard(category, cardOXNum));
@@ -341,7 +346,7 @@ public class TestController {
     }
 
     // 모의고사 회차 별 결과
-    @PostMapping("/test/{round}/result")
+    @GetMapping("/test/{round}/result")
     public ResponseEntity getTestRoundResult(@RequestHeader(value = "Authorization") String token,
                                            @PathVariable("round") int round){
 

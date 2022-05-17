@@ -297,8 +297,52 @@ public class ProfileController {
         return ResponseEntity.ok().body(result);
     }
 
+    // 앱 유저 뱃지 업데이트
+    @PostMapping("/badge/app")
+    public ResponseEntity updateAppUser(@RequestHeader(value = "Authorization") String token){
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
 
+        UserDto userDto = userServiceClient.getTokenUser(token);
 
+        profileService.updateApp(userDto.getUser_seq());
+
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
+
+    }
+    // 프리미엄 유저 뱃지 업데이트
+    @PostMapping("/badge/vip")
+    public ResponseEntity updateVipUser(@RequestHeader(value = "Authorization") String token){
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        profileService.updateVip(userDto.getUser_seq());
+
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
+
+    }
+
+    // OX 서바이벌 1등 뱃지 업데이트
+    @PostMapping("/badge/ox")
+    public ResponseEntity updateOXWinner(@RequestHeader(value = "Authorization") String token){
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        profileService.updateOX(userDto.getUser_seq());
+
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
+
+    }
 
 
     // FeignClient 전용

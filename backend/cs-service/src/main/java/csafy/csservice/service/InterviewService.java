@@ -243,10 +243,8 @@ public class InterviewService {
             statistic.setInterviewCount(statistic.getInterviewCount() + 1);
         }
 
-
-        badgeService.checkInterviewCount(userSeq, statistic.getInterviewCount());
-
         statisticsRepository.save(statistic);
+        badgeService.checkInterviewCount(userSeq, statistic.getInterviewCount());
 
     }
 
