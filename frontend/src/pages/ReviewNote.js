@@ -14,6 +14,7 @@ import { Token } from '../recoils/Token';
 // STYLED
 import styled from 'styled-components';
 import { Grid } from '@mui/material';
+import TestBox from '../components/myPage/TestBox';
 
 const ReviewNoteWrapper = styled.div`
   width: 100%;
@@ -56,52 +57,75 @@ function ReviewNote() {
   const [token, setToken] = useRecoilState(Token);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
 
-  // 회차 상관없이 오답노트 전체
-  const [reviewData, setReviewData] = useState([]);
-  const getReviewData = () => {
-    axios
-      .get(`${defaultAPI}/cs-service/study/problem/wrong`, {
-        headers: { Authorization: token },
-      })
-      .then(res => {
-        console.log('🎃', res);
-        setReviewData(res.data);
-      })
-      .catch(err => console.error(err));
-  };
-  // 본 모의고사 회차 갯수
+  // 테스트 정보 가져오기
+  const [testResultInfo, setTestResultInfo] = useState({
+    corrects: { 네트워크: 1 },
+    totals: { 네트워크: 1 },
+    examDone: '',
+    id: '',
+  });
+  // 본 모의고사 갯수(라운드)
+  const [round, setRound] = useState(0);
   const getReviewCount = () => {
     axios
       .get(`${defaultAPI}/cs-service/study/problem/wrongCount`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('🐸', res.data);
+        setRound(res.data);
       })
       .catch(err => console.error(err));
   };
-  // 회차 모의고사 갯수
-  const [roundReviewData, setRoundReviewData] = useState([]);
-  const getRoundReviewCount = () => {
+  // 모의고사 갯수만큼 정보 담기
+  useEffect(() => {
+    for (var i = 1; i <= round; i++) {
+      getRoundTestInfo(i);
+      getRoundReviewData(i);
+    }
+  }, [round]);
+
+  // 모의고사 정답 정보 가져오기 - 라운드 별
+  const [roundTestData, setRoundTestData] = useState([]);
+  const getRoundTestInfo = round => {
     axios
-      .get(`${defaultAPI}/cs-service/study/problem/0/wrong`, {
+      .get(`${defaultAPI}/cs-service/test/${round}/result`, {
+        headers: { authorization: token },
+      })
+      .then(res => {
+        // console.log(res.data);
+        setRoundTestData(prev => [
+          ...prev,
+          {
+            id: res.data.id,
+            examDone: res.data.examDone,
+            corrects: res.data.corrects,
+            totals: res.data.totals,
+            round,
+          },
+        ]);
+      })
+      .catch(err => console.error(err));
+  };
+  // 모의고사 오답 정보 가져오기 - 라운드 별
+  const [roundInfo, setRoundInfo] = useState([]);
+  const getRoundReviewData = round => {
+    axios
+      .get(`${defaultAPI}/cs-service/study/problem/${round}/wrong`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('🐕', res.data);
-        setRoundReviewData(res.data);
+        // console.log(res);
+        setRoundInfo(res.data);
       })
       .catch(err => console.error(err));
   };
-  console.log(reviewData);
+  console.log(roundTestData, roundInfo);
 
   useEffect(() => {
-    getReviewData();
     getReviewCount();
-    getRoundReviewCount();
   }, []);
 
-  const testHeight = 250 + reviewData.length * 550;
+  const testHeight = 250 + roundTestData.length * 250;
 
   return (
     <ReviewNoteWrapper style={{ height: `${testHeight}px` }}>
@@ -109,7 +133,6 @@ function ReviewNote() {
         {/* 카테고리 분류 버전 */}
         {isLoggedIn ? (
           <>
-            {' '}
             <PageTitle>
               <div
                 style={{
@@ -120,10 +143,11 @@ function ReviewNote() {
                 오답노트
               </div>
             </PageTitle>
+
             <Grid container>
-              {roundReviewData &&
-                roundReviewData.map((data, idx) => (
-                  <Grid item xs={4}>
+              {roundTestData &&
+                roundTestData.map((data, idx) => (
+                  <Grid item xs={3}>
                     <ReviewNoteBox key={idx} {...data} />
                   </Grid>
                 ))}
@@ -134,17 +158,6 @@ function ReviewNote() {
             <NeedLogin />
           </>
         )}
-
-        {/* 분류 없이 계속 쌓는 버전 */}
-        {/* <PageTitle>
-          <div>오답노트</div>
-        </PageTitle>
-        <TestList>
-          {reviewData &&
-            reviewData.map((test, idx) => (
-              <ReviewChoices key={idx} test={test} idx={idx} />
-            ))}
-        </TestList> */}
       </ReviewNoteContent>
     </ReviewNoteWrapper>
   );

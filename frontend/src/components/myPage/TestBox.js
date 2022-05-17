@@ -13,7 +13,7 @@ const Test = styled.div`
   position: relative;
 `;
 const Date = styled.div`
-  width: 53px;
+  width: 60px;
   height: 14px;
   font-size: 11px;
   font-weight: 600;
@@ -104,7 +104,7 @@ function TestBox({ examDone, id, corrects, totals }) {
   };
 
   const testInfo = {
-    data: examDone,
+    // data: examDone,
     testName: id,
     rightQuestions: getSum(corrects),
     totalQuestions: getSum(totals),
@@ -121,7 +121,7 @@ function TestBox({ examDone, id, corrects, totals }) {
   return (
     <>
       <Test>
-        <Date>{testInfo.date}</Date>
+        <Date>{examDone}</Date>
         {testInfo.testName === 'all' ? (
           <TestName>전 과목</TestName>
         ) : (

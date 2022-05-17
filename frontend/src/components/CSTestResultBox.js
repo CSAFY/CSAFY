@@ -63,6 +63,7 @@ const Score = styled.div`
 const ScoreList = styled.li``;
 
 function CSTestResultBox({ state }) {
+  console.log(state);
   const rightNum =
     state.right1 +
     state.right2 +

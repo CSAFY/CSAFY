@@ -26,7 +26,7 @@ function CategoryList(props) {
       key={index}
       value={data}
       color={btncolors[index % 7]}
-      sx={{width: "160px;", fontSize: "17px;", fontFamily: "SUIT;", fontWeight: "600;"}}
+      sx={{width: "120px;"}}
       >
       
       {data} {data === "전체" ? studyDatas.length : studyDatas.filter(element => data === element.categoryId).length}
@@ -41,7 +41,7 @@ function CategoryList(props) {
       onChange={handleAlignment}
       aria-label="text alignment"
       color="primary"
-      sx={{margin: "10px 0 0 0;", width: "160px;"}}
+      sx={{margin: "40px 0 0 0;", width: "120px;"}}
     >
       
       {againToggleButton}

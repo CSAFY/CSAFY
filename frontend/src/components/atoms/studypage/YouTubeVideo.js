@@ -42,7 +42,7 @@ class YouTubeVideo extends React.PureComponent {
     // the Player object is created uniquely based on the videoId in props
     this.player = new window.YT.Player("video", {
       videoId: videoId,
-      width: "1200px;",
+      width: "1158px;",
       height: "655px;",
       margin: "20px auto 0 auto;",
       events: {
