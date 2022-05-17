@@ -14,6 +14,29 @@ import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+const Galaxy = styled.div`
+  width: 426px;
+  height: 800px;
+  min-height: 750px;
+  background: url('images/galaxyFrame.png') 0% 0% / 100% 100% no-repeat;
+
+  position: absolute;
+  top: 100px;
+  right: 20px;
+`;
+const GalaxyBG = styled.div`
+  width: 364px;
+  height: 682px;
+  position: relative;
+  // top: 50%;
+  top: 55px;
+  left: 50%;
+  transform: translate(-50%);
+  border-radius: 10px;
+  background-color: #2f3132;
+  overflow: hidden;
+`;
+
 const Phone = styled.div`
   width: 426px;
   height: 800px;
@@ -128,8 +151,8 @@ function Chat() {
   return (
     <ChatWrapper>
       <ChatContent>
-        <Phone>
-          <PhoneBG>
+        <Galaxy>
+          <GalaxyBG>
             {chatRoomId ? (
               <TestChatRoom chatRoomId={chatRoomId} />
             ) : (
@@ -149,8 +172,8 @@ function Chat() {
                 />
               </>
             )}
-          </PhoneBG>
-        </Phone>
+          </GalaxyBG>
+        </Galaxy>
         <ChatRoomList>
           <ChatRoomTitle>
             <h1>채팅방 리스트</h1>

@@ -11,6 +11,7 @@ import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
 import { Username } from '../recoils/Username';
 import { Userinfo } from '../recoils/Userinfo';
+import { CurrentPage } from '../recoils/CurrentPage';
 
 // COMPONENTS
 import TestChatRoom from '../components/TestChatRoom';
@@ -32,17 +33,6 @@ const Phone = styled.div`
   right: 20%;
   transform: translate(20%, -50%);
 `;
-const Galaxy = styled.div`
-  width: 426px;
-  height: 800px;
-  min-height: 750px;
-  background: url('images/galaxy.png') 0% 0% / 100% 100% no-repeat;
-
-  position: absolute;
-  top: 50%;
-  left: 20%;
-  transform: translate(-20%, -50%);
-`;
 const PhoneBG = styled.div`
   width: 380px;
   height: 755px;
@@ -51,17 +41,6 @@ const PhoneBG = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 40px;
-  background-color: #2f3132;
-  overflow: hidden;
-`;
-const GalaxyBG = styled.div`
-  width: 400px;
-  height: 655px;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
   background-color: #2f3132;
   overflow: hidden;
 `;
@@ -161,6 +140,29 @@ const StartButton = styled.div`
   left: 50%;
   transform: translate(-50%, -10%);
 `;
+const Galaxy = styled.div`
+  width: 426px;
+  height: 800px;
+  min-height: 750px;
+  background: url('images/galaxyFrame.png') 0% 0% / 100% 100% no-repeat;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+const GalaxyBG = styled.div`
+  width: 364px;
+  height: 682px;
+  position: relative;
+  // top: 50%;
+  top: 55px;
+  left: 50%;
+  transform: translate(-50%);
+  border-radius: 10px;
+  background-color: #2f3132;
+  overflow: hidden;
+`;
 
 let sock;
 let ws;
@@ -171,6 +173,7 @@ function UserChat() {
   const [username, setUserName] = useRecoilState(Username);
   const [token, setToken] = useRecoilState(Token);
   const [userinfo, setUserinfo] = useRecoilState(Userinfo);
+  const [currentPage, setCurrentPage] = useRecoilState(CurrentPage);
 
   //
   const [toggleStart, setToggleStart] = useState(false);
@@ -320,212 +323,13 @@ function UserChat() {
   //   initRoom();
   //   getMessages();
   // }, [chatRoomId]);
+  useEffect(() => {
+    setCurrentPage('/usechat');
+  }, []);
 
   return (
     <ChatWrapper>
       <ChatContent>
-        <Phone>
-          <PhoneBG>
-            {/* <TestChatRoom chatRoomId={chatRoomId} /> */}
-            {toggleStart ? (
-              <>
-                <ChatRoomName>{chatRoomInfo.roomName}</ChatRoomName>
-                <SendMessage
-                  onSubmit={e => {
-                    e.preventDefault();
-                    sendMessage('TALK');
-                  }}
-                >
-                  <TextField
-                    value={chatMessage}
-                    onChange={e => setChatMessage(e.target.value)}
-                    sx={{
-                      width: '250px',
-                      borderRadius: '5px',
-                      bgcolor: '#fff',
-                      color: '#000',
-                    }}
-                  />
-                  <Button
-                    variant="dark"
-                    sx={{
-                      width: '85px',
-                      textAlign: 'center',
-                      display: 'block',
-                      bgcolor: '#009859',
-                      ':hover': {
-                        color: '#006D9F',
-                        bgcolor: '#D5F2FC',
-                      },
-
-                      fontSize: '16px',
-                      fontWeight: 'bold',
-                      color: '#fff',
-                    }}
-                    onClick={() => sendMessage('TALK')}
-                  >
-                    Send
-                  </Button>
-                </SendMessage>
-
-                <MessageBox>
-                  {messages.map((message, idx) => (
-                    <>
-                      {message.message.includes('님이 방에 입장했습니다.') ||
-                      message.message.includes('님이 방에서 나갔습니다.') ? (
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                          }}
-                        >
-                          <Message
-                            key={idx}
-                            style={{
-                              height: '20px',
-                              backgroundColor: '#2f3132',
-                              color: '#fff',
-                              // margin: '0',
-                              padding: '0',
-                              overflow: 'hidden',
-                            }}
-                          >
-                            {message.message}
-                          </Message>
-                        </div>
-                      ) : (
-                        <>
-                          {message.sender === userinfo.email ? (
-                            <div
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                                position: 'relative',
-                              }}
-                            >
-                              <Message
-                                key={idx}
-                                style={{ justifyContent: 'flex-end' }}
-                              >
-                                <div
-                                  style={{
-                                    position: 'absolute',
-                                    top: '5px',
-                                    right: '10px',
-                                    fontSize: '12px',
-                                  }}
-                                >
-                                  {message.sender}
-                                </div>
-                                {message.message}
-                              </Message>
-                            </div>
-                          ) : (
-                            <div
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                                position: 'relative',
-                              }}
-                            >
-                              <Message key={idx}>
-                                <div
-                                  style={{
-                                    position: 'absolute',
-                                    top: '5px',
-                                    left: '10px',
-                                    fontSize: '12px',
-                                  }}
-                                >
-                                  {message.sender}
-                                </div>
-                                {message.message}
-                              </Message>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </>
-                  ))}
-                </MessageBox>
-              </>
-            ) : (
-              <>
-                <img
-                  src="images/csafy.png"
-                  alt="G"
-                  style={{
-                    // height: '300px',
-                    widht: '300px',
-                    position: 'absolute',
-                    top: '20%',
-                    left: '50%',
-                    transform: 'translate(-50%, -30%)',
-                    marginLeft: '10px',
-                  }}
-                />
-                <StartBox onSubmit={handleRoomName}>
-                  <TextField
-                    value={chatRoomName}
-                    onChange={e => setChatRoomName(e.target.value)}
-                    placeholder="상담하고싶은 주제를 입력하세요."
-                    sx={{
-                      width: '250px',
-                      borderRadius: '5px',
-                      bgcolor: '#fff',
-                      color: '#000',
-                    }}
-                  />
-                  <Button
-                    variant="dark"
-                    sx={{
-                      width: '85px',
-                      textAlign: 'center',
-                      display: 'block',
-                      bgcolor: '#009859',
-                      ':hover': {
-                        color: '#006D9F',
-                        bgcolor: '#D5F2FC',
-                      },
-
-                      fontSize: '16px',
-                      fontWeight: 'bold',
-                      color: '#fff',
-                    }}
-                    onClick={handleRoomName}
-                  >
-                    입력
-                  </Button>
-                </StartBox>
-                {enableStart && (
-                  <StartButton>
-                    <Button
-                      variant="dark"
-                      sx={{
-                        width: '100%',
-                        height: '70px',
-                        textAlign: 'center',
-                        display: 'block',
-                        bgcolor: '#009859',
-                        ':hover': {
-                          color: '#006D9F',
-                          bgcolor: '#D5F2FC',
-                        },
-
-                        fontSize: '16px',
-                        fontWeight: 'bold',
-                        color: '#fff',
-                      }}
-                      onClick={handleStart}
-                    >
-                      시작하기
-                    </Button>
-                  </StartButton>
-                )}
-              </>
-            )}
-          </PhoneBG>
-        </Phone>
         <Galaxy>
           <GalaxyBG>
             {toggleStart ? (

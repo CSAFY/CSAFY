@@ -67,7 +67,7 @@ function ReviewChoices({ test, idx }) {
 
   const OXCardPack = (
     <>
-      {'explanation' in test ? (
+      {!test.examples ? (
         <FlexDiv style={{ height: '300px' }}>
           <CardCoverDiv>
             <OXCard
@@ -207,11 +207,12 @@ function ReviewChoices({ test, idx }) {
   );
   return (
     <>
-      {Object.keys(test).includes('explanation') ? (
+      {/* Object.keys(test).includes('explanation') */}
+      {Object.values(test) === null ? (
         <Box
           sx={{
             flexGrow: 1,
-            margin: '10px 20px 10px 20px',
+            margin: '40px 20px 40px 20px',
             borderRadius: '20px',
             boxShadow: '0 0 15px 0 rgba(0, 0, 0, 0.2)',
             backgroundColor: '#fff',
@@ -240,7 +241,7 @@ function ReviewChoices({ test, idx }) {
         <Box
           sx={{
             flexGrow: 1,
-            margin: '10px 20px 10px 20px',
+            margin: '40px 20px 40px 20px',
             borderRadius: '20px',
             boxShadow: '0 0 15px 0 rgba(0, 0, 0, 0.2)',
             backgroundColor: '#fff',
@@ -283,6 +284,7 @@ const MeaningDiv = styled.div`
 `;
 
 const FlexDiv = styled.div`
+  // padding-bottom: 10px;
   height: 380px;
   display: grid;
   justify-items: center;
@@ -291,7 +293,7 @@ const FlexDiv = styled.div`
 `;
 
 const CardCoverDiv = styled.div`
-  margin: 0 auto 0 auto;
+  // margin: 0 auto 0 auto;
   height: 180px;
 `;
 

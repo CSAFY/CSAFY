@@ -14,9 +14,9 @@ const BarGraph = styled.div`
 const BarChart = ({ recentTest }) => {
   const getSum = corrects => Object.values(corrects).reduce((a, b) => a + b);
   const labels = recentTest.map(test => test.id).reverse();
-  const scores = recentTest.map(test =>
-    Math.ceil((getSum(test.corrects) / getSum(test.totals)) * 100),
-  );
+  const scores = recentTest
+    .map(test => Math.ceil((getSum(test.corrects) / getSum(test.totals)) * 100))
+    .reverse();
   // console.log(d);
   const data = {
     labels,
