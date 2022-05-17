@@ -32,7 +32,6 @@ import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 
 
 function IntensivePage() {
-
   const [nowCate, setNowCate] = useState('자료구조')
   const [nowChoice, setNowChoice] = useState('')
   const categorys = useRecoilValue(category)
@@ -42,15 +41,12 @@ function IntensivePage() {
 
   const cateChange = (event) => {
     setNowCate(event.target.value);
-    
   };
 
   const ChoiceChange = (event) => {
-    
     setNowChoice(event.target.text);
   };
   
-
   const CategoryItems = categorys.slice(1).map((data) => 
     <MenuItem key={data} value={data}>{data}</MenuItem>
   )
@@ -74,15 +70,14 @@ function IntensivePage() {
   )
   const location = useLocation();
   
+
   const relatedDisPlay = () => {
     if (location.pathname === '/IntensivePage/KeyWordCard'){
       return(
         <div>
           <RelatedExam>
           </RelatedExam>
-
           <StudyDetailHr></StudyDetailHr>
-
           <RelatedQuestions>
           </RelatedQuestions>
         </div>
@@ -92,9 +87,7 @@ function IntensivePage() {
 
   return (
     <FullLayOut>
-      
       <DetailLayOut>
-        
       {CategorySelect}
       <FlexDiv>
         <QuestionList 
@@ -106,7 +99,6 @@ function IntensivePage() {
           >
         </QuestionList>
 
-        
         <Routes>
           <Route exact={true} path="/" element={<LodingPage />} />
           <Route exact={true} path="KeyWordCard" element={<KeyWordCard Cate={nowCate}/>} />

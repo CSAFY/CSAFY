@@ -28,7 +28,6 @@ export default function TemporaryDrawer() {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return ;
     }
-    // console.log(event)
     setState({ ...state, [anchor]: open });
   };
 
@@ -50,8 +49,6 @@ export default function TemporaryDrawer() {
         </DrawerInList>
       </List>
       <Divider />
-
-      
     </Box>
   );
 

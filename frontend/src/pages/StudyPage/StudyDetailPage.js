@@ -58,14 +58,9 @@ function StudyDetailPage() {
   }
 
 
-
   return (
     <FullLayOut>
-      
-      
       <Drawer></Drawer>
-
-
       <DetailLayOut>
         <FlexSpan>
           <CategoryShowDiv>
@@ -80,7 +75,6 @@ function StudyDetailPage() {
           {videoDatas.title}
         </TitleText>
         
-
         <YouTubeVideo
           videoId={videoDatas.videoId}
           id={videoDatas.id}
@@ -88,7 +82,6 @@ function StudyDetailPage() {
         </YouTubeVideo>
       
         <StudyDetailHr></StudyDetailHr>
-        
         {/* <RelatedExam>
         </RelatedExam>
 
@@ -98,12 +91,12 @@ function StudyDetailPage() {
         </RelatedQuestions> */}
         <ButtonBox>
           <ArrowAndLabel onClick={() => clickBeforBtn()}>
-            <ArrowBackIcon sx={{width:"45px;", height: "45px;"}}></ArrowBackIcon>
+            <ArrowBackIcon sx={{width:"45px;", height : "45px;"}}></ArrowBackIcon>
             <BtnText >이전 강의</BtnText>
           </ArrowAndLabel>
           <ArrowAndLabel onClick={() => clickAfterBtn()}>
             <BtnText >다음 강의</BtnText>
-            <ArrowForwardIcon sx={{width:"45px;", height: "45px;"}}></ArrowForwardIcon>
+            <ArrowForwardIcon sx={{width:"45px;", height : "45px;"}}></ArrowForwardIcon>
           </ArrowAndLabel>
           
         </ButtonBox>

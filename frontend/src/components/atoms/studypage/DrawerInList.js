@@ -28,25 +28,9 @@ export default function DrawerInList(props) {
     setVideo(data)
   }
 
-
   const ListItems = (categoryId) =>  {
     return(
       studyDatas.slice(1).map((data, index) => {
-        // if (categoryId === "전체") {
-        //   return(
-        //     <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
-        //       "imgSrc":`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`,
-        //       "title": data.title,
-        //       "videoId":data.videoId,
-        //       "category2Id" : data.category2Id,
-        //       "categoryId": data.categoryId,
-        //       "favorites" : data.favorites,
-        //       "id" : data.id,
-        //       "seen" : data.seen })}} >
-        //       <ListItemText sx={{width: "250px;"}} primary={data.title} />
-        //     </ListItem>
-        //   )
-        // } else 
         if (categoryId === data.categoryId){
           return(
             <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
@@ -76,7 +60,6 @@ export default function DrawerInList(props) {
       key ={index}
       sx={{ margin: "0 auto 0 auto;"}}>
       <AccordionSummary
-        
         expandIcon={<ExpandMoreIcon />}
         aria-controls={`panel${index + 1}bh-content`}
         id={`panel${index + 1}bh-header`}
@@ -91,7 +74,6 @@ export default function DrawerInList(props) {
         
       </AccordionDetails>
     </Accordion>
-  
   )
   
   return (

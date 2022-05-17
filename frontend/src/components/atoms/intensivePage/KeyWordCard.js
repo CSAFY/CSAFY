@@ -51,7 +51,7 @@ function KeyWordCard(props) {
       },
     })
     .then((res) => {
-      console.log(res.data)
+      // console.log(res.data)
       setKeyWords(res.data)
     })
     .catch(err =>{
@@ -183,8 +183,6 @@ function KeyWordCard(props) {
         sx={{
           margin : "20px 0 0 0",
           borderRadius: "20px",
-          // boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
-          // backgroundColor: "#fff"
         }}
         nextButton={
           <Button
@@ -211,7 +209,6 @@ function KeyWordCard(props) {
           </Button>
         }
       />
-      
     </Box>
     )
   }

@@ -16,7 +16,6 @@ import CloseIcon from '@mui/icons-material/Close';
 function ShortAnswer() {
   const [shortAData, setShortAData] = useRecoilState(shortAnswerData)
 
-  
   useEffect(() => {
     setShortAData({ 
       explanation : "단어에 대한 설명을 제시해 줍니다 . 한줄일지 두줄일지 모르고 여튼...",
@@ -64,7 +63,6 @@ function ShortAnswer() {
           Close me!
         </Alert>
       </Collapse>
-
 
       <Button
         disabled={open}

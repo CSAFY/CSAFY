@@ -31,6 +31,7 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 // STYLED
 import styled from 'styled-components';
 
+
 // MODAL
 import Modal from '@mui/material/Modal';
 import AuthModal from './AuthModal';

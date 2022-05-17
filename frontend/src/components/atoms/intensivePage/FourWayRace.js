@@ -64,17 +64,12 @@ function FourWayRace(props) {
   }
 
   const getData = async () => {
-    // const JWT = window.localStorage.getItem("jwt")
     const Url = `https://csafy.com/api/v1/cs-service/test/multiple?category=${props.Cate}&questionNum=${selecCNT}`
     axios({
       method: 'get',
       url:  Url,
-      // headers: {
-      //   Authorization: JWT
-      // },
     })
     .then((res) => {
-      // console.log(res.data)
       setFourWayData(res.data)
     })
     .catch(err =>{
@@ -161,7 +156,6 @@ function FourWayRace(props) {
       
     })
     .then((res) => {
-      // console.log(res.data)
       setResData(res.data)
       handleOpen()
       setActiveStep(0)
@@ -290,14 +284,11 @@ function FourWayRace(props) {
       backgroundColor: "#fff"}}>
       
       <MeaningDiv>
-        {/* <QuestionTextDiv> */}
           {fourWayData[activeStep].question}
-        {/* </QuestionTextDiv> */}
       </MeaningDiv>
 
 
       {OXCardPack}
-      {/* {scorePost()} */}
       <BasicModal 
         isOpen={open} 
         handleClose={handleClose} 

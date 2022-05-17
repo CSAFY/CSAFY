@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+
 export const FullLayOut = styled.div`
   min-width:1375px;
   background-color: #f6f7fb;

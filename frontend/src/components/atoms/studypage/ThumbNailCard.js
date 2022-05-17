@@ -78,6 +78,7 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
     }
   }
 
+
   const isEnd = () => {
     if(seen === 1){
       return(
@@ -104,17 +105,13 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
         </span>
       </InforDiv>
       
-      
       <Link to="/StudyDetailPage"  style={{ color: 'inherit', textDecoration: 'none' }}  onClick={onClickCard}>
         <CutImg>
           <CardImg
           src={imgSrc}>
-
           </CardImg>
-
         </CutImg>
         
-
         <TextContainer>
           {title}
         </TextContainer>
@@ -140,8 +137,7 @@ const CardBox = styled.div`
     css`
     :hover{
       box-shadow: 0 0 12px  4px rgba(0, 125, 207, 0.3);
-    }
-    `
+    }`
   }
 `
 

@@ -13,7 +13,7 @@ const style = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  p: 4, 
 };
 
 export default function BasicModal(props) {
@@ -31,7 +31,7 @@ export default function BasicModal(props) {
             {props.Cate}과목
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {props.prevScore}점에서 {props.nowScore}점으로 상승했습니다!
+            {props.prevScore}점에서 {props.nowScore}점으로 상승했습니다!!
           </Typography>
         </Box>
       </Modal>

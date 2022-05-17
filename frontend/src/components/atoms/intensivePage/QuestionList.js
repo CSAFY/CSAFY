@@ -28,7 +28,6 @@ function QuestionList(props) {
   )
 
   return (
-    // <MinBox>
       <ToggleButtonGroup
         orientation="vertical"
         value={props.value}
@@ -42,7 +41,6 @@ function QuestionList(props) {
         
         {againToggleButton}
       </ToggleButtonGroup>
-    // </MinBox>
   );
 }
 export default QuestionList;

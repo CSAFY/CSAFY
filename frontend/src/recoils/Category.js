@@ -6,6 +6,7 @@ export const category = atom({
   default: ["전체", "자료구조", "컴퓨터구조", "운영체제", "네트워크", "데이터베이스", "기타"],
 });
 
+
 export const categoryToken = selector({
   key: "categoryToken",
   get: ({ get }) => {

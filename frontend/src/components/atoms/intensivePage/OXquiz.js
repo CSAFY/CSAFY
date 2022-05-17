@@ -53,17 +53,12 @@ function OXquiz(props) {
   };
 
   const getData = async () => {
-    // const JWT = window.localStorage.getItem("jwt")
     const Url = `https://csafy.com/api/v1/cs-service/study/multiple/ox?category=${props.Cate}&questionNum=${selecCNT}`
     axios({
       method: 'get',
       url:  Url,
-      // headers: {
-      //   Authorization: JWT
-      // },
     })
     .then((res) => {
-      // console.log(res.data)
       setOXData(res.data)
     })
     .catch(err =>{
@@ -117,9 +112,7 @@ function OXquiz(props) {
 
   const OXCardPack = (
     <FlexDiv>
-      
       <CardCoverDiv>
-        
         <OXCard onClick={onClickO}
           border={selectO === 2 ?  "solid 2px #ebeef4;" 
                 : selectO === oxData[activeStep].answer ? "solid 2px #25b26d;" 
@@ -204,7 +197,6 @@ function OXquiz(props) {
       },
     })
     .then((res) => {
-      // console.log(res.data)
       setResData(res.data)
       handleOpen()
       setActiveStep(0)

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+
 export const MyiFrame = styled.iframe`
   
   width: 1158px;
@@ -79,7 +80,6 @@ export const CategoryShowDiv = styled.div`
   border-radius: 48px;
   background-color: #DEF9FF;
 `
-
 export const FlexSpan = styled.span`  
   display: flex;
 `

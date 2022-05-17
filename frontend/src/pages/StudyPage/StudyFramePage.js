@@ -14,7 +14,6 @@ import ThumbNailCard from "../../components/atoms/studypage/ThumbNailCard"
 
 import SlideToggleBtn from '../../components/atoms/studypage/SlideToggleBtn';
 
-import YouTubeUrl from "../../utils/api"
 import axios from 'axios';
 
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -27,12 +26,8 @@ function StudyFramePage() {
     setKategorie(event)
   }
 
-  
-
-  
   const [toggle, setToggle] = useState(false);
   const toggleTime = () => {
-    
     setToggle(!toggle);
   };
   
@@ -51,7 +46,6 @@ function StudyFramePage() {
       },
     })
     .then((res) => {
-      // console.log(res.data)
       setStudyData(res.data)
     })
     .catch(err =>{
@@ -64,7 +58,6 @@ function StudyFramePage() {
     getData();
   }, []);
   
-  // https://i.ytimg.com/vi/-M_S50Ga384/hqdefault.jpg
   const cateFilter = (data, index) => {
     if (nowKategorie === "전체"){
       return(
@@ -110,9 +103,6 @@ function StudyFramePage() {
         }
       }
   )
-
-  
-
   return (
     <LayOut>
       <InSideLayOut>
@@ -120,27 +110,18 @@ function StudyFramePage() {
           {nowKategorie}
         </TitleName>
         <SelectLayOut>
-          {/* <SearchBox
-            placeholder="Search…"
-            value={searchValue}
-            onChange={onChange}>
-          </SearchBox> */}
-
           <SwitchBox>
             즐겨찾기
             <SlideToggleBtn toggleTime={toggleTime} />
           </SwitchBox>
-          
         </SelectLayOut>
 
         <FlexDiv>
-          
           <CategoryList
             selectKategorie = {selectKategorie}
             categori = {categori}
             >
           </CategoryList>
-          
           <CardDiv>
             {againCard}
           </CardDiv>

@@ -15,9 +15,6 @@ function CategoryList(props) {
     props.selectKategorie(event.target.value)
   };
   
-
-  
-  
   const btncolors = ['standard' , 'primary' , 'secondary' , 'error' , 'info' , 'success' , 'warning']
 
   const againToggleButton = props.categori.map((data, index) => 
@@ -26,7 +23,7 @@ function CategoryList(props) {
       key={index}
       value={data}
       color={btncolors[index % 7]}
-      sx={{width: "160px;", fontSize: "17px;", fontFamily: "SUIT;", fontWeight: "600;"}}
+      sx={{width: "160px;", fontSize: "17px;",  fontFamily: "SUIT;", fontWeight: "600;"}}
       >
       
       {data} {data === "전체" ? studyDatas.length : studyDatas.filter(element => data === element.categoryId).length}
