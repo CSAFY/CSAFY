@@ -238,6 +238,7 @@ function InterviewDetail() {
   const [commentData, setCommentData] = useState([]);
   const pageHeight = 1000 + commentData.length * 200;
 
+  console.log(commentData);
   return (
     <DetailWrapper
       style={{

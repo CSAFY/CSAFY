@@ -54,7 +54,7 @@ const Policy = styled.div`
   font-size: 15px;
 `;
 
-function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
+function AuthModal({ state, setState, setSignup, setModal }) {
   const navigate = useNavigate();
 
   // Recoil
@@ -88,7 +88,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
         // navigate
         navigate('/mypage');
         // navigate('/');
-        setToggleLogin('로그아웃');
+        // setToggleLogin('로그아웃');
       })
       .catch(err => console.error(err));
   };
@@ -182,7 +182,7 @@ function AuthModal({ state, setState, setSignup, setModal, setToggleLogin }) {
               setModal(false);
               // navigate
               navigate('/mypage');
-              setToggleLogin('로그아웃');
+              // setToggleLogin('로그아웃');
             })
             .catch(err => console.error(err));
         }, 500);

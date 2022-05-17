@@ -1,17 +1,15 @@
 import React from 'react';
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
+// RECOIL
+import { useRecoilValue } from 'recoil';
+import { Userinfo } from '../recoils/Userinfo';
+
+// COMPONENTS
+import CSTestResultBox from '../components/CSTestResultBox';
 
 // STYLED
 import styled from 'styled-components';
-import CSTestResultBox from '../components/CSTestResultBox';
-// Recoil
-import { useRecoilValue } from 'recoil';
-import { Userinfo } from '../recoils/Userinfo';
 import { Button } from '@mui/material';
 
 const TestResultWrapper = styled.div`
@@ -66,11 +64,14 @@ const ButtonBox = styled.div`
 
 function CSTestResult() {
   const navigate = useNavigate();
+  const { testTitle } = useParams();
+  const { state } = useLocation();
   // Recoil
   const userInfo = useRecoilValue(Userinfo);
 
-  const { testTitle } = useParams();
-  const { state } = useLocation();
+  const handleReviewClick = () => {
+    navigate('/reviewnote');
+  };
 
   console.log(state);
   return (
@@ -95,7 +96,7 @@ function CSTestResult() {
                 bgcolor: '#D5F2FC',
               },
             }}
-            onClick={() => navigate('/reviewnote')}
+            onClick={handleReviewClick}
           >
             오답노트 가기
           </Button>
