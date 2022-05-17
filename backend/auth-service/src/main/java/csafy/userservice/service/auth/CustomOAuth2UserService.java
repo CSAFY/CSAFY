@@ -1,5 +1,6 @@
 package csafy.userservice.service.auth;
 
+import csafy.userservice.client.CsServiceClient;
 import csafy.userservice.dto.UserDto;
 import csafy.userservice.entity.User;
 import csafy.userservice.entity.auth.ProviderType;
@@ -28,6 +29,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
     private final UserProducer userProducer;
+
+    private final CsServiceClient csServiceClient;
 
 
     @Override
@@ -60,7 +63,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else {
             savedUser = createUser(userInfo, providerType);
         }
-
+        User nowUser = userRepository.findByEmail(savedUser.getEmail());
+        csServiceClient.updateDailyCheck(nowUser.getUserSeq());
         return UserPrincipal.create(savedUser, user.getAttributes());
     }
 
@@ -81,8 +85,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setNickname(userInfo.getName());
         user.setIs_vip("N");
         if(user.getProfileImage() == null || user.getProfileImage().trim().equals("")){
-            int randNum = (int)(Math.random()*20) + 1;
-            user.setProfileImage("*" + randNum); // 일단 *으로 받음 나중에 교체
+            user.setProfileImage("default/default_1.PNG");
         }
 
         return userRepository.saveAndFlush(user);
