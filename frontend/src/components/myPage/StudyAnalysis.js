@@ -85,9 +85,15 @@ function StudyAnalysis({ userInfo, analysisData, recentTest }) {
             <p>과목별 점수</p>
             <ul>
               {recentTest.map((test, idx) => (
-                <Scores>
-                  {test.id} : {scores[idx]}점
-                </Scores>
+                <div key={test.testSeq}>
+                  {test.id === 'all' ? (
+                    <Scores>전 과목 : {scores[idx]}점</Scores>
+                  ) : (
+                    <Scores>
+                      {test.id} : {scores[idx]}점
+                    </Scores>
+                  )}
+                </div>
               ))}
             </ul>
           </div>

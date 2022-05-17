@@ -240,7 +240,7 @@ function MyPage() {
     e.preventDefault();
     let reader = new FileReader();
     const file = e.target.files[0];
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
     reader.onloadend = () => {
       setImageSrc(reader.result);
       setState({ image: file });
@@ -392,7 +392,19 @@ function MyPage() {
                   </div>
                 </div>
               ) : (
-                <ProfileImg src={userInfo.profile_image} alt="Profile" />
+                <>
+                  {userInfo.is_vip === 'Y' ? (
+                    <ProfileImg
+                      src={userInfo.profile_image}
+                      alt="Profile"
+                      style={{
+                        boxShadow: '0 0 20px 2px rgba(0, 142, 208, 1)',
+                      }}
+                    />
+                  ) : (
+                    <ProfileImg src={userInfo.profile_image} alt="Profile" />
+                  )}
+                </>
               )}
 
               <Profile>

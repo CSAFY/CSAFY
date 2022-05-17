@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // Recoil
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
+import { NavToggle } from '../recoils/NavToggle';
 
 // STYLED
 import styled from 'styled-components';
@@ -52,6 +53,12 @@ const ContentTitle = styled.div`
 function CSTest() {
   // Recoil
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [toggle, setToggle] = useRecoilState(NavToggle);
+
+  useEffect(() => {
+    setToggle(true);
+  }, []);
+
   const [dummyData, setDummyData] = useState([
     {
       id: 1,

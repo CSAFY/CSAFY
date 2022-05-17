@@ -11,6 +11,7 @@ import NeedLogin from './handler/NeedLogin';
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
+import { NavToggle } from '../recoils/NavToggle';
 // STYLED
 import styled from 'styled-components';
 import { Grid } from '@mui/material';
@@ -56,6 +57,7 @@ function ReviewNote() {
   // Recoil
   const [token, setToken] = useRecoilState(Token);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [toggle, setToggle] = useRecoilState(NavToggle);
 
   // 테스트 정보 가져오기
   const [testResultInfo, setTestResultInfo] = useState({
@@ -123,6 +125,7 @@ function ReviewNote() {
 
   useEffect(() => {
     getReviewCount();
+    setToggle(true);
   }, []);
 
   const testHeight = 250 + roundTestData.length * 250;

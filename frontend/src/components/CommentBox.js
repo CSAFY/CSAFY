@@ -16,30 +16,35 @@ import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
 
 const Box = styled.div`
-  width: 740px;
+  // width: 740px;
+  width: 100%;
   height: 140px;
   border-radius: 9px;
-  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
+  box-shadow: 0 0 11px 1px rgba(0, 0, 0, 0.12);
   background-color: #fff;
 
-  margin: 20px;
+  margin-bottom: 20px;
 
   position: relative;
 `;
 const UserInfo = styled.div`
+  font-size: 20px;
   position: absolute;
   top: 10px;
   left: 25px;
 `;
 const DateInfo = styled.div`
+  color: grey;
   position: absolute;
-  top: 30px;
+  top: 33px;
   left: 25px;
 `;
 const Comment = styled.div`
-  width: 610px;
+  width: 580px;
   height: 55px;
-  border: 1px solid black;
+  // border: 1px solid black;
+  border-right: 10px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 10px solid lightgrey;
 
   padding-top: 10px;
   padding-left: 10px;
@@ -49,21 +54,25 @@ const Comment = styled.div`
   left: 25px;
 `;
 const CommentInput = styled.input`
-  width: 620px;
-  height: 80px;
-  padding: 0;
-  border: 1px solid black;
+  width: 580px;
+  height: 55px;
+  font-size: 16px;
+  // border: 1px solid black;
+  border: none;
+  border-right: 10px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 10px solid lightgrey;
 
   position: absolute;
-  top: 10px;
+  bottom: 10px;
   left: 25px;
 `;
 const ButtonBox = styled.div`
   width: 60px;
   height: 119px;
   border-radius: 9px;
-  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
-  background-color: rgba(0, 142, 208, 0.1);
+  // box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
+  // background-color: rgba(0, 142, 208, 0.1);
+  // background-color: rgba(0, 0, 0, 0.1);
 
   position: absolute;
   top: 10px;
@@ -123,11 +132,12 @@ function CommentBox({
   const [newComment, setNewComment] = useState(comment);
 
   const toggleComment = () => {
-    setEditToggle(!editToggle);
+    editComment();
+    // setEditToggle(!editToggle);
     // 수정은 put, 삭제는 delete - interview/{commentId}/comment
-    if (editToggle) {
-      editComment();
-    }
+    // if (editToggle) {
+    //   editComment();
+    // }
   };
   const editComment = () => {
     axios
@@ -139,8 +149,14 @@ function CommentBox({
       .then(res => {
         // console.log(res);
         setNewComment(res.data.comment);
+        setEditToggle(!editToggle);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        setNewComment(comment);
+        alert('작성자만 수정이 가능합니다.');
+        setEditToggle(false);
+        // setEditToggle(!editToggle);
+      });
   };
 
   // 삭제
@@ -153,29 +169,40 @@ function CommentBox({
         // console.log(res);
         getComment();
       })
-      .catch(err => console.error(err));
+      .catch(err => alert('작성자만 삭제가 가능합니다.'));
   };
 
   return (
     <div>
       <Box>
         {editToggle ? (
-          <CommentInput
-            type="text"
-            value={newComment}
-            onChange={e => setNewComment(e.target.value)}
-          />
+          <>
+            <UserInfo>{username}</UserInfo>
+            <DateInfo>{createdAt.substr(0, 10)}</DateInfo>
+            <CommentInput
+              type="text"
+              value={newComment}
+              onChange={e => setNewComment(e.target.value)}
+            />
+          </>
         ) : (
           <>
             <UserInfo>{username}</UserInfo>
             <DateInfo>{createdAt.substr(0, 10)}</DateInfo>
+
             <Comment>{newComment}</Comment>
           </>
         )}
 
         <ButtonBox>
           {commentInfo.liked ? (
-            <>
+            <div
+              style={{
+                border: '2px solid rgba(0, 0, 0, 0.1)',
+                borderRadius: '5px',
+                paddingBottom: '10px',
+              }}
+            >
               <ThumbUpIcon
                 sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
                 onClick={handleLike}
@@ -183,9 +210,15 @@ function CommentBox({
               <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
                 {commentInfo.commentLikesCount}
               </p>
-            </>
+            </div>
           ) : (
-            <>
+            <div
+              style={{
+                border: '2px solid rgba(0, 0, 0, 0.1)',
+                borderRadius: '5px',
+                paddingBottom: '10px',
+              }}
+            >
               <ThumbUpOffAltIcon
                 sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
                 onClick={handleLike}
@@ -193,29 +226,8 @@ function CommentBox({
               <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
                 {commentInfo.commentLikesCount}
               </p>
-            </>
+            </div>
           )}
-          {/* {isLiked ? (
-            <>
-              <ThumbUpIcon
-                sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
-                onClick={handleLike}
-              />
-              <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
-                {commentLike}
-              </p>
-            </>
-          ) : (
-            <>
-              <ThumbUpOffAltIcon
-                sx={{ width: '100%', mt: '15px', cursor: 'pointer' }}
-                onClick={handleLike}
-              />
-              <p style={{ margin: '0', width: '100%', textAlign: 'center' }}>
-                {commentLike}
-              </p>
-            </>
-          )} */}
 
           <div
             style={{
