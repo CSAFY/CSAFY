@@ -20,6 +20,7 @@ const Content = styled.div`
   font-size: 16px;
 
   position: absolute;
+  top: 33px;
   left: 38px;
 `;
 const AttitudeCategory = styled.div`
@@ -28,14 +29,14 @@ const AttitudeCategory = styled.div`
   border-radius: 18px;
   background-color: #def9ff;
   font-size: 12px;
-  font-weight: 600;
+  // font-weight: 600;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   position: absolute;
-  right: 20px;
+  right: 10px;
   top: 10px;
 `;
 const TechCategory = styled.div`
@@ -44,14 +45,14 @@ const TechCategory = styled.div`
   border-radius: 18px;
   background-color: #d2fae2;
   font-size: 12px;
-  font-weight: 600;
+  // font-weight: 600;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   position: absolute;
-  right: 20px;
+  right: 10px;
   top: 10px;
 `;
 

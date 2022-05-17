@@ -11,9 +11,10 @@ const Video = styled.div`
   border-radius: 14px;
   box-shadow: 0 0 10px 0 #d7e4ec;
   background-color: #fff;
+  // background-color: black;
 
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
 
   position: relative;
 `;
@@ -48,7 +49,7 @@ const Title = styled.div`
   // width: 57px;
   height: 16px;
   font-size: 13px;
-  font-weight: 600;
+  // font-weight: 600;
   color: #000;
 
   position: absolute;
@@ -63,10 +64,12 @@ function VideoBox({ categoryId, category2Id, title, videoId }) {
     <>
       <Video>
         <Category>{category2Id}</Category>
-        <Thumbnail
-          src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`}
-          alt="youtube"
-        />
+        <div>
+          <Thumbnail
+            src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`}
+            alt="youtube"
+          />
+        </div>
         <Title>{title}</Title>
       </Video>
     </>

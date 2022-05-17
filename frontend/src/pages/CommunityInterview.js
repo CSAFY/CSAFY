@@ -11,7 +11,8 @@ const DetailBox = styled.div`
   // height 100%;
   border-radius: 9px;
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
-  background-color: #fff;
+  // background-color: #fff;
+  background-color: transparent;
 
   display: flex;
   flex-direction: column;

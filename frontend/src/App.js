@@ -76,7 +76,7 @@ function App() {
           <Route path="/CSTestDetail/:testTitle" element={<CSTestDetail />} />
           <Route path="/CSTestResult/:testTitle" element={<CSTestResult />} />
           <Route path="/reviewNote" element={<ReviewNote />} />
-          <Route path="/reviewNote/:noteNum" element={<ReviewNoteDetail />} />
+          <Route path="/reviewNote/:round" element={<ReviewNoteDetail />} />
           {/* <Route path="/payment" element={<Payment />} /> */}
           <Route path="/oauth/redirect" element={<AuthHandler />} />
           <Route path="/kakaoPay/success" element={<KakaopaySuccess />} />

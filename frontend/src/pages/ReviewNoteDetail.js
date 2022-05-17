@@ -10,6 +10,8 @@ const ReviewNoteDetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  background-color: #f6f7fb;
 `;
 const ReviewNoteDetailContent = styled.div`
   width: 1232px;
@@ -18,10 +20,12 @@ const ReviewNoteDetailContent = styled.div`
 `;
 
 function ReviewNoteDetail() {
-  const { noteNum } = useParams();
+  const { round } = useParams();
   return (
     <ReviewNoteDetailWrapper>
-      <ReviewNoteDetailContent>ReviewDetail</ReviewNoteDetailContent>
+      <ReviewNoteDetailContent>
+        <div>round: {round}</div>
+      </ReviewNoteDetailContent>
     </ReviewNoteDetailWrapper>
   );
 }
