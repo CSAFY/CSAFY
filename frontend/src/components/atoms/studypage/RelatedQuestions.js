@@ -14,7 +14,6 @@ export default function RelatedQuestions() {
     setExpanded(isExpanded ? panel : false);
   };
 
-  //임시 데이터
   const [ddd, setddd] = useState(
     [{ title : "OSI 7계층에 대해 설명해보세요.", answer : "src1"},
     { title : "http란?", answer : "답답1"},
@@ -22,7 +21,6 @@ export default function RelatedQuestions() {
     { title : "문제문제~1", answer : "답답4"},
     { title : "문제문제~1", answer : "답답5"},
     { title : "문제문제~1", answer : "답답6"}])
-  
   
   const RelatedQuestions = ddd.map((data, index) => 
     <Accordion 
@@ -50,7 +48,6 @@ export default function RelatedQuestions() {
       <StudyDetailText>
         관련 질문
       </StudyDetailText>
-      
       {RelatedQuestions}
     </StudyDetailDiv>
   );

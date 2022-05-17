@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { fontSize, fontWeight } from "../../_foundation";
 
 
 export const LayOut = styled.div`
@@ -9,15 +8,15 @@ export const LayOut = styled.div`
 
 export const InSideLayOut = styled.div`
   width: 90%;
-  height: 1800px;
+  height: 110vh;
   margin: 0 104px 0 104px;
-  padding: 80px 0 30px 0;
+  padding: 30px 0 30px 0;
 `
 
 export const TitleName = styled.div`
   width: 300px;
-  height: 60px;
-  margin: 0 auto 5px 12%;
+  height: 50px;
+  margin: 0 auto 0 12%;
   font-family: SUIT;
   font-size: 35px;
   font-weight: 600;
@@ -53,16 +52,27 @@ export const FlexDiv = styled.div`
 
 export const CardDiv = styled.div`
   width: 1150px;
-  height : 1650px;
+  max-height : 98vh;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  margin: 1em;
   justify-items: center;
   align-items: flex-start;
-  overflow : scroll;
+  overflow-y : scroll;
+  padding-top: 10px;
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.4);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+  }
 `
 
 export const SwitchBox = styled.div`
   
-  margin : 0 0 0 300px;
+  margin : 0 0 10px 300px;
 `;
+

@@ -28,14 +28,18 @@ export default function TemporaryDrawer() {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return ;
     }
-    // console.log(event)
     setState({ ...state, [anchor]: open });
   };
 
   const list = (anchor) => (
     <Box
-      sx={{ width:  250 , paddingTop: 10}}
+      sx={{ width:  250 , 
+        paddingTop: 10, 
+        background: "#84c2ea;",
+        height : "100%;",
+      }}
       role="presentation"
+      
     >
       <List>
         <DrawerInList
@@ -45,8 +49,6 @@ export default function TemporaryDrawer() {
         </DrawerInList>
       </List>
       <Divider />
-
-      
     </Box>
   );
 
@@ -59,6 +61,7 @@ export default function TemporaryDrawer() {
             anchor={'left'}
             open={state['left']}
             onClose={toggleDrawer('left', false)}
+            
           >
             {list('left')}
           </Drawer>

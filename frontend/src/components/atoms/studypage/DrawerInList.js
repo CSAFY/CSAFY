@@ -28,11 +28,10 @@ export default function DrawerInList(props) {
     setVideo(data)
   }
 
-
   const ListItems = (categoryId) =>  {
     return(
-      studyDatas.map((data, index) => {
-        if (categoryId === "전체") {
+      studyDatas.slice(1).map((data, index) => {
+        if (categoryId === data.categoryId){
           return(
             <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
               "imgSrc":`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`,
@@ -42,21 +41,9 @@ export default function DrawerInList(props) {
               "categoryId": data.categoryId,
               "favorites" : data.favorites,
               "id" : data.id,
-              "seen" : data.seen })}} >
-              <ListItemText primary={data.title} />
-            </ListItem>
-          )
-        } else if (categoryId === data.categoryId){
-          return(
-            <ListItem button  key={index} onClick={(event) => {onClickVideo(event, {
-              "imgSrc":`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`,
-              "title": data.title,
-              "videoId":data.videoId,
-              "category2Id" : data.category2Id,
-              "categoryId": data.categoryId,
-              "favorites" : data.favorites,
-              "id" : data.id,
-              "seen" : data.seen })}} >
+              "seen" : data.seen })}} 
+              sx={{ background: "#84c2ea;", border: " solid", marginTop: "5px"}}
+              >
               <ListItemText primary={data.title} />
             </ListItem>
           )
@@ -66,25 +53,27 @@ export default function DrawerInList(props) {
   }
   
   
-  const DrawerInList = props.data.map((categoryId, index) => 
+  const DrawerInList = props.data.slice(1).map((categoryId, index) => 
     <Accordion 
       expanded={expanded === `panel${index + 1}`} 
       onChange={handleChange(`panel${index + 1}`)}
-      key ={index}>
+      key ={index}
+      sx={{ margin: "0 auto 0 auto;"}}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls={`panel${index + 1}bh-content`}
         id={`panel${index + 1}bh-header`}
+        sx={{ margin:"10px 0 0 0;"}}
       >
-        <Typography sx={{ width: '33%', flexShrink: 0 }}>{categoryId}</Typography>
+        <Typography sx={{ width: "90%;", flexShrink: 0,  }}>{categoryId} /{studyDatas.filter(element => categoryId === element.categoryId).length}</Typography>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails
+        sx={{ overflowY : "scroll;", maxHeight: "500px;"}}>
         
         {ListItems(categoryId)}
         
       </AccordionDetails>
     </Accordion>
-  
   )
   
   return (
