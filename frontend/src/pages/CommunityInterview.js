@@ -12,7 +12,7 @@ const DetailBox = styled.div`
   border-radius: 9px;
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
   background-color: #fff;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.7);
   // background-color: transparent;
   // filter: blur(4px);
 
@@ -110,13 +110,26 @@ function CommunityInterview({
           </Icon>
           {/* <ButtonDiv> */}
           <Button
-            style={{ position: 'absolute', bottom: '30px', left: '80px' }}
+            style={{
+              position: 'absolute',
+              bottom: '30px',
+              left: '80px',
+              fontSize: '18px',
+              color: '#000',
+              // fontWeight: '600',
+            }}
             onClick={handleModalClose}
           >
             면접 종료
           </Button>
           <Button
-            style={{ position: 'absolute', bottom: '30px', right: '80px' }}
+            style={{
+              position: 'absolute',
+              bottom: '30px',
+              right: '80px',
+              fontSize: '18px',
+              color: '#000',
+            }}
             onClick={getInterviewInfo}
           >
             다음 문제
