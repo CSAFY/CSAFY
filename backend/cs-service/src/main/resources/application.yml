@@ -46,10 +46,10 @@ spring:
 
 logging.level:
   org:
-    springframework.web: DEBUG
+    springframework.web: TRACE
 #    springframework.web: WARN
 #    hibernate.SQL: INFO #debug # hibernate가 생성하는 로그를 다 보여줌
-# org.hibernate.type: trace # 쿼리 파라미터 로그 남기기
+#  org.hibernate.type: trace # 쿼리 파라미터 로그 남기기
 
 # 최종 배포진행시 1차적 교체
 jwt:
