@@ -15,4 +15,7 @@ public interface UserServiceClient {
     @GetMapping("/token/user")
     UserDto getTokenUser(@RequestParam("inputToken") String inputToken);
 
+    @GetMapping("/email/seq")
+    UserDto getUserSeqOnEmail(@RequestParam("email") String email);
+
 }

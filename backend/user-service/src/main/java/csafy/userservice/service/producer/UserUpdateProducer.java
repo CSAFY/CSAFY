@@ -38,13 +38,12 @@ public class UserUpdateProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public Long send(String kafkaTopic, UpdateRequest updateRequest, Long userSeq){
+    public Long send(String kafkaTopic, String username, String s3url, Long userSeq){
         PayloadUpdate payload = PayloadUpdate.builder()
                 .user_seq(userSeq)
-//                .user_seq(22L)
                 .modified_at(Timestamp.valueOf(LocalDateTime.now()))
-                .username(updateRequest.getUsername())
-                .profile_image_url(updateRequest.getProfileImg())
+                .username(username)
+                .profile_image_url(s3url)
                 .build();
         KafkaUserUpdateDto kafkaUserUpdateDto = new KafkaUserUpdateDto(schema, payload);
         System.out.println("asdasd " + kafkaUserUpdateDto.getPayload().getModified_at());
@@ -60,7 +59,8 @@ public class UserUpdateProducer {
         }
         System.out.print(jsonInString);
         kafkaTemplate.send(kafkaTopic, jsonInString);
-        log.info("User Update Producer to DB: " + updateRequest);
+        log.info("User Update Producer to DB: " + username);
+        log.info("User Update Producer to DB: " + s3url);
 
         return userSeq;
     }

@@ -38,4 +38,11 @@ public class InterviewDto {
         }
     }
 
+    public InterviewDto(Interview interview){
+        this.interviewSeq = interview.getInterviewSeq();
+        this.category = interview.getCategory();
+        this.question = interview.getQuestion();
+        this.interviewLikes = interview.getInterviewLikes() != null ? interview.getInterviewLikes().size() : 0;
+    }
+
 }

@@ -1,9 +1,12 @@
 package csafy.userservice.api;
 
+import csafy.userservice.client.CsServiceClient;
 import csafy.userservice.config.auth.AppProperties;
 import csafy.userservice.dto.auth.AuthReqModel;
 import csafy.userservice.dto.response.ApiResponse;
+import csafy.userservice.entity.User;
 import csafy.userservice.entity.auth.UserPrincipal;
+import csafy.userservice.repository.UserRepository;
 import csafy.userservice.service.token.AuthToken;
 import csafy.userservice.service.token.AuthTokenProvider;
 import csafy.userservice.service.token.JwtTokenProvider;
@@ -27,6 +30,8 @@ public class AuthApiController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final MessageSource messageSource;
+    private final CsServiceClient csServiceClient;
+    private final UserRepository userRepository;
 
     @PostMapping("/auth/login")
     public ApiResponse login(
@@ -49,6 +54,9 @@ public class AuthApiController {
                 ((UserPrincipal) authentication.getPrincipal()).getRoleType().getCode(),
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
+
+            User nowUser = userRepository.findByEmail(authReqModel.getId());
+            System.out.println("useruseruseruseuser " + nowUser.getUserSeq());
 
         // jwt 토큰 발급
         return ApiResponse.success("token", accessToken.getToken());

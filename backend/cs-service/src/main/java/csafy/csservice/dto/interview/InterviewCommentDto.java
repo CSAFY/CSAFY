@@ -20,6 +20,8 @@ public class InterviewCommentDto {
 
     private boolean isLiked;
 
+    private int commentLikesCount;
+
     public InterviewCommentDto(InterviewComment interviewComment, UserDto userDto){
 
         this.id = interviewComment.getId();
@@ -38,6 +40,7 @@ public class InterviewCommentDto {
                 }
             }
         }
+        this.commentLikesCount = interviewComment.getInterviewCommentLikes() != null ? interviewComment.getInterviewCommentLikes().size() : 0;
 
 
     }

@@ -1,5 +1,6 @@
 package csafy.userservice.service.auth;
 
+import csafy.userservice.client.CsServiceClient;
 import csafy.userservice.dto.UserDto;
 import csafy.userservice.entity.User;
 import csafy.userservice.entity.auth.ProviderType;
@@ -29,12 +30,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserProducer userProducer;
 
+    private final CsServiceClient csServiceClient;
+
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        System.out.println("제발!!!!!!!!좀!!!!!@#!@#!@#");
         OAuth2User user = super.loadUser(userRequest);
-        System.out.println("LoadUser 까지 되나");
         try {
             return this.process(userRequest, user);
         } catch (AuthenticationException ex) {
@@ -46,11 +47,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private OAuth2User process(OAuth2UserRequest userRequest, OAuth2User user) {
-        System.out.println("오냐???????????????????1111111");
         ProviderType providerType = ProviderType.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
-        System.out.println("오냐???????????????????22222222");
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
-        System.out.println("오냐???????????????????333333");
         User savedUser = userRepository.findByUserId(userInfo.getId());
 
         if (savedUser != null) {
@@ -65,7 +63,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else {
             savedUser = createUser(userInfo, providerType);
         }
-
+        User nowUser = userRepository.findByEmail(savedUser.getEmail());
+        System.out.println("useruseruseruseuser " + nowUser.getUserSeq());
+        csServiceClient.updateDailyCheck(nowUser.getUserSeq());
         return UserPrincipal.create(savedUser, user.getAttributes());
     }
 
@@ -87,7 +87,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setIs_vip("N");
         if(user.getProfileImage() == null || user.getProfileImage().trim().equals("")){
             int randNum = (int)(Math.random()*20) + 1;
-            user.setProfileImage("*" + randNum); // 일단 *으로 받음 나중에 교체
+            user.setProfileImage("default/default_1.PNG");
         }
 
 

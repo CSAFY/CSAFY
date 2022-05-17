@@ -1,15 +1,19 @@
 package csafy.userservice.api;
 
+import csafy.userservice.client.CsServiceClient;
 import csafy.userservice.dto.UserDto;
+import csafy.userservice.dto.request.MobileUpdateRequest;
 import csafy.userservice.dto.request.UpdateRequest;
 import csafy.userservice.dto.response.ErrorResponse;
 import csafy.userservice.entity.User;
 import csafy.userservice.entity.auth.ProviderType;
 import csafy.userservice.entity.auth.RoleType;
 import csafy.userservice.repository.UserRepository;
+import csafy.userservice.service.S3.S3Uploader;
 import csafy.userservice.service.UserService;
 import csafy.userservice.service.producer.UserProducer;
 import csafy.userservice.service.token.JwtTokenProvider;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,11 +27,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -41,11 +47,96 @@ public class UserApiController {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
+    private final S3Uploader s3Uploader;
     private final UserRepository userRepository;
+
+    private final CsServiceClient csServiceClient;
 
     @GetMapping("/welcome")
     public String welcome() {
         return "welcome";
+    }
+
+    @GetMapping("/{userSeq}/user/get")
+    public ResponseEntity getUserInfo(@PathVariable("userSeq") Long userSeq){
+        User user = userService.getUser(userSeq);
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        UserDto userDto = new UserDto(user);
+        userDto.setUser_seq(user.getUserSeq());
+        userDto.setUser_id(user.getUserId());
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(null);
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @GetMapping("/userInfo")
+    public ResponseEntity getUserTokenInfo(@RequestHeader(value = "Authorization") String token){
+
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
+        }
+
+        Long userSeq = jwtTokenProvider.getUserSeq(token);
+
+        User user = userService.getUser(userSeq);
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        UserDto userDto = new UserDto(user);
+        userDto.setUser_seq(user.getUserSeq());
+        userDto.setUser_id(user.getUserId());
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(null);
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @PutMapping("/mobile/update")
+    public ResponseEntity<?> userMobileUpdate(@RequestHeader(value = "Authorization") String token,
+                                              @RequestPart(value = "image", required = false) MultipartFile file,
+                                              @RequestPart(value = "introduction", required = false) String introduction,
+                                              @RequestPart(value = "username", required = false) String username) {
+
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
+        }
+
+        Long userSeq = jwtTokenProvider.getUserSeq(token);
+
+        if(userSeq == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰 에러");
+
+        if(username == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
+        }
+        if(introduction == null || introduction.length() >= 1024){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 자기소개 형식입니다.");
+        }
+
+        String s3url = null;
+
+        try{
+            s3url = s3Uploader.upload(file, "profile", userSeq);
+        } catch (IOException ex){
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미지 업로드 실패");
+        }
+
+        if(s3url == null || s3url.length() >= 1024){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 프로필 이미지 URL 형식입니다.");
+        }
+
+        MobileUpdateRequest updateRequestResult = userService.updateMobileUser(userSeq, s3url, introduction, username);
+
+        if(updateRequestResult == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업데이트할 사용자를 찾을 수 없습니다.");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(updateRequestResult);
     }
 
     /**
@@ -58,7 +149,6 @@ public class UserApiController {
     @PostMapping("/signup")
     public ResponseEntity signup(@Validated @RequestBody CreateUserRequest request,
                                  BindingResult bindingResult) {
-        System.out.println("들어오냐??");
         if (bindingResult.hasErrors()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -79,7 +169,8 @@ public class UserApiController {
 
         try {
             Long id = userService.join(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(null);
+            user.setPassword(null);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new UserDto(user));
         }
         catch (IllegalStateException e) {
             return ResponseEntity
@@ -113,7 +204,8 @@ public class UserApiController {
 // 회원 정보 수정
     @PutMapping("/update")
     public ResponseEntity<?> userUpdate(@RequestHeader(value = "Authorization") String token,
-                                        @RequestBody UpdateRequest updateRequest) {
+                                        @RequestPart(value = "image", required = false) MultipartFile file,
+                                        @RequestPart(value = "username", required = false) String username) {
 
         if (!jwtTokenProvider.validateToken(token)) {
             return ResponseEntity
@@ -121,17 +213,30 @@ public class UserApiController {
                     .body(new ErrorResponse(messageSource.getMessage("error.valid.jwt", null, LocaleContextHolder.getLocale())));
         }
 
-        if(updateRequest.getUsername() == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
-        }
-        
-        if(updateRequest.getProfileImg().length() >= 1024){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 URL이 너무 깁니다.");
-        }
-
         Long userSeq = jwtTokenProvider.getUserSeq(token);
 
-        UpdateRequest updateRequestResult = userService.updateUser(userSeq, updateRequest);
+        if(userSeq == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰 에러");
+
+        if(username == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username이 존재하지않습니다.");
+        }
+
+        String s3url = null;
+
+        try{
+            s3url = s3Uploader.upload(file, "profile", userSeq);
+        } catch (IOException ex){
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 업로드 오류");
+        }
+
+
+
+        if(s3url == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 이미지 업로드 실패");
+        }
+
+        UpdateRequest updateRequestResult = userService.updateUser(userSeq, username, s3url);
 
         if(updateRequestResult == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업데이트할 사용자를 찾을 수 없습니다.");
@@ -218,12 +323,37 @@ public class UserApiController {
         String token = inputToken;
         System.out.println("토오큰 : " + token);
 
-        if (token == null || !jwtTokenProvider.validateToken(token)) {
+        if (token == null) {
             System.out.println("토큰 에러");
             return "error";
         }
 
+        try {
+            jwtTokenProvider.validateToken(token);
+        } catch (ExpiredJwtException ex){
+            return "JWT 토큰 만료";
+        } catch (Exception e){
+            return "error";
+        }
+
         return "OK";
+    }
+
+    /**
+     * email로 userSeq 찾기, feignclient
+     * @param email
+     * @return
+     */
+    @GetMapping("/email/seq")
+    public UserDto getUserSeqOnEmail(@RequestParam("email") String email){
+
+        User user = userService.getUserSeqOnEmail(email);
+        UserDto userDto = new UserDto(user);
+        userDto.setUser_seq(user.getUserSeq());
+        userDto.setUser_id(user.getUserId());
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(null);
+        return userDto;
     }
 
 
@@ -247,7 +377,7 @@ public class UserApiController {
 
 
         String token = jwtTokenProvider.createToken(user.getUsername(), user.getUserSeq());
-
+        csServiceClient.updateDailyCheck(user.getUserSeq());
         return ResponseEntity.ok(new LoginUserResponse(token));
     }
 
@@ -265,6 +395,21 @@ public class UserApiController {
     public void rankUpPremium(@RequestParam("token") String token){
         userService.rankUpPremium(token);
     }
+
+//    // S3
+//
+//    @PostMapping("/images")
+//    public ResponseEntity upload(@RequestParam("images") MultipartFile multipartFile) throws IOException {
+//        String urlResult = null;
+//        try{
+//            urlResult = s3Uploader.upload(multipartFile, "profile");
+//
+//        } catch (IOException ex){
+//            ex.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(urlResult);
+//    }
 
 
 }

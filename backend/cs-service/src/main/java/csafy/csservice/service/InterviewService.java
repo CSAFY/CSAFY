@@ -3,19 +3,20 @@ package csafy.csservice.service;
 import csafy.csservice.client.UserServiceClient;
 import csafy.csservice.dto.interview.InterviewCommentResponseDto;
 import csafy.csservice.dto.interview.InterviewCreateDto;
+import csafy.csservice.dto.interview.InterviewCreateSimpleDto;
 import csafy.csservice.dto.interview.InterviewDto;
 import csafy.csservice.dto.request.RequestCreateInterview;
 import csafy.csservice.entity.interview.*;
+import csafy.csservice.entity.profile.Statistic;
 import csafy.csservice.repository.interview.*;
+import csafy.csservice.repository.profile.StatisticsRepository;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -29,8 +30,12 @@ public class InterviewService {
     private final InterviewCommentRepository interviewCommentRepository;
     private final InterviewLikesRepository interviewLikesRepository;
     private final InterviewCommentLikesRepository interviewCommentLikesRepository;
+    private final InterviewSeenRepository interviewSeenRepository;
+    private final StatisticsRepository statisticsRepository;
 
     private final UserServiceClient userServiceClient;
+
+    private final BadgeService badgeService;
 
     @PersistenceContext
     EntityManager em;
@@ -45,6 +50,11 @@ public class InterviewService {
         }
     }
 
+    public Interview getInterview(Long interviewSeq){
+        return interviewRepository.findById(interviewSeq).orElse(null);
+    }
+
+    @Transactional
     public List<InterviewCreateDto> createInterviewList(RequestCreateInterview requestCreateInterview, Long userSeq){
         if(requestCreateInterview.getCategory().equalsIgnoreCase("all")){
 
@@ -53,6 +63,7 @@ public class InterviewService {
                     "on i.interview_seq = m.interview_seq and m.user_seq = " + userSeq +
                     " order by rand() limit " + requestCreateInterview.getQuestion());
             List<InterviewCreateDto> list = jpaResultMapper.list(q, InterviewCreateDto.class);
+            interviewSeenUpdate(list, userSeq);
             return list;
 //            return interviewRepository.findInterviewLimit(requestCreateInterview.getQuestion(), userSeq);
         }
@@ -63,6 +74,30 @@ public class InterviewService {
                     "on i.interview_seq = m.interview_seq and m.user_seq = "+ userSeq + " where i.category = " + "\'" + category + "\'" +
                     " order by rand() limit " + requestCreateInterview.getQuestion());
             List<InterviewCreateDto> list = jpaResultMapper.list(q, InterviewCreateDto.class);
+            interviewSeenUpdate(list, userSeq);
+            return list;
+//            return interviewRepository.findInterviewLimitCategory(category, requestCreateInterview.getQuestion(), userSeq);
+        }
+    }
+
+    @Transactional
+    public List<InterviewCreateSimpleDto> createSimpleInterviewList(RequestCreateInterview requestCreateInterview){
+        if(requestCreateInterview.getCategory().equalsIgnoreCase("all")){
+
+            JpaResultMapper jpaResultMapper = new JpaResultMapper();
+            Query q = em.createNativeQuery("select i.* from interview i" +
+                    " order by rand() limit " + requestCreateInterview.getQuestion());
+            List<InterviewCreateSimpleDto> list = jpaResultMapper.list(q, InterviewCreateSimpleDto.class);
+            return list;
+//            return interviewRepository.findInterviewLimit(requestCreateInterview.getQuestion(), userSeq);
+        }
+        else {
+            String category = requestCreateInterview.getCategory().equalsIgnoreCase("character") ? "인성" : "기술";
+            JpaResultMapper jpaResultMapper = new JpaResultMapper();
+            Query q = em.createNativeQuery("select i.* from Interview i" +
+                    " where i.category = " + "\'" + category + "\'" +
+                    " order by rand() limit " + requestCreateInterview.getQuestion());
+            List<InterviewCreateSimpleDto> list = jpaResultMapper.list(q, InterviewCreateSimpleDto.class);
             return list;
 //            return interviewRepository.findInterviewLimitCategory(category, requestCreateInterview.getQuestion(), userSeq);
         }
@@ -119,6 +154,10 @@ public class InterviewService {
 
     }
 
+    public InterviewComment getCommentInfo(Long commentId){
+        return interviewCommentRepository.findById(commentId).orElse(null);
+    }
+
     @Transactional
     public InterviewComment createComment(Long userSeq, Long interviewSeq, String comment){
         InterviewComment interviewComment = new InterviewComment();
@@ -168,6 +207,45 @@ public class InterviewService {
             interviewCommentLikesRepository.save(interviewCommentLikes);
         }
         else interviewCommentLikesRepository.delete(interviewCommentLikes);
+    }
+
+    @Transactional
+    public void interviewSeenUpdate(List<InterviewCreateDto> interviewList, Long userSeq){
+        for(InterviewCreateDto interviewCreateDto: interviewList){
+            InterviewSeen interviewSeen = new InterviewSeen();
+            Interview interview = interviewRepository.findById(interviewCreateDto.getInterviewSeq().longValue()).orElse(null);
+            if(interview == null) continue;
+            interviewSeen.setInterview(interview);
+            interviewSeen.setSeenAt(LocalDateTime.now());
+            interviewSeen.setUserSeq(userSeq);
+            InterviewSeen duplicateSeen = interviewSeenRepository.findByInterviewUser(interview.getInterviewSeq(), userSeq);
+            if(duplicateSeen != null){
+                duplicateSeen.setSeenAt(LocalDateTime.now());
+                interviewSeenRepository.save(duplicateSeen);
+            }
+            else{
+                interviewSeenRepository.save(interviewSeen);
+            }
+        }
+
+    }
+
+    @Transactional
+    public void updateInterviewCount(Long userSeq){
+
+        Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
+
+        if(statistic == null){
+            statistic = new Statistic();
+            statistic.setUserSeq(userSeq);
+            statistic.setInterviewCount(1L);
+        } else{
+            statistic.setInterviewCount(statistic.getInterviewCount() + 1);
+        }
+
+        statisticsRepository.save(statistic);
+        badgeService.checkInterviewCount(userSeq, statistic.getInterviewCount());
+
     }
 
 }

@@ -12,10 +12,14 @@ import csafy.csservice.dto.response.ResponseInterviewLikes;
 import csafy.csservice.entity.interview.Interview;
 import csafy.csservice.entity.interview.InterviewComment;
 import csafy.csservice.entity.interview.InterviewMemo;
+import csafy.csservice.service.BadgeService;
 import csafy.csservice.service.InterviewService;
 import feign.FeignException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/interview")
 @RequiredArgsConstructor
@@ -32,8 +37,14 @@ public class InterviewController {
 
     private final UserServiceClient userServiceClient;
 
+    private final BadgeService badgeService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @GetMapping("/welcome")
     public String welcome(){
+
+        logger.info(" request URL : {} , request Method : {} ", "cs-service/interview/welcome", "GET");
         return "welcome";
     }
 
@@ -41,7 +52,6 @@ public class InterviewController {
     @GetMapping("/list/get")
     public ResponseEntity getInterviewList(@RequestHeader(value = "Authorization") String token,
             @RequestParam(value = "category") String category){
-        System.out.println("들어오긴함??");
         String resultCode = userServiceClient.checkTokenValidated(token);
         if (!resultCode.equals("OK")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
@@ -53,11 +63,11 @@ public class InterviewController {
         if(interviewList == null || interviewList.size() == 0){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-
         List<InterviewDto> result = interviewList.stream().map(i -> new InterviewDto(i, userDto)).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
+
 
     // 사용자가 원하는 면접 유형, 문제 수, 시간 모드 여부 POST
     @PostMapping("/create")
@@ -77,7 +87,45 @@ public class InterviewController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
 
+        interviewService.updateInterviewCount(userDto.getUser_seq());
+
         return ResponseEntity.status(HttpStatus.OK).body(interviewList);
+    }
+
+    // 사용자가 원하는 면접 유형, 문제 수, 시간 모드 여부 POST ( 토큰 X )
+    @PostMapping("/simple/create")
+    public ResponseEntity createSimpleInterviewList(@RequestBody RequestCreateInterview createInterview){
+
+
+        List<InterviewCreateSimpleDto> interviewList = interviewService.createSimpleInterviewList(createInterview);
+
+
+        if(interviewList == null || interviewList.size() == 0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(interviewList);
+    }
+
+
+    @GetMapping("/{interviewSeq}/info")
+    public ResponseEntity interviewLikesCount(@RequestHeader(value = "Authorization") String token,
+                                                @PathVariable("interviewSeq") Long interviewSeq){
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if (!resultCode.equals("OK")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        Interview interview = interviewService.getInterview(interviewSeq);
+        if(interview == null){
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new InterviewDto(interview, userDto));
     }
 
     // 면접 좋아요 카운트 받기
@@ -104,7 +152,7 @@ public class InterviewController {
         UserDto userDto = userServiceClient.getTokenUser(token);
         interviewService.interviewLikes(userDto.getUser_seq(), interviewSeq);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
     @GetMapping("/{interviewSeq}/memo")
@@ -172,6 +220,26 @@ public class InterviewController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @GetMapping("/{commentId}/comment/info")
+    public ResponseEntity getInterviewCommentInfo(@RequestHeader(value = "Authorization") String token,
+                                              @PathVariable("commentId") Long commentId){
+
+        String resultCode = userServiceClient.checkTokenValidated(token);
+        if(!resultCode.equals("OK")){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalidated Token");
+        }
+
+        UserDto userDto = userServiceClient.getTokenUser(token);
+
+        InterviewComment interviewComment = interviewService.getCommentInfo(commentId);
+        if(interviewComment == null){
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new InterviewCommentDto(interviewComment, userDto));
+    }
+
     // 댓글 등록
     @PostMapping("/{interviewSeq}/comment")
     public ResponseEntity createComment(@RequestHeader(value = "Authorization") String token,
@@ -232,7 +300,7 @@ public class InterviewController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
 
     }
 
@@ -260,7 +328,7 @@ public class InterviewController {
         UserDto userDto = userServiceClient.getTokenUser(token);
         interviewService.interviewCommentLikes(userDto.getUser_seq(), commentId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
 
