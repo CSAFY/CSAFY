@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LinearWithValueLabel from "./LinearProgressWithLabel";
+import CusLinearWithValueLabel from "./CusLinearWithValueLabel";
 
 import { useRecoilState } from "recoil";
 import { oxquizData } from "../../../recoils";
@@ -19,7 +20,11 @@ import {
   FourCardDiv,
   QuestionText,
   ClickBtn,
-  Title
+  Title,
+  BtnDiv,
+  BtnText,
+  CusInput,
+  InterCardDiv
   } from "./FourWayRace"
 
 
@@ -52,10 +57,8 @@ function OXquiz(props) {
     axios({
       method: 'get',
       url:  Url,
-      
     })
     .then((res) => {
-      // console.log(res.data)
       setOXData(res.data)
     })
     .catch(err =>{
@@ -67,12 +70,14 @@ function OXquiz(props) {
     if (pageNumber === 2){
       getData()
       setIsCorrects([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+      setActiveStep(0)
     }
   }, [pageNumber])
 
   useEffect(() => {
     setPageNumber(1)
     setSelecCNT(5)
+    setActiveStep(0)
   },[props.Cate])
 
   const [selectO, setSelectO] = useState(2)
@@ -89,6 +94,8 @@ function OXquiz(props) {
     isCorrect(1)
   }
 
+  const [selectAnswerCNT, setSelectAnswerCNT] = useState(0);
+
   const isCorrect= (selectOX) => {
     if(isCorrects[activeStep] === 0){
       const tmp = isCorrects
@@ -99,14 +106,13 @@ function OXquiz(props) {
         tmp[activeStep] = 2
         setIsCorrects(tmp)
       }
+      setSelectAnswerCNT(selectAnswerCNT => selectAnswerCNT + 1)
     }
   }
 
   const OXCardPack = (
     <FlexDiv>
-      
       <CardCoverDiv>
-        
         <OXCard onClick={onClickO}
           border={selectO === 2 ?  "solid 2px #ebeef4;" 
                 : selectO === oxData[activeStep].answer ? "solid 2px #25b26d;" 
@@ -118,9 +124,11 @@ function OXquiz(props) {
             O
           </O>
         </OXCard>
+        <AnsText>
         {selectO === 2 ?  " " 
           : selectO === oxData[activeStep].answer ? "정답입니다" 
           : "틀렸습니다"}
+        </AnsText>
       </CardCoverDiv>
       <CardCoverDiv>
         
@@ -135,9 +143,11 @@ function OXquiz(props) {
             X
           </X>
         </OXCard>
+        <AnsText>
         {selectX === 2 ?  " " 
           : selectX === oxData[activeStep].answer ? "정답입니다" 
           : "틀렸습니다"}
+        </AnsText>
       </CardCoverDiv>
     </FlexDiv>
   )
@@ -187,10 +197,12 @@ function OXquiz(props) {
       },
     })
     .then((res) => {
-      console.log(res.data)
       setResData(res.data)
       handleOpen()
-      
+      setActiveStep(0)
+      setSelectO(2)
+      setSelectX(2)
+      setSelectAnswerCNT(0)
     })
     .catch(err =>{
       console.log(err)
@@ -199,15 +211,7 @@ function OXquiz(props) {
   }
 
 
-  const scorePost = () => {
-    if (activeStep === (maxSteps -1)){
-      return(
-        <Button onClick={() => scorePostAPI()}>
-          점수 제출하기
-        </Button>
-      )
-    }
-  }
+  
 
   const onClickBtn = (data) => {
     setSelecCNT(data)
@@ -232,26 +236,29 @@ function OXquiz(props) {
       <QuestionText>
         📗 몇 문제를 풀기를 원하시나요?
       </QuestionText>
-      <ClickBtn
-        able={"Y"}
-        onClick={() => onClickBtn(selecCNT)}
-        >
-        <input type={"number"} min="1" max="20" 
-        onClick={(event)=> event.stopPropagation()}
-        onChange={(event) => setSelecCNT(event.target.value)}
-        value={selecCNT}></input>
-        문제
-      </ClickBtn>
-      <ClickBtn
-        able={"Y"}
-        onClick={() => {onClickBtn(5) }}
-        >
-        알아서 해주세요
-      </ClickBtn>
+      <BtnDiv>
+        <ClickBtn
+          able={"Y"}
+          onClick={() => onClickBtn(selecCNT)}
+          >
+          <CusInput type={"number"} min="1" max="20" 
+          onClick={(event)=> event.stopPropagation()}
+          onChange={(event) => setSelecCNT(event.target.value)}
+          value={selecCNT}></CusInput>
+          <BtnText>문제</BtnText>
+          
+        </ClickBtn>
+        <ClickBtn
+          able={"Y"}
+          onClick={() => {onClickBtn(5) }}
+          >
+          알아서 해주세요
+        </ClickBtn>
+      </BtnDiv>
     </FourCardDiv>)
   }else if (pageNumber === 2) {
     return(
-    <FourCardDiv >
+    <InterCardDiv >
       <QuestionText>
         📤 문제를 선별 중입니다.
         
@@ -261,10 +268,10 @@ function OXquiz(props) {
       </QuestionText>
       
       <LinearWithValueLabel   setPageNumber={setPageNumber}/>
-    </FourCardDiv>)
+    </InterCardDiv>)
   }else if (pageNumber === 3) {
     return(
-      <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", 
+      <Box  sx={{  flexGrow: 1 , width:"980px;", margin: "10px 20px 10px 20px", 
       borderRadius: "20px",
       boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
       backgroundColor: "#fff"}}>
@@ -276,7 +283,7 @@ function OXquiz(props) {
       </MeaningDiv>
         {OXCardPack}
         
-        {scorePost()}
+        
         <BasicModal 
           isOpen={open} 
           handleClose={handleClose} 
@@ -285,23 +292,23 @@ function OXquiz(props) {
           Cate={props.Cate}
           >
           </BasicModal>
+      <CusLinearWithValueLabel 
+        selectAnswerCNT={selectAnswerCNT}
+        maxSteps={maxSteps}
+      ></CusLinearWithValueLabel>
       <MobileStepper
         variant="text"
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
-        sx={{
-          margin : "20px 0 0 0",
-          borderRadius: "20px",
-          boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
-          backgroundColor: "#fff"}}
+        sx={{width: "95%;",backgroundColor: "rgba(0,0,0,0);"}}
         nextButton={
           <Button
             size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
+            onClick={activeStep === maxSteps - 1? scorePostAPI :handleNext}
+            disabled={(activeStep === maxSteps - 1) && (selectAnswerCNT !== maxSteps) || (isCorrects[activeStep] === 0)}
           >
-            Next
+            {activeStep === maxSteps - 1 ?  "제출하기":"Next"}
             {theme.direction === 'rtl' ? (
               <KeyboardArrowLeft />
             ) : (
@@ -327,6 +334,7 @@ function OXquiz(props) {
 export default OXquiz
 
 
+
 const MeaningDiv = styled.div`
   width : 90%;
   height : 240PX;
@@ -347,7 +355,7 @@ const OXCard = styled.div`
   width: 230px;
   height: 154px;
   flex-grow: 0;
-  
+  margin-bottom: 10px;
   padding: 0 0.1px 0 0;
   border-radius: 11px;
   
@@ -359,7 +367,7 @@ const O = styled.span`
   width: 95px;
   height: 88px;
   font-family: SUIT;
-  font-size: 96px;
+  font-size: 105px;
   font-weight: 600;
   font-stretch: normal;
   font-style: normal;
@@ -374,7 +382,7 @@ const X = styled.span`
   height: 88px;
   margin: 0 0 36px;
   font-family: SUIT;
-  font-size: 96px;
+  font-size: 105px;
   font-weight: 600;
   font-stretch: normal;
   font-style: normal;
@@ -384,11 +392,8 @@ const X = styled.span`
   color: #1c45d8;
 `
 
-const FootBar = styled.div`
-  width: 100%;
-  height: 8px;
-  flex-grow: 0;
-  margin: 42px 0 0;
-  background-color: #d7e4ec;
+const AnsText = styled.div`
+  text-align: left;
+  margin-left: 10px;
 `
 

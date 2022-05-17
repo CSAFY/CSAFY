@@ -23,27 +23,17 @@ LinearProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default function LinearWithValueLabel(props) {
+export default function CusLinearWithValueLabel(props) {
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => 
-      (prevProgress >= 100 ? 0 : prevProgress + 1));
-    }, 20);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  
 
   useEffect(() => {
-    if (progress === 100){
-      props.setPageNumber(3)
-    }
-  }, [progress])
+    setProgress(props.selectAnswerCNT/ props.maxSteps *100)
+  }, [props.selectAnswerCNT])
 
   return (
-    <Box sx={{ width: '100%', margin: "35px 0 0 0" }}>
+    <Box sx={{ width: '95%', margin: "35px auto 0 auto" }}>
       <LinearProgressWithLabel value={progress} />
     </Box>
   );

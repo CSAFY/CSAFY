@@ -17,7 +17,6 @@ function RelatedExam() {
         <StudyDetailText>
           관련 모의고사
         </StudyDetailText>
-        
         <GridDiv>
           {ExampleCard}
           {ExampleCard}
