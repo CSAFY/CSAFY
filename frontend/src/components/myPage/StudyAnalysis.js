@@ -1,16 +1,15 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import styled from 'styled-components';
-import { defaultAPI } from '../../utils/api';
+// COMPONENTS
 import BarChart from '../BarChart';
-
 import RadarChart from '../RadarChart';
+
+// STYLED
+import styled from 'styled-components';
 
 const AnalysisWrapper = styled.div`
   height: 1000px;
 `;
-
 const DataWrapper = styled.div`
   display: flex;
   padding-top: 50px;
@@ -21,7 +20,8 @@ const Scores = styled.li`
 `;
 
 function StudyAnalysis({ userInfo, analysisData, recentTest }) {
-  const getSum = corrects => Object.values(corrects).reduce((a, b) => a + b);
+  // 합, 평균 구하는 함수
+  const getSum = dic => Object.values(dic).reduce((a, b) => a + b);
   const getAvg = array => {
     var sum = 0.0;
     for (var i = 0; i < array.length; i++) {
@@ -29,12 +29,13 @@ function StudyAnalysis({ userInfo, analysisData, recentTest }) {
     }
     return (sum / array.length).toFixed(1);
   };
-  const labels = recentTest.map(test => test.id);
+  // 점수
   const scores = recentTest.map(test =>
     Math.ceil((getSum(test.corrects) / getSum(test.totals)) * 100),
   );
-  console.log(recentTest, labels, scores);
-  console.log(analysisData);
+
+  // console.log(recentTest, scores, getAvg(scores));
+  // console.log(analysisData);
   return (
     <AnalysisWrapper>
       <div style={{ textAlign: 'center', fontSize: '32px', fontWeight: '600' }}>
@@ -74,10 +75,10 @@ function StudyAnalysis({ userInfo, analysisData, recentTest }) {
           <div style={{ fontSize: '28px', fontWeight: '600' }}>
             최근 5개 모의고사 분석 결과
           </div>
-          {getAvg(scores) === NaN ? (
-            <p style={{ fontSize: '20px' }}>평균 점수: {getAvg(scores)}점</p>
-          ) : (
+          {getAvg(scores) === 'NaN' ? (
             <p style={{ fontSize: '20px' }}>평균 점수: 0점</p>
+          ) : (
+            <p style={{ fontSize: '20px' }}>평균 점수: {getAvg(scores)}점</p>
           )}
 
           <div style={{ fontSize: '18px' }}>

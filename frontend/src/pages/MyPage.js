@@ -1,33 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import StudyAnalysis from '../components/myPage/StudyAnalysis';
-import axios from 'axios';
-import swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
 import { defaultAPI } from '../utils/api';
-// Recoil
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+// RECOIL
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
 import { Username } from '../recoils/Username';
 import { Userinfo } from '../recoils/Userinfo';
 
+// COMPONENTS
+import StudyAnalysis from '../components/myPage/StudyAnalysis';
+import InterviewBox from '../components/myPage/InterviewBox';
+import TestBox from '../components/myPage/TestBox';
+import VideoBox from '../components/myPage/VideoBox';
 // HEATMAP
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import ReactTooltip from 'react-tooltip';
 
-// COMPONENTS
-import InterviewBox from '../components/myPage/InterviewBox';
-import TestBox from '../components/myPage/TestBox';
-import VideoBox from '../components/myPage/VideoBox';
-// import QuestionBox from '../components/QuestionBox';
-
 // STYLED
 import styled from 'styled-components';
 import { Button } from '@mui/material';
-import Hamburger from '../components/Hamburger';
-import ReactBurger from '../components/ReactBurger';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import swal from 'sweetalert2';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -96,72 +92,65 @@ const VideoWrapper = styled.div`
 `;
 
 function MyPage() {
-  //
   const navigate = useNavigate();
   // Recoil
-  // const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
-  // const [token, setToken] = useRecoilState(Token);
   const token = useRecoilValue(Token);
-  // const [username, setUserName] = useRecoilState(Username);
   const setUserName = useSetRecoilState(Username);
-  const [userinfo, setUserinfo] = useRecoilState(Userinfo);
-  // 개인정보
-  const [userInfo, setUserInfo] = useState({
-    email: '',
-    is_vip: '',
-    username: '',
-    profile_image: '',
-  });
+  const [userInfo, setUserInfo] = useRecoilState(Userinfo);
+  // State
+  // 프로필 변경 관련
+  const [editToggle, setEditToggle] = useState(false);
+  // 히트맵 데이터
+  const [heatmapData, setHeatmapData] = useState([
+    { date: '1994-03-22', count: 0 },
+  ]);
+  const today = new Date();
+  function shiftDate(date, numDays) {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + numDays);
+    return newDate;
+  }
+  // 최근 본 면접 질문
+  const [recentInterview, setRecentInterview] = useState([]);
+  // 최근 본 강의
+  const [recentStudy, setRecentStudy] = useState([]);
+  // 즐겨찾기 한 강의
+  const [favorites, setFavorites] = useState([]);
+  // 최근 본 모의고사
+  const [recentTest, setRecentTest] = useState([]);
+  // 학습 분석 데이터
+  const [analysisData, setAnalysisData] = useState({});
+
   // 사용자 정보 가져오기
+  // console.log(userInfo);
   const getInfo = () => {
     axios
-      // .get(`${defaultAPI}/user-service/userInfo`, {
-      //   headers: { Authorization: token },
-      // })
       .get(`${defaultAPI}/user-service/token/user`, {
         params: {
           inputToken: token,
         },
       })
       .then(res => {
+        // console.log('🎃', res);
         setUserName(res.data.username);
-        setUserinfo({
+        setUserInfo({
           email: res.data.email,
           username: res.data.username,
-          isVip: res.data.is_vip,
+          is_vip: res.data.is_vip,
+          profile_image: `https://csafy-profile.s3.amazonaws.com/${res.data.profile_image}`,
         });
-        console.log('🎃', res);
-        if (res.data.profile_image === null) {
-          setUserInfo({
-            email: res.data.email,
-            is_vip: res.data.is_vip,
-            username: res.data.username,
-            profile_image: 'images/google.png',
-            user_seq: res.data.user_seq,
-          });
-        } else {
-          setUserInfo({
-            email: res.data.email,
-            is_vip: res.data.is_vip,
-            username: res.data.username,
-            profile_image: `https://csafy-profile.s3.amazonaws.com/${res.data.profile_image}`,
-            user_seq: res.data.user_seq,
-          });
-        }
       })
       .catch(err => console.error(err));
   };
-  // 히트맵 데이터 관련
-  const [heatmapData, setHeatmapData] = useState([
-    { date: '1994-03-22', count: 0 },
-  ]);
+
+  // 히트맵 데이터 api
   const getHeatmapData = () => {
     axios
       .get(`${defaultAPI}/cs-service/profile/heatmap`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('히트맵 데이터 --->', res);
+        // console.log('히트맵 데이터 --->', res);
         if (res.data) {
           setHeatmapData(res.data);
         }
@@ -169,79 +158,66 @@ function MyPage() {
       .catch(err => console.error(err));
   };
   // 최근 본 면접 질문
-  const [recentInterview, setRecentInterview] = useState([]);
   const getRecentInterviewInfo = () => {
     axios
       .get(`${defaultAPI}/cs-service/profile/interview/seen`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('최근 본 면접 질문 --->', res);
+        // console.log('최근 본 면접 질문 --->', res);
         setRecentInterview(res.data);
       })
       .catch(err => console.error(err));
   };
   // 최근 본 강의
-  const [recentStudy, setRecentStudy] = useState([]);
   const getRecentStudyInfo = () => {
     axios
       .get(`${defaultAPI}/cs-service/profile/study/seen`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('최근 본 강의 --->', res);
+        // console.log('최근 본 강의 --->', res);
         setRecentStudy(res.data);
       })
       .catch(err => console.error(err));
   };
   // 즐겨찾기 한 강의
-  const [favorites, setFavorites] = useState([]);
   const getFavorites = () => {
     axios
       .get(`${defaultAPI}/cs-service/profile/study/favorites`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('즐겨찾기 한 강의 --->', res);
+        // console.log('즐겨찾기 한 강의 --->', res);
         setFavorites(res.data);
       })
       .catch(err => console.error(err));
   };
   // 최근 본 모의고사
-  const [recentTest, setRecentTest] = useState([]);
   const getTests = () => {
     axios
       .get(`${defaultAPI}/cs-service/test/result`, {
         headers: { Authorization: token },
       })
       .then(res => {
-        console.log('최근 본 모의고사 --->', res);
+        // console.log('최근 본 모의고사 --->', res);
         setRecentTest(res.data);
       })
       .catch(err => console.error(err));
   };
-
   // 학습 분석 데이터
-  const [analysisData, setAnalysisData] = useState({});
   const getAnalysisData = () => {
     axios
       .get(`${defaultAPI}/cs-service/profile/my/scores/get`, {
         headers: { Authorization: token },
       })
-      // .get(`${defaultAPI}/cs-service/profile/scores/get`, {
-      //   params: {
-      //     email: 'mingu49699@gmail.com',
-      //     // email: 'test@naver.com',
-      //   },
-      // })
       .then(res => {
         // console.log(res);
         setAnalysisData(res.data);
       })
       .catch(err => console.error(err));
   };
-  // console.log(analysisData.scores['네트워크']);
-  // console.log(recentStudy);
+
   useEffect(() => {
     getInfo();
     getHeatmapData();
@@ -252,30 +228,49 @@ function MyPage() {
     getAnalysisData();
   }, []);
 
-  // Heatmap
-  const today = new Date();
-  function shiftDate(date, numDays) {
-    const newDate = new Date(date);
-    newDate.setDate(newDate.getDate() + numDays);
-    return newDate;
-  }
+  // --- 프로필 변경 관련 ---
+  const [editUserInfo, setEditUserInfo] = useState({
+    username: '',
+    profile_image: '',
+  });
+  // 이미지 업로드
+  const [imageSrc, setImageSrc] = useState('');
+  const [state, setState] = useState({});
+  const handleFile = e => {
+    e.preventDefault();
+    let reader = new FileReader();
+    const file = e.target.files[0];
+    console.log(e.target.files[0]);
+    reader.onloadend = () => {
+      setImageSrc(reader.result);
+      setState({ image: file });
+    };
+    reader.readAsDataURL(file);
+  };
+  // console.log(editUserInfo, state);
 
-  // 프로필 변경 관련
-  const [editToggle, setEditToggle] = useState(false);
-  // const FileSaver = require('file-saver');
-  const handleEdit = () => {
+  const handleEditToggle = () => {
     setEditToggle(!editToggle);
-    //
+  };
+  const handleEditInput = e => {
+    setEditUserInfo({
+      ...editUserInfo,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleEditButton = () => {
+    setEditToggle(!editToggle);
     const formData = new FormData();
     formData.append('username', editUserInfo.username);
-    if (state.image) {
-      formData.append('image', state.image);
-    } else {
-      formData.append(
-        'image',
-        `https://csafy-profile.s3.amazonaws.com/default/default_1.PNG`,
-      );
-    }
+    // if (state.image) {
+    formData.append('image', state.image);
+    // } else {
+    //   formData.append(
+    //     'image',
+    //     `https://csafy-profile.s3.amazonaws.com/default/default_1.PNG`,
+    //   );
+    // }
 
     // console.log('🐸', state.image);
 
@@ -289,7 +284,7 @@ function MyPage() {
         // console.log(res);
         setUserName(res.data.username);
         setUserInfo({
-          ...userinfo,
+          ...userInfo,
           username: res.data.username,
         });
         setEditUserInfo({
@@ -304,18 +299,12 @@ function MyPage() {
           profile_image: `https://csafy-profile.s3.amazonaws.com/${res.data.profileImg}`,
         });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        alert('프로필 사진을 등록해 주세요.');
+      });
   };
 
-  const handleEditToggle = () => {
-    setEditToggle(!editToggle);
-    // const file = FileSaver.saveAs(userInfo.profile_image, 'profile.jpg');
-    // setState({ image: file });
-  };
-  const [editUserInfo, setEditUserInfo] = useState({
-    username: '',
-    profile_image: '',
-  });
   // console.log(editUserInfo);
 
   useEffect(() => {
@@ -325,29 +314,8 @@ function MyPage() {
     });
   }, [editToggle]);
 
-  // console.log(editUserInfo);
-  // 이미지 업로드 관련
-  const [imageSrc, setImageSrc] = useState('');
-  const [state, setState] = useState({});
-
-  const handleFile = e => {
-    e.preventDefault();
-
-    let reader = new FileReader();
-    const file = e.target.files[0];
-    console.log(e.target.files[0]);
-    reader.onloadend = () => {
-      setImageSrc(reader.result);
-      setState({ image: file });
-    };
-    reader.readAsDataURL(file);
-  };
-  useEffect(() => {}, []);
-  // console.log(userInfo);
-
   // 프리미엄 결제
   const buyPremium = () => {
-    // 실제 적용시, 이미 프리미엄 유저인지 확인하는 것 필요 - 버튼 없앨꺼니까 괜찮
     axios({
       method: 'GET',
       url: defaultAPI + '/pay-service/kakaoPay/',
@@ -365,14 +333,16 @@ function MyPage() {
         });
       });
   };
-  // console.log('🐸', userInfo);
-  // console.log(recentStudy);
+  // 챗봇 상담
+  const handleChat = () => {
+    navigate('/chat');
+  };
+
   return (
     <>
       <MyPageWrapper>
         <MyPageContent>
           <UserInfoWrapper>
-            {/* <ReactBurger /> */}
             <UserInfo>
               {editToggle ? (
                 <div style={{ position: 'relative' }}>
@@ -460,12 +430,7 @@ function MyPage() {
                       fontSize: '24px',
                     }}
                     value={editUserInfo.username}
-                    onChange={e =>
-                      setEditUserInfo({
-                        ...editUserInfo,
-                        [e.target.name]: e.target.value,
-                      })
-                    }
+                    onChange={handleEditInput}
                   />
                 ) : (
                   <p
@@ -514,7 +479,7 @@ function MyPage() {
                       bgcolor: 'white',
                     },
                   }}
-                  onClick={handleEdit}
+                  onClick={handleEditButton}
                 >
                   변경 완료
                 </Button>
@@ -574,7 +539,7 @@ function MyPage() {
                   Premium 버전 구독하기
                 </Button>
               )}
-              {userinfo.email === 'admin@csafy.com' && (
+              {userInfo.email === 'admin@csafy.com' && (
                 <Button
                   variant="contained"
                   sx={{
@@ -596,7 +561,7 @@ function MyPage() {
                       bgcolor: 'white',
                     },
                   }}
-                  onClick={() => navigate('/chat')}
+                  onClick={handleChat}
                 >
                   채팅
                 </Button>

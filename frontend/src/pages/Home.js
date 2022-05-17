@@ -3,13 +3,13 @@ import { defaultAPI } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-// Recoil
+// RECOIL
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Token } from '../recoils/Token';
 import { Username } from '../recoils/Username';
 import { Userinfo } from '../recoils/Userinfo';
 
-// Components
+// COMPONENTS
 import AuthModal from '../components/AuthModal';
 
 // STYLED
@@ -223,7 +223,8 @@ function Home() {
         setUserinfo({
           email: res.data.email,
           username: res.data.username,
-          isVip: res.data.is_vip,
+          is_vip: res.data.is_vip,
+          profile_image: `https://csafy-profile.s3.amazonaws.com/${res.data.profile_image}`,
         });
       })
       .catch(err => console.error(err));
