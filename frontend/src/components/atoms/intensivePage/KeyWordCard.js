@@ -18,7 +18,6 @@ import { keyWordData } from "../../../recoils";
 import axios from 'axios';
 
 import {
-  FourCardDiv,
   QuestionText,
   ClickBtn,
   } from "./FourWayRace"
@@ -42,15 +41,17 @@ function KeyWordCard(props) {
   };
 
   const getData = async () => {
-    
+    const JWT = window.localStorage.getItem("jwt")
     const Url = `https://csafy.com/api/v1/cs-service/study/keyword?category=${props.Cate}&questionNum=${selecCNT}`
     axios({
       method: 'get',
       url:  Url,
-      
+      headers: {
+        Authorization: JWT
+      },
     })
     .then((res) => {
-      // console.log(res.data)
+      console.log(res.data)
       setKeyWords(res.data)
     })
     .catch(err =>{
@@ -75,19 +76,16 @@ function KeyWordCard(props) {
   }, [pageNumber])
 
   
-  const ppp = () => {
-    console.log("1111")
-  }
 
 
   if (pageNumber === 1) {
     return(
-    <FourCardDiv>
+    <KeyWordCardDiv>
       <Title>
         키워드 학습하기
       </Title>
       
-      <QuestionText>
+      {/* <QuestionText>
         📗 몇개의 키워드를 학습하고 싶나요?
       </QuestionText>
       <ClickBtn
@@ -99,17 +97,17 @@ function KeyWordCard(props) {
         onChange={(event) => setSelecCNT(event.target.value)}
         value={selecCNT}></input>
         개
-      </ClickBtn>
+      </ClickBtn> */}
       <ClickBtn
         able={"Y"}
         onClick={() => {onClickBtn(9999) }}
         >
-        모두 보여주세요
+        학습시작
       </ClickBtn>
-    </FourCardDiv>)
+    </KeyWordCardDiv>)
   }else if (pageNumber === 2) {
     return(
-    <FourCardDiv >
+    <KeyWordCardDiv >
       <QuestionText>
         📤 키워드를 선별 중입니다.
         
@@ -119,10 +117,10 @@ function KeyWordCard(props) {
       </QuestionText>
       
       <LinearWithValueLabel   setPageNumber={setPageNumber}/>
-    </FourCardDiv>)
+    </KeyWordCardDiv>)
   }else if (pageNumber === 3) {
     return(
-      <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", minWidth: "600px"}}>
+      <Box  sx={{  flexGrow: 0 , margin: "auto", width: "600px"}}>
       <Cont>
         <ItemFront>
           <Paper
@@ -132,9 +130,9 @@ function KeyWordCard(props) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: "center",
-              width: 590,
-              height: 442,
-              margin: "0 auto 0 auto",
+              width: 480,
+              height: 360,
+              margin: "auto;",
               
               bgcolor: 'background.default',
             }}
@@ -185,8 +183,9 @@ function KeyWordCard(props) {
         sx={{
           margin : "20px 0 0 0",
           borderRadius: "20px",
-          boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
-          backgroundColor: "#fff"}}
+          // boxShadow: "0 0 15px 0 rgba(0, 0, 0, 0.2)",
+          // backgroundColor: "#fff"
+        }}
         nextButton={
           <Button
             size="small"
@@ -241,25 +240,32 @@ const DarkCardText = styled.span`
 `
 
 const ItemFront = styled.div`
-  width: 100%;
+  width: 600px;
+  height: 400px;
   border :  solid ;
   font-size : 35px;
   backface-visibility : hidden;
   transition : 1s;
   border-radius: 15px;
+  margin: auto;
+  
 `
 
 const ItemBack = styled.div`
+  width: 600px;
+  height: 400px;
+  margin: auto;
   border :  solid ;
   font-size : 35px;
   backface-visibility : hidden;
   transition : 1s;
   border-radius: 15px;
+  
 `
 
 const Cont = styled.div`
   
-  height : 482px;
+  height: 400px;
   perspective: 800px;
   ${ItemFront} {
     position : absolute;
@@ -291,4 +297,18 @@ export const Title = styled.div`
   letter-spacing: normal;
   text-align: center;
   color: #000;
+`
+
+export const KeyWordCardDiv = styled.div`
+  width: 60%;
+  height: 210px;
+  flex-grow: 0;
+  margin: 10px auto 10px auto;
+  padding: 20px 7px 11px 13px;
+  border-radius: 9px;
+  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
+  background-color: #fff;
+  display: grid;
+  align-content: center;
+  justify-items: center;
 `
