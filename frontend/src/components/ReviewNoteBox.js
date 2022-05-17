@@ -63,7 +63,7 @@ const TestScore = styled.div`
 const ResultBox = styled.div`
   width: 80%;
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
   left: 50%;
   transform: translate(-50%);
 
@@ -85,7 +85,7 @@ const ResultScore = styled.li`
   // font-size: 14px;
   // color: #000;
 
-  // margin-bottom: 10px;
+  margin-bottom: 5px;
 
   display: flex;
   // align-items: center;
@@ -101,7 +101,7 @@ const LogoImg = styled.img`
 `;
 
 function ReviewNoteBox({ examDone, id, corrects, totals, round }) {
-  console.log(examDone);
+  // console.log(examDone);
   const navigate = useNavigate();
   const getSum = corrects => Object.values(corrects).reduce((a, b) => a + b);
   const getScore = data => {

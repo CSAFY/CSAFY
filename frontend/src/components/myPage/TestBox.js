@@ -82,7 +82,7 @@ const ResultScore = styled.li`
   // font-size: 14px;
   // color: #000;
 
-  // margin-bottom: 10px;
+  margin-bottom: 5px;
 
   display: flex;
   // align-items: center;

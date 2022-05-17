@@ -110,9 +110,9 @@ const Board = styled.div`
 const MyComment = styled.div`
   width: 740px;
   height: 230px;
-  border-radius: 9px;
-  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
-  background-color: #fff;
+  // border-radius: 9px;
+  // box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
+  // background-color: #fff;
 
   position: absolute;
   top: 30px;
@@ -120,10 +120,16 @@ const MyComment = styled.div`
   transform: translate(-50%);
 `;
 const CommentInput = styled.textarea`
-  width: 600px;
+  width: 680px;
+  // width: 100%;
   height: 100px;
   font-size: 20px;
   padding: 15px;
+
+  border-radius: 9px;
+  box-shadow: 0 0 11px 1px rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  border: none;
 
   position: absolute;
   top: 30px;
@@ -131,6 +137,7 @@ const CommentInput = styled.textarea`
   transform: translate(-50%);
 `;
 const CommentList = styled.div`
+  width: 710px;
   position: absolute;
   top: 325px;
   left: 50%;

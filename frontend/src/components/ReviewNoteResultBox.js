@@ -24,11 +24,11 @@ const SubTitleBox = styled.div`
 
 const Test = styled.div`
   height: 550px;
-  width: 67%;
+  width: 70%;
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
-  margin: 10px;
+  // margin: 10px;
 
   position: absolute;
   top: 60px;
@@ -83,7 +83,7 @@ const TestScore = styled.div`
 const ResultBox = styled.div`
   width: 40%;
   position: absolute;
-  bottom: 70px;
+  bottom: 30px;
   left: 50%;
   transform: translate(-50%);
 
@@ -105,7 +105,7 @@ const ResultScore = styled.li`
   // font-size: 14px;
   // color: #000;
 
-  // margin-bottom: 10px;
+  margin-bottom: 10px;
 
   display: flex;
   // align-items: center;

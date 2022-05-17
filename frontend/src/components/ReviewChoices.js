@@ -132,7 +132,7 @@ function ReviewChoices({ test, idx }) {
                   : '#FFD5D2;'
               }
             >
-              {test.examples[0]}
+              <CardContent>{test.examples[0]}</CardContent>
             </OXCard>
           </CardCoverDiv>
 
@@ -154,7 +154,7 @@ function ReviewChoices({ test, idx }) {
                   : '#FFD5D2;'
               }
             >
-              {test.examples[1]}
+              <CardContent>{test.examples[1]}</CardContent>
             </OXCard>
           </CardCoverDiv>
 
@@ -176,7 +176,7 @@ function ReviewChoices({ test, idx }) {
                   : '#FFD5D2;'
               }
             >
-              {test.examples[2]}
+              <CardContent>{test.examples[2]}</CardContent>
             </OXCard>
           </CardCoverDiv>
 
@@ -198,7 +198,7 @@ function ReviewChoices({ test, idx }) {
                   : '#FFD5D2;'
               }
             >
-              {test.examples[3]}
+              <CardContent>{test.examples[3]}</CardContent>
             </OXCard>
           </CardCoverDiv>
         </FlexDiv>
@@ -212,7 +212,8 @@ function ReviewChoices({ test, idx }) {
         <Box
           sx={{
             flexGrow: 1,
-            margin: '40px 20px 40px 20px',
+            // margin: '40px 20px 40px 20px',
+            marginBottom: '40px',
             borderRadius: '20px',
             boxShadow: '0 0 15px 0 rgba(0, 0, 0, 0.2)',
             backgroundColor: '#fff',
@@ -241,7 +242,8 @@ function ReviewChoices({ test, idx }) {
         <Box
           sx={{
             flexGrow: 1,
-            margin: '40px 20px 40px 20px',
+            // margin: '40px 20px 40px 20px',
+            marginBottom: '40px',
             borderRadius: '20px',
             boxShadow: '0 0 15px 0 rgba(0, 0, 0, 0.2)',
             backgroundColor: '#fff',
@@ -301,6 +303,9 @@ const OXCard = styled.div`
   width: 350px;
   height: 160px;
   flex-grow: 0;
+
+  // padding-left: 20px;
+  // padding-right: 20px;
 
   display: flex;
   justify-content: center;
