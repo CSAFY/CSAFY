@@ -6,6 +6,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import PublishIcon from '@mui/icons-material/Publish';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Styled
 import styled from 'styled-components';
 
@@ -136,15 +137,15 @@ export default function AudioRecorder({ cnt }) {
                   height: '50px',
                 }}
               >
-                <PublishIcon onClick={saveFile} />
+                <FileDownloadOutlinedIcon onClick={saveFile} fontSize="large" />
               </IconDiv>
             </div>
           ) : (
             <IconDiv>
               {toggleRecord ? (
-                <MicNoneIcon onClick={recordOn} />
+                <MicNoneIcon onClick={recordOn} fontSize="large" />
               ) : (
-                <MicIcon onClick={recordOff} />
+                <MicIcon onClick={recordOff} fontSize="large" />
               )}
             </IconDiv>
           )}

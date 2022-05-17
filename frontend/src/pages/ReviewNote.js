@@ -119,7 +119,7 @@ function ReviewNote() {
       })
       .catch(err => console.error(err));
   };
-  console.log(roundTestData, roundInfo);
+  // console.log(roundTestData, roundInfo);
 
   useEffect(() => {
     getReviewCount();

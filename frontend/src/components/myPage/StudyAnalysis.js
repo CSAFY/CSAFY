@@ -74,7 +74,12 @@ function StudyAnalysis({ userInfo, analysisData, recentTest }) {
           <div style={{ fontSize: '28px', fontWeight: '600' }}>
             최근 5개 모의고사 분석 결과
           </div>
-          <p style={{ fontSize: '20px' }}>평균 점수: {getAvg(scores)}점</p>
+          {getAvg(scores) === NaN ? (
+            <p style={{ fontSize: '20px' }}>평균 점수: {getAvg(scores)}점</p>
+          ) : (
+            <p style={{ fontSize: '20px' }}>평균 점수: 0점</p>
+          )}
+
           <div style={{ fontSize: '18px' }}>
             <p>과목별 점수</p>
             <ul>
