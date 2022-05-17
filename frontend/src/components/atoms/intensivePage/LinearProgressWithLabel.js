@@ -47,7 +47,7 @@ export default function LinearWithValueLabel(props) {
   }, [progress])
 
   return (
-    <Box sx={{ width: '100%', margin: "35px 0 0 0" }}>
+    <Box sx={{ width: '100%', margin: "80px 0 0 0" }}>
       <LinearProgressWithLabel value={progress} />
     </Box>
   );

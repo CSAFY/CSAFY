@@ -16,37 +16,34 @@ function QuestionList(props) {
       key={index}
       value={data.path}
       color={btncolors[index % 7]}
-      sx={{ 
-        borderRadius: "5px;",
-        boxShadow: "0 0 4px 0 rgba(0, 0, 0, 0.2);",
-        backgroundColor: "#fff;",
-        height:"60px;",
-        margin:"10px 0 10px 0;"}}
+      sx={{ borderRadius: "5px;",
+        boxShadow: "0 0 4px 0 rgba(0, 0, 0, 0.1);",
+        backgroundColor: "#fff;"}}
       >
         {data.title} 
     </ToggleButton>
   )
 
   return (
-    // <MinBox>
+    <MinBox>
       <ToggleButtonGroup
         orientation="vertical"
         value={props.value}
         exclusive
-        onChange={() => props.selectKategorie()}
+        onChange={props.selectKategorie}
         aria-label="text alignment"
         color="primary"
         disabled = {props.disabled}
-        sx={{width:"160px;", margin:"0 20px 0 0;"}}
       >
         
         {againToggleButton}
       </ToggleButtonGroup>
-    // </MinBox>
+    </MinBox>
   );
 }
 export default QuestionList;
 
 const MinBox = styled.div`
-  width: 160px;
+  min-width: 120px
+  
 `
