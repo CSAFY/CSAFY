@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "file-saver": "^2.0.5",
-    "hamburger-react": "^2.5.0",
-    "react-burger-menu": "^3.0.6"
-  }
-}
