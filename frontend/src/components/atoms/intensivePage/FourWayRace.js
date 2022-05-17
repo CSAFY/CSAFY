@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 
 import LinearWithValueLabel from "./LinearProgressWithLabel";
+import CusLinearWithValueLabel from "./CusLinearWithValueLabel";
+
+
 
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
@@ -44,6 +47,8 @@ function FourWayRace(props) {
     setSelectFour(0)
   };
 
+  const [selectAnswerCNT, setSelectAnswerCNT] = useState(0);
+
   const isCorrect= (selectCorrect) => {
     if(isCorrects[activeStep] === 0){
       const tmp = isCorrects
@@ -54,14 +59,19 @@ function FourWayRace(props) {
         tmp[activeStep] = 2
         setIsCorrects(tmp)
       }
+      setSelectAnswerCNT(selectAnswerCNT => selectAnswerCNT + 1)
     }
   }
 
   const getData = async () => {
+    // const JWT = window.localStorage.getItem("jwt")
     const Url = `https://csafy.com/api/v1/cs-service/test/multiple?category=${props.Cate}&questionNum=${selecCNT}`
     axios({
       method: 'get',
       url:  Url,
+      // headers: {
+      //   Authorization: JWT
+      // },
     })
     .then((res) => {
       // console.log(res.data)
@@ -76,12 +86,16 @@ function FourWayRace(props) {
     if (pageNumber === 2){
       getData()
       setIsCorrects([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+      setActiveStep(0)
+      setSelectAnswerCNT(0)
     }
   }, [pageNumber])
 
   useEffect(() => {
     setPageNumber(1)
     setSelecCNT(5)
+    setActiveStep(0)
+    setSelectAnswerCNT(0)
   },[props.Cate])
 
   const onClickBtn = (data) => {
@@ -132,10 +146,8 @@ function FourWayRace(props) {
         return acc
       }
     }, 0)
-    // console.log({
-    //     "subject" : props.Cate,
-    //     "score" : score
-    // })
+    
+    
     axios({
       method: 'post',
       url:  Url,
@@ -149,9 +161,15 @@ function FourWayRace(props) {
       
     })
     .then((res) => {
-      console.log(res.data)
+      // console.log(res.data)
       setResData(res.data)
       handleOpen()
+      setActiveStep(0)
+      setSelectOne(0)
+      setSelectTwo(0)
+      setSelectThree(0)
+      setSelectFour(0)
+      setSelectAnswerCNT(0)
     })
     .catch(err =>{
       console.log(err)
@@ -159,15 +177,6 @@ function FourWayRace(props) {
 
   }
 
-  const scorePost = () => {
-    if (activeStep === (maxSteps -1)){
-      return(
-        <Button onClick={() => scorePostAPI()}>
-          점수 제출하기
-        </Button>
-      )
-    }
-  }
 
   const [open, setOpen] = useState(false);
   const [resData, setResData] = useState({"prevScore": null, "nowScore":null});
@@ -262,7 +271,7 @@ function FourWayRace(props) {
     </FourCardDiv>)
   }else if (pageNumber === 2) {
     return(
-    <FourCardDiv >
+    <InterCardDiv >
       <QuestionText>
         📤 문제를 선별 중입니다.
         
@@ -272,7 +281,7 @@ function FourWayRace(props) {
       </QuestionText>
       
       <LinearWithValueLabel   setPageNumber={setPageNumber}/>
-    </FourCardDiv>)
+    </InterCardDiv>)
   }else if (pageNumber === 3) {
     return(
       <Box  sx={{  flexGrow: 1 , margin: "10px 20px 10px 20px", 
@@ -281,14 +290,14 @@ function FourWayRace(props) {
       backgroundColor: "#fff"}}>
       
       <MeaningDiv>
-        <QuestionTextDiv>
+        {/* <QuestionTextDiv> */}
           {fourWayData[activeStep].question}
-        </QuestionTextDiv>
+        {/* </QuestionTextDiv> */}
       </MeaningDiv>
 
 
       {OXCardPack}
-      {scorePost()}
+      {/* {scorePost()} */}
       <BasicModal 
         isOpen={open} 
         handleClose={handleClose} 
@@ -297,19 +306,23 @@ function FourWayRace(props) {
         Cate={props.Cate}
         >
       </BasicModal>
-      <FootBar></FootBar>
+      <CusLinearWithValueLabel 
+        selectAnswerCNT={selectAnswerCNT}
+        maxSteps={maxSteps}
+        ></CusLinearWithValueLabel>
       <MobileStepper
         variant="text"
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
+        sx={{backgroundColor: "rgba(0,0,0,0);"}}
         nextButton={
           <Button
             size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
+            onClick={activeStep === maxSteps - 1? scorePostAPI :handleNext}
+            disabled={(activeStep === maxSteps - 1) && (selectAnswerCNT !== maxSteps) || (isCorrects[activeStep] === 0)}
           >
-            Next
+            {activeStep === maxSteps - 1 ?  "제출하기":"Next"}
             {theme.direction === 'rtl' ? (
               <KeyboardArrowLeft />
             ) : (
@@ -341,6 +354,17 @@ export const FourCardDiv = styled.div`
   flex-grow: 0;
   margin: 10px auto 10px auto;
   padding: 20px 7px 11px 13px;
+  border-radius: 9px;
+  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
+  background-color: #fff;
+`
+
+export const InterCardDiv = styled.div`
+  width: 60%;
+  flex-grow: 0;
+  height: 180px;
+  margin: 10px auto 10px auto;
+  padding: 61px 7px 0 13px;
   border-radius: 9px;
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
   background-color: #fff;
@@ -421,10 +445,20 @@ const FootBar = styled.div`
 `
 
 const MeaningDiv = styled.div`
-  width : 90%;
-  height : 200PX;
-  margin : 20px auto 0 auto;
-  text-align: left;
+  width: 90%;
+  height: 150PX;
+  margin: 20px auto 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: SUIT;
+  font-size: 32px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
 `
 
 const FlexDiv = styled.div`
@@ -432,11 +466,12 @@ const FlexDiv = styled.div`
   justify-items: center;
   align-items: center;
   grid-template-columns: 1fr 1fr;
+  height: 350px
 `
 
 const CardCoverDiv = styled.div`
-  margin: 0 auto 0 auto;
-  height: 174px;
+  margin: 0 0 25px 0px;
+  
 `
 
 const OXCard = styled.div`
@@ -445,7 +480,7 @@ const OXCard = styled.div`
   flex-grow: 0;
   display: flex;
   align-items: center;
-  padding: 5px 10px;
+  padding: 5px 20px;
   border-radius: 11px;
   font-size: 20px;
   text-align: left;
