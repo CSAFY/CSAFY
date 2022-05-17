@@ -24,12 +24,16 @@ import BasicModal from '../../components/atoms/intensivePage/BasicModal';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
+
 import axios from 'axios';
 
 function StudyDetailPage() {
 
   const [videoDatas, setVideoDatas ]= useRecoilState(videoData)
-  const studyDatas = useRecoilValue(studyData)
+  const [studyDatas, setStudyDatas] = useRecoilState(studyData)
   const [beforStudy, setBeforStudy] = useState(false)
   const [afterStudy, setAfterStudy] = useState(false)
   
@@ -57,18 +61,55 @@ function StudyDetailPage() {
     setVideoDatas(afterId)
   }
 
+  const ToggleFavorites = (bools) => {
+    const JWT = window.localStorage.getItem("jwt")
+    axios({
+      method: 'post',
+      url: `https://csafy.com/api/v1/cs-service/study/${videoDatas.id}/favorites`,
+      headers: {
+        Authorization: JWT
+      },
+    })
+    .then((res) => {  
+      const tmp = { ...videoDatas}
+      tmp.favorites = bools
+      setVideoDatas(tmp)
+
+      let tmp_data = studyDatas.slice()
+      tmp_data[tmp.id - 1] = tmp
+      setStudyDatas(tmp_data)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+
 
   return (
     <FullLayOut>
       <Drawer></Drawer>
       <DetailLayOut>
         <FlexSpan>
-          <CategoryShowDiv>
-            {videoDatas.categoryId}
-          </CategoryShowDiv>
-          <CategoryShowDiv>
-            {videoDatas.category2Id}
-          </CategoryShowDiv>
+          <FlexSpan>
+            <CategoryShowDiv>
+              {videoDatas.categoryId}
+            </CategoryShowDiv>
+            <CategoryShowDiv>
+              {videoDatas.category2Id}
+            </CategoryShowDiv>
+          </FlexSpan>
+          <span>
+            {videoDatas.seen === 1? 
+              <CheckCircleOutlineSharpIcon color="success" sx={{width:`32px;`, height:`32px;`}}></CheckCircleOutlineSharpIcon>
+              : null}
+            {videoDatas.favorites === 1?
+              <StarIcon color="warning" 
+                sx={{width:`32px;`, height:`32px;`}} 
+                onClick={() => ToggleFavorites(0)}></StarIcon>
+              :<StarBorderIcon color="warning" 
+                sx={{width:`32px;`, height:`32px;`}} 
+                onClick={() => ToggleFavorites(1)}></StarBorderIcon>}
+          </span>
         </FlexSpan>
         
         <TitleText>
