@@ -28,6 +28,7 @@ import LodingPage from "../../components/atoms/intensivePage/LodingPage"
 import RelatedExam from "../../components/atoms/studypage/RelatedExam"
 import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 
+
 function IntensivePage() {
 
   const [nowCate, setNowCate] = useState('')
@@ -88,6 +89,7 @@ function IntensivePage() {
 
   return (
     <FullLayOut>
+      
       <DetailLayOut>
         
       {CategorySelect}
@@ -111,7 +113,7 @@ function IntensivePage() {
         </Routes>
       </FlexDiv>
       
-        {relatedDisPlay()}
+        {/* {relatedDisPlay()} */}
         
       </DetailLayOut>
     </FullLayOut>

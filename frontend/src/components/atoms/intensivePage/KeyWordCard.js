@@ -42,6 +42,7 @@ function KeyWordCard(props) {
   };
 
   const getData = async () => {
+    
     const Url = `https://csafy.com/api/v1/cs-service/study/keyword?category=${props.Cate}&questionNum=${selecCNT}`
     axios({
       method: 'get',
@@ -49,7 +50,7 @@ function KeyWordCard(props) {
       
     })
     .then((res) => {
-      console.log(res.data)
+      // console.log(res.data)
       setKeyWords(res.data)
     })
     .catch(err =>{
@@ -64,6 +65,7 @@ function KeyWordCard(props) {
 
   useEffect(() => {
     setPageNumber(1)
+    setSelecCNT(5)
   }, [props.Cate])
 
   useEffect(() => {
@@ -71,6 +73,12 @@ function KeyWordCard(props) {
       getData()
     }
   }, [pageNumber])
+
+  
+  const ppp = () => {
+    console.log("1111")
+  }
+
 
   if (pageNumber === 1) {
     return(
@@ -94,9 +102,9 @@ function KeyWordCard(props) {
       </ClickBtn>
       <ClickBtn
         able={"Y"}
-        onClick={() => {onClickBtn(5) }}
+        onClick={() => {onClickBtn(9999) }}
         >
-        알아서 해주세요
+        모두 보여주세요
       </ClickBtn>
     </FourCardDiv>)
   }else if (pageNumber === 2) {
@@ -152,16 +160,19 @@ function KeyWordCard(props) {
             alignItems: 'center',
             justifyContent: "center",
             height: 50,
+            margin: '10px 5px 0 5px',
             pl: 2,
             bgcolor: 'background.default',
             
           }}
         >
           <Typography sx={{padding: "10px", fontSize: "35px"}}>{keyWords[activeStep].key}</Typography>
+          
         </Paper>
-        <Box sx={{ height: 400,  width: '90%', p: 2 , padding: "20px"}}>
+        <Box sx={{ height: 380,  width: '90%', p: 2 , padding: "20px"}}>
           {keyWords[activeStep].explanation}
         </Box>
+        
         </ItemBack>
 
       </Cont>
@@ -219,6 +230,7 @@ const DarkCardDiv = styled.div`
   font-family: SUIT;
   font-size: 13px;
   background-color: #303446;
+  border-radius: 10px;
 `
 
 const DarkCardText = styled.span`
@@ -234,14 +246,15 @@ const ItemFront = styled.div`
   font-size : 35px;
   backface-visibility : hidden;
   transition : 1s;
+  border-radius: 15px;
 `
 
 const ItemBack = styled.div`
-  
   border :  solid ;
   font-size : 35px;
   backface-visibility : hidden;
   transition : 1s;
+  border-radius: 15px;
 `
 
 const Cont = styled.div`

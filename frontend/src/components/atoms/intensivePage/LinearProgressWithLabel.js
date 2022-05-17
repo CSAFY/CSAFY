@@ -34,7 +34,7 @@ export default function LinearWithValueLabel(props) {
     const timer = setInterval(() => {
       setProgress((prevProgress) => 
       (prevProgress >= 100 ? 0 : prevProgress + 1));
-    }, 40);
+    }, 20);
     return () => {
       clearInterval(timer);
     };
