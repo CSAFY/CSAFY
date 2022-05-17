@@ -6,7 +6,7 @@ const TitleBox = styled.div`
   font-weight: 600;
 
   position: absolute;
-  top: 94px;
+  top: 50px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -15,7 +15,7 @@ const SubTitleBox = styled.div`
   color: #000;
 
   position: absolute;
-  top: 129px;
+  top: 110px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -32,8 +32,13 @@ const ScoreBox = styled.div`
   height: 110px;
   width: 200px;
 
-  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
+  position: absolute;
+  top: 160px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -60,7 +65,6 @@ const Score = styled.div`
   top: 30px;
   right: 0;
 `;
-const ScoreList = styled.li``;
 
 function CSTestResultBox({ state }) {
   console.log(state);
@@ -110,56 +114,63 @@ function CSTestResultBox({ state }) {
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       {getScore(result) > 90 ? (
         <>
-          <TitleBox>정말 열심히 공부하셨군요!</TitleBox>
+          <TitleBox>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>🎉</div>
+            <div>정말 열심히 공부하셨군요!</div>
+          </TitleBox>
           <SubTitleBox>
             조금만 더 노력하면 완벽한 CS 마스터가 되실 것 같아요!
           </SubTitleBox>
         </>
       ) : (
         <>
-          <TitleBox>열심히 공부하셨군요!</TitleBox>
+          <TitleBox>
+            {' '}
+            <div style={{ display: 'flex', justifyContent: 'center' }}>🎉</div>
+            <div>정말 열심히 공부하셨군요!</div>
+          </TitleBox>
           <SubTitleBox>C;SAFY가 여러분의 꿈을 응원합니다.</SubTitleBox>
         </>
       )}
 
+      <ScoreBox>
+        <div
+          style={{
+            fontSize: '14px',
+            position: 'absolute',
+            top: '10px',
+            left: '50%',
+            transform: 'translate(-50%)',
+          }}
+        >
+          결과
+        </div>
+        <div
+          style={{
+            fontSize: '24px',
+
+            position: 'absolute',
+            top: '40px',
+            left: '50%',
+            transform: 'translate(-50%)',
+          }}
+        >
+          {getScore(result)}점
+        </div>
+        <div
+          style={{
+            fontSize: '20px',
+            position: 'absolute',
+            bottom: '15px',
+            left: '50%',
+            transform: 'translate(-50%)',
+            fontWeight: '0',
+          }}
+        >
+          ({result.rightQuestions} / {result.totalQuestions})
+        </div>
+      </ScoreBox>
       <ResultBox>
-        <ScoreBox>
-          <div
-            style={{
-              fontSize: '14px',
-              position: 'absolute',
-              top: '10px',
-              left: '50%',
-              transform: 'translate(-50%)',
-            }}
-          >
-            결과
-          </div>
-          <div
-            style={{
-              fontSize: '24px',
-
-              position: 'absolute',
-              top: '40px',
-              left: '50%',
-              transform: 'translate(-50%)',
-            }}
-          >
-            {getScore(result)}점
-          </div>
-          <div
-            style={{
-              fontSize: '20px',
-              position: 'absolute',
-              bottom: '15px',
-              left: '50%',
-              transform: 'translate(-50%)',
-            }}
-          >
-            ({result.rightQuestions} / {result.totalQuestions})
-          </div>
-        </ScoreBox>
-
         <Result>
           <Score>
             {result.totals.네트워크 === 0 ? (
@@ -237,15 +248,11 @@ function CSTestResultBox({ state }) {
             )}{' '}
             ({result.corrects.컴퓨터구조} / {result.totals.컴퓨터구조})
           </Score>
-          <div
-            style={{ fontSize: '12px', fontWeight: '600', color: '#a4a4a4' }}
-          >
-            과목별 결과
-          </div>
+          <div style={{ fontSize: '12px', color: '#a4a4a4' }}>과목별 결과</div>
           <ul
             style={{
               fontSize: '14px',
-              fontWeight: '600',
+              // fontWeight: '600',
               paddingLeft: '20px',
             }}
           >
