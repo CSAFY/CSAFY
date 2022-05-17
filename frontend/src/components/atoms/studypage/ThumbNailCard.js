@@ -89,9 +89,15 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
   return (
     <CardBox>
       <InforDiv>
-        <CategoryShowDiv>
-          {category2Id}
-        </CategoryShowDiv>
+        <FlexSpan>
+          <CategoryShowDiv>
+            {categoryId}
+          </CategoryShowDiv>
+          <CategoryShowDiv>
+            {category2Id}
+          </CategoryShowDiv>
+        </FlexSpan>
+        
         <span>
           {isEnd()}
           {ToggleStar()}
@@ -118,19 +124,22 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
 }
 export default ThumbNailCard
 
+const FlexSpan = styled.span`  
+  display: flex;
+`
+
 const CardBox = styled.div`
   width: 40%;
   min-width: 330px;
   height: 270px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 0 12px  4px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
-  margin : 1em;
   border-radius: 15px;
-  
+  margin-bottom: 2em;
   ${
     css`
     :hover{
-      box-shadow: 0 8px 16px 0 rgba(0, 125, 207, 0.48);
+      box-shadow: 0 0 12px  4px rgba(0, 125, 207, 0.3);
     }
     `
   }
@@ -163,6 +172,7 @@ const InforDiv = styled.div`
 
 const CategoryShowDiv = styled.div` 
   flex-grow: 0;
+  margin: 0 2px 0 2px;
   padding: 4px 10px 4px 10px;
   border-radius: 48px;
   background-color: #DEF9FF;
