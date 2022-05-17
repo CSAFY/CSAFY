@@ -68,7 +68,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userRankList.add(userBadge.getBadge().getId());
         }
-        int len = userRankList.size();
+        int len = rankList.size();
 
         for(int i = len-1 ; i>= 0; i--){
             if(rankList.get(i) <= totalScore && !userRankList.contains((long)(i+9))){
@@ -90,7 +90,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userOSList.add(userBadge.getBadge().getId());
         }
-        int len = userOSList.size();
+        int len = osList.size();
 
         for(int i = len-1 ; i>= 0; i--){
             if(osList.get(i) <= nowScore && !userOSList.contains((long)(i+12))){
@@ -111,7 +111,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userDBList.add(userBadge.getBadge().getId());
         }
-        int len = userDBList.size();
+        int len = dbList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(dbList.get(i) <= nowScore && !userDBList.contains((long)(i+15))){
                 UserBadge nowUserBadge = new UserBadge();
@@ -131,7 +131,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userNetworkList.add(userBadge.getBadge().getId());
         }
-        int len = userNetworkList.size();
+        int len = networkList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(networkList.get(i) <= nowScore && !userNetworkList.contains((long)(i+18))){
                 UserBadge nowUserBadge = new UserBadge();
@@ -153,7 +153,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userStructureList.add(userBadge.getBadge().getId());
         }
-        int len = userStructureList.size();
+        int len = structureList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(structureList.get(i) <= nowScore && !userStructureList.contains((long)(i+21))){
                 UserBadge nowUserBadge = new UserBadge();
@@ -173,7 +173,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userComputerList.add(userBadge.getBadge().getId());
         }
-        int len = userComputerList.size();
+        int len = computerList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(computerList.get(i) <= nowScore && !userComputerList.contains((long)(i+24))){
                 UserBadge nowUserBadge = new UserBadge();
@@ -194,7 +194,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userEtcList.add(userBadge.getBadge().getId());
         }
-        int len = userEtcList.size();
+        int len = etcList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(etcList.get(i) <= nowScore && !userEtcList.contains((long)(i+27))){
                 UserBadge nowUserBadge = new UserBadge();
@@ -215,7 +215,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userStudyList.add(userBadge.getBadge().getId());
         }
-        int len = userStudyList.size();
+        int len = studyList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(studyList.get(i) <= studyCount && !userStudyList.contains((long)(i+30))){
                 UserBadge nowUserBadge = new UserBadge();
@@ -237,7 +237,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userInterviewList.add(userBadge.getBadge().getId());
         }
-        int len = userInterviewList.size();
+        int len = interviewList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(interviewList.get(i) <= interviewCount && !userInterviewList.contains((long)(i+33))){
                 UserBadge nowUserBadge = new UserBadge();
@@ -259,7 +259,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userExamList.add(userBadge.getBadge().getId());
         }
-        int len = userExamList.size();
+        int len = examList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(examList.get(i) <= examCount && !userExamList.contains((long)(i+36))){
                 UserBadge nowUserBadge = new UserBadge();
@@ -281,7 +281,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userOXList.add(userBadge.getBadge().getId());
         }
-        int len = userOXList.size();
+        int len = oxList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(oxList.get(i) <= oxCount && !userOXList.contains((long)(i+39))){
                 UserBadge nowUserBadge = new UserBadge();
@@ -302,7 +302,7 @@ public class BadgeService {
         for(UserBadge userBadge : userBadgeList){
             userMultipleList.add(userBadge.getBadge().getId());
         }
-        int len = userMultipleList.size();
+        int len = multipleList.size();
         for(int i = len-1 ; i>= 0; i--){
             if(multipleList.get(i) <= multipleCount && !userMultipleList.contains((long)(i+42))){
                 UserBadge nowUserBadge = new UserBadge();
