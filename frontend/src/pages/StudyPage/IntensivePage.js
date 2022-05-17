@@ -6,8 +6,6 @@ import {
   GridDiv
  } from "./IntensivePage.styled"
 
-import "../../components/atoms/intensivePage/DelInputArrow.css"
-
 import { useEffect,  useState } from "react";
 import {  Route,  Routes, useLocation  } from 'react-router';
 import axios from 'axios';
@@ -33,7 +31,7 @@ import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 
 function IntensivePage() {
 
-  const [nowCate, setNowCate] = useState('자료구조')
+  const [nowCate, setNowCate] = useState('')
   const [nowChoice, setNowChoice] = useState('')
   const categorys = useRecoilValue(category)
   const choice = [{ title : "키워드 학습", path : "KeyWordCard"}, 
@@ -56,16 +54,15 @@ function IntensivePage() {
   )
   
   const CategorySelect = (
-    <Box sx={{ width: 160 }}>
+    <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">과목</InputLabel>
+        <InputLabel id="demo-simple-select-label">카테고리</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={nowCate}
-          label="과목"
+          label="카테고리"
           onChange={cateChange}
-          defaultValue={"전체"}
         >
           {CategoryItems}
         </Select>
