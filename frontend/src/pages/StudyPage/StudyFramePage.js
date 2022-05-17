@@ -27,10 +27,7 @@ function StudyFramePage() {
     setKategorie(event)
   }
 
-  const [searchValue, setSearchValue] = useState("")
-  const onChange = (event) =>{
-    setSearchValue(event.target.value)
-  }
+  
 
   
   const [toggle, setToggle] = useState(false);
@@ -40,6 +37,9 @@ function StudyFramePage() {
   };
   
   const [studyDatas, setStudyData] = useRecoilState(studyData)
+  const categori = useRecoilValue(category)
+
+
   const getData = async () => {
     const JWT = window.localStorage.getItem("jwt")
     
@@ -58,6 +58,7 @@ function StudyFramePage() {
       console.log(err)
     })
   }
+
   useEffect(() => {
     
     getData();
@@ -110,8 +111,6 @@ function StudyFramePage() {
       }
   )
 
-  
-  const categori = useRecoilValue(category)
   
 
   return (

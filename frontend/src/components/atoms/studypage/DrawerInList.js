@@ -58,6 +58,7 @@ export default function DrawerInList(props) {
               "favorites" : data.favorites,
               "id" : data.id,
               "seen" : data.seen })}} 
+              sx={{ background: "#84c2ea;", border: " solid", marginTop: "5px"}}
               >
               <ListItemText primary={data.title} />
             </ListItem>
@@ -81,10 +82,10 @@ export default function DrawerInList(props) {
         id={`panel${index + 1}bh-header`}
         sx={{ margin:"10px 0 0 0;"}}
       >
-        <Typography sx={{ width: "90%;", flexShrink: 0,  }}>{categoryId}</Typography>
+        <Typography sx={{ width: "90%;", flexShrink: 0,  }}>{categoryId} /{studyDatas.filter(element => categoryId === element.categoryId).length}</Typography>
       </AccordionSummary>
       <AccordionDetails
-        sx={{background: "#84c2ea;", overflowY : "scroll;", maxHeight: "500px;"}}>
+        sx={{ overflowY : "scroll;", maxHeight: "500px;"}}>
         
         {ListItems(categoryId)}
         
