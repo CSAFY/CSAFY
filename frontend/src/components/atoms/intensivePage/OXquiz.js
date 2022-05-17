@@ -53,14 +53,14 @@ function OXquiz(props) {
   };
 
   const getData = async () => {
-    const JWT = window.localStorage.getItem("jwt")
+    // const JWT = window.localStorage.getItem("jwt")
     const Url = `https://csafy.com/api/v1/cs-service/study/multiple/ox?category=${props.Cate}&questionNum=${selecCNT}`
     axios({
       method: 'get',
       url:  Url,
-      headers: {
-        Authorization: JWT
-      },
+      // headers: {
+      //   Authorization: JWT
+      // },
     })
     .then((res) => {
       // console.log(res.data)
