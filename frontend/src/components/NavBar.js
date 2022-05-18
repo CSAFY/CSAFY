@@ -11,11 +11,7 @@ import {
   oxquizData,
   videoData,
   studyData,
-<<<<<<< HEAD
   likeKeyWord } from '../recoils'
-=======
-} from '../recoils';
->>>>>>> 60a29911260f1ac80599e7cc235e965970c48475
 import { Userinfo } from '../recoils/Userinfo';
 import { Username } from '../recoils/Username';
 import { CurrentPage } from '../recoils/CurrentPage';
