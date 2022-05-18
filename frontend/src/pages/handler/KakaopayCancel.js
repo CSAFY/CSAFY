@@ -31,7 +31,7 @@ const KakaopayCancel = () => {
       .then(result => {
         if (result.dismiss === swal.DismissReason.timer) {
           // 타이머 종료
-          navigate('/');
+          navigate('/mypage');
         }
       });
   }, []);

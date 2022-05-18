@@ -42,7 +42,8 @@ const signupStyle = {
 };
 
 const HomeWrapper = styled.div`
-  background-image: url(/images/main-background.png);
+  // background-image: url(/images/main-background.png);
+  background-image: url(/images/back-tmp.png);
   background-size: contain;
   // background-size: cover;
   background-repeat: no-repeat;
@@ -77,6 +78,9 @@ const HeroMain = styled.div``;
 const HeroImage = styled.img`
   width: 1202px;
   height: 747px;
+  // box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
   flex-grow: 0;
 `;
 
@@ -97,7 +101,7 @@ const DataContent = styled.div`
 
 const InfoWrapper = styled.section`
   width: 100%;
-  height: 800px;
+  height: 1000px;
   background-color: #f1fcff;
 
   display: flex;
@@ -127,12 +131,13 @@ const MetaContent = styled.div`
 const MetaImage = styled.img`
   width: 663px;
   height: 453px;
-  border: 1px solid black;
+  border-radius: 15px;
+  // border: 1px solid black;
 `;
 
 const PlusWrapper = styled.section`
   width: 100%;
-  height: 800px;
+  height: 1000px;
 
   background-color: #d4effa;
   padding-top: 100px;
@@ -151,9 +156,9 @@ const PlusContent = styled.div`
   align-items: center;
   position: relative;
 `;
-const PlusImage = styled.img`
+const MockImage = styled.img`
   width: 80vw;
-  height: 500px;
+  // height: 550px;
 
   margin-top: 5rem;
 `;
@@ -326,7 +331,7 @@ function Home() {
           >
             바로 시작하기
           </Button>
-          <HeroImage src="images/heroimg.png" alt="Img" />
+          <HeroImage src="images/hero.png" alt="Img" />
         </HeroContent>
       </HeroWrapper>
       <DataWrapper>
@@ -375,7 +380,7 @@ function Home() {
           </div>
           <Fade right>
             <img
-              src="images/graph1.png"
+              src="images/radar.png"
               alt="Graph1"
               style={{
                 position: 'absolute',
@@ -385,7 +390,7 @@ function Home() {
               }}
             />
             <img
-              src="images/graph2.png"
+              src="images/bar.png"
               alt="Graph2"
               style={{
                 position: 'absolute',
@@ -396,7 +401,7 @@ function Home() {
               }}
             />
             <img
-              src="images/card1.png"
+              src="images/csafy-github.png"
               alt="Card1"
               style={{
                 position: 'absolute',
@@ -414,8 +419,8 @@ function Home() {
         <InfoContent>
           <Fade left>
             <img
-              src="images/info1.png"
-              alt="Info1"
+              src="images/study1.png"
+              alt="Study1"
               style={{
                 position: 'absolute',
                 top: '50px',
@@ -425,7 +430,7 @@ function Home() {
               }}
             />
             <img
-              src="images/info2.png"
+              src="images/study2.png"
               alt="Info2"
               style={{
                 position: 'absolute',
@@ -436,7 +441,7 @@ function Home() {
               }}
             />
             <img
-              src="images/info3.png"
+              src="images/study3.png"
               alt="Info3"
               style={{
                 position: 'absolute',
@@ -547,7 +552,7 @@ function Home() {
             </div>
           </div>
           <Fade right>
-            <MetaImage src="images/Meta.png" alt="Meta" />
+            <MetaImage src="images/meta.gif" alt="Meta" />
           </Fade>
         </MetaContent>
       </MetaWrapper>
@@ -586,7 +591,7 @@ function Home() {
             </div>
           </div>
           <Fade bottom>
-            <PlusImage src="images/plusImg.png" alt="PlusAlpha" />
+            <MockImage src="images/mock.png" alt="Mock" />
           </Fade>
           <ButtonBox>
             <Button

@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
-import { Navigate, useNavigate } from 'react-router-dom';
-// Components
-import ReviewNoteBox from '../components/ReviewNoteBox';
-import Choices from '../components/Choices';
-import ReviewChoices from '../components/ReviewChoices';
-import NeedLogin from './handler/NeedLogin';
-// Recoil
-import { useRecoilState } from 'recoil';
+
+// RECOIL
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
 import { NavToggle } from '../recoils/NavToggle';
+
+// COMPONENTS
+import ReviewNoteBox from '../components/ReviewNoteBox';
+import NeedLogin from './handler/NeedLogin';
+
 // STYLED
 import styled from 'styled-components';
 import { Grid } from '@mui/material';
-import TestBox from '../components/myPage/TestBox';
 
 const ReviewNoteWrapper = styled.div`
   width: 100%;
@@ -53,21 +52,26 @@ const TestList = styled.div`
 `;
 
 function ReviewNote() {
-  const navigate = useNavigate();
   // Recoil
-  const [token, setToken] = useRecoilState(Token);
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
-  const [toggle, setToggle] = useRecoilState(NavToggle);
-
-  // 테스트 정보 가져오기
-  const [testResultInfo, setTestResultInfo] = useState({
-    corrects: { 네트워크: 1 },
-    totals: { 네트워크: 1 },
-    examDone: '',
-    id: '',
-  });
+  const token = useRecoilValue(Token);
+  const isLoggedIn = useRecoilValue(LoginState);
+  const setToggle = useSetRecoilState(NavToggle);
   // 본 모의고사 갯수(라운드)
   const [round, setRound] = useState(0);
+  // 모의고사 정답 정보 가져오기 - 라운드 별
+  const [roundTestData, setRoundTestData] = useState([]);
+  // 모의고사 오답 정보 가져오기 - 라운드 별
+  const [roundInfo, setRoundInfo] = useState([]);
+
+  // // 테스트 정보 가져오기
+  // const [testResultInfo, setTestResultInfo] = useState({
+  //   corrects: { 네트워크: 1 },
+  //   totals: { 네트워크: 1 },
+  //   examDone: '',
+  //   id: '',
+  // });
+
+  // 본 모의고사 갯수(라운드)
   const getReviewCount = () => {
     axios
       .get(`${defaultAPI}/cs-service/study/problem/wrongCount`, {
@@ -87,7 +91,6 @@ function ReviewNote() {
   }, [round]);
 
   // 모의고사 정답 정보 가져오기 - 라운드 별
-  const [roundTestData, setRoundTestData] = useState([]);
   const getRoundTestInfo = round => {
     axios
       .get(`${defaultAPI}/cs-service/test/${round}/result`, {
@@ -108,8 +111,8 @@ function ReviewNote() {
       })
       .catch(err => console.error(err));
   };
+
   // 모의고사 오답 정보 가져오기 - 라운드 별
-  const [roundInfo, setRoundInfo] = useState([]);
   const getRoundReviewData = round => {
     axios
       .get(`${defaultAPI}/cs-service/study/problem/${round}/wrong`, {
@@ -131,38 +134,73 @@ function ReviewNote() {
   const testHeight = 250 + roundTestData.length * 250;
 
   return (
-    <ReviewNoteWrapper style={{ height: `${testHeight}px` }}>
-      <ReviewNoteContent>
-        {/* 카테고리 분류 버전 */}
-        {isLoggedIn ? (
-          <>
-            <PageTitle>
-              <div
-                style={{
-                  fontSize: '24px',
-                  fontWeight: '600',
-                }}
-              >
-                오답노트
-              </div>
-            </PageTitle>
+    <>
+      {/* 카테고리 분류 버전 */}
+      {isLoggedIn ? (
+        <>
+          {round !== 0 ? (
+            <>
+              {' '}
+              <ReviewNoteWrapper style={{ height: `${testHeight}px` }}>
+                <ReviewNoteContent>
+                  <PageTitle>
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: '600',
+                      }}
+                    >
+                      오답노트
+                    </div>
+                  </PageTitle>
 
-            <Grid container>
-              {roundTestData &&
-                roundTestData.map((data, idx) => (
-                  <Grid item xs={3}>
-                    <ReviewNoteBox key={idx} {...data} />
+                  <Grid container>
+                    {roundTestData &&
+                      roundTestData.map((data, idx) => (
+                        <Grid item xs={3} key={idx}>
+                          <ReviewNoteBox {...data} />
+                        </Grid>
+                      ))}
                   </Grid>
-                ))}
-            </Grid>
-          </>
-        ) : (
-          <>
+                </ReviewNoteContent>
+              </ReviewNoteWrapper>
+            </>
+          ) : (
+            <>
+              <ReviewNoteWrapper style={{ height: `100vh` }}>
+                <ReviewNoteContent>
+                  <PageTitle>
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: '600',
+                      }}
+                    >
+                      오답노트
+                    </div>
+                  </PageTitle>
+
+                  <Grid container>
+                    {roundTestData &&
+                      roundTestData.map((data, idx) => (
+                        <Grid item xs={3} key={idx}>
+                          <ReviewNoteBox {...data} />
+                        </Grid>
+                      ))}
+                  </Grid>
+                </ReviewNoteContent>
+              </ReviewNoteWrapper>
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <div style={{ height: '100vh' }}>
             <NeedLogin />
-          </>
-        )}
-      </ReviewNoteContent>
-    </ReviewNoteWrapper>
+          </div>
+        </>
+      )}
+    </>
   );
 }
 
