@@ -302,7 +302,7 @@ function AuthModal({ state, setState, setSignup, setModal }) {
             style={{
               height: '20px',
               fontSize: '16px',
-              paddingBottom: '3rem',
+              paddingBottom: '20px',
               margin: '0',
             }}
           >
@@ -430,8 +430,8 @@ function AuthModal({ state, setState, setSignup, setModal }) {
                 height: '57px',
                 textAlign: 'center',
                 display: 'block',
-                mt: '1rem',
-                mb: '1rem',
+                mt: '10px',
+                // mb: '1rem',
                 bgcolor: '#008ED0',
                 ':hover': {
                   color: '#006D9F',
@@ -454,7 +454,7 @@ function AuthModal({ state, setState, setSignup, setModal }) {
                 height: '57px',
                 textAlign: 'center',
                 display: 'block',
-                mt: '1rem',
+                // mt: '1rem',
                 border: '1px solid lightgray',
                 ':hover': {
                   color: '#006D9F',

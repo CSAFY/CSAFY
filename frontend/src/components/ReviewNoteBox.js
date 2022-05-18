@@ -9,7 +9,14 @@ const Test = styled.div`
   height: 400px;
   border-radius: 10px;
   background-color: #fff;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.12);
   margin: 10px;
+
+  &:hover {
+    background-color: #fff;
+    box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
+    transform: scale(1.05);
+  }
 
   cursor: pointer;
 

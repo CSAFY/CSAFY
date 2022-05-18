@@ -16,7 +16,7 @@ import AudioRecorder from '../components/AudioRecorder';
 
 const InterviewResultWrapper = styled.div`
   width: 100%;
-  height: 1300px;
+  height: 1200px;
   // width: 100%;
   // height: 100vh;
   // padding-bottom: 100px;
@@ -44,14 +44,15 @@ const QuestionBox = styled.div`
   align-items: center;
 
   position: absolute;
-  top: 135px;
+  top: 50px;
   left: 50%;
   transform: translate(-50%);
 `;
 const Question = styled.div`
-  width: 536px;
+  // width: 600px;
+  width: 80%;
   height: 165px;
-  font-size: 18px;
+  font-size: 28px;
   font-weight: 600;
   text-align: center;
   color: #000;
@@ -86,8 +87,15 @@ const NextButton = styled.button`
   height: 32px;
 
   border-radius: 12px;
-  border: solid 1px #000;
-  background-color: #f5f5f5;
+  background-color: #fff;
+  border: none;
+
+  &:hover {
+    background-color: #008ed0;
+    box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
+    color: #fff;
+    // transform: scale(1.05);
+  }
 
   position: absolute;
   top: 20px;
@@ -115,7 +123,7 @@ const StepBox = styled.div`
 
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 30px;
 `;
 const MemoBox = styled.div`
   width: 840px;
@@ -126,7 +134,7 @@ const MemoBox = styled.div`
   align-items: center;
 
   position: absolute;
-  top: 750px;
+  top: 660px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -154,43 +162,27 @@ const MemoTtitle = styled.div`
 `;
 const SaveButton = styled.button`
   width: 100px;
-  height: 32px;
+  height: 38px;
 
   border-radius: 12px;
-  border: solid 1px #000;
-  background-color: #f5f5f5;
+  // border: solid 1px #000;
+  // background-color: #f5f5f5;
+  border: none;
+  background-color: #fff;
+  font-weight: 600;
+
+  &:hover {
+    background-color: #008ed0;
+    box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
+    color: #fff;
+    // transform: scale(1.05);
+  }
 
   position: absolute;
   bottom: 20px;
-  right: 10px;
+  right: 0px;
 
   cursor: pointer;
-`;
-const StudyBox = styled.div`
-  width: 840px;
-  height: 394px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: absolute;
-  top: 1150px;
-  left: 50%;
-  transform: translate(-50%);
-`;
-const MyMemo = styled.div`
-  width: 790px;
-  height: 154px;
-  border-radius: 9px;
-  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
-  background-color: #fff;
-  border: none;
-
-  font-size: 18px;
-  font-weight: 600;
-
-  padding: 50px;
 `;
 
 function InterviewTest() {
@@ -217,6 +209,7 @@ function InterviewTest() {
   const [cnt, setCnt] = useState(1);
   // 질문
   const [question, setQuestion] = useState('');
+  const [toggleSave, setToggleSave] = useState(false);
   // 다음 문제로 넘어가기
   const nextQuestion = () => {
     if (cnt === testData.length) {
@@ -238,11 +231,13 @@ function InterviewTest() {
   };
   // 처음 문제로 돌아가기
   const toStart = () => {
-    // setCnt(1);
-    // setQuestion(testData[0]['question']);
-    // setSeq(testData[0]['interviewSeq']);
-    navigate('/interviewList');
+    setCnt(0);
+    setQuestion(testData[0]['question']);
+    setSeq(testData[0]['interviewSeq']);
+
+    // navigate('/interviewList');
   };
+  // console.log(toggleSave);
   // const prevQuestion = () => {
   //   setQuestion(dummyData[cnt]['question']);
   //   console.log('3', cnt);
@@ -384,13 +379,16 @@ function InterviewTest() {
         <QuestionBox>
           {/* <PrevButton onClick={prevQuestion}>이전</PrevButton> */}
           <StepBox>
-            {cnt}/{testData.length}
+            {cnt} / {testData.length}
           </StepBox>
           {cnt !== testData.length ? (
             <NextButton onClick={nextQuestion}>다음</NextButton>
           ) : (
-            <NextButton onClick={toStart}>면접 종료</NextButton>
+            <NextButton onClick={toStart}>처음으로</NextButton>
           )}
+          {/* {cnt !== testData.length && (
+            <NextButton onClick={nextQuestion}>다음</NextButton>
+          )} */}
 
           <Question>{question}</Question>
 
@@ -402,6 +400,22 @@ function InterviewTest() {
             <div style={widthStyle}></div>
           </Progress>
         </QuestionBox>
+
+        {cnt === testData.length && (
+          <NextButton
+            style={{
+              height: '40px',
+              position: 'absolute',
+              top: '600px',
+              left: '50%',
+              transform: 'translate(-50%)',
+            }}
+            onClick={() => navigate('/interviewList')}
+          >
+            면접 종료
+          </NextButton>
+        )}
+
         <MemoBox>
           <MemoTtitle>메모</MemoTtitle>
           <Memo value={memo} onChange={handleMemo} />

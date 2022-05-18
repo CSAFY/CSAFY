@@ -4,10 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // RECOIL
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil';
 import { Token } from '../recoils/Token';
 import { Username } from '../recoils/Username';
 import { Userinfo } from '../recoils/Userinfo';
+// 로그아웃 관련
+// RECOIL
+import { LoginState } from '../recoils/LoginState';
+import {
+  keyWordData,
+  fourWayRaceData,
+  oxquizData,
+  videoData,
+  studyData,
+} from '../recoils';
+import { CurrentPage } from '../recoils/CurrentPage';
+import { NavToggle } from '../recoils/NavToggle';
 
 // COMPONENTS
 import StudyAnalysis from '../components/myPage/StudyAnalysis';
@@ -21,9 +33,10 @@ import ReactTooltip from 'react-tooltip';
 
 // STYLED
 import styled from 'styled-components';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import swal from 'sweetalert2';
+import MyBadge from '../components/MyBadge';
 
 const MyPageWrapper = styled.div`
   width: 100vw;
@@ -90,13 +103,69 @@ const StudyAnalysisWrapper = styled.div`
 const VideoWrapper = styled.div`
   // padding-top: 50px;
 `;
+const BadgeWrapper = styled.div`
+  height: 380px;
+
+  position: relative;
+`;
+
+const Badges = styled.div`
+  fontsize: 28px;
+  // border: 1px solid black;
+  width: 985px;
+  // height: 160px;
+  background: #fff;
+  border-radius: 10px;
+
+  display: flex;
+  // justifycontent: center;
+  align-items: center;
+
+  position: absolute;
+  top: 100px;
+  left: 150px;
+`;
 
 function MyPage() {
   const navigate = useNavigate();
+  // 로그아웃 관련
   // Recoil
-  const token = useRecoilValue(Token);
+  const setIsLoggedIn = useSetRecoilState(LoginState);
+  const [token, setToken] = useRecoilState(Token);
+  const setToggle = useSetRecoilState(NavToggle);
+  //reset용 recoil
+  const resetKeyWordData = useResetRecoilState(keyWordData);
+  const resetFourWayRaceData = useResetRecoilState(fourWayRaceData);
+  const resetOXQuizData = useResetRecoilState(oxquizData);
+  const resetVideoData = useResetRecoilState(videoData);
+  const resetStudyData = useResetRecoilState(studyData);
   const setUserName = useSetRecoilState(Username);
   const [userInfo, setUserInfo] = useRecoilState(Userinfo);
+  const setCurrentPage = useSetRecoilState(CurrentPage);
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('study_data_token');
+    localStorage.removeItem('four_way_Race_data_token');
+    localStorage.removeItem('keyWord_data_token');
+    localStorage.removeItem('oxquiz_data_token');
+    localStorage.removeItem('video_data_token');
+    // Recoil
+    setIsLoggedIn(false);
+    setToken('');
+    setUserInfo({});
+    setUserName('');
+    resetKeyWordData();
+    resetFourWayRaceData();
+    resetOXQuizData();
+    resetVideoData();
+    resetStudyData();
+    // 이동
+    navigate('/');
+    setCurrentPage('/');
+    setToggle(false);
+  };
+
   // State
   // 프로필 변경 관련
   const [editToggle, setEditToggle] = useState(false);
@@ -120,6 +189,8 @@ function MyPage() {
   const [recentTest, setRecentTest] = useState([]);
   // 학습 분석 데이터
   const [analysisData, setAnalysisData] = useState({});
+  // 뱃지 데이터
+  const [badges, setBadges] = useState([]);
 
   // 사용자 정보 가져오기
   // console.log(userInfo);
@@ -217,6 +288,18 @@ function MyPage() {
       })
       .catch(err => console.error(err));
   };
+  // 뱃지
+  const getBadge = () => {
+    axios
+      .get(`${defaultAPI}/cs-service/profile/badge`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        // console.log(res);
+        setBadges(res.data);
+      })
+      .catch(err => console.error(err));
+  };
 
   useEffect(() => {
     getInfo();
@@ -226,6 +309,7 @@ function MyPage() {
     getFavorites();
     getTests();
     getAnalysisData();
+    getBadge();
   }, []);
 
   // --- 프로필 변경 관련 ---
@@ -338,6 +422,9 @@ function MyPage() {
     navigate('/chat');
   };
 
+  const badgeWrapperHeight = 300 + parseInt(badges.length / 10) * 80;
+
+  // console.log(badgeWrapperHeight);
   return (
     <>
       <MyPageWrapper>
@@ -440,6 +527,9 @@ function MyPage() {
                       height: '30px',
                       width: '179px',
                       fontSize: '24px',
+                      border: 'none',
+                      borderRadius: '10px',
+                      marginBottom: '4px',
                     }}
                     value={editUserInfo.username}
                     onChange={handleEditInput}
@@ -578,9 +668,37 @@ function MyPage() {
                   채팅
                 </Button>
               )}
+              <Button
+                variant="contained"
+                sx={{
+                  // width: '213px',
+                  height: '40px',
+                  textAlign: 'center',
+                  display: 'block',
+                  marginLeft: '20px',
+                  border: '1px solid contained',
+                  borderRadius: '7px',
+                  backgroundColor: '#fff',
+
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  color: '#000',
+
+                  ':hover': {
+                    color: '#008ed0',
+                    bgcolor: 'white',
+                  },
+
+                  position: 'absolute',
+                  right: '10px',
+                }}
+                onClick={handleLogout}
+              >
+                로그아웃
+              </Button>
             </UserInfo>
           </UserInfoWrapper>
-          <hr />
+          <hr style={{ color: '#D7E4EC' }} />
           <StudyAnalysisWrapper>
             <StudyAnalysis
               userInfo={userInfo}
@@ -598,7 +716,15 @@ function MyPage() {
               transform: 'translate(-50%)',
             }}
           >
-            <h2 style={{ marginLeft: '50px' }}>나의 학습일지</h2>
+            <h2
+              style={{
+                fontSize: '28px',
+                marginLeft: '30px',
+                marginBottom: '10px',
+              }}
+            >
+              나의 학습일지
+            </h2>
             {heatmapData && (
               <>
                 <CalendarHeatmap
@@ -677,6 +803,27 @@ function MyPage() {
               </Color>
             </ColorBox>
           </div>
+          <BadgeWrapper style={{ height: `${badgeWrapperHeight}px` }}>
+            <h2
+              style={{
+                fontSize: '28px',
+
+                position: 'absolute',
+                left: '150px',
+              }}
+            >
+              나의 뱃지
+            </h2>
+            <Badges>
+              <Box
+                sx={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)' }}
+              >
+                {badges.map(badge => (
+                  <MyBadge key={badge.badgeSeq} {...badge} />
+                ))}
+              </Box>
+            </Badges>
+          </BadgeWrapper>
           <VideoWrapper>
             <h1 style={{ textAlign: 'center' }}>즐겨찾는 학습</h1>
             <div
@@ -727,13 +874,19 @@ function MyPage() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                fontSize: '13px',
+                fontSize: '14px',
                 cursor: 'pointer',
               }}
               onClick={() => navigate('/interview')}
             >
               면접 연습하러 가기
-              <ArrowForwardIosIcon fontSize="small" />
+              <ArrowForwardIosIcon
+                fontSize="small"
+                sx={{
+                  marginLeft: '4px',
+                  marginBottom: '2px',
+                }}
+              />
             </div>
             {recentInterview &&
               recentInterview.map(info => (
