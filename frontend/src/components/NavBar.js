@@ -8,7 +8,8 @@ import { keyWordData,
   fourWayRaceData,
   oxquizData,
   videoData,
-  studyData } from '../recoils'
+  studyData,
+  likeKeyWord } from '../recoils'
 import { Userinfo } from '../recoils/Userinfo';
 import { Username } from '../recoils/Username';
 import { CurrentPage } from '../recoils/CurrentPage';
@@ -108,6 +109,8 @@ const NavBar = () => {
   const resetOXQuizData = useResetRecoilState(oxquizData)
   const resetVideoData = useResetRecoilState(videoData)
   const resetStudyData = useResetRecoilState(studyData)
+  const resetLikeKeyWord = useResetRecoilState(likeKeyWord)
+  
 
   const [userinfo, setUserinfo] = useRecoilState(Userinfo);
   const [usename, setUsername] = useRecoilState(Username);
@@ -165,6 +168,7 @@ const NavBar = () => {
     resetOXQuizData()
     resetVideoData()
     resetStudyData()
+    resetLikeKeyWord()
     localStorage.removeItem('study_data_token');
     localStorage.removeItem('four_way_Race_data_token');
     localStorage.removeItem('keyWord_data_token');
