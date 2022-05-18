@@ -4,6 +4,7 @@ import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
+import styled from "styled-components";
 
 
 
@@ -32,15 +33,26 @@ export default function TemporaryDrawer() {
   };
 
   const list = (anchor) => (
-    <Box
-      sx={{ width:  250 , 
-        paddingTop: 10, 
-        background: "#84c2ea;",
-        height : "100%;",
-      }}
-      role="presentation"
+    // <Box
+    //   sx={{ width:  250 , 
+    //     paddingTop: 10, 
+    //     background: "#84c2ea;",
+    //     height : "100%;",
+    //   }}
+    //   role="presentation"
       
-    >
+    // >
+    //   
+    //     <DrawerInList
+    //       isClick={toggleDrawer('left', false)}
+    //       isKeyDown={toggleDrawer('left', false)}
+    //       data={kategori}>
+    //     </DrawerInList>
+    //     gdgd
+    //   </List>
+    //   <Divider />
+    // </Box>
+    <DrawerDiv >
       <List>
         <DrawerInList
           isClick={toggleDrawer('left', false)}
@@ -49,14 +61,16 @@ export default function TemporaryDrawer() {
         </DrawerInList>
       </List>
       <Divider />
-    </Box>
+    </DrawerDiv>
   );
 
   return (
     <div>
       {
         <React.Fragment key={'left'}>
-          <Button onClick={toggleDrawer('left', true)}>다른 강의 선택</Button>
+          <img src="images/bar.png" alt="bar" style={{position: "absolute",
+            top: "50%",
+            left: "0px"}} onClick={toggleDrawer('left', true)}></img>
           <Drawer
             anchor={'left'}
             open={state['left']}
@@ -70,3 +84,10 @@ export default function TemporaryDrawer() {
     </div>
   );
 }
+
+const DrawerDiv = styled.div` 
+  width : 250px; 
+  padding-top: 100px; 
+  background-color: #E5E5E5;
+  height : 100%;
+`
