@@ -8,6 +8,8 @@ export const keyWordData = atom({
     {
       label: '',
       description: ``,
+      keywordSeq: null,
+      liked: false
     },],
   effects_UNSTABLE: [localStorageEffect("keyWord_data_token")],
 });
@@ -16,6 +18,23 @@ export const keyWordDataToken = selector({
   key: "keyWordDataToken",
   get: ({ get }) => {
     return get(keyWordData);
+  },
+});
+
+export const likeKeyWord = atom({
+  key: 'likeKeyWord',
+  default: [{
+    keywordSeq: null,
+    liked: false,
+    page: 1,
+    index: null
+  }],
+});
+
+export const likeKeyWordToken = selector({
+  key: "likeKeyWordToken",
+  get: ({ get }) => {
+    return get(likeKeyWord);
   },
 });
 
