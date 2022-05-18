@@ -1,17 +1,19 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { defaultAPI } from '../utils/api';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
-// Recoil
-import { useRecoilState } from 'recoil';
-import { LoginState } from '../recoils/LoginState';
+// RECOIL
+import { useRecoilValue } from 'recoil';
 import { Token } from '../recoils/Token';
+
+// COMPONENTS
+import ReviewNoteResultBox from '../components/ReviewNoteResultBox';
+import ReviewChoices from '../components/ReviewChoices';
 
 // STYLED
 import styled from 'styled-components';
-import { defaultAPI } from '../utils/api';
-import ReviewNoteResultBox from '../components/ReviewNoteResultBox';
-import ReviewChoices from '../components/ReviewChoices';
+
 const ReviewNoteDetailWrapper = styled.div`
   width: 100%;
   height: 1200px;
@@ -40,8 +42,7 @@ function ReviewNoteDetail() {
   const { round } = useParams();
 
   // Recoil
-  const [token, setToken] = useRecoilState(Token);
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const token = useRecoilValue(Token);
 
   // 리뷰 정보 가져오기
   const [roundInfo, setRoundInfo] = useState([]);
@@ -80,7 +81,7 @@ function ReviewNoteDetail() {
     getRoundTestInfo(round);
   }, []);
 
-  console.log(testResultInfo, roundInfo);
+  // console.log(testResultInfo, roundInfo);
 
   const testHeight = 700 + roundInfo.length * 570;
 

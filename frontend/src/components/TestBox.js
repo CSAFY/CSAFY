@@ -9,8 +9,15 @@ const Box = styled.div`
   height: 184px;
   margin: 10px;
   border-radius: 20px;
-  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.12);
   background-color: #fff;
+
+  &:hover {
+    background-color: #fff;
+    box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
+    color: black;
+    transform: scale(1.05);
+  }
 
   cursor: pointer;
 

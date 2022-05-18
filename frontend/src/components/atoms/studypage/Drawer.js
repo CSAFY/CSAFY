@@ -68,7 +68,7 @@ export default function TemporaryDrawer() {
     <div>
       {
         <React.Fragment key={'left'}>
-          <img src="images/bar.png" alt="bar" style={{position: "absolute",
+          <img src="images/clicksidebar.png" alt="clicksidebar" style={{position: "absolute",
             top: "50%",
             left: "0px"}} onClick={toggleDrawer('left', true)}></img>
           <Drawer

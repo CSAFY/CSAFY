@@ -1,13 +1,18 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
-import swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert2';
+
+// RECOIL
+import { useSetRecoilState } from 'recoil';
+import { CurrentPage } from '../../recoils/CurrentPage';
+import { NavToggle } from '../../recoils/NavToggle';
+
+// COMPONENTS
+import Progress from '../../components/Progress';
 
 // STYLED
 import styled from 'styled-components';
-import Progress from '../../components/Progress';
-import { CurrentPage } from '../../recoils/CurrentPage';
-import { useRecoilState } from 'recoil';
 
 const PaySuccessWrapper = styled.div`
   width: 100%;
@@ -48,60 +53,64 @@ const AlertBox = styled.div`
 `;
 
 function NeedLogin() {
-  const [currentPage, setCurrentPage] = useRecoilState(CurrentPage);
+  const setCurrentPage = useSetRecoilState(CurrentPage);
+  const setNavToggle = useSetRecoilState(NavToggle);
 
   let navigate = useNavigate();
 
-  // // 3초 후 귀환
+  // 3초 후 귀환
+  useEffect(() => {
+    let timerInterval;
+    swal
+      .fire({
+        icon: 'warning',
+        position: 'middle',
+        title: '로그인이 필요한 페이지입니다.',
+        text: '3초 후 홈으로 돌아갑니다.',
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          swal.showLoading();
+          const b = swal.getHtmlContainer().querySelector('b');
+          timerInterval = setInterval(() => {
+            // b.textContent = swal.getTimerLeft()
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
+      })
+      .then(result => {
+        if (result.dismiss === swal.DismissReason.timer) {
+          // 타이머 종료
+          navigate('/');
+          setCurrentPage('/');
+          setNavToggle(false);
+        }
+      });
+  }, []);
   // useEffect(() => {
-  //   let timerInterval;
   //   swal
   //     .fire({
   //       icon: 'warning',
   //       position: 'middle',
   //       title: '로그인이 필요한 페이지입니다.',
-  //       text: '3초 후 홈으로 돌아갑니다.',
-  //       timer: 3000,
-  //       timerProgressBar: true,
-  //       didOpen: () => {
-  //         swal.showLoading();
-  //         const b = swal.getHtmlContainer().querySelector('b');
-  //         timerInterval = setInterval(() => {
-  //           // b.textContent = swal.getTimerLeft()
-  //         }, 100);
-  //       },
-  //       willClose: () => {
-  //         clearInterval(timerInterval);
-  //       },
+
+  //       // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+  //       confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+  //       // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+  //       confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+  //       // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
   //     })
   //     .then(result => {
-  //       if (result.dismiss === swal.DismissReason.timer) {
-  //         // 타이머 종료
+  //       // 만약 Promise리턴을 받으면,
+  //       if (result.isConfirmed) {
+  //         // 만약 모달창에서 confirm 버튼을 눌렀다면
+  //         setCurrentPage('/');
   //         navigate('/');
   //       }
   //     });
   // }, []);
-  useEffect(() => {
-    swal.fire({
-      icon: 'warning',
-      position: 'middle',
-      title: '로그인이 필요한 페이지입니다.',
-
-      // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-      confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-      // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-      confirmButtonText: '확인', // confirm 버튼 텍스트 지정
-      // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
-
-    }).then(result => {
-      // 만약 Promise리턴을 받으면,
-      if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-        setCurrentPage('/')
-      navigate('/')
-      }})
-      
-  }, [])
-  
 
   return (
     <PaySuccessWrapper>
