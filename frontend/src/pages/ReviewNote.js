@@ -137,29 +137,62 @@ function ReviewNote() {
     <>
       {/* 카테고리 분류 버전 */}
       {isLoggedIn ? (
-        <ReviewNoteWrapper style={{ height: `${testHeight}px` }}>
-          <ReviewNoteContent>
-            <PageTitle>
-              <div
-                style={{
-                  fontSize: '24px',
-                  fontWeight: '600',
-                }}
-              >
-                오답노트
-              </div>
-            </PageTitle>
+        <>
+          {round !== 0 ? (
+            <>
+              {' '}
+              <ReviewNoteWrapper style={{ height: `${testHeight}px` }}>
+                <ReviewNoteContent>
+                  <PageTitle>
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: '600',
+                      }}
+                    >
+                      오답노트
+                    </div>
+                  </PageTitle>
 
-            <Grid container>
-              {roundTestData &&
-                roundTestData.map((data, idx) => (
-                  <Grid item xs={3} key={idx}>
-                    <ReviewNoteBox {...data} />
+                  <Grid container>
+                    {roundTestData &&
+                      roundTestData.map((data, idx) => (
+                        <Grid item xs={3} key={idx}>
+                          <ReviewNoteBox {...data} />
+                        </Grid>
+                      ))}
                   </Grid>
-                ))}
-            </Grid>
-          </ReviewNoteContent>
-        </ReviewNoteWrapper>
+                </ReviewNoteContent>
+              </ReviewNoteWrapper>
+            </>
+          ) : (
+            <>
+              <ReviewNoteWrapper style={{ height: `100vh` }}>
+                <ReviewNoteContent>
+                  <PageTitle>
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: '600',
+                      }}
+                    >
+                      오답노트
+                    </div>
+                  </PageTitle>
+
+                  <Grid container>
+                    {roundTestData &&
+                      roundTestData.map((data, idx) => (
+                        <Grid item xs={3} key={idx}>
+                          <ReviewNoteBox {...data} />
+                        </Grid>
+                      ))}
+                  </Grid>
+                </ReviewNoteContent>
+              </ReviewNoteWrapper>
+            </>
+          )}
+        </>
       ) : (
         <>
           <div style={{ height: '100vh' }}>
