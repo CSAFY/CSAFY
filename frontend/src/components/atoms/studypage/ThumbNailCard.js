@@ -100,8 +100,12 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
         </FlexSpan>
         
         <span>
-          {isEnd()}
-          {ToggleStar()}
+          {/* {isEnd()} */}
+          {seen === 1 ? <CheckCircleOutlineSharpIcon color="success" sx={{width:`${size}px;`, height:`${size}px;`}}></CheckCircleOutlineSharpIcon>: null}
+          {/* {ToggleStar()} */}
+          {favorite === 1 ?
+            <StarIcon color="warning" sx={{width:`${size}px;`, height:`${size}px;`}} onClick={() => ToggleFavorites(0)}></StarIcon>
+            :<StarBorderIcon color="warning" sx={{width:`${size}px;`, height:`${size}px;`}} onClick={() => ToggleFavorites(1)}></StarBorderIcon>}
         </span>
       </InforDiv>
       
@@ -132,7 +136,7 @@ const CardBox = styled.div`
   box-shadow: 0 0 12px  4px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
   border-radius: 15px;
-  margin-bottom: 2em;
+  margin: 0 1em 1em 1em;
   ${
     css`
     :hover{
