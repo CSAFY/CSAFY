@@ -90,7 +90,14 @@ function AuthModal({ state, setState, setSignup, setModal }) {
         // navigate('/');
         // setToggleLogin('로그아웃');
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        // console.log(err);
+        // if (String(err).includes('404')) {
+        //   console.log('404');
+        //   alert('이메일 및 비밀번호를 확인해주세요.');
+        // }
+        alert('이메일 및 비밀번호를 확인해주세요.');
+      });
   };
 
   // SIGNUP
@@ -184,10 +191,17 @@ function AuthModal({ state, setState, setSignup, setModal }) {
               navigate('/mypage');
               // setToggleLogin('로그아웃');
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+              console.error(err);
+            });
         }, 500);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        if (String(err).includes('400')) {
+          console.log('400');
+          alert('이미 존재하는 이메일 주소입니다.');
+        }
+      });
   };
 
   // Oauth

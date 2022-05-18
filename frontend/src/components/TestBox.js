@@ -45,11 +45,7 @@ function TestBox({ title, exp, id, img }) {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    if (
-      title === '전 과목' ||
-      title === '입문자를 위한 문제' ||
-      title === '중급자를 위한 문제'
-    ) {
+    if (title === '전 과목') {
       navigate(`/csTestDetail/all`, { state: id });
     } else {
       navigate(`/csTestDetail/${title}`, { state: id });

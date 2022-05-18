@@ -31,8 +31,8 @@ import SpentTime from './SpentTime';
 
 const TestDetailWrapper = styled.div`
   width: 100%;
-  height: 1200px;
-  padding-bottom: 100px;
+  // height: 1200px;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -105,7 +105,7 @@ const QuestionBox = styled.div`
 const TestList = styled.div`
   width: 70%;
   position: absolute;
-  top: 100px;
+  top: 50px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -220,18 +220,46 @@ function CSTestDetail() {
 
   // 모의고사 문제 가져오기 - 12개
   const getTestData = () => {
-    axios
-      .get(`${defaultAPI}/cs-service/test/mock`, {
-        params: {
-          category: testTitle,
-          questionNum: 12,
-        },
-      })
-      .then(res => {
-        // console.log(res);
-        setTestData(res.data);
-      })
-      .catch(err => console.error(err));
+    if (testTitle === '입문자를 위한 문제') {
+      // console.log('입문자');
+      axios
+        .get(`${defaultAPI}/cs-service/fixed/mock`, {
+          params: {
+            examNum: 1,
+          },
+        })
+        .then(res => {
+          // console.log(res);
+          setTestData(res.data);
+        })
+        .catch(err => console.error(err));
+    } else if (testTitle === '중급자를 위한 문제') {
+      // console.log('중급자');
+      axios
+        .get(`${defaultAPI}/cs-service/fixed/mock`, {
+          params: {
+            examNum: 2,
+          },
+        })
+        .then(res => {
+          // console.log(res);
+          setTestData(res.data);
+        })
+        .catch(err => console.error(err));
+    } else {
+      axios
+        .get(`${defaultAPI}/cs-service/test/mock`, {
+          params: {
+            category: testTitle,
+            questionNum: 12,
+          },
+        })
+        .then(res => {
+          // console.log(res);
+          setTestData(res.data);
+        })
+        .catch(err => console.error(err));
+    }
   };
 
   // '모의고사 시작하기' 버튼 클릭
@@ -423,7 +451,7 @@ function CSTestDetail() {
   // 타이머 모드 - 종료 시간 일단 3초
   const endTime = 3;
 
-  const testHeight = 250 + testData.length * 550;
+  const testHeight = 550 + testData.length * 550;
 
   return (
     <>

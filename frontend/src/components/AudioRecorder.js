@@ -141,17 +141,25 @@ export default function AudioRecorder({ cnt }) {
               </IconDiv>
             </div>
           ) : (
-            <IconDiv>
+            <>
               {toggleRecord ? (
-                <MicNoneIcon onClick={recordOn} fontSize="large" />
+                <IconDiv>
+                  <MicNoneIcon onClick={recordOn} fontSize="large" />
+                </IconDiv>
               ) : (
-                <MicIcon onClick={recordOff} fontSize="large" />
+                <IconDiv
+                  style={{ boxShadow: '0 0 11px 1px rgba(0, 142, 208)' }}
+                >
+                  <MicIcon onClick={recordOff} fontSize="large" />
+                </IconDiv>
               )}
-            </IconDiv>
+            </>
           )}
         </>
       ) : (
-        <HourglassTopIcon />
+        <IconDiv>
+          <HourglassTopIcon />
+        </IconDiv>
       )}
     </div>
   );

@@ -16,8 +16,10 @@ import AudioRecorder from '../components/AudioRecorder';
 
 const InterviewResultWrapper = styled.div`
   width: 100%;
-  height: 1500px;
-  padding-bottom: 100px;
+  height: 1300px;
+  // width: 100%;
+  // height: 100vh;
+  // padding-bottom: 100px;
 
   display: flex;
   flex-direction: column;
