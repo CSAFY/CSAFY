@@ -29,25 +29,28 @@ import KeyWordCard from "../../components/atoms/intensivePage/KeyWordCard"
 import FourWayRace from "../../components/atoms/intensivePage/FourWayRace"
 import ShortAnswer from "../../components/atoms/intensivePage/ShortAnswer"
 import OXquiz from "../../components/atoms/intensivePage/OXquiz"
-import LodingPage from "../../components/atoms/intensivePage/LodingPage"
+import SearchKeyWords from "../../components/atoms/intensivePage/SearchKeyWords"
 import RelatedExam from "../../components/atoms/studypage/RelatedExam"
 import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 
 
 function IntensivePage() {
   const [nowCate, setNowCate] = useState('자료구조')
-  const [nowChoice, setNowChoice] = useState('')
+  const [nowChoice, setNowChoice] = useState("키워드 학습")
   const categorys = useRecoilValue(category)
-  const choice = [{ title : "키워드 학습", path : "KeyWordCard"}, 
-  {title : "4지 선다", path :"FourWayRace"}, 
-   {title : "OX 퀴즈", path :"OXquiz"}]
+
+  
+  const choice = [{ title : "키워드 학습"}, 
+  {title : "4지 선다"}, 
+   {title : "OX 퀴즈"}
+   ]
 
   const cateChange = (event) => {
     setNowCate(event.target.value);
   };
 
   const ChoiceChange = (event) => {
-    setNowChoice(event.target.text);
+    setNowChoice(event.title);
   };
   
   const CategoryItems = categorys.slice(1).map((data) => 
@@ -55,7 +58,7 @@ function IntensivePage() {
   )
   
   const CategorySelect = (
-    <Box sx={{ width: 160 }}>
+    <Box sx={{ width: 180 ,  }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">과목</InputLabel>
         <Select
@@ -64,7 +67,8 @@ function IntensivePage() {
           value={nowCate}
           label="과목"
           onChange={cateChange}
-          defaultValue={"전체"}
+          defaultValue={"자료구조"}
+          sx={{fontWeight: 800, fontSize: "17px"}}
         >
           {CategoryItems}
         </Select>
@@ -72,21 +76,6 @@ function IntensivePage() {
     </Box>
   )
   const location = useLocation();
-  
-
-  const relatedDisPlay = () => {
-    if (location.pathname === '/IntensivePage/KeyWordCard'){
-      return(
-        <div>
-          <RelatedExam>
-          </RelatedExam>
-          <StudyDetailHr></StudyDetailHr>
-          <RelatedQuestions>
-          </RelatedQuestions>
-        </div>
-      )
-    }
-  }
 
   const [nowKeyWords, setNowKeyWords] = useRecoilState(likeKeyWord)
   const [keyWords, setKeyWords] = useRecoilState(keyWordData)
@@ -125,16 +114,16 @@ function IntensivePage() {
   }
 
   const keyWordLike = () => {
-    if ((location.pathname === '/IntensivePage/KeyWordCard') && (nowKeyWords.page === 2)){
+    if ((nowChoice === "키워드 학습" ) && (nowKeyWords.page === 2)){
       return(
         <div>
           {nowKeyWords.liked === true ? 
-            <StarIcon color="warning" 
-            sx={{width:`50px;`, height:`50px;`}} 
-            onClick={() => ToggleFavorites()}></StarIcon>
-            : <StarBorderIcon color="warning" 
-            sx={{width:`50px;`, height:`50px;`}} 
-            onClick={() => ToggleFavorites()}></StarBorderIcon>
+            <img src="images/star.png" alt="star" 
+            style={{width:`50px`, height:`50px`}} 
+            onClick={() => ToggleFavorites()}></img>
+            : <img src="images/nonstar.png" alt="nonstar"
+            style={{width:`50px`, height:`50px`}} 
+            onClick={() => ToggleFavorites()}></img>
           }
         </div>
       )
@@ -150,24 +139,25 @@ function IntensivePage() {
         </FlexDivs>
       <FlexDiv>
         <QuestionList 
-          selectKategorie = {ChoiceChange}
+          selectKategorie = {(data) =>ChoiceChange(data)}
           value = {nowChoice}
           categori = {choice}
           nowCate = {nowCate}
-          disabled ={nowCate === "" ? true: false}
           >
         </QuestionList>
 
-        <Routes>
-          <Route exact={true} path="/" element={<LodingPage />} />
-          <Route exact={true} path="KeyWordCard" element={<KeyWordCard Cate={nowCate}/>} />
-          <Route exact={true} path="FourWayRace" element={<FourWayRace Cate={nowCate}/>} />
-          {/* <Route exact={true} path="ShortAnswer" element={<ShortAnswer />} /> */}
-          <Route exact={true} path="OXquiz" element={<OXquiz  Cate={nowCate}/>} />
-        </Routes>
+        { nowChoice === "키워드 학습" ?  <KeyWordCard Cate={nowCate}></KeyWordCard>
+        : nowChoice === "4지 선다" ?  <FourWayRace Cate={nowCate}></FourWayRace>
+        : nowChoice === "OX 퀴즈" ?  <OXquiz Cate={nowCate}></OXquiz>
+        : null}
+        {/* // <Routes>
+        //   <Route exact={true} path="KeyWordCard" element={<KeyWordCard Cate={nowCate}/>} />
+        //   <Route exact={true} path="FourWayRace" element={<FourWayRace Cate={nowCate}/>} />
+        //   <Route exact={true} path="OXquiz" element={<OXquiz  Cate={nowCate}/>} />
+        // </Routes> */}
       </FlexDiv>
-      
-        {/* {relatedDisPlay()} */}
+
+        {nowChoice === "키워드 학습"? <SearchKeyWords></SearchKeyWords>: null}
         
       </DetailLayOut>
     </FullLayOut>

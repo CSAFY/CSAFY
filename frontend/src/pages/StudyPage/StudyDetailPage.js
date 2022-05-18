@@ -7,7 +7,8 @@ import { MyiFrame,
   ArrowAndLabel,
   BtnText,
   CategoryShowDiv,
-  FlexSpan
+  FlexSpan,
+  FlexSpanNon
  } from "./StudyDetailPage.styled"
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -89,33 +90,33 @@ function StudyDetailPage() {
     <FullLayOut>
       <Drawer></Drawer>
       <DetailLayOut>
-        <FlexSpan>
-          <FlexSpan>
+        
+          <FlexSpanNon>
             <CategoryShowDiv>
               {videoDatas.categoryId}
             </CategoryShowDiv>
             <CategoryShowDiv>
               {videoDatas.category2Id}
             </CategoryShowDiv>
-          </FlexSpan>
+          </FlexSpanNon>
+            
+        <FlexSpan>
+          <TitleText>
+            {videoDatas.title}
+          </TitleText>
           <span>
             {videoDatas.seen === 1? 
-              <CheckCircleOutlineSharpIcon color="success" sx={{width:`32px;`, height:`32px;`}}></CheckCircleOutlineSharpIcon>
+              <img src="images/check.png" alt="check" style={{width:`40px`, height:`40px`, marginRight: "15px"}}></img>
               : null}
             {videoDatas.favorites === 1?
-              <StarIcon color="warning" 
-                sx={{width:`32px;`, height:`32px;`}} 
-                onClick={() => ToggleFavorites(0)}></StarIcon>
-              :<StarBorderIcon color="warning" 
-                sx={{width:`32px;`, height:`32px;`}} 
-                onClick={() => ToggleFavorites(1)}></StarBorderIcon>}
+              <img src="images/star.png" alt="star" 
+                style={{width:`40px`, height:`40px`}} 
+                onClick={() => ToggleFavorites(0)}></img>
+              :<img src="images/nonstar.png" alt="nonstar" 
+                style={{width:`40px`, height:`40px`}} 
+                onClick={() => ToggleFavorites(1)}></img>}
           </span>
         </FlexSpan>
-        
-        <TitleText>
-          {videoDatas.title}
-        </TitleText>
-        
         <YouTubeVideo
           videoId={videoDatas.videoId}
           id={videoDatas.id}
@@ -132,12 +133,12 @@ function StudyDetailPage() {
         </RelatedQuestions> */}
         <ButtonBox>
           <ArrowAndLabel onClick={() => clickBeforBtn()}>
-            <ArrowBackIcon sx={{width:"45px;", height : "45px;"}}></ArrowBackIcon>
+            <ArrowBackIcon sx={{width:"20px;", height : "20px;"}}></ArrowBackIcon>
             <BtnText >이전 강의</BtnText>
           </ArrowAndLabel>
           <ArrowAndLabel onClick={() => clickAfterBtn()}>
             <BtnText >다음 강의</BtnText>
-            <ArrowForwardIcon sx={{width:"45px;", height : "45px;"}}></ArrowForwardIcon>
+            <ArrowForwardIcon sx={{width:"20px;", height : "20px;"}}></ArrowForwardIcon>
           </ArrowAndLabel>
           
         </ButtonBox>

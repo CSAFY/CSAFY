@@ -22,7 +22,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { studyData, category } from "../../recoils";
 
 function StudyFramePage() {
-  const [nowKategorie, setKategorie] = useState("전체")
+  const [nowKategorie, setKategorie] = useState("전체 학습")
 
   const selectKategorie = (event) => {
     setKategorie(event)
@@ -60,7 +60,7 @@ function StudyFramePage() {
   }, [location.pathname]);
   
   const cateFilter = (data, index) => {
-    if (nowKategorie === "전체"){
+    if (nowKategorie === "전체 학습"){
       return(
         <ThumbNailCard
             key={data.id}
@@ -98,7 +98,7 @@ function StudyFramePage() {
   const againCard = studyDatas.map((data, index) => 
       {
         if (toggle === false){
-          if (nowKategorie === "전체"){
+          if (nowKategorie === "전체 학습"){
             return(
               <ThumbNailCard
                   key={data.id}
@@ -132,7 +132,7 @@ function StudyFramePage() {
             )
           } 
         } else if (data.favorites === 1) {
-          if (nowKategorie === "전체"){
+          if (nowKategorie === "전체 학습"){
             return(
               <ThumbNailCard
                   key={data.id}
@@ -171,7 +171,7 @@ function StudyFramePage() {
   return (
     <LayOut>
       <InSideLayOut>
-        <TitleName>
+        {/* <TitleName>
           {nowKategorie}
         </TitleName>
         <SelectLayOut>
@@ -179,7 +179,7 @@ function StudyFramePage() {
             즐겨찾기
             <SlideToggleBtn toggleTime={toggleTime} />
           </SwitchBox>
-        </SelectLayOut>
+        </SelectLayOut> */}
 
         <FlexDiv>
           <CategoryList
@@ -187,9 +187,20 @@ function StudyFramePage() {
             categori = {categori}
             >
           </CategoryList>
-          <CardDiv>
-            {againCard}
-          </CardDiv>
+          <div>
+          <TitleName>
+            {nowKategorie}
+          </TitleName>
+          <SelectLayOut>
+            <SwitchBox>
+              즐겨찾기
+              <SlideToggleBtn toggleTime={toggleTime} />
+            </SwitchBox>
+          </SelectLayOut>
+            <CardDiv>
+              {againCard}
+            </CardDiv>
+          </div>
         </FlexDiv>
         
       </InSideLayOut>

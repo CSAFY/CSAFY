@@ -17,7 +17,7 @@ export const MyiFrame = styled.iframe`
 
 export const FullLayOut = styled.div`
   background-color: #f8f8f8;
-  height : 100%;
+  height: 91vh;
   padding: 10px 20px 20px 20px;
 `
 
@@ -32,11 +32,10 @@ export const DetailLayOut = styled.div`
 `
 
 export const TitleText = styled.div`
-  width: 700px;
-  height: 60px;
-  margin: 20px 400px 20px 0px;
+  
+  margin: 20px 0px 30px 0px;
   font-family: SUIT;
-  font-size: 24px;
+  font-size: 35px;
   font-weight: 600;
   font-stretch: normal;
   font-style: normal;
@@ -64,7 +63,7 @@ export const ArrowAndLabel = styled.div`
 
 export const BtnText = styled.div`
   font-family: SUIT;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
   font-stretch: normal;
   font-style: normal;
@@ -83,4 +82,9 @@ export const CategoryShowDiv = styled.div`
 export const FlexSpan = styled.span`  
   display: flex;
   justify-content: space-between;
+`
+
+export const FlexSpanNon = styled.span`  
+  display: flex;
+  
 `
