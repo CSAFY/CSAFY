@@ -60,7 +60,7 @@ function App() {
           <Route path="/chat/:roomName" element={<ChatRoom />} />
           <Route path="/StudyFramePage" element={<StudyFramePage />} />
           <Route path="/StudyDetailPage" element={<StudyDetailPage />} />
-          <Route exact path="/IntensivePage/*" element={<IntensivePage />} />
+          <Route exact path="/IntensivePage" element={<IntensivePage />} />
           <Route path="/page2" element={<Page2 />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
