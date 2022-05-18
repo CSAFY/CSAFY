@@ -77,6 +77,13 @@ const TypeButton = styled.div`
   font-size: 18px;
   font-weight: 600;
 
+  &:hover {
+    background-color: #008ed0;
+    box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
+    color: #fff;
+    // transform: scale(1.05);
+  }
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,10 +121,20 @@ const SubmitButton = styled.div`
   width: 305px;
   height: 56px;
   border-radius: 77px;
-  background-color: #008ed0;
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  // background-color: #008ed0;
+  // color: #fff;
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background-color: #008ed0;
+    box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
+    color: #fff;
+    // transform: scale(1.05);
+  }
 
   display: flex;
   justify-content: center;
@@ -463,6 +480,7 @@ function CSTestDetail() {
                 <>
                   <Content>
                     <p style={{ margin: '0' }}>
+                      <span style={{ marginRight: '10px' }}>✅</span>
                       일반 모의고사와 실전 모의고사 중 원하시는 것을
                       선택해주세요.
                     </p>

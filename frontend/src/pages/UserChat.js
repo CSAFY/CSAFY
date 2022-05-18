@@ -345,7 +345,8 @@ function UserChat() {
                     value={chatMessage}
                     onChange={e => setChatMessage(e.target.value)}
                     sx={{
-                      width: '250px',
+                      width: '240px',
+                      marginRight: '15px',
                       borderRadius: '5px',
                       bgcolor: '#fff',
                       color: '#000',

@@ -17,6 +17,8 @@ const CSTestWrapper = styled.div`
   width: 100%;
   height: 1200px;
   padding-bottom: 100px;
+  // border-top: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 3px 3px 0px inset rgba(0, 0, 0, 0.1);
 
   display: flex;
   flex-direction: column;
@@ -31,7 +33,7 @@ const TestBoxWrapper = styled.div`
   width: 1080px;
 
   position: absolute;
-  top: 400px;
+  top: 350px;
   left: 50%;
   left: 50%;
   transform: translate(-50%);
@@ -44,7 +46,7 @@ const ContentTitle = styled.div`
   background-color: #f1fcff;
 
   position: absolute;
-  top: 100px;
+  top: 50px;
   left: 50%;
   left: 50%;
   transform: translate(-50%);
@@ -65,35 +67,35 @@ function CSTest() {
       id: 1,
       img: 'images/subject_network.png',
       title: '네트워크',
-      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      exp: '네트워크에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 2,
       img: 'images/subject_operatingsystem.png',
       title: '운영체제',
-      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      exp: '운영체제에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 3,
       img: 'images/subject_datastructure.png',
       title: '자료구조',
-      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      exp: '자료구조에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 4,
       img: 'images/subject_extra.png',
       title: '기타',
-      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      exp: '',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 5,
       img: 'images/subject_database.png',
       title: '데이터베이스',
-      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      exp: '데이터베이스에 대해 알아봅시다.',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
@@ -137,8 +139,8 @@ function CSTest() {
                   fontSize: '24px',
                   fontWeight: '800',
                   position: 'absolute',
-                  left: '20px',
-                  top: '30px',
+                  left: '40px',
+                  top: '50px',
                   color: '#008ed0',
                 }}
               >
@@ -146,29 +148,40 @@ function CSTest() {
               </div>
               <div
                 style={{
-                  fontSize: '16px',
+                  fontSize: '18px',
                   color: '#008ed0',
                   position: 'absolute',
-                  left: '20px',
-                  top: '90px',
+                  left: '40px',
+                  top: '105px',
                 }}
               >
-                실력을 테스트해보세요
+                자신의 실력을 평가해보고 부족한 부분을 학습해보세요.
+              </div>
+              <div
+                style={{
+                  fontSize: '18px',
+                  color: '#008ed0',
+                  position: 'absolute',
+                  left: '40px',
+                  top: '130px',
+                }}
+              >
+                C;SAFY에서 직접 선별한 문제들만 쏙쏙 모아 출제해드립니다.
               </div>
               <div
                 style={{
                   position: 'absolute',
-                  right: '20px',
+                  right: '60px',
                   top: '50%',
-                  transform: 'translateY( -50%)',
+                  transform: 'translateY(-50%)',
                 }}
               >
                 <img
-                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
+                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_short.png"
                   alt="CSAFY"
                   style={{
-                    width: '300px',
-                    height: '191px',
+                    width: '180px',
+                    height: '150px',
                   }}
                 />
               </div>

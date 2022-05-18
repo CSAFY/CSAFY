@@ -216,7 +216,7 @@ const NavBar = () => {
                 alt="Img"
                 style={{
                   width: '110px',
-                  height: '35px',
+                  height: '40px',
                   paddingTop: '10px',
                   backgroundColor: 'none',
                 }}
@@ -291,29 +291,6 @@ const NavBar = () => {
                 );
               }
             })}
-            {/* 메타버스 */}
-            <Button
-              onClick={() => {
-                navigate(`/community`);
-                setCurrentPage('/community');
-                setToggle(false);
-              }}
-              sx={{
-                textAlign: 'center',
-                mx: 1,
-                my: 2,
-                color: 'black',
-                display: 'flex',
-                ':hover': {
-                  color: '#006D9F',
-                  bgcolor: '#ffffff',
-                  // bgcolor: '#D5F2FC',
-                },
-              }}
-            >
-              <ViewInArIcon />
-              메타버스
-            </Button>
 
             {/* 실력테스트 */}
             <Tooltip title="Open settings">
@@ -388,6 +365,29 @@ const NavBar = () => {
                 </MenuItem>
               ))}
             </Menu>
+            {/* 메타버스 */}
+            <Button
+              onClick={() => {
+                navigate(`/community`);
+                setCurrentPage('/community');
+                setToggle(false);
+              }}
+              sx={{
+                textAlign: 'center',
+                mx: 1,
+                my: 2,
+                color: 'black',
+                display: 'flex',
+                ':hover': {
+                  color: '#006D9F',
+                  bgcolor: '#ffffff',
+                  // bgcolor: '#D5F2FC',
+                },
+              }}
+            >
+              메타버스
+              <ViewInArIcon />
+            </Button>
           </Box>
 
           {/* 반응형 - 좁은 화면 로고 */}
@@ -424,7 +424,7 @@ const NavBar = () => {
               display: { xs: 'flex', md: 'none' },
             }}
           >
-            {token ? (
+            {/* {token ? (
               <Button
                 sx={{
                   textAlign: 'center',
@@ -441,7 +441,6 @@ const NavBar = () => {
                 onClick={handleLogout}
               >
                 로그아웃
-                {/* {toggleLogin} */}
               </Button>
             ) : (
               <Button
@@ -460,7 +459,25 @@ const NavBar = () => {
                 onClick={handleModalOpen}
               >
                 로그인
-                {/* {toggleLogin} */}
+              </Button>
+            )} */}
+            {token && (
+              <Button
+                sx={{
+                  textAlign: 'center',
+                  mx: 1,
+                  my: 2,
+                  color: 'black',
+                  display: 'block',
+                  ':hover': {
+                    color: '#006D9F',
+                    bgcolor: '#ffffff',
+                    // bgcolor: '#D5F2FC',
+                  },
+                }}
+                onClick={handleModalOpen}
+              >
+                로그인
               </Button>
             )}
 
@@ -642,7 +659,7 @@ const NavBar = () => {
                   </ProfileNormal>
                 )}
 
-                <Button
+                {/* <Button
                   sx={{
                     textAlign: 'center',
                     mx: 1,
@@ -658,8 +675,7 @@ const NavBar = () => {
                   onClick={handleLogout}
                 >
                   로그아웃
-                  {/* {toggleLogin} */}
-                </Button>
+                </Button> */}
               </>
             ) : (
               <Button

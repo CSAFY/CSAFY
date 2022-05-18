@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
 // Recoil
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
+import { TimeLimit } from '../recoils/TimeLimit';
 
 // COMPONENT
 import Progress from '../components/Progress';
@@ -59,6 +60,13 @@ const TypeButton = styled.div`
   background-color: #fff;
   font-size: 18px;
   font-weight: 600;
+
+  &:hover {
+    background-color: #008ed0;
+    box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
+    color: #fff;
+    // transform: scale(1.05);
+  }
 
   display: flex;
   justify-content: center;
@@ -114,11 +122,12 @@ function Interview() {
   // Recoil
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
+  const timeLimit = useRecoilValue(TimeLimit);
 
   // API
   const [interviewCat, setInterviewCat] = useState('');
   const [questionNum, setQuestionNum] = useState('');
-  console.log(interviewCat, questionNum);
+  // console.log(interviewCat, questionNum);
   const getTestData = () => {
     axios
       .post(
@@ -164,12 +173,17 @@ function Interview() {
     // 1~5 사이 랜덤
     const randomNum = Math.floor(Math.random() * 5 + 1);
     setToggleStartBox(true);
-    setQuestionNum(`${randomNum}`);
+    if (randomNum !== 3) {
+      setQuestionNum(`${randomNum}`);
+    } else {
+      setQuestionNum('6');
+    }
   };
   const [toggleQuestionBox, setToggleQuestionBox] = useState(false);
   const [toggleStartBox, setToggleStartBox] = useState(false);
 
-  console.log(toggleQuestionBox, toggleStart);
+  // console.log(toggleQuestionBox, toggleStart);
+  // console.log(questionNum);
   return (
     <InterviewDetailWrapper>
       <InterviewDetailContent>
@@ -193,7 +207,16 @@ function Interview() {
             {!toggleQuestionBox ? (
               <>
                 <TypeBox>
-                  <div>어떤 질문 유형을 원하시나요?</div>
+                  {timeLimit ? (
+                    <div style={{ fontSize: '20px', fontWeight: '600' }}>
+                      어떤 질문 유형을 원하시나요? ⏱
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: '20px', fontWeight: '600' }}>
+                      어떤 질문 유형을 원하시나요?
+                    </div>
+                  )}
+
                   {interviewCat === 'character' ? (
                     <TypeButton
                       onClick={handleAttClick}
@@ -244,6 +267,7 @@ function Interview() {
                       cursor: 'pointer',
                       fontSize: '13px',
                       fontWeight: '300',
+                      marginBottom: '12px',
                     }}
                   >
                     면접 질문만 보고 싶어요
@@ -254,9 +278,11 @@ function Interview() {
               <>
                 {!toggleStart ? (
                   <>
-                    <TypeBox>
+                    <TypeBox style={{ height: '230px' }}>
                       <div
                         style={{
+                          fontWeight: '600',
+
                           position: 'absolute',
                           top: '50px',
                           left: '50%',
@@ -316,24 +342,24 @@ function Interview() {
                           </>
                         )}
                       </ButtonBox>
-                      {toggleStartBox && (
-                        <TypeButton
-                          style={{
-                            position: 'absolute',
-                            bottom: '50px',
-                            left: '50%',
-                            transform: 'translate(-50%)',
-                          }}
-                          onClick={handleStart}
-                        >
-                          면접 시작하기
-                        </TypeButton>
-                      )}
                     </TypeBox>
+                    {toggleStartBox && (
+                      <TypeButton
+                        style={{
+                          position: 'absolute',
+                          top: '400px',
+                          left: '50%',
+                          transform: 'translate(-50%)',
+                        }}
+                        onClick={handleStart}
+                      >
+                        면접 시작하기
+                      </TypeButton>
+                    )}
                   </>
                 ) : (
                   <>
-                    <TypeBox>
+                    <TypeBox style={{ height: '230px' }}>
                       <div>문제를 선별 중입니다.</div>
                       <div>잠시만 기다려 주세요.</div>
                       <Progress />
@@ -345,7 +371,7 @@ function Interview() {
           </>
         ) : (
           <>
-            <NeedLogin></NeedLogin>
+            <NeedLogin />
           </>
         )}
 

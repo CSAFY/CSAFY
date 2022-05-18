@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components';
 import Box from '@mui/material/Box';
 
 function ReviewChoices({ test, idx }) {
-  console.log(test);
+  // console.log(test);
   const [selectOne, setSelectOne] = useState(0);
   const [selectTwo, setSelectTwo] = useState(0);
   const [selectThree, setSelectThree] = useState(0);
