@@ -8,6 +8,8 @@ import { LayOut,
   CardDiv,
   SwitchBox
  } from "./StudyFramePage.styled"
+
+import { useLocation  } from 'react-router';
 import { useEffect, useRef, useState } from "react";
 import CategoryList from "../../components/atoms/studypage/CategoryList"
 import ThumbNailCard from "../../components/atoms/studypage/ThumbNailCard"
@@ -52,11 +54,10 @@ function StudyFramePage() {
       console.log(err)
     })
   }
-
+  const location = useLocation();
   useEffect(() => {
-    
     getData();
-  }, []);
+  }, [location.pathname]);
   
   const cateFilter = (data, index) => {
     if (nowKategorie === "전체"){
@@ -75,7 +76,7 @@ function StudyFramePage() {
             >
           </ThumbNailCard>
       )
-    }else if (nowKategorie === data.categoryId) {
+    }else if (nowKategorie == data.categoryId) {
       return(
         <ThumbNailCard
             key={data.id}
@@ -97,9 +98,73 @@ function StudyFramePage() {
   const againCard = studyDatas.map((data, index) => 
       {
         if (toggle === false){
-          return cateFilter(data, index)
+          if (nowKategorie === "전체"){
+            return(
+              <ThumbNailCard
+                  key={data.id}
+                  imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+                  title={data.title}
+                  index={index}
+                  videoId={data.videoId}
+                  category2Id = {data.category2Id}
+                  categoryId={data.categoryId}
+                  favorites ={data.favorites}
+                  id = {data.id}
+                  seen = {data.seen}
+                  >
+                </ThumbNailCard>
+            )
+          }else if (nowKategorie == data.categoryId) {
+            return(
+              <ThumbNailCard
+                  key={data.id}
+                  imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+                  title={data.title}
+                  index={index}
+                  videoId={data.videoId}
+                  category2Id = {data.category2Id}
+                  categoryId={data.categoryId}
+                  favorites ={data.favorites}
+                  id = {data.id}
+                  seen = {data.seen}
+                  >
+                </ThumbNailCard>
+            )
+          } 
         } else if (data.favorites === 1) {
-          return cateFilter(data)
+          if (nowKategorie === "전체"){
+            return(
+              <ThumbNailCard
+                  key={data.id}
+                  imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+                  title={data.title}
+                  index={index}
+                  videoId={data.videoId}
+                  category2Id = {data.category2Id}
+                  categoryId={data.categoryId}
+                  favorites ={data.favorites}
+                  id = {data.id}
+                  seen = {data.seen}
+                  >
+                </ThumbNailCard>
+            )
+          }else if (nowKategorie == data.categoryId) {
+            return(
+              <ThumbNailCard
+                  key={data.id}
+                  imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+                  title={data.title}
+                  index={index}
+                  videoId={data.videoId}
+                  category2Id = {data.category2Id}
+                  categoryId={data.categoryId}
+                  favorites ={data.favorites}
+                  id = {data.id}
+                  seen = {data.seen}
+                  >
+                </ThumbNailCard>
+            )
+          } 
         }
       }
   )

@@ -13,7 +13,7 @@ import styled, { css } from "styled-components";
 import { useEffect, useRef, useState } from "react";
 
 import { useRecoilState } from "recoil";
-import { keyWordData } from "../../../recoils";
+import { keyWordData, likeKeyWord } from "../../../recoils";
 
 import axios from 'axios';
 
@@ -67,15 +67,48 @@ function KeyWordCard(props) {
   useEffect(() => {
     setPageNumber(1)
     setSelecCNT(5)
+    setNowKeyWords({
+      explanation: null,
+      key: null,
+      keywordSeq: null,
+      liked: false,
+      page: 1,
+      index: null
+    })
   }, [props.Cate])
 
+  
   useEffect(() => {
     if (pageNumber === 2){
       getData()
+    }else if (pageNumber === 1) {
+      setNowKeyWords({
+        explanation: null,
+        key: null,
+        keywordSeq: null,
+        liked: false,
+        page: 1,
+        index: null
+      })
     }
   }, [pageNumber])
 
-  
+
+  const [nowKeyWords, setNowKeyWords] = useRecoilState(likeKeyWord)
+  useEffect(() => {
+    if(pageNumber === 3){
+      setNowKeyWords({
+        explanation: keyWords[activeStep].explanation,
+        key: keyWords[activeStep].key,
+        keywordSeq: keyWords[activeStep].keywordSeq,
+        liked: keyWords[activeStep].liked,
+        page: 2,
+        index: activeStep
+      })
+      console.log(keyWords[activeStep].keywordSeq, keyWords[activeStep].liked, activeStep)
+    }
+    
+  }, [activeStep, pageNumber])
 
 
   if (pageNumber === 1) {

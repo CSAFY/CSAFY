@@ -82,4 +82,5 @@ export const CategoryShowDiv = styled.div`
 `
 export const FlexSpan = styled.span`  
   display: flex;
+  justify-content: space-between;
 `
