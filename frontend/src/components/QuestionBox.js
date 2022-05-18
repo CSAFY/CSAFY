@@ -17,6 +17,7 @@ const Question = styled.div`
   position: relative;
 `;
 const Content = styled.div`
+  width: 880px;
   font-size: 16px;
 
   position: absolute;

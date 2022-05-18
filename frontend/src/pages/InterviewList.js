@@ -109,6 +109,7 @@ function InterviewList() {
 
   const [cur, setCur] = useState(null);
   const [prev, setPrev] = useState(null);
+  const [toggle, setToggle] = useState(true);
   const handleClick = e => {
     setCur(e.target.id);
     if (e.target.id === 'cur') {
@@ -118,6 +119,14 @@ function InterviewList() {
       getPage('기술');
       setPage('Tech');
     }
+    setToggle(false);
+  };
+  const handleClickAll = e => {
+    // console.log('all');
+    setPage('All');
+    // getApiData();
+    setCur(null);
+    setToggle(!toggle);
   };
 
   useEffect(() => {
@@ -157,6 +166,19 @@ function InterviewList() {
             유형 선택
           </div>
           <ButtonBox>
+            {toggle ? (
+              <TechButton
+                id="all"
+                onClick={handleClickAll}
+                style={{ backgroundColor: '#008ed0', color: '#fff' }}
+              >
+                # 전체
+              </TechButton>
+            ) : (
+              <TechButton id="all" onClick={handleClickAll}>
+                # 전체
+              </TechButton>
+            )}
             <AttitudeButton id="cur" onClick={handleClick}>
               # 인성 면접
             </AttitudeButton>

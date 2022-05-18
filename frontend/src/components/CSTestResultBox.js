@@ -42,14 +42,6 @@ const ScoreBox = styled.div`
   left: 50%;
   transform: translate(-50%);
 `;
-const TimeBox = styled.div`
-  height: 110px;
-  width: 150px;
-
-  position: absolute;
-  top: 10px;
-  right: 0;
-`;
 const Result = styled.div`
   height: 170px;
   width: 200px;
@@ -112,26 +104,58 @@ function CSTestResultBox({ state }) {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {getScore(result) > 90 ? (
-        <>
-          <TitleBox>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>🎉</div>
-            <div>정말 열심히 공부하셨군요!</div>
-          </TitleBox>
-          <SubTitleBox>
-            조금만 더 노력하면 완벽한 CS 마스터가 되실 것 같아요!
-          </SubTitleBox>
-        </>
-      ) : (
-        <>
-          <TitleBox>
-            {' '}
-            <div style={{ display: 'flex', justifyContent: 'center' }}>🎉</div>
-            <div>정말 열심히 공부하셨군요!</div>
-          </TitleBox>
-          <SubTitleBox>C;SAFY가 여러분의 꿈을 응원합니다.</SubTitleBox>
-        </>
-      )}
+      <>
+        {(() => {
+          if (getScore(result) > 90)
+            return (
+              <>
+                <TitleBox>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    🎉
+                  </div>
+                  <div>90점 이상</div>
+                </TitleBox>
+                <SubTitleBox>90점 이상</SubTitleBox>
+              </>
+            );
+          if (getScore(result) > 60)
+            return (
+              <>
+                <TitleBox>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    🎉
+                  </div>
+                  <div>60점 이상</div>
+                </TitleBox>
+                <SubTitleBox>60점 이상</SubTitleBox>
+              </>
+            );
+          if (getScore(result) > 30)
+            return (
+              <>
+                <TitleBox>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    🎉
+                  </div>
+                  <div>30점 이상</div>
+                </TitleBox>
+                <SubTitleBox>30점 이상</SubTitleBox>
+              </>
+            );
+          if (getScore(result) >= 0)
+            return (
+              <>
+                <TitleBox>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    🎉
+                  </div>
+                  <div>0점 이상</div>
+                </TitleBox>
+                <SubTitleBox>0점 이상</SubTitleBox>
+              </>
+            );
+        })()}
+      </>
 
       <ScoreBox>
         <div
@@ -148,6 +172,7 @@ function CSTestResultBox({ state }) {
         <div
           style={{
             fontSize: '24px',
+            fontWeight: '600',
 
             position: 'absolute',
             top: '40px',

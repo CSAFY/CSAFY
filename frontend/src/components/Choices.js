@@ -333,7 +333,8 @@ function Choices({ test, idx }) {
         <Box
           sx={{
             flexGrow: 1,
-            margin: '10px 20px 10px 20px',
+            margin: '40px 20px 40px 20px',
+            marginBottom: '40px',
             borderRadius: '20px',
             boxShadow: '0 0 15px 0 rgba(0, 0, 0, 0.2)',
             backgroundColor: '#fff',
@@ -362,7 +363,7 @@ function Choices({ test, idx }) {
         <Box
           sx={{
             flexGrow: 1,
-            margin: '10px 20px 10px 20px',
+            margin: '40px 20px 40px 20px',
             borderRadius: '20px',
             boxShadow: '0 0 15px 0 rgba(0, 0, 0, 0.2)',
             backgroundColor: '#fff',
@@ -414,6 +415,7 @@ const FlexDiv = styled.div`
 
 const CardCoverDiv = styled.div`
   margin: 0 auto 0 auto;
+  // margin-bottom: 20px;
   height: 180px;
 `;
 
