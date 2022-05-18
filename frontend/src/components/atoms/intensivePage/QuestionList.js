@@ -6,45 +6,112 @@ import styled, { css } from "styled-components";
 
 
 function QuestionList(props) {
-  const btncolors = ['standard' , 'primary' , 'secondary' , 'error' , 'info' , 'success' , 'warning']
     
   const againToggleButton = props.categori.map((data, index) => 
-  
-    <ToggleButton
-      component={Link}
-      to={`/IntensivePage/${data.path}`}
+      // <div>
+      //   {data.title}
+      // </div>
+    // <ToggleButton
+      
+    //   key={index}
+    //   value={data.title}
+    //   color={btncolors[index % 7]}
+    //   onClick={() => props.selectKategorie(data)}
+    //   sx={{ 
+    //     borderRadius: "5px;",
+    //     boxShadow: "0 0 4px 0 rgba(0, 0, 0, 0.2);",
+    //     backgroundColor: "#fff;",
+    //     height:"60px;",
+    //     margin:"10px 0 10px 0;"}}
+    //   >
+    //     {data.title} 
+    // </ToggleButton>
+    
+    <ToggleBtn
       key={index}
-      value={data.path}
-      color={btncolors[index % 7]}
-      sx={{ 
-        borderRadius: "5px;",
-        boxShadow: "0 0 4px 0 rgba(0, 0, 0, 0.2);",
-        backgroundColor: "#fff;",
-        height:"60px;",
-        margin:"10px 0 10px 0;"}}
+      onClick={() => props.selectKategorie(data)}
+      able = {data.title === props.value ? "Y" : "N" }
       >
-        {data.title} 
-    </ToggleButton>
+      
+      <img src={`images/${data.title}.png`} alt={data.title} style={{width:`50px`, height:`30px`}} ></img>
+      {data.title}
+    </ToggleBtn>
+    
   )
+  // useEffect(()=>{
+  //   console.log(props)
+  // },[props])
 
   return (
-      <ToggleButtonGroup
-        orientation="vertical"
-        value={props.value}
-        exclusive
-        onChange={() => props.selectKategorie()}
-        aria-label="text alignment"
-        color="primary"
-        disabled = {props.disabled}
-        sx={{width:"160px;", margin:"0 20px 0 0;"}}
-      >
+      // <ToggleButtonGroup
+      //   orientation="vertical"
+      //   value={props.nowChoice}
+      //   exclusive
+      //   // onChange={props.selectKategorie()}
+      //   aria-label="text alignment"
+      //   color="primary"
+        
+      //   sx={{width:"160px;", margin:"0 20px 0 0;"}}
+      // >
+        
+      //   {againToggleButton}
+      // </ToggleButtonGroup>
+      <div>
+        <TagText>
+          집중 학습 모드
+        </TagText>
         
         {againToggleButton}
-      </ToggleButtonGroup>
+        
+      </div>
   );
 }
 export default QuestionList;
 
-const MinBox = styled.div`
-  width: 160px;
+const ToggleBtn = styled.button` 
+  width : 180px;
+  font-size : 17px;
+  font-family : SUIT;
+  font-weight : 600;
+  display : flex;
+  justify-content : space-between;
+  border: 0;
+  height : 60px;
+  margin : 0 0 10px 0;
+  align-items: center;
+  padding: 0 20px 0 20px;
+  
+  border-radius: 5px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+
+  ${(props) => {
+    if (props.able === "Y") {
+      return css`
+        {
+          background-color: #42A7E8;
+          color: #fff;
+        }
+      `;
+    } else {
+      return css`
+        cursor: default;
+      `;
+    }
+  }}
+`
+
+const TagText = styled.div`   
+  
+  flex-grow: 0;
+  margin: 0 0 15px;
+  font-family: SUIT;
+  font-size: 15px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #7f898f;
 `

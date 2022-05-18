@@ -35,7 +35,7 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
   useEffect(()=>{
     setFavorit(favorites)
   }, [])
-  const size = 30
+  const size = 27
 
   const [studyDatas, setStudyData] = useRecoilState(studyData)
 
@@ -70,23 +70,6 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
     })
   }
 
-  const ToggleStar = () => {
-    if (favorite === 1){
-      return(<StarIcon color="warning" sx={{width:`${size}px;`, height:`${size}px;`}} onClick={() => ToggleFavorites(0)}></StarIcon>)
-    } else {
-      return(<StarBorderIcon color="warning" sx={{width:`${size}px;`, height:`${size}px;`}} onClick={() => ToggleFavorites(1)}></StarBorderIcon>)
-    }
-  }
-
-
-  const isEnd = () => {
-    if(seen === 1){
-      return(
-        <CheckCircleOutlineSharpIcon color="success" sx={{width:`${size}px;`, height:`${size}px;`}}></CheckCircleOutlineSharpIcon>
-      )
-    }
-  }
-
   return (
     <CardBox>
       <InforDiv>
@@ -99,13 +82,12 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
           </CategoryShowDiv>
         </FlexSpan>
         
-        <span>
-          {/* {isEnd()} */}
-          {seen === 1 ? <CheckCircleOutlineSharpIcon color="success" sx={{width:`${size}px;`, height:`${size}px;`}}></CheckCircleOutlineSharpIcon>: null}
-          {/* {ToggleStar()} */}
+        <span style={{height: "29px"}}>
+          {seen === 1 ? <img src="images/check.png" alt="check" style={{width:`27px`, height:`27px`, margin: "2px 5px 0 0"}}></img>: null}
+          
           {favorite === 1 ?
-            <StarIcon color="warning" sx={{width:`${size}px;`, height:`${size}px;`}} onClick={() => ToggleFavorites(0)}></StarIcon>
-            :<StarBorderIcon color="warning" sx={{width:`${size}px;`, height:`${size}px;`}} onClick={() => ToggleFavorites(1)}></StarBorderIcon>}
+            <img src="images/star.png" alt="star" style={{width:`${size}px`, height:`${size}px`}} onClick={() => ToggleFavorites(0)}></img>
+            :<img src="images/nonstar.png" alt="nonstar" style={{width:`${size}px`, height:`${size}px`}} onClick={() => ToggleFavorites(1)}></img>}
         </span>
       </InforDiv>
       
@@ -132,11 +114,12 @@ const FlexSpan = styled.span`
 const CardBox = styled.div`
   width: 40%;
   min-width: 330px;
-  height: 270px;
+  height: 265px;
   box-shadow: 0 0 12px  4px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
   border-radius: 15px;
   margin: 0 1em 1em 1em;
+  padding-top:5px; 
   ${
     css`
     :hover{
@@ -147,8 +130,15 @@ const CardBox = styled.div`
 
 const TextContainer = styled.div`
   padding: 2px 16px;
-  text-align: center;
-  margin: 5px 0 0 0;
+  text-align: left;
+  font-weight: 600;
+  margin: 12px 0 0 11px;
+  font-size: 18px;
+  width: 255px;
+  height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 const CutImg = styled.div`
   width: 300px; 
@@ -163,7 +153,7 @@ const CardImg = styled.img`
   src: ${(props) => props.src};
 `
 const InforDiv = styled.div`
-  margin : 5px 20px 5px 20px;
+  margin : 5px 16px 5px 15px;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -171,9 +161,12 @@ const InforDiv = styled.div`
 `
 
 const CategoryShowDiv = styled.div` 
-  flex-grow: 0;
+  
   margin: 0 2px 0 2px;
-  padding: 4px 10px 4px 10px;
+  font-size: 13px;
+  padding: 5px 13px 5px 13px;
+  
   border-radius: 48px;
-  background-color: #DEF9FF;
+  background-color: #84C2EA;
+  color : #FFFFFF
 `

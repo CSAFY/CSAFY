@@ -8,7 +8,7 @@ export const LayOut = styled.div`
 
 export const InSideLayOut = styled.div`
   width: 90%;
-  height: 110vh;
+  height: 72vh;
   margin: 0 104px 0 90px;
   padding: 30px 0 30px 0;
 `
@@ -16,7 +16,7 @@ export const InSideLayOut = styled.div`
 export const TitleName = styled.div`
   width: 300px;
   height: 50px;
-  margin: 0 auto 0 12%;
+  margin: 0 auto 0 30px;
   font-family: SUIT;
   font-size: 35px;
   font-weight: 600;
@@ -52,7 +52,7 @@ export const FlexDiv = styled.div`
 
 export const CardDiv = styled.div`
   width: 1150px;
-  max-height : 98vh;
+  max-height : 62vh;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;

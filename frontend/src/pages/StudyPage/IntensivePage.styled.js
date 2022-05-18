@@ -33,7 +33,7 @@ export const GridDiv = styled.div`
 
 export const FlexDiv = styled.div`
   display: flex;
-  margin : 40px 0 40px 0;
+  margin : 25px 0 40px 0;
 `;
 
 export const FlexDivs = styled.div`
@@ -58,11 +58,12 @@ export const StudyDetailText = styled.div`
 `
 
 export const DetailLayOut = styled.div`
-  height : 700px;
+  height : 80vh;
   margin: 20px auto 20px auto;
-  padding: 22px 115px 98px 115px;
+  padding: 22px 115px 70px 115px;
   border-radius: 31px;
-  background-color: #fff;
+  
   text-align: center;
   width: 1200px;
 `
+// background-color: #fff;

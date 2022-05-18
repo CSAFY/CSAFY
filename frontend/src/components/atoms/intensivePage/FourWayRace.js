@@ -266,13 +266,13 @@ function FourWayRace(props) {
   }else if (pageNumber === 2) {
     return(
     <InterCardDiv >
-      <QuestionText>
+      <QuestionText2>
         📤 문제를 선별 중입니다.
         
-      </QuestionText>
-      <QuestionText>
+      </QuestionText2>
+      <QuestionText2>
         잠시만 기다려 주세요 
-      </QuestionText>
+      </QuestionText2>
       
       <LinearWithValueLabel   setPageNumber={setPageNumber}/>
     </InterCardDiv>)
@@ -385,6 +385,21 @@ export const QuestionText = styled.div`
   flex-grow: 0;
   font-family: SUIT;
   font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #000;
+`
+export const QuestionText2 = styled.div`
+  width: 350px;
+  height: 30px;
+  margin: 0 auto 15px auto;
+  flex-grow: 0;
+  font-family: SUIT;
+  font-size: 23px;
   font-weight: 600;
   font-stretch: normal;
   font-style: normal;
