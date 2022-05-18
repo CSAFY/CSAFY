@@ -14,7 +14,8 @@ import { Button } from '@mui/material';
 
 const TestResultWrapper = styled.div`
   width: 100%;
-  height: 1200px;
+  // height: 900px;
+  height: 100vh;
   padding-bottom: 100px;
 
   display: flex;
@@ -43,7 +44,7 @@ const ResultBox = styled.div`
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
   background-color: #fff;
   font-size: 18px;
-  font-weight: 600;
+  // font-weight: 600;
 
   display: flex;
   flex-direction: column;

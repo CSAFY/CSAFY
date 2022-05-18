@@ -4,17 +4,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 const TermsWrapper = styled.div`
-  width: 100%;
-  height: 8000px;
+  width: 100vw;
+  // height: 8000px;
+  height: 100%;
   padding-bottom: 100px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  // justify-content: center;
 `;
 const TermsContent = styled.div`
   width: 1232px;
   height: 100%;
+
   position: relative;
 `;
 const Content = styled.div`
