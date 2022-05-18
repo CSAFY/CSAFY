@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-// Recoil
-import { useRecoilState, useResetRecoilState } from 'recoil';
+
+// RECOIL
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
 import { Token } from '../recoils/Token';
-import { keyWordData,
+import {
+  keyWordData,
   fourWayRaceData,
   oxquizData,
   videoData,
   studyData,
+<<<<<<< HEAD
   likeKeyWord } from '../recoils'
+=======
+} from '../recoils';
+>>>>>>> 60a29911260f1ac80599e7cc235e965970c48475
 import { Userinfo } from '../recoils/Userinfo';
 import { Username } from '../recoils/Username';
 import { CurrentPage } from '../recoils/CurrentPage';
+import { NavToggle } from '../recoils/NavToggle';
 
-// MUI
+// COMPONENTS
+import Modal from '@mui/material/Modal';
+import AuthModal from './AuthModal';
+
+// STYLED
+import styled from 'styled-components';
 // inherit 흰색 default 회색 primary 파랑 secondary 보라 error 빨강 info 파랑 success 초록 warning 주황 string 적용안됨
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -29,12 +41,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { Tooltip } from '@mui/material';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-// STYLED
-import styled from 'styled-components';
-
-// MODAL
-import Modal from '@mui/material/Modal';
-import AuthModal from './AuthModal';
 
 const loginStyle = {
   position: 'absolute',
@@ -59,23 +65,23 @@ const signupStyle = {
   p: 4,
 };
 
-const ProfileNormal = styled.div`
+const ProfileNormal = styled.img`
   width: 35px;
   height: 35px;
   background: #84c2ea;
   border-radius: 50%;
-
-  display: flex;
+  // box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.8);
   justify-content: center;
   align-items: center;
 
   cursor: pointer;
 `;
-const ProfileVip = styled.div`
+const ProfileVip = styled.img`
   width: 35px;
   height: 35px;
   background: linear-gradient(to right bottom, #008ed0, #b5fcca);
   border-radius: 50%;
+  box-shadow: 0 0 11px 1px rgba(0, 142, 208);
 
   display: flex;
   justify-content: center;
@@ -83,6 +89,7 @@ const ProfileVip = styled.div`
 
   cursor: pointer;
 `;
+
 // Navbar에 페이지 추가하려면 pages 안에 요소 추가
 const pages = [
   { name: '일반 학습', link: 'StudyFramePage' },
@@ -93,16 +100,17 @@ const pages = [
   // { name: '메타버스', link: 'community' },
   // { name: '실력 테스트', link: 'CSTest' },
 ];
+// 실력 테스트 드롭다운
 const settings = [
   { name: '문제집', link: 'CSTest' },
   { name: '오답노트', link: 'reviewNote' },
 ];
 
 const NavBar = () => {
-  // recoil 상태관리
+  // Recoil
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [token, setToken] = useRecoilState(Token);
-
+  const [toggle, setToggle] = useRecoilState(NavToggle);
   //reset용 recoil
   const resetKeyWordData = useResetRecoilState(keyWordData)
   const resetFourWayRaceData = useResetRecoilState(fourWayRaceData) 
@@ -113,23 +121,23 @@ const NavBar = () => {
   
 
   const [userinfo, setUserinfo] = useRecoilState(Userinfo);
-  const [usename, setUsername] = useRecoilState(Username);
+  const setUsername = useSetRecoilState(Username);
   const [currentPage, setCurrentPage] = useRecoilState(CurrentPage);
 
   // 실력테스트 anchor
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [toggle, setToggle] = useState(false);
+  // const [toggle, setToggle] = useState(false);
   const handleOpenUserMenu = event => {
     setAnchorElUser(event.currentTarget);
     setToggle(true);
-    setCurrentPage('/');
+    // setCurrentPage('/');
   };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    setToggle(false);
   };
 
   // MODAL
-  const [toggleLogin, setToggleLogin] = useState('로그인');
   const [state, setState] = useState('signup');
   const [modal, setModal] = useState(false);
   const handleModalOpen = () => {
@@ -143,7 +151,6 @@ const NavBar = () => {
   // nav
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
-  // const [currentPage, setCurrentPage] = useState('Home');
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
@@ -163,27 +170,32 @@ const NavBar = () => {
     setIsLoggedIn(false);
     setToken('');
 
-    resetKeyWordData()
-    resetFourWayRaceData()
-    resetOXQuizData()
-    resetVideoData()
-    resetStudyData()
-    resetLikeKeyWord()
+    
     localStorage.removeItem('study_data_token');
     localStorage.removeItem('four_way_Race_data_token');
     localStorage.removeItem('keyWord_data_token');
     localStorage.removeItem('oxquiz_data_token');
     localStorage.removeItem('video_data_token');
-
     
+    // Recoil
+    setIsLoggedIn(false);
+    setToken('');
     setUserinfo({});
     setUsername('');
+    resetKeyWordData();
+    resetFourWayRaceData();
+    resetOXQuizData();
+    resetVideoData();
+    resetStudyData();
+    resetLikeKeyWord()
+
     // 이동
     navigate('/');
     setCurrentPage('/');
-    setToggleLogin('로그인');
     setToggle(false);
   };
+
+  // console.log(userinfo.profile_image);
 
   return (
     <AppBar
@@ -224,33 +236,6 @@ const NavBar = () => {
                 }}
               />
             </Link>
-            {/* {!isLoggedIn ? (
-              <Link to="/">
-                <img
-                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
-                  alt="Img"
-                  style={{
-                    width: '110px',
-                    height: '45px',
-                    paddingTop: '10px',
-                    backgroundColor: 'none',
-                  }}
-                />
-              </Link>
-            ) : (
-              <Link to="/mypage">
-                <img
-                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_test.png"
-                  alt="Img"
-                  style={{
-                    width: '110px',
-                    height: '45px',
-                    paddingTop: '10px',
-                    backgroundColor: 'none',
-                  }}
-                />
-              </Link>
-            )} */}
           </Typography>
 
           {/* 반응형 - 넓은 화면 navbar */}
@@ -340,8 +325,8 @@ const NavBar = () => {
                 },
               }}
             >
-              메타버스
               <ViewInArIcon />
+              메타버스
             </Button>
 
             {/* 실력테스트 */}
@@ -385,7 +370,7 @@ const NavBar = () => {
                 </Button>
               )}
             </Tooltip>
-
+            {/* 실력테스트 드롭다운 메뉴 */}
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -424,9 +409,13 @@ const NavBar = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'flex', md: 'none' },
+            }}
             onClick={() => {
               setCurrentPage('Home');
+              setToggle(false);
             }}
           >
             <Link to="/">
@@ -465,8 +454,8 @@ const NavBar = () => {
                 }}
                 onClick={handleLogout}
               >
-                {/* 로그아웃 */}
-                {toggleLogin}
+                로그아웃
+                {/* {toggleLogin} */}
               </Button>
             ) : (
               <Button
@@ -484,8 +473,8 @@ const NavBar = () => {
                 }}
                 onClick={handleModalOpen}
               >
-                {/* 로그인 */}
-                {toggleLogin}
+                로그인
+                {/* {toggleLogin} */}
               </Button>
             )}
 
@@ -501,7 +490,6 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
-                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               ) : (
@@ -510,7 +498,6 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
-                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               )}
@@ -586,6 +573,34 @@ const NavBar = () => {
                   );
                 }
               })}
+              <MenuItem
+                onClick={() => {
+                  navigate(`/community`);
+                  setCurrentPage('community');
+                }}
+                sx={{
+                  ':hover': {
+                    color: '#006D9F',
+                    bgcolor: '#ffffff',
+                  },
+                }}
+              >
+                <Typography textAlign="center">메타버스</Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(`/cstest`);
+                  setCurrentPage('cstest');
+                }}
+                sx={{
+                  ':hover': {
+                    color: '#006D9F',
+                    bgcolor: '#ffffff',
+                  },
+                }}
+              >
+                <Typography textAlign="center">실력 테스트</Typography>
+              </MenuItem>
             </Menu>
           </Box>
 
@@ -603,29 +618,41 @@ const NavBar = () => {
           >
             {isLoggedIn ? (
               <>
-                {userinfo.isVip === 'Y' ? (
+                {userinfo.is_vip === 'Y' ? (
                   <ProfileVip
+                    src={`${userinfo.profile_image}`}
+                    alt="profile"
                     onClick={() => {
                       navigate('/myPage');
                       setCurrentPage('/myPage');
                       setToggle(false);
                     }}
                   >
-                    <PermIdentityOutlinedIcon
+                    {/* <PermIdentityOutlinedIcon
                     // style={{ background: 'linear-gradient(#e66465, #9198e5)' }}
-                    />
+                    /> */}
                   </ProfileVip>
                 ) : (
                   <ProfileNormal
+                    src={`${userinfo.profile_image}`}
+                    alt="profile"
                     onClick={() => {
                       navigate('/myPage');
                       setCurrentPage('/myPage');
                       setToggle(false);
                     }}
                   >
-                    <PermIdentityOutlinedIcon
+                    {/* <img
+                      src={`${userinfo.profile_image}`}
+                      alt="profile"
+                      style={{
+                        width: '35px',
+                        height: '35px',
+                      }}
+                    /> */}
+                    {/* <PermIdentityOutlinedIcon
                     // style={{ background: 'linear-gradient(#e66465, #9198e5)' }}
-                    />
+                    /> */}
                   </ProfileNormal>
                 )}
 
@@ -681,7 +708,6 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
-                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               ) : (
@@ -690,7 +716,6 @@ const NavBar = () => {
                     state={state}
                     setState={setState}
                     setModal={setModal}
-                    setToggleLogin={setToggleLogin}
                   />
                 </Box>
               )}

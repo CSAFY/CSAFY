@@ -99,39 +99,24 @@ const LogoImg = styled.img`
 
 function TestBox({ examDone, id, corrects, totals }) {
   const getSum = corrects => Object.values(corrects).reduce((a, b) => a + b);
-  const getScore = data => {
-    return Math.ceil((data.rightQuestions / data.totalQuestions) * 100);
-  };
-
-  const testInfo = {
-    // data: examDone,
-    testName: id,
-    rightQuestions: getSum(corrects),
-    totalQuestions: getSum(totals),
-    corrects,
-    totals,
-  };
-  // const labels = testInfo.map(test => test.id);
-  // const scores = testInfo.map(test =>
-  //   Math.ceil((getSum(test.corrects) / getSum(test.totals)) * 100),
-  // );
-  // console.log(testInfo, labels, scores);
-  console.log(testInfo);
+  // 점수
+  const score = Math.ceil((getSum(corrects) / getSum(totals)) * 100);
 
   return (
     <>
       <Test>
         <Date>{examDone}</Date>
-        {testInfo.testName === 'all' ? (
+        {id === 'all' ? (
           <TestName>전 과목</TestName>
         ) : (
-          <TestName>{testInfo.testName}</TestName>
+          <TestName>{id}</TestName>
         )}
 
         <ScoreBox>
-          <TestScore>{getScore(testInfo)}점</TestScore>
+          {/* <TestScore>{getScore(testInfo)}점</TestScore> */}
+          <TestScore>{score}점</TestScore>
           <div>
-            ({testInfo.rightQuestions} / {testInfo.totalQuestions})
+            ({getSum(corrects)} / {getSum(totals)})
           </div>
         </ScoreBox>
         <ResultBox>
@@ -144,19 +129,14 @@ function TestBox({ examDone, id, corrects, totals }) {
               {/* <div>네트워크</div> */}
               네트워크
               <div style={{ position: 'absolute', right: '10px' }}>
-                {testInfo.totals.네트워크 === 0 ? (
+                {totals.네트워크 === 0 ? (
                   <span style={{ color: '#008ed0' }}>0% </span>
                 ) : (
                   <span>
                     <span style={{ color: '#008ed0' }}>
-                      {Math.ceil(
-                        (testInfo.corrects.네트워크 /
-                          testInfo.totals.네트워크) *
-                          100,
-                      )}
-                      %
+                      {Math.ceil((corrects.네트워크 / totals.네트워크) * 100)}%
                     </span>{' '}
-                    ({testInfo.corrects.네트워크} / {testInfo.totals.네트워크})
+                    ({corrects.네트워크} / {totals.네트워크})
                   </span>
                 )}
               </div>
@@ -164,19 +144,14 @@ function TestBox({ examDone, id, corrects, totals }) {
             <ResultScore>
               운영체제
               <div style={{ position: 'absolute', right: '10px' }}>
-                {testInfo.totals.운영체제 === 0 ? (
+                {totals.운영체제 === 0 ? (
                   <span style={{ color: '#008ed0' }}>0% </span>
                 ) : (
                   <span>
                     <span style={{ color: '#008ed0' }}>
-                      {Math.ceil(
-                        (testInfo.corrects.운영체제 /
-                          testInfo.totals.운영체제) *
-                          100,
-                      )}
-                      %
+                      {Math.ceil((corrects.운영체제 / totals.운영체제) * 100)}%
                     </span>{' '}
-                    ({testInfo.corrects.운영체제} / {testInfo.totals.운영체제})
+                    ({corrects.운영체제} / {totals.운영체제})
                   </span>
                 )}
               </div>
@@ -184,19 +159,14 @@ function TestBox({ examDone, id, corrects, totals }) {
             <ResultScore>
               자료구조
               <div style={{ position: 'absolute', right: '10px' }}>
-                {testInfo.totals.자료구조 === 0 ? (
+                {totals.자료구조 === 0 ? (
                   <span style={{ color: '#008ed0' }}>0% </span>
                 ) : (
                   <span>
                     <span style={{ color: '#008ed0' }}>
-                      {Math.ceil(
-                        (testInfo.corrects.자료구조 /
-                          testInfo.totals.자료구조) *
-                          100,
-                      )}
-                      %
+                      {Math.ceil((corrects.자료구조 / totals.자료구조) * 100)}%
                     </span>{' '}
-                    ({testInfo.corrects.자료구조} / {testInfo.totals.자료구조})
+                    ({corrects.자료구조} / {totals.자료구조})
                   </span>
                 )}
               </div>
@@ -204,20 +174,17 @@ function TestBox({ examDone, id, corrects, totals }) {
             <ResultScore>
               데이터베이스
               <div style={{ position: 'absolute', right: '10px' }}>
-                {testInfo.totals.데이터베이스 === 0 ? (
+                {totals.데이터베이스 === 0 ? (
                   <span style={{ color: '#008ed0' }}>0% </span>
                 ) : (
                   <span>
                     <span style={{ color: '#008ed0' }}>
                       {Math.ceil(
-                        (testInfo.corrects.데이터베이스 /
-                          testInfo.totals.데이터베이스) *
-                          100,
+                        (corrects.데이터베이스 / totals.데이터베이스) * 100,
                       )}
                       %
                     </span>{' '}
-                    ({testInfo.corrects.데이터베이스} /{' '}
-                    {testInfo.totals.데이터베이스})
+                    ({corrects.데이터베이스} / {totals.데이터베이스})
                   </span>
                 )}
               </div>
@@ -225,20 +192,17 @@ function TestBox({ examDone, id, corrects, totals }) {
             <ResultScore>
               컴퓨터 구조
               <div style={{ position: 'absolute', right: '10px' }}>
-                {testInfo.totals.컴퓨터구조 === 0 ? (
+                {totals.컴퓨터구조 === 0 ? (
                   <span style={{ color: '#008ed0' }}>0% </span>
                 ) : (
                   <span>
                     <span style={{ color: '#008ed0' }}>
                       {Math.ceil(
-                        (testInfo.corrects.컴퓨터구조 /
-                          testInfo.totals.컴퓨터구조) *
-                          100,
+                        (corrects.컴퓨터구조 / totals.컴퓨터구조) * 100,
                       )}
                       %
                     </span>{' '}
-                    ({testInfo.corrects.컴퓨터구조} /{' '}
-                    {testInfo.totals.컴퓨터구조})
+                    ({corrects.컴퓨터구조} / {totals.컴퓨터구조})
                   </span>
                 )}
               </div>
@@ -246,17 +210,14 @@ function TestBox({ examDone, id, corrects, totals }) {
             <ResultScore>
               기타
               <div style={{ position: 'absolute', right: '10px' }}>
-                {testInfo.totals.기타 === 0 ? (
+                {totals.기타 === 0 ? (
                   <span style={{ color: '#008ed0' }}>0% </span>
                 ) : (
                   <span>
                     <span style={{ color: '#008ed0' }}>
-                      {Math.ceil(
-                        (testInfo.corrects.기타 / testInfo.totals.기타) * 100,
-                      )}
-                      %
+                      {Math.ceil((corrects.기타 / totals.기타) * 100)}%
                     </span>{' '}
-                    ({testInfo.corrects.기타} / {testInfo.totals.기타})
+                    ({corrects.기타} / {totals.기타})
                   </span>
                 )}
               </div>

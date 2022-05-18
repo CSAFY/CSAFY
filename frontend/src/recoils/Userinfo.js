@@ -9,7 +9,8 @@ export const Userinfo = atom({
     {
       email: '',
       username: '',
-      isVip: false,
+      is_vip: false,
+      profile_image: '',
     },
   ],
   effects_UNSTABLE: [persistAtom],

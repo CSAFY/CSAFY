@@ -3,8 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const PrivacyWrapper = styled.div`
-  width: 100%;
-  height: 2800px;
+  width: 100vw;
+  // height: 2800px;
+  height: 100%;
   padding-bottom: 100px;
 
   display: flex;
@@ -14,6 +15,7 @@ const PrivacyWrapper = styled.div`
 const PrivacyContent = styled.div`
   width: 1232px;
   height: 100%;
+
   position: relative;
 `;
 const Content = styled.div`

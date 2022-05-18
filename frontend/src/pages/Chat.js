@@ -162,9 +162,10 @@ function Chat() {
                   alt="G"
                   style={{
                     // height: '300px',
-                    widht: '300px',
+                    width: '280px',
+
                     position: 'absolute',
-                    top: '30%',
+                    top: '25%',
                     left: '50%',
                     transform: 'translate(-50%, -30%)',
                     marginLeft: '10px',

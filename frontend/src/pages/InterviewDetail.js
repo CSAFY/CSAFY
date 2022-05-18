@@ -19,6 +19,9 @@ import { Button } from '@mui/material';
 
 const DetailWrapper = styled.div`
   width: 100%;
+  // height: 100vh;
+  // width: 100vw;
+  // height: 100%;
 
   padding-bottom: 100px;
 
@@ -238,6 +241,7 @@ function InterviewDetail() {
   const [commentData, setCommentData] = useState([]);
   const pageHeight = 1000 + commentData.length * 200;
 
+  console.log(commentData);
   return (
     <DetailWrapper
       style={{

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
@@ -16,7 +16,8 @@ import { Button, TextField } from '@mui/material';
 
 const PhoneContent = styled.div`
   width: 100%;
-  height: 100%;
+  // height: 100%;
+  height: 500px;
   color: white;
 `;
 
@@ -39,13 +40,14 @@ const SendMessage = styled.form`
   transform: translate(-50%);
 `;
 const MessageBox = styled.div`
-  height: 530px;
+  height: 480px;
 
   text-align: right;
 
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  // overflow: scroll;
   overflow: auto;
 
   position: absolute;
@@ -177,6 +179,14 @@ function TestChatRoom({ chatRoomId }) {
       .catch(err => console.error(err));
   };
 
+  // // scroll test
+  const myRef = useRef();
+  const [scrollLocation, setScrollLocation] = useState(0);
+  // const lastScroll = useSelector(state=> state.review.current_scroll);
+  const scroll = e => {
+    setScrollLocation(e.target.scrollTop);
+  };
+
   return (
     <PhoneContent>
       <ChatRoomName>{chatRoomInfo.roomName}</ChatRoomName>
@@ -190,7 +200,8 @@ function TestChatRoom({ chatRoomId }) {
           value={chatMessage}
           onChange={e => setChatMessage(e.target.value)}
           sx={{
-            width: '250px',
+            width: '240px',
+            marginRight: '15px',
             borderRadius: '5px',
             bgcolor: '#fff',
             color: '#000',
@@ -218,6 +229,7 @@ function TestChatRoom({ chatRoomId }) {
         </Button>
       </SendMessage>
 
+      {/* <MessageBox ref={myRef} onScroll={scroll}> */}
       <MessageBox>
         {messages.map((message, idx) => (
           <>
@@ -261,7 +273,7 @@ function TestChatRoom({ chatRoomId }) {
                           fontSize: '12px',
                         }}
                       >
-                        {message.sender}
+                        {userinfo.username}
                       </div>
                       {message.message}
                     </Message>

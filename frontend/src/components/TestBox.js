@@ -32,27 +32,6 @@ const Exp = styled.div`
   top: 50px;
   left: 20px;
 `;
-const InfoBox = styled.div`
-  width: 258px;
-  height: 44px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translate(-50%);
-`;
-const Infos = styled.div`
-  width: 86px;
-`;
-const InfoTitle = styled.div`
-  font-size: 12px;
-  font-weight: 600;
-  color: #008ed0;
-`;
 const ImageBox = styled.img`
   width: 100px;
   height: 100px;
@@ -65,8 +44,17 @@ const ImageBox = styled.img`
 function TestBox({ title, exp, id, img }) {
   const navigate = useNavigate();
 
+  const handleNavigate = () => {
+    if (title === '전 과목') {
+      navigate(`/csTestDetail/all`, { state: id });
+    } else {
+      navigate(`/csTestDetail/${title}`, { state: id });
+    }
+  };
+
   return (
-    <Box onClick={() => navigate(`/csTestDetail/${title}`, { state: id })}>
+    // <Box onClick={() => navigate(`/csTestDetail/${title}`, { state: id })}>
+    <Box onClick={handleNavigate}>
       <Title>{title}</Title>
       <Exp>{exp}</Exp>
       <ImageBox src={img} alt="IMAGE" />

@@ -17,7 +17,10 @@ import MuiSwitch from '../components/MuiSwitch';
 
 const InterviewDetailWrapper = styled.div`
   width: 100%;
-  height: 1100px;
+  // height: 1100px;
+  height: 100vh;
+  // width: 100vw;
+  // height: 100%
 
   display: flex;
   flex-direction: column;

@@ -87,7 +87,7 @@ const SendMessage = styled.form`
   transform: translate(-50%);
 `;
 const MessageBox = styled.div`
-  height: 530px;
+  height: 480px;
 
   text-align: right;
 
@@ -133,7 +133,7 @@ const StartBox = styled.form`
 `;
 const StartButton = styled.div`
   font-size: 20px;
-  width: 80%;
+  width: 95%;
 
   position: absolute;
   bottom: 10%;
@@ -416,11 +416,11 @@ function UserChat() {
                                   style={{
                                     position: 'absolute',
                                     top: '5px',
-                                    right: '10px',
+                                    right: '5px',
                                     fontSize: '12px',
                                   }}
                                 >
-                                  {message.sender}
+                                  {userinfo.username}
                                 </div>
                                 {message.message}
                               </Message>
@@ -461,7 +461,7 @@ function UserChat() {
                   alt="G"
                   style={{
                     // height: '300px',
-                    widht: '300px',
+                    width: '280px',
                     position: 'absolute',
                     top: '20%',
                     left: '50%',
@@ -475,7 +475,8 @@ function UserChat() {
                     onChange={e => setChatRoomName(e.target.value)}
                     placeholder="상담하고싶은 주제를 입력하세요."
                     sx={{
-                      width: '250px',
+                      width: '240px',
+                      marginRight: '15px',
                       borderRadius: '5px',
                       bgcolor: '#fff',
                       color: '#000',
@@ -487,7 +488,7 @@ function UserChat() {
                       width: '85px',
                       textAlign: 'center',
                       display: 'block',
-                      bgcolor: '#009859',
+                      bgcolor: '#008ed0',
                       ':hover': {
                         color: '#006D9F',
                         bgcolor: '#D5F2FC',
@@ -511,7 +512,8 @@ function UserChat() {
                         height: '70px',
                         textAlign: 'center',
                         display: 'block',
-                        bgcolor: '#009859',
+                        bgcolor: '#008ed0',
+
                         ':hover': {
                           color: '#006D9F',
                           bgcolor: '#D5F2FC',

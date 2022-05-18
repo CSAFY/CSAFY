@@ -1,12 +1,10 @@
-import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { defaultAPI } from '../utils/api';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import Progress from '../components/Progress';
-import swal from 'sweetalert2';
+import axios from 'axios';
 
-// Recoil
-import { useRecoilState } from 'recoil';
-import { LoginState } from '../recoils/LoginState';
+// RECOIL
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Token } from '../recoils/Token';
 import { Count } from '../recoils/Count';
 import {
@@ -21,18 +19,20 @@ import {
   ReviewNote,
 } from '../recoils/TestData';
 
+// COMPONENTS
+import Progress from '../components/Progress';
+
 // STYLED
 import styled from 'styled-components';
 import Choices from '../components/Choices';
-import axios from 'axios';
-import { defaultAPI } from '../utils/api';
 import SpentTime from './SpentTime';
-import Temp from '../components/Temp';
+// import Temp from '../components/Temp';
+// import swal from 'sweetalert2';
 
 const TestDetailWrapper = styled.div`
   width: 100%;
-  height: 1200px;
-  padding-bottom: 100px;
+  // height: 1200px;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -105,24 +105,11 @@ const QuestionBox = styled.div`
 const TestList = styled.div`
   width: 70%;
   position: absolute;
-  top: 100px;
+  top: 50px;
   left: 50%;
   transform: translate(-50%);
 `;
-const TestBox = styled.div`
-  width: 840px;
-  height: 564px;
-  border-radius: 9px;
-  box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
-  background-color: #fff;
 
-  margin-top: 58px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 const SubmitButton = styled.div`
   width: 305px;
   height: 56px;
@@ -151,10 +138,12 @@ const TimerBox = styled.div`
 
 function CSTestDetail() {
   const navigate = useNavigate();
+  const { testTitle } = useParams();
+  const { state } = useLocation();
   // Recoil
-  const [token, setToken] = useRecoilState(Token);
-  const [count, setCount] = useRecoilState(Count);
-  const [choiceArray, setChoiceArray] = useRecoilState(ChoiceArray);
+  const token = useRecoilValue(Token);
+  const setCount = useSetRecoilState(Count);
+  const setChoiceArray = useSetRecoilState(ChoiceArray);
   const [testArray, setTestArray] = useRecoilState(TestArray);
   const [reviewNote, setReviewNote] = useRecoilState(ReviewNote);
   const [right1Count, setRight1Count] = useRecoilState(Right1Count);
@@ -163,6 +152,7 @@ function CSTestDetail() {
   const [right4Count, setRight4Count] = useRecoilState(Right4Count);
   const [right5Count, setRight5Count] = useRecoilState(Right5Count);
   const [right6Count, setRight6Count] = useRecoilState(Right6Count);
+  // 초기화
   useEffect(() => {
     setChoiceArray({
       0: 9,
@@ -188,13 +178,22 @@ function CSTestDetail() {
     setRight5Count(0);
     setRight6Count(0);
   }, []);
+  // 모의고사 시작 여부 - true면 시작
+  const [testStart, setTestStart] = useState(false);
+  // 모의고사 종류 - 실전 / 일반
+  const [testType, setTestType] = useState('');
+  // '모의고사 시작하기' 버튼 보이기 여부
+  const [toggleStartBox, setToggleStartBox] = useState(false);
+  // 시험으로 넘어가기 위한 progress바 보이기 여부
+  const [toggleStart, setToggleStart] = useState(false);
+  // 모의고사 문제
+  const [testData, setTestData] = useState([]);
+  // 결과 데이터 db로 보내기
+  const [getResult, setGetResult] = useState(false);
 
-  console.log(testArray);
+  // console.log(testArray);
+  // '제출하기' 버튼 클릭
   const checkAnswers = () => {
-    // 체크 안한부분이 남아있으면 alert
-    // if (!isChecked) {
-    //   alert('문제를 모두 풀어주세요.');
-    // } else {
     for (var i = 0; i < testData.length; i++) {
       // 정답 비교
       if (testArray[i].choice === testData[i].answer) {
@@ -212,40 +211,58 @@ function CSTestDetail() {
           setRight6Count(prev => prev + 1);
         }
       } else {
-        // console.log(testData[i]);
         // 오답노트
         setReviewNote(prev => [...prev, testData[i]]);
       }
     }
     setGetResult(true);
   };
-  console.log(reviewNote);
-  const { testTitle } = useParams();
-  const { state } = useLocation();
 
-  const [testType, setTestType] = useState('');
-  const [toggleStartBox, setToggleStartBox] = useState(false);
-  const [toggleStart, setToggleStart] = useState(false);
-  const [testStart, setTestStart] = useState(false);
-
-  // console.log(testTitle);
-  const [testData, setTestData] = useState([]);
+  // 모의고사 문제 가져오기 - 12개
   const getTestData = () => {
-    axios
-      .get(`${defaultAPI}/cs-service/test/mock`, {
-        params: {
-          category: testTitle,
-          questionNum: 12,
-        },
-      })
-      .then(res => {
-        // console.log(res);
-        setTestData(res.data);
-      })
-      .catch(err => console.error(err));
+    if (testTitle === '입문자를 위한 문제') {
+      // console.log('입문자');
+      axios
+        .get(`${defaultAPI}/cs-service/fixed/mock`, {
+          params: {
+            examNum: 1,
+          },
+        })
+        .then(res => {
+          // console.log(res);
+          setTestData(res.data);
+        })
+        .catch(err => console.error(err));
+    } else if (testTitle === '중급자를 위한 문제') {
+      // console.log('중급자');
+      axios
+        .get(`${defaultAPI}/cs-service/fixed/mock`, {
+          params: {
+            examNum: 2,
+          },
+        })
+        .then(res => {
+          // console.log(res);
+          setTestData(res.data);
+        })
+        .catch(err => console.error(err));
+    } else {
+      axios
+        .get(`${defaultAPI}/cs-service/test/mock`, {
+          params: {
+            category: testTitle,
+            questionNum: 12,
+          },
+        })
+        .then(res => {
+          // console.log(res);
+          setTestData(res.data);
+        })
+        .catch(err => console.error(err));
+    }
   };
-  // console.log('testData', testData);
 
+  // '모의고사 시작하기' 버튼 클릭
   const handleStart = () => {
     getTestData();
     setToggleStart(true);
@@ -255,10 +272,12 @@ function CSTestDetail() {
     }, 2000);
   };
 
+  // '실전 모의고사' 버튼 클릭
   const handleActual = () => {
     setTestType('actual');
     setToggleStartBox(true);
   };
+  // '일반 모의고사' 버튼 클릭
   const handleNormal = () => {
     setTestType('normal');
     setToggleStartBox(true);
@@ -278,8 +297,8 @@ function CSTestDetail() {
     total5: 0,
     total6: 0,
   });
-  const [getResult, setGetResult] = useState(false);
-  // const calculateResult = () => {
+
+  // 초기값 설정
   useEffect(() => {
     if (state === 1) {
       setTestResultInfo({
@@ -342,31 +361,7 @@ function CSTestDetail() {
     }
   }, [getResult]);
 
-  const handleSubmit = () => {
-    // if (testTitle === 'all') {
-    //   axios
-    //     .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
-    //       headers: { authorization: token },
-    //     })
-    //     .then(res => {
-    //       // console.log(res);
-    //       sendHeatmapData();
-    //       // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
-    //     })
-    //     .catch(err => console.error(err));
-    // } else {
-    axios
-      .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
-        headers: { authorization: token },
-      })
-      .then(res => {
-        // console.log(res);
-        sendReviewData();
-        sendHeatmapData();
-      })
-      .catch(err => console.error(err));
-    // }
-  };
+  // 히트맵 카운트 1 추가
   const sendHeatmapData = () => {
     axios
       .post(`${defaultAPI}/cs-service/profile/heatmap`, null, {
@@ -374,11 +369,13 @@ function CSTestDetail() {
       })
       .then(res => {
         // console.log(res);
-        navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+        navigate(`/CSTestResult/${testTitle}`, {
+          state: testResultInfo,
+        });
       })
       .catch(err => console.error(err));
   };
-
+  // 오답노트 보내기
   const sendReviewData = () => {
     // console.log('🐸', reviewNote);
     axios
@@ -397,42 +394,64 @@ function CSTestDetail() {
       })
       .catch(err => console.error(err));
   };
-  const getFixedTest = () => {
+  // '결과 확인하기' 버튼 클릭
+  const handleSubmit = () => {
     axios
-      .get(`${defaultAPI}/cs-service/fixed/mock`, { params: { examNum: 1 } })
-      .then(res => {
-        console.log('🎃', res);
-        // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
-      })
-      .catch(err => console.error(err));
-  };
-  const getReviewData = () => {
-    axios
-      .get(`${defaultAPI}/cs-service/study/problem/wrong`, {
-        headers: { Authorization: token },
+      .post(`${defaultAPI}/cs-service/test/result`, testResultInfo, {
+        headers: { authorization: token },
       })
       .then(res => {
-        console.log('🎃', res);
-        // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+        // console.log(res);
+        sendReviewData();
+        sendHeatmapData();
       })
       .catch(err => console.error(err));
+    // }
   };
 
-  // console.log(testData, testArray);
-  console.log(testArray, testResultInfo);
+  // const getFixedTest = () => {
+  //   axios
+  //     .get(`${defaultAPI}/cs-service/fixed/mock`, {
+  //       params: { examNum: 1 },
+  //     })
+  //     .then(res => {
+  //       console.log('🎃', res);
+  //       // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+  //     })
+  //     .catch(err => console.error(err));
+  // };
+  // const getReviewData = () => {
+  //   axios
+  //     .get(`${defaultAPI}/cs-service/study/problem/wrong`, {
+  //       headers: { Authorization: token },
+  //     })
+  //     .then(res => {
+  //       console.log('🎃', res);
+  //       // navigate(`/CSTestResult/${testTitle}`, { state: testResultInfo });
+  //     })
+  //     .catch(err => console.error(err));
+  // };
+
+  // // console.log(testData, testArray);
+  // console.log(testData, testArray, testResultInfo);
   // 초기에 카테고리값 넣어두기
   useEffect(() => {
     for (var i = 0; i < testData.length; i++) {
       setTestArray(prev => [
         ...prev,
-        { id: i, choice: 9, category: testData[i].category },
+        {
+          id: i,
+          choice: 9,
+          category: testData[i].category,
+        },
       ]);
     }
   }, [testData]);
 
   // 타이머 모드 - 종료 시간 일단 3초
   const endTime = 3;
-  const testHeight = 250 + testData.length * 550;
+
+  const testHeight = 550 + testData.length * 550;
 
   return (
     <>
@@ -478,7 +497,9 @@ function CSTestDetail() {
                         </TypeButton>
                       ) : (
                         <TypeButton
-                          style={{ marginRight: '20px' }}
+                          style={{
+                            marginRight: '20px',
+                          }}
                           onClick={handleActual}
                         >
                           실전 모의고사
@@ -543,28 +564,26 @@ function CSTestDetail() {
                   {testData.map((test, idx) => (
                     <Choices key={idx} test={test} idx={idx} />
                   ))}
-                  {/* {dummyData.map((test, idx) => (
-                // <div>{test.content}</div>
-                // <TestBox key={test.id}>{test.content}</TestBox>
-                <Choices key={idx} test={test} />
-              ))} */}
+                  {!getResult && (
+                    <SubmitButton
+                      style={{ marginTop: '40px' }}
+                      // onClick={handleSubmit}
+                      onClick={checkAnswers}
+                      // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
+                    >
+                      제출하기
+                    </SubmitButton>
+                  )}
+
+                  {getResult && (
+                    <SubmitButton
+                      style={{ marginTop: '40px' }}
+                      onClick={handleSubmit}
+                    >
+                      결과 확인하기
+                    </SubmitButton>
+                  )}
                 </TestList>
-                <SubmitButton
-                  style={{ top: `${testHeight - 40}px` }}
-                  // onClick={handleSubmit}
-                  onClick={checkAnswers}
-                  // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
-                >
-                  제출하기
-                </SubmitButton>
-                {getResult && (
-                  <SubmitButton
-                    style={{ top: `${testHeight + 20}px` }}
-                    onClick={handleSubmit}
-                  >
-                    결과 확인하기
-                  </SubmitButton>
-                )}
               </TestDetailContent>
             </TestDetailWrapper>
           ) : (
@@ -573,25 +592,21 @@ function CSTestDetail() {
                 <TestList>
                   {testData.map((test, idx) => (
                     <Choices key={idx} test={test} idx={idx} />
-                    // <Temp key={idx} test={test} idx={idx} />
                   ))}
-                  {/* {dummyData.map((test, idx) => (
-                // <div>{test.content}</div>
-                // <TestBox key={test.id}>{test.content}</TestBox>
-                <Choices key={idx} test={test} />
-              ))} */}
-                  <SubmitButton
-                    style={{ marginTop: '40px' }}
-                    // style={{ top: `${testHeight - 80}px` }}
-                    // onClick={handleSubmit}
-                    onClick={checkAnswers}
-                    // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
-                  >
-                    제출하기
-                  </SubmitButton>
+
+                  {!getResult && (
+                    <SubmitButton
+                      style={{ marginTop: '40px' }}
+                      // onClick={handleSubmit}
+                      onClick={checkAnswers}
+                      // onClick={() => navigate(`/CSTestResult/${testTitle}`)}
+                    >
+                      제출하기
+                    </SubmitButton>
+                  )}
                   {getResult && (
                     <SubmitButton
-                      style={{ marginTop: `120px` }}
+                      style={{ marginTop: `40px` }}
                       onClick={handleSubmit}
                     >
                       결과 확인하기
