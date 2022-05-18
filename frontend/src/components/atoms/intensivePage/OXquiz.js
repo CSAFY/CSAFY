@@ -152,28 +152,6 @@ function OXquiz(props) {
     </FlexDiv>
   )
 
-  const Explan = () => {
-    if (oxData[activeStep].key !== null){
-      return(
-        <div>
-          <div>
-            {oxData[activeStep].key}에 대한 설명이 맞는지 선택하세요.
-          </div>
-          <div>
-            {oxData[activeStep].explanation}
-          </div>
-        </div>
-      )
-    } else {
-      return(
-        <div>
-          <div>
-            {oxData[activeStep].explanation}
-          </div>
-        </div>
-      )
-    }
-  }
 
   const scorePostAPI = () => {
     const Url = `https://csafy.com/api/v1/cs-service/profile/scores/update`
@@ -277,8 +255,15 @@ function OXquiz(props) {
       backgroundColor: "#fff"}}>
       
       <MeaningDiv>
+        {oxData[activeStep].key !== null? 
+          <KeyDiv>
+            {oxData[activeStep].key}에 대한 설명이 맞는지 선택하세요.
+          </KeyDiv>
+        :null}
 
-        {Explan()}
+        <TextDiv>
+          {oxData[activeStep].explanation}
+        </TextDiv>
 
       </MeaningDiv>
         {OXCardPack}
@@ -337,10 +322,21 @@ export default OXquiz
 
 const MeaningDiv = styled.div`
   width : 90%;
-  height : 240PX;
-  margin : 20px auto 0 auto;
-  text-align: left;
+  height : 210PX;
+  margin : 50px auto 0 auto;
+  text-align: center;
 `
+
+const KeyDiv = styled.div`
+  font-size: 30px;
+  height: 80px;
+`
+
+const TextDiv = styled.div`
+  font-size: 25px;
+`
+
+
 
 const FlexDiv = styled.div`
   display: flex;
@@ -353,7 +349,7 @@ const CardCoverDiv = styled.div`
 `
 const OXCard = styled.div`
   width: 230px;
-  height: 154px;
+  height: 140px;
   flex-grow: 0;
   margin-bottom: 10px;
   padding: 0 0.1px 0 0;
