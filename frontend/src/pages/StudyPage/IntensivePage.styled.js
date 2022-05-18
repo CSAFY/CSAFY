@@ -36,6 +36,11 @@ export const FlexDiv = styled.div`
   margin : 40px 0 40px 0;
 `;
 
+export const FlexDivs = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const StudyDetailDiv = styled.div`
   width: 100%;
   height: 320px;

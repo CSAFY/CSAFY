@@ -9,7 +9,7 @@ export const LayOut = styled.div`
 export const InSideLayOut = styled.div`
   width: 90%;
   height: 110vh;
-  margin: 0 104px 0 104px;
+  margin: 0 104px 0 90px;
   padding: 30px 0 30px 0;
 `
 
@@ -58,7 +58,7 @@ export const CardDiv = styled.div`
   justify-items: center;
   align-items: flex-start;
   overflow-y : scroll;
-  padding-top: 10px;
+  padding: 10px 0 0 7px;
   &::-webkit-scrollbar {
     width: 10px;
     height: 8px;

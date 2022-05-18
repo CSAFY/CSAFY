@@ -11,7 +11,11 @@ import {
   oxquizData,
   videoData,
   studyData,
+<<<<<<< HEAD
+  likeKeyWord } from '../recoils'
+=======
 } from '../recoils';
+>>>>>>> 60a29911260f1ac80599e7cc235e965970c48475
 import { Userinfo } from '../recoils/Userinfo';
 import { Username } from '../recoils/Username';
 import { CurrentPage } from '../recoils/CurrentPage';
@@ -108,11 +112,13 @@ const NavBar = () => {
   const [token, setToken] = useRecoilState(Token);
   const [toggle, setToggle] = useRecoilState(NavToggle);
   //reset용 recoil
-  const resetKeyWordData = useResetRecoilState(keyWordData);
-  const resetFourWayRaceData = useResetRecoilState(fourWayRaceData);
-  const resetOXQuizData = useResetRecoilState(oxquizData);
-  const resetVideoData = useResetRecoilState(videoData);
-  const resetStudyData = useResetRecoilState(studyData);
+  const resetKeyWordData = useResetRecoilState(keyWordData)
+  const resetFourWayRaceData = useResetRecoilState(fourWayRaceData) 
+  const resetOXQuizData = useResetRecoilState(oxquizData)
+  const resetVideoData = useResetRecoilState(videoData)
+  const resetStudyData = useResetRecoilState(studyData)
+  const resetLikeKeyWord = useResetRecoilState(likeKeyWord)
+  
 
   const [userinfo, setUserinfo] = useRecoilState(Userinfo);
   const setUsername = useSetRecoilState(Username);
@@ -160,11 +166,17 @@ const NavBar = () => {
   // 로그아웃 관련
   const handleLogout = () => {
     localStorage.removeItem('jwt');
+    // Recoil
+    setIsLoggedIn(false);
+    setToken('');
+
+    
     localStorage.removeItem('study_data_token');
     localStorage.removeItem('four_way_Race_data_token');
     localStorage.removeItem('keyWord_data_token');
     localStorage.removeItem('oxquiz_data_token');
     localStorage.removeItem('video_data_token');
+    
     // Recoil
     setIsLoggedIn(false);
     setToken('');
@@ -175,6 +187,8 @@ const NavBar = () => {
     resetOXQuizData();
     resetVideoData();
     resetStudyData();
+    resetLikeKeyWord()
+
     // 이동
     navigate('/');
     setCurrentPage('/');
