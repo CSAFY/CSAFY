@@ -20,6 +20,7 @@ import axios from 'axios';
 import {
   QuestionText,
   ClickBtn,
+  QuestionText2
   } from "./FourWayRace"
 
 
@@ -105,7 +106,7 @@ function KeyWordCard(props) {
         page: 2,
         index: activeStep
       })
-      console.log(keyWords[activeStep].keywordSeq, keyWords[activeStep].liked, activeStep)
+      
     }
     
   }, [activeStep, pageNumber])
@@ -114,9 +115,9 @@ function KeyWordCard(props) {
   if (pageNumber === 1) {
     return(
     <KeyWordCardDiv>
-      <Title>
+      <Title2>
         키워드 학습하기
-      </Title>
+      </Title2>
       
       {/* <QuestionText>
         📗 몇개의 키워드를 학습하고 싶나요?
@@ -141,13 +142,13 @@ function KeyWordCard(props) {
   }else if (pageNumber === 2) {
     return(
     <KeyWordCardDiv >
-      <QuestionText>
+      <QuestionText2>
         📤 키워드를 선별 중입니다.
         
-      </QuestionText>
-      <QuestionText>
+      </QuestionText2>
+      <QuestionText2>
         잠시만 기다려 주세요 
-      </QuestionText>
+      </QuestionText2>
       
       <LinearWithValueLabel   setPageNumber={setPageNumber}/>
     </KeyWordCardDiv>)
@@ -170,11 +171,11 @@ function KeyWordCard(props) {
               bgcolor: 'background.default',
             }}
           >
-            <Typography component={'div'} sx={{width: 580}}>
+            {/* <Typography component={'div'} sx={{width: 580}}> */}
               <Title>
                 {keyWords[activeStep].key}
               </Title>
-            </Typography>
+            {/* </Typography> */}
 
           </Paper>
           <DarkCardDiv>
@@ -191,16 +192,18 @@ function KeyWordCard(props) {
             alignItems: 'center',
             justifyContent: "center",
             height: 50,
-            margin: '10px 5px 0 5px',
+            margin: '50px 5px 0 5px',
             pl: 2,
             bgcolor: 'background.default',
             
           }}
         >
-          <Typography sx={{padding: "10px", fontSize: "35px"}}>{keyWords[activeStep].key}</Typography>
+          <Typography sx={{paddingTop: "20px", fontSize: "32px;",  fontWeight: 600}}>
+            {keyWords[activeStep].key}
+          </Typography>
           
         </Paper>
-        <Box sx={{ height: 380,  width: '90%', p: 2 , padding: "20px"}}>
+        <Box sx={{  p: 2 , fontSize: "25px;",  fontWeight: 600 ,height: "150px;"}}>
           {keyWords[activeStep].explanation}
         </Box>
         
@@ -260,6 +263,8 @@ const DarkCardDiv = styled.div`
   font-size: 13px;
   background-color: #303446;
   border-radius: 10px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 `
 
 const DarkCardText = styled.span`
@@ -278,7 +283,8 @@ const ItemFront = styled.div`
   transition : 1s;
   border-radius: 15px;
   margin: auto;
-  
+  background-color: #fff;
+  box-shadow: 0px 0px 20px 12px rgb(0 0 0 / 13%);
 `
 
 const ItemBack = styled.div`
@@ -290,7 +296,9 @@ const ItemBack = styled.div`
   backface-visibility : hidden;
   transition : 1s;
   border-radius: 15px;
-  
+  background-color: #fff;
+  box-shadow: 0px 0px 20px 12px rgb(0 0 0 / 13%);
+  display: grid;
 `
 
 const Cont = styled.div`
@@ -304,19 +312,33 @@ const Cont = styled.div`
   ${ItemBack} {
     position : absolute;
     transform : rotateX(-180deg);
+    
   }
   :hover ${ItemFront} {
     transform : rotateX(180deg);
   }
   :hover ${ItemBack} {
+    
     transform : rotateX(0deg);
   }
 `
 
 export const Title = styled.div`
-  width: 90%;
-  height: 60px;
-  margin: 10px auto 15px; auto;
+  
+  flex-grow: 0;
+  font-family: SUIT;
+  font-size: 32px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #000;
+`
+
+const Title2 = styled.div`
+  margin: 0 0 50px 0;
   flex-grow: 0;
   font-family: SUIT;
   font-size: 32px;

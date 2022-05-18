@@ -24,7 +24,8 @@ import {
   BtnDiv,
   BtnText,
   CusInput,
-  InterCardDiv
+  InterCardDiv,
+  QuestionText2
   } from "./FourWayRace"
 
 
@@ -237,13 +238,13 @@ function OXquiz(props) {
   }else if (pageNumber === 2) {
     return(
     <InterCardDiv >
-      <QuestionText>
+      <QuestionText2>
         📤 문제를 선별 중입니다.
         
-      </QuestionText>
-      <QuestionText>
+      </QuestionText2>
+      <QuestionText2>
         잠시만 기다려 주세요 
-      </QuestionText>
+      </QuestionText2>
       
       <LinearWithValueLabel   setPageNumber={setPageNumber}/>
     </InterCardDiv>)
