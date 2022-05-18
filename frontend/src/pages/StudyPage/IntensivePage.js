@@ -3,7 +3,8 @@ import {
   DetailLayOut,
   FlexDiv,
   StudyDetailHr,
-  GridDiv
+  GridDiv,
+  FlexDivs
  } from "./IntensivePage.styled"
 
 import "../../components/atoms/intensivePage/DelInputArrow.css"
@@ -17,9 +18,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
 
-import { useRecoilValue } from "recoil";
-import { category } from "../../recoils";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { category, keyWordData, likeKeyWord } from "../../recoils";
 
 import QuestionList from "../../components/atoms/intensivePage/QuestionList"
 import KeyWordCard from "../../components/atoms/intensivePage/KeyWordCard"
@@ -85,10 +88,66 @@ function IntensivePage() {
     }
   }
 
+  const [nowKeyWords, setNowKeyWords] = useRecoilState(likeKeyWord)
+  const [keyWords, setKeyWords] = useRecoilState(keyWordData)
+
+  const ToggleFavorites = (bools) => {
+    const JWT = window.localStorage.getItem("jwt")
+    axios({
+      method: 'post',
+      url: `https://csafy.com/api/v1/cs-service/study/keyword/${nowKeyWords.keywordSeq}/likes`,
+      headers: {
+        Authorization: JWT
+      },
+    })
+    .then((res) => {
+      const tmp = keyWords.slice()
+      setNowKeyWords({
+        explanation: nowKeyWords.explanation,
+        key: nowKeyWords.key,
+        keywordSeq: nowKeyWords.keywordSeq,
+        liked: !nowKeyWords.liked,
+        page: 2,
+        index: nowKeyWords.index
+      })
+      const data = {
+        keywordSeq: nowKeyWords.keywordSeq,
+        key: nowKeyWords.key,
+        explanation: nowKeyWords.explanation,
+        liked: !nowKeyWords.liked,
+      }
+      tmp[nowKeyWords.index] = data
+      setKeyWords(tmp)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+
+  const keyWordLike = () => {
+    if ((location.pathname === '/IntensivePage/KeyWordCard') && (nowKeyWords.page === 2)){
+      return(
+        <div>
+          {nowKeyWords.liked === true ? 
+            <StarIcon color="warning" 
+            sx={{width:`50px;`, height:`50px;`}} 
+            onClick={() => ToggleFavorites()}></StarIcon>
+            : <StarBorderIcon color="warning" 
+            sx={{width:`50px;`, height:`50px;`}} 
+            onClick={() => ToggleFavorites()}></StarBorderIcon>
+          }
+        </div>
+      )
+    }
+  }
+
   return (
     <FullLayOut>
       <DetailLayOut>
-      {CategorySelect}
+        <FlexDivs>
+          {CategorySelect}
+          {keyWordLike()}
+        </FlexDivs>
       <FlexDiv>
         <QuestionList 
           selectKategorie = {ChoiceChange}
