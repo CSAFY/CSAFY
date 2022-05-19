@@ -11,6 +11,7 @@ import { TimeLimit } from '../recoils/TimeLimit';
 
 // STYLED
 import styled from 'styled-components';
+import swal from 'sweetalert2';
 import SpentTime from './SpentTime';
 import AudioRecorder from '../components/AudioRecorder';
 
@@ -260,8 +261,19 @@ function InterviewTest() {
         { headers: { authorization: token } },
       )
       .then(res => {
-        console.log(res);
-        alert('저장 완료');
+        // console.log(res);
+        // alert('저장 완료');
+        swal.fire({
+          icon: 'success',
+          position: 'middle',
+          title: '저장 완료',
+
+          // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+          confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+          // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+          confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+          // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        });
       })
       .catch(err => console.error(err));
   };

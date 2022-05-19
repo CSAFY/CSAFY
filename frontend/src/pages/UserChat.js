@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { defaultAPI } from '../utils/api';
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
+import swal from 'sweetalert2';
 
 // Recoil
 import { useRecoilState } from 'recoil';
@@ -186,7 +187,18 @@ function UserChat() {
       createRoom();
       setEnableStart(true);
     } else {
-      alert('주제를 입력해주세요.');
+      // alert('주제를 입력해주세요.');
+      swal.fire({
+        icon: 'warning',
+        position: 'middle',
+        title: '주제를 입력해주세요.',
+
+        // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+        // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+      });
     }
   };
   const handleStart = () => {
@@ -196,7 +208,18 @@ function UserChat() {
       initRoom();
       getMessages();
     } else {
-      alert('주제를 입력해주세요.');
+      // alert('주제를 입력해주세요.');
+      swal.fire({
+        icon: 'warning',
+        position: 'middle',
+        title: '주제를 입력해주세요.',
+
+        // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+        // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+      });
     }
   };
   // 핸드폰 화면 채팅용

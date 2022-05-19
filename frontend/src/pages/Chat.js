@@ -11,6 +11,7 @@ import TestChatRoom from '../components/TestChatRoom';
 
 // STYLED
 import styled from 'styled-components';
+import swal from 'sweetalert2';
 import { Button, TextField } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
@@ -129,7 +130,18 @@ function Chat() {
         params: { name: roomName },
       })
       .then(res => {
-        alert(`${res.data.name}방 개설 성공`);
+        // alert(`${res.data.name}방 개설 성공`);
+        swal.fire({
+          icon: 'success',
+          position: 'middle',
+          title: `${res.data.name}방 개설 성공`,
+
+          // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+          confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+          // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+          confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+          // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        });
         // console.log(res.data.name + '방 개설에 성공하였습니다.');
         setRoomName('');
         findAllRoom();
