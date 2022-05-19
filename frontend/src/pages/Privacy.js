@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 // STYLED
 import styled from 'styled-components';
