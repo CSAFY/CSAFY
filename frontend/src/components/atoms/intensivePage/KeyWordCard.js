@@ -277,7 +277,6 @@ const DarkCardText = styled.span`
 const ItemFront = styled.div`
   width: 600px;
   height: 400px;
-  border :  solid ;
   font-size : 35px;
   backface-visibility : hidden;
   transition : 1s;
@@ -291,7 +290,6 @@ const ItemBack = styled.div`
   width: 600px;
   height: 400px;
   margin: auto;
-  border :  solid ;
   font-size : 35px;
   backface-visibility : hidden;
   transition : 1s;
