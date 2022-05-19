@@ -67,17 +67,17 @@ function SearchKeyWords() {
 
   return (
     <MarginDiv>
-      <input type={"text"} value={inputWord} onChange={(event) => setInputWord(event.target.value)}>
+      <FlexDiv>
+        <KeyWordInput type={"text"} value={inputWord} onChange={(event) => setInputWord(event.target.value)}
+          placeholder="검색어를 입력해주세요"></KeyWordInput>
 
-      </input>
+        <SearchWordDel onClick={() => setInputWord("")}>
+          Reset
+        </SearchWordDel>
+      </FlexDiv>
+      
       
       <HeightDiv>
-        {/* <StudyDetailDiv>
-          <StudyDetailText>
-            관련 질문
-          </StudyDetailText>
-          
-        </StudyDetailDiv> */}
         {RelatedQuestions}
       </HeightDiv>
     </MarginDiv>
@@ -86,8 +86,32 @@ function SearchKeyWords() {
 export default SearchKeyWords
 
 
-const MarginDiv = styled.div`   
-  margin-top : 100px;
+const SearchWordDel = styled.div` 
+  width: 100px;
+  height: 37px;
+  border: solid 1px white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgrey;
+  margin-left: 10px;
+`
+
+
+const FlexDiv = styled.div` 
+  display : flex;
+`
+
+const KeyWordInput = styled.input` 
+  width: 300px;
+  height: 35px;
+  padding: 0 10px 0 10px;
+`
+
+const MarginDiv = styled.div`
+  width: 800px;
+  margin: auto;
+  
 `
 
 export const StudyDetailDiv = styled.div`
@@ -107,7 +131,7 @@ export const StudyDetailText = styled.div`
 
 const HeightDiv = styled.div`  
   margin: 50px auto 0 auto;
-  width : 600px;
-  height: 300px;
+  width : 100%;
+  height: 600px;
   overflow-y : scroll;
 `
