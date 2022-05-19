@@ -141,63 +141,18 @@ public class TestService {
         }
 
         JpaResultMapper jpaResultMapper = new JpaResultMapper();
-        Query q = em.createNativeQuery(" SELECT pr.* FROM problem pr JOIN " +
-                "(SELECT distinct p.question_num FROM problem p WHERE p.question_num IN (" + inputProblem + ") ORDER BY RAND()) pp " +
-                "ON pr.question_num = pp.question_num WHERE pr.question_num ORDER BY pr.question_num ASC, RAND();");
+        Query q = em.createNativeQuery("SELECT pr.* FROM problem_fixed pr JOIN (SELECT distinct p.question_seq " +
+                "FROM problem_fixed p WHERE p.question_seq IN (" + inputProblem + ") ORDER BY RAND()) pp " +
+                "ON pr.question_seq = pp.question_seq WHERE pr.question_seq ORDER BY pr.question_seq ASC, RAND();");
 
-        List<TestResultDto> list = jpaResultMapper.list(q, TestResultDto.class);
-        List<ProblemDto> problemList = new ArrayList<>();
-
-        for(TestResultDto nowTest:list){
-            problemList.add(new ProblemDto(nowTest));
-        }
+        List<TestFixedResultDto> list = jpaResultMapper.list(q, TestFixedResultDto.class);
 
         List<TestDto> result = new ArrayList<>();
-        int numCount = 0;
-        int prevNum = problemList.get(0).getQuestionNum();
-        int wrongIndex = 0;
-        List<String> nowExamples = new ArrayList<>();
-        TestDto testDto = new TestDto();
-        Boolean flag = true;
 
-        for(ProblemDto nowTest:problemList){
-            if(numCount > 3 && prevNum == nowTest.getQuestionNum()) continue;
-
-            if(numCount > 3 && prevNum != nowTest.getQuestionNum()) {
-                int count = random.nextInt(4);
-                String wrongTmp = nowExamples.remove(wrongIndex);
-                nowExamples.add(count, wrongTmp);
-                testDto.setExamples(nowExamples);
-                testDto.setAnswer(count + 1);
-                result.add(testDto);
-
-                numCount = 0;
-                prevNum = nowTest.getQuestionNum();
-                testDto = new TestDto();
-                nowExamples = new ArrayList<>();
-                flag = true;
-                wrongIndex = 0;
-            }
-
-            if(numCount == 0){
-                testDto.setQuestion(nowTest.getQuestion());
-                testDto.setCategory(nowTest.getCategory());
-                testDto.setCategoryChapter(nowTest.getCategoryChapter());
-                testDto.setTestSeq(nowTest.getQuestionNum().longValue());
-            }
-
-            if (nowTest.getWrongNum() > 0 && flag){
-                int count = random.nextInt(nowTest.getWrongNum());
-                nowExamples.add(nowTest.getWrong().get(count));
-                wrongIndex = count;
-                flag = false;
-            } else{
-                nowExamples.add(nowTest.getAnswer());
-            }
-
-            numCount++;
-
+        for(TestFixedResultDto nowTest:list){
+            result.add(new TestDto(nowTest));
         }
+
         return result;
     }
 
@@ -455,7 +410,7 @@ public class TestService {
 
     @Transactional
     public List<Card> getKeywordStudySearch(String keyword) {
-        return cardRepository.findTop25ByCardKeyContainingIgnoreCase(keyword);
+        return cardRepository.searchCardByKeyword(keyword);
     }
 
     @Transactional

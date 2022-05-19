@@ -13,7 +13,7 @@
 <!--    <springProfile name="dev, stg, prod">-->
         <appender name="fluentd" class="ch.qos.logback.more.appenders.DataFluentAppender">
             <!-- Check tag and label fluentd info: https://docs.fluentd.org/configuration/config-file-->
-            <tag>cs-service</tag>
+            <tag>auth-service</tag>
             <label>log</label>
             <remoteHost>${FLUENTD_HOST}</remoteHost>
             <port>${FLUENTD_PORT}</port>
