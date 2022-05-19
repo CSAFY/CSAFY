@@ -21,7 +21,7 @@ const IconDiv = styled.div`
   align-items: center;
 `;
 
-export default function AudioRecorder({ cnt }) {
+export default function AudioRecorder({ cnt, question }) {
   const [stream, setStream] = useState({
     access: false,
     recorder: null,
@@ -115,7 +115,7 @@ export default function AudioRecorder({ cnt }) {
   };
   const saveFile = () => {
     const FileSaver = require('file-saver');
-    FileSaver.saveAs(recording.url, `${recording.url}`);
+    FileSaver.saveAs(recording.url, `${cnt}.mp3`);
   };
 
   return (
@@ -149,7 +149,9 @@ export default function AudioRecorder({ cnt }) {
                 </IconDiv>
               ) : (
                 <IconDiv
-                  style={{ boxShadow: '0 0 11px 1px rgba(0, 142, 208)' }}
+                  style={{
+                    boxShadow: '0 0 11px 1px rgba(0, 142, 208)',
+                  }}
                 >
                   <MicIcon onClick={recordOff} fontSize="large" />
                 </IconDiv>
