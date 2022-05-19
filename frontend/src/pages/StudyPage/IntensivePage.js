@@ -58,7 +58,7 @@ function IntensivePage() {
   )
   
   const CategorySelect = (
-    <Box sx={{ width: 180 ,  }}>
+    <Box sx={{ width: 170 ,  }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">과목</InputLabel>
         <Select
