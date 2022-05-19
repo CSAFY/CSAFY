@@ -59,6 +59,7 @@ export const ButtonBox = styled.div`
 export const ArrowAndLabel = styled.div`  
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 
 export const BtnText = styled.div`

@@ -18,7 +18,8 @@ import { fourWayRaceData } from "../../../recoils";
 
 import axios from 'axios';
 
-import BasicModal from './BasicModal';
+
+import Swal from 'sweetalert2';
 
 function FourWayRace(props) {
   const [selecCNT, setSelecCNT] = useState(5)
@@ -156,14 +157,22 @@ function FourWayRace(props) {
       
     })
     .then((res) => {
-      setResData(res.data)
-      handleOpen()
+      // setResData(res.data)
+      // handleOpen()
       setActiveStep(0)
       setSelectOne(0)
       setSelectTwo(0)
       setSelectThree(0)
       setSelectFour(0)
       setSelectAnswerCNT(0)
+      const checking = Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: `${props.Cate}과목이 ${res.data.prevScore}점에서 ${res.data.nowScore}점으로 상승했습니다!!`,
+        showConfirmButton: false,
+        timer: 1500
+      })
+      return checking
     })
     .catch(err =>{
       console.log(err)
@@ -289,14 +298,14 @@ function FourWayRace(props) {
 
 
       {OXCardPack}
-      <BasicModal 
+      {/* <BasicModal 
         isOpen={open} 
         handleClose={handleClose} 
         prevScore={resData.prevScore} 
         nowScore={resData.nowScore} 
         Cate={props.Cate}
         >
-      </BasicModal>
+      </BasicModal> */}
       <CusLinearWithValueLabel 
         selectAnswerCNT={selectAnswerCNT}
         maxSteps={maxSteps}
@@ -417,7 +426,7 @@ export const ClickBtn = styled.button`
   border-radius: 60px;
   border: solid 1px #008ed0;
   background-color: #fff;
-  
+  cursor: pointer;
   ${(props) => {
     if (props.able === "Y") {
       return css`
@@ -428,7 +437,7 @@ export const ClickBtn = styled.button`
       `;
     } else {
       return css`
-        cursor: default;
+        
       `;
     }
   }}
@@ -490,6 +499,7 @@ const OXCard = styled.div`
   border-radius: 11px;
   font-size: 20px;
   text-align: left;
+  cursor: pointer;
   border: ${(props) => props.border}
   background-color: ${(props) => props.backgroundColor}
 `
