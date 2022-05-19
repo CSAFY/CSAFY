@@ -59,9 +59,18 @@ function RadarChart({ analysisData }) {
     });
   }, []);
 
+  const options = {
+    scales: {
+      r: {
+        suggestedMin: 0,
+        // suggestedMax: 100,
+      },
+    },
+  };
+
   return (
     <RadarGraph>
-      <Radar data={data} />
+      <Radar data={data} options={options} />
     </RadarGraph>
   );
 }
