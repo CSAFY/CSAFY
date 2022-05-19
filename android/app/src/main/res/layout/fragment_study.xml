@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tx_study"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="집중 학습 : 깜박이 키워드"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tx_content"
+        app:layout_constraintBottom_toTopOf="@id/tx_content"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.3"
+        />
+
+    <TextView
+        android:id="@+id/tx_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="C;SAFY가 당신의 효율적인 학습을 위해 준비한 \n 키워드 학습 프로그램입니다. \n 아래의 버튼을 눌러 원하는 학습 모드를 선택하여 \n CS 키워드 학습을 효율적으로 해보세요!"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/tx_study"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_auto"
+        />
+
+
+    <Button
+        android:id="@+id/btn_auto"
+        android:layout_width="190dp"
+        android:layout_height="70dp"
+        android:text="자동 깜박이 학습"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/btn_test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tx_content"
+        app:layout_constraintBottom_toTopOf="@id/textView4"
+        />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="키워드가 빠르게 자동으로 넘어가며\n 암기 학습이 가능한 모드"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_auto"
+        app:layout_constraintBottom_toTopOf="@id/btnKeyword"/>
+
+    <Button
+        android:id="@+id/btnKeyword"
+        android:layout_width="190dp"
+        android:layout_height="70dp"
+        android:text="키워드 학습"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/btn_test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView4"
+        app:layout_constraintBottom_toTopOf="@id/textView5"/>
+
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="직접 단어 카드를 뒤집으며 학습 가능한 모드"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnKeyword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
