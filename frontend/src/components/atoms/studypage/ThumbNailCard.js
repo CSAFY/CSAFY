@@ -86,8 +86,8 @@ function ThumbNailCard({index, categoryId, imgSrc, title, videoId,category2Id,fa
           {seen === 1 ? <img src="images/check.png" alt="check" style={{width:`27px`, height:`27px`, margin: "2px 5px 0 0"}}></img>: null}
           
           {favorite === 1 ?
-            <img src="images/star.png" alt="star" style={{width:`${size}px`, height:`${size}px`}} onClick={() => ToggleFavorites(0)}></img>
-            :<img src="images/nonstar.png" alt="nonstar" style={{width:`${size}px`, height:`${size}px`}} onClick={() => ToggleFavorites(1)}></img>}
+            <img src="images/star.png" alt="star" style={{width:`${size}px`, height:`${size}px`, cursor: "pointer"}} onClick={() => ToggleFavorites(0)}></img>
+            :<img src="images/nonstar.png" alt="nonstar" style={{width:`${size}px`, height:`${size}px`, cursor: "pointer"}} onClick={() => ToggleFavorites(1)}></img>}
         </span>
       </InforDiv>
       

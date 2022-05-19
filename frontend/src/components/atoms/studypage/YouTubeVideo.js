@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import axios from 'axios';
-import BasicModal from '../intensivePage/BasicModal';
 
 
 class YouTubeVideo extends React.PureComponent {

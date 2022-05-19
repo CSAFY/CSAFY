@@ -20,7 +20,6 @@ import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 import Drawer from "../../components/atoms/studypage/Drawer"
 import YouTubeVideo from "../../components/atoms/studypage/YouTubeVideo"
 
-import BasicModal from '../../components/atoms/intensivePage/BasicModal';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -28,6 +27,9 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
+
+import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 
 import axios from 'axios';
 
@@ -37,6 +39,30 @@ function StudyDetailPage() {
   const [studyDatas, setStudyDatas] = useRecoilState(studyData)
   const [beforStudy, setBeforStudy] = useState(false)
   const [afterStudy, setAfterStudy] = useState(false)
+
+
+  let navigate = useNavigate();
+
+  const checkLogin=() => {
+    const checking = Swal.fire({
+      icon: 'error',
+      title: '로그인을 해주세요!',
+      text: '서비스를 이용하려면 로그인이 필요합니다.',
+    })
+    .then(() => {
+      navigate("/");
+    })
+    return checking
+  }
+
+  useEffect(() => {
+    const JWT = window.localStorage.getItem("jwt")
+    if (JWT === null ) {
+      checkLogin()
+    } else {
+      console.log("good")
+    }
+  }, [])
   
   const clickBeforBtn = () => {
     let beforId = null
@@ -110,10 +136,10 @@ function StudyDetailPage() {
               : null}
             {videoDatas.favorites === 1?
               <img src="images/star.png" alt="star" 
-                style={{width:`40px`, height:`40px`}} 
+                style={{width:`40px`, height:`40px`,cursor: "pointer"}} 
                 onClick={() => ToggleFavorites(0)}></img>
               :<img src="images/nonstar.png" alt="nonstar" 
-                style={{width:`40px`, height:`40px`}} 
+                style={{width:`40px`, height:`40px`, cursor: "pointer"}} 
                 onClick={() => ToggleFavorites(1)}></img>}
           </span>
         </FlexSpan>
@@ -138,7 +164,7 @@ function StudyDetailPage() {
           </ArrowAndLabel>
           <ArrowAndLabel onClick={() => clickAfterBtn()}>
             <BtnText >다음 강의</BtnText>
-            <ArrowForwardIcon sx={{width:"20px;", height : "20px;"}}></ArrowForwardIcon>
+            <ArrowForwardIcon sx={{width:"20px;", height : "20px;" }}></ArrowForwardIcon>
           </ArrowAndLabel>
           
         </ButtonBox>

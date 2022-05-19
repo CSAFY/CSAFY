@@ -114,11 +114,11 @@ export default function DrawerInList(props) {
   // )
   
   const onClickBtn = (data) => {
-    
     setNowCatego(data)
   }
 
   const [nowCatego, setNowCatego] = useState('')
+
   const AccordionDiv = props.data.slice(1).map((categoryId, index) => 
     <Cont key={index}>
       <Cdiv able={nowCatego === categoryId? true : false}>
@@ -146,7 +146,9 @@ export default function DrawerInList(props) {
       </Cdiv>
       
       <AccordionItems able={nowCatego === categoryId? true : false}>
-        {ListItems(categoryId)}
+        <InsideDiv>
+          {ListItems(categoryId)}
+        </InsideDiv>
       </AccordionItems>
       
     </Cont>
@@ -203,6 +205,7 @@ const CusListItem = styled.div`
   justify-content: space-between;
   align-items: center;
   position: relative;
+  cursor: pointer;
 `
 
 
@@ -212,7 +215,7 @@ const Opened = styled.div`
 
 
   height: 90px;
-  
+  cursor: pointer;
   background: #F5F5F5;
   backface-visibility : hidden;
   margin: 10px 26px 0 26px;
@@ -226,7 +229,7 @@ const Closed = styled.div`
   align-items : center;
   justify-content: space-around;
   width : 80%;
-  
+  cursor: pointer;
   
   height: 54px;
   
@@ -277,6 +280,12 @@ const Cdiv = styled.div`
 
 `
 
+const InsideDiv = styled.div` 
+  width: 100%;
+  height: 97%;
+  overflow-y: scroll; 
+`
+
 
 const AccordionItems = styled.div` 
   width : 76%;
@@ -284,7 +293,7 @@ const AccordionItems = styled.div`
   margin: 15px 26px 0 26px;
   padding :5px 00px 0 10px;
   background-color: #fff;
-  overflow-y: scroll;
+  
   border-radius: 11px;
   background-color: #fff;
   transition: height 0.35s ease;
