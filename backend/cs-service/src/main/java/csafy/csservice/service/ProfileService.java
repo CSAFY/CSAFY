@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -319,7 +320,7 @@ public class ProfileService {
         if(statistic == null){
             statistic.setUserSeq(userSeq);
         }
-        if(statistic.getIsApp() == 1L) return;
+        if(Objects.equals(statistic.getIsApp(), 1L)) return;
         statistic.setIsApp(1L);
         statisticsRepository.save(statistic);
 
@@ -356,7 +357,7 @@ public class ProfileService {
         if(statistic == null){
             statistic.setUserSeq(userSeq);
         }
-        if(statistic.getIsWinner() == 1L) return;
+        if(Objects.equals(statistic.getIsWinner(), 1L)) return;
         statistic.setIsWinner(1L);
         statisticsRepository.save(statistic);
 
