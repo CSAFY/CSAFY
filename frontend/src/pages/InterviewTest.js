@@ -409,7 +409,7 @@ function InterviewTest() {
           <Question>{question}</Question>
 
           <Icon>
-            <AudioRecorder cnt={cnt} />
+            <AudioRecorder cnt={cnt} question={question} />
           </Icon>
 
           <Progress>
