@@ -1,5 +1,3 @@
-# 자율 프로젝트
-
 # 💎 C;SAFY - 개발자를 위한 CS, 기술 면접 교육 서비스
 
 ![C;SAFY Title](https://user-images.githubusercontent.com/55949647/168955584-830c3c05-5aa4-458f-bb8b-762ec1e59f51.png)
