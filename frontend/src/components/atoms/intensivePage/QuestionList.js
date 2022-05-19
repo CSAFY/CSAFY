@@ -7,59 +7,37 @@ import styled, { css } from "styled-components";
 
 function QuestionList(props) {
     
-  const againToggleButton = props.categori.map((data, index) => 
-      // <div>
-      //   {data.title}
-      // </div>
-    // <ToggleButton
-      
-    //   key={index}
-    //   value={data.title}
-    //   color={btncolors[index % 7]}
-    //   onClick={() => props.selectKategorie(data)}
-    //   sx={{ 
-    //     borderRadius: "5px;",
-    //     boxShadow: "0 0 4px 0 rgba(0, 0, 0, 0.2);",
-    //     backgroundColor: "#fff;",
-    //     height:"60px;",
-    //     margin:"10px 0 10px 0;"}}
-    //   >
-    //     {data.title} 
-    // </ToggleButton>
-    
+  const againToggleButton = props.categori.map((data, index) => {
+    let paths = ''
+    if (data.title === "키워드 학습"){
+      paths = "keywordstudy"
+    } else if (data.title === "4지 선다"){
+      paths = "fourwaystudy"
+    }else if (data.title === "OX 퀴즈"){
+      paths = "oxstudy"
+    }else if (data.title === "키워드 검색"){
+      paths = "csafy"
+    }
+    return(
     <ToggleBtn
       key={index}
       onClick={() => props.selectKategorie(data)}
       able = {data.title === props.value ? "Y" : "N" }
       >
       <span style={{width:"60px"}}>
-        <img src={`images/${data.title}.png`} alt={data.title} style={{ height:`25px`}} ></img>
+        <img src={`images/${paths}.png`} alt={paths} style={{ height:`25px`}} ></img>
       </span>
       <span style={{width:"100px"}}>
         {data.title}
       </span>
       
-    </ToggleBtn>
+    </ToggleBtn>)
     
-  )
-  // useEffect(()=>{
-  //   console.log(props)
-  // },[props])
+  })
+  
 
   return (
-      // <ToggleButtonGroup
-      //   orientation="vertical"
-      //   value={props.nowChoice}
-      //   exclusive
-      //   // onChange={props.selectKategorie()}
-      //   aria-label="text alignment"
-      //   color="primary"
-        
-      //   sx={{width:"160px;", margin:"0 20px 0 0;"}}
-      // >
-        
-      //   {againToggleButton}
-      // </ToggleButtonGroup>
+      
       <div>
         <TagText>
           집중 학습 모드
