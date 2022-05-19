@@ -5,6 +5,7 @@ export const FullLayOut = styled.div`
   min-width:1375px;
   background-color: #f6f7fb;
   height : 100%;
+  min-height: 800px;
   padding: 50px 60px 20px 50px;
 `
 
