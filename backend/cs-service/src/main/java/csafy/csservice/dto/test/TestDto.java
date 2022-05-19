@@ -3,6 +3,7 @@ package csafy.csservice.dto.test;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,6 +27,19 @@ public class TestDto {
     private String categoryChapter;
 
 
+    public TestDto(TestFixedResultDto testFixedResultDto){
+        this.TestSeq = testFixedResultDto.getQuestionSeq().longValue();
+        this.question = testFixedResultDto.getQuestion();
+        this.answer = testFixedResultDto.getAnswer();
+        this.category = testFixedResultDto.getCategory();
+        this.categoryChapter = testFixedResultDto.getCategoryChapter();
+        List<String> testExamples = new ArrayList<>();
+        String[] tmp = testFixedResultDto.getExamples().split("\"");
+        for(int i = 1 ; i < 8; i+=2) {
+            testExamples.add(tmp[i]);
+        }
+        examples = testExamples;
+    }
 
 
 

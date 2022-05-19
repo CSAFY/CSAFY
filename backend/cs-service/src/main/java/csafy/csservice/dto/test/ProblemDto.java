@@ -49,4 +49,14 @@ public class ProblemDto {
         }
     }
 
+    public ProblemDto(TestFixedResultDto testFixedResultDto){
+        this.questionSeq = testFixedResultDto.getQuestionSeq();
+        this.answer = testFixedResultDto.getAnswer().toString();
+        this.category = testFixedResultDto.getCategory();
+        this.categoryChapter = testFixedResultDto.getCategoryChapter();
+        this.question = testFixedResultDto.getQuestion();
+        this.questionNum = testFixedResultDto.getQuestionSeq().intValue();
+
+    }
+
 }
