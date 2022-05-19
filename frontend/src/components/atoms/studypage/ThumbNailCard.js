@@ -118,7 +118,7 @@ const CardBox = styled.div`
   box-shadow: 0 0 12px  4px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
   border-radius: 15px;
-  margin: 0 1em 1em 1em;
+  margin: 0 1em 2em 1em;
   padding-top:5px; 
   ${
     css`
