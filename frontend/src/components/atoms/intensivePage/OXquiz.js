@@ -14,7 +14,9 @@ import { oxquizData } from "../../../recoils";
 
 import axios from 'axios';
 
-import BasicModal from './BasicModal';
+
+
+import Swal from 'sweetalert2';
 
 import {
   FourCardDiv,
@@ -152,7 +154,8 @@ function OXquiz(props) {
       </CardCoverDiv>
     </FlexDiv>
   )
-
+  
+  const [resData, setResData] = useState({"prevScore": null, "nowScore":null});
 
   const scorePostAPI = () => {
     const Url = `https://csafy.com/api/v1/cs-service/profile/scores/update`
@@ -176,12 +179,22 @@ function OXquiz(props) {
       },
     })
     .then((res) => {
-      setResData(res.data)
-      handleOpen()
+      
+      const checking = Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: `${props.Cate}과목이 ${res.data.prevScore}점에서 ${res.data.nowScore}점으로 상승했습니다!!`,
+        showConfirmButton: false,
+        timer: 1500
+      })
+      // setResData(res.data)
+      // handleOpen()
+      
       setActiveStep(0)
       setSelectO(2)
       setSelectX(2)
       setSelectAnswerCNT(0)
+      return checking
     })
     .catch(err =>{
       console.log(err)
@@ -198,7 +211,7 @@ function OXquiz(props) {
   }
 
   const [open, setOpen] = useState(false);
-  const [resData, setResData] = useState({"prevScore": null, "nowScore":null});
+  
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false)
@@ -270,14 +283,14 @@ function OXquiz(props) {
         {OXCardPack}
         
         
-        <BasicModal 
+        {/* <BasicModal 
           isOpen={open} 
           handleClose={handleClose} 
           prevScore={resData.prevScore} 
           nowScore={resData.nowScore} 
           Cate={props.Cate}
           >
-          </BasicModal>
+          </BasicModal> */}
       <CusLinearWithValueLabel 
         selectAnswerCNT={selectAnswerCNT}
         maxSteps={maxSteps}
@@ -355,7 +368,7 @@ const OXCard = styled.div`
   margin-bottom: 10px;
   padding: 0 0.1px 0 0;
   border-radius: 11px;
-  
+  cursor: pointer;
   border: ${(props) => props.border}
   background-color: ${(props) => props.backgroundColor}
 `

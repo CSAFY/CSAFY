@@ -84,7 +84,7 @@ const ToggleBtn = styled.button`
   margin : 0 0 10px 0;
   align-items: center;
   padding: 0 0px 0 0px;
-  
+  cursor: pointer;
   border-radius: 5px;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -99,7 +99,7 @@ const ToggleBtn = styled.button`
       `;
     } else {
       return css`
-        cursor: default;
+        
       `;
     }
   }}

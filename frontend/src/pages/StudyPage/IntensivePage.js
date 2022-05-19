@@ -33,11 +33,38 @@ import SearchKeyWords from "../../components/atoms/intensivePage/SearchKeyWords"
 import RelatedExam from "../../components/atoms/studypage/RelatedExam"
 import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
 
+import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
+
 
 function IntensivePage() {
   const [nowCate, setNowCate] = useState('자료구조')
   const [nowChoice, setNowChoice] = useState("키워드 학습")
   const categorys = useRecoilValue(category)
+
+  
+  let navigate = useNavigate();
+
+  const checkLogin=() => {
+    const checking = Swal.fire({
+      icon: 'error',
+      title: '로그인을 해주세요!',
+      text: '서비스를 이용하려면 로그인이 필요합니다.',
+    })
+    .then(() => {
+      navigate("/");
+    })
+    return checking
+  }
+
+  useEffect(() => {
+    const JWT = window.localStorage.getItem("jwt")
+    if (JWT === null ) {
+      checkLogin()
+    } else {
+      console.log("good")
+    }
+  }, [])
 
   
   const choice = [{ title : "키워드 학습"}, 
@@ -119,10 +146,10 @@ function IntensivePage() {
         <div>
           {nowKeyWords.liked === true ? 
             <img src="images/star.png" alt="star" 
-            style={{width:`50px`, height:`50px`}} 
+            style={{width:`50px`, height:`50px`, cursor: "pointer"}} 
             onClick={() => ToggleFavorites()}></img>
             : <img src="images/nonstar.png" alt="nonstar"
-            style={{width:`50px`, height:`50px`}} 
+            style={{width:`50px`, height:`50px`, cursor: "pointer"}} 
             onClick={() => ToggleFavorites()}></img>
           }
         </div>

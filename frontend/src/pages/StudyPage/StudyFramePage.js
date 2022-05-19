@@ -21,6 +21,9 @@ import axios from 'axios';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { studyData, category } from "../../recoils";
 
+import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
+
 function StudyFramePage() {
   const [nowKategorie, setKategorie] = useState("전체 학습")
 
@@ -54,46 +57,70 @@ function StudyFramePage() {
       console.log(err)
     })
   }
+
+  let navigate = useNavigate();
+
+  const checkLogin=() => {
+    const checking = Swal.fire({
+      icon: 'error',
+      title: '로그인을 해주세요!',
+      text: '서비스를 이용하려면 로그인이 필요합니다.',
+    })
+    .then(() => {
+      navigate("/");
+    })
+    return checking
+  }
+
+  useEffect(() => {
+    const JWT = window.localStorage.getItem("jwt")
+    if (JWT === null ) {
+      checkLogin()
+    } else {
+      console.log("good")
+    }
+  }, [])
+
   const location = useLocation();
   useEffect(() => {
     getData();
   }, [location.pathname]);
   
-  const cateFilter = (data, index) => {
-    if (nowKategorie === "전체 학습"){
-      return(
-        <ThumbNailCard
-            key={data.id}
-            imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
-            title={data.title}
-            index={index}
-            videoId={data.videoId}
-            category2Id = {data.category2Id}
-            categoryId={data.categoryId}
-            favorites ={data.favorites}
-            id = {data.id}
-            seen = {data.seen}
-            >
-          </ThumbNailCard>
-      )
-    }else if (nowKategorie == data.categoryId) {
-      return(
-        <ThumbNailCard
-            key={data.id}
-            imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
-            title={data.title}
-            index={index}
-            videoId={data.videoId}
-            category2Id = {data.category2Id}
-            categoryId={data.categoryId}
-            favorites ={data.favorites}
-            id = {data.id}
-            seen = {data.seen}
-            >
-          </ThumbNailCard>
-      )
-    } 
-  }
+  // const cateFilter = (data, index) => {
+  //   if (nowKategorie === "전체 학습"){
+  //     return(
+  //       <ThumbNailCard
+  //           key={data.id}
+  //           imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+  //           title={data.title}
+  //           index={index}
+  //           videoId={data.videoId}
+  //           category2Id = {data.category2Id}
+  //           categoryId={data.categoryId}
+  //           favorites ={data.favorites}
+  //           id = {data.id}
+  //           seen = {data.seen}
+  //           >
+  //         </ThumbNailCard>
+  //     )
+  //   }else if (nowKategorie == data.categoryId) {
+  //     return(
+  //       <ThumbNailCard
+  //           key={data.id}
+  //           imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
+  //           title={data.title}
+  //           index={index}
+  //           videoId={data.videoId}
+  //           category2Id = {data.category2Id}
+  //           categoryId={data.categoryId}
+  //           favorites ={data.favorites}
+  //           id = {data.id}
+  //           seen = {data.seen}
+  //           >
+  //         </ThumbNailCard>
+  //     )
+  //   } 
+  // }
   
   const againCard = studyDatas.map((data, index) => 
       {

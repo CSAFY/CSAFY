@@ -112,13 +112,14 @@ const ToggleBtn = styled.button`
   background-color: #f4fbfe;
   border: none;
   
-
+  cursor: pointer;
   ${(props) => {
     if (props.able === "Y") {
       return css`
         {
           background-color: #42A7E8;
           color: #fff;
+          
           ${TextDiv}{
             background-color: #008ED0;
           }
@@ -126,7 +127,7 @@ const ToggleBtn = styled.button`
       `;
     } else {
       return css`
-        cursor: default;
+        
       `;
     }
   }}
