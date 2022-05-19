@@ -288,6 +288,7 @@ function CSTestDetail() {
       setTestStart(true);
     }, 2000);
   };
+  // console.log(testData);
 
   // '실전 모의고사' 버튼 클릭
   const handleActual = () => {
