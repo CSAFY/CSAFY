@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Radar } from 'react-chartjs-2';

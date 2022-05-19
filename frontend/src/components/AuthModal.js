@@ -1,7 +1,10 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { defaultAPI } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert2';
+
 // Recoil
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
@@ -277,6 +280,7 @@ function AuthModal({ state, setState, setSignup, setModal }) {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
+              type="submit"
               onClick={submitLogin}
             >
               로그인
