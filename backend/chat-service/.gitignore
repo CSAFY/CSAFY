@@ -40,3 +40,4 @@ out/
 /download
 /media
 **/src/main/resources/*.json
+application.yml

@@ -327,6 +327,8 @@ public class ProfileService {
         userBadge.setUserSeq(userSeq);
         userBadge.setGetTime(LocalDate.now());
         userBadge.setBadge(badgeRepository.findById(45L).orElse(null));
+
+        userBadgeRepository.save(userBadge);
     }
 
     @Transactional
@@ -342,6 +344,8 @@ public class ProfileService {
         userBadge.setUserSeq(userSeq);
         userBadge.setGetTime(LocalDate.now());
         userBadge.setBadge(badgeRepository.findById(46L).orElse(null));
+
+        userBadgeRepository.save(userBadge);
 
     }
 
@@ -360,6 +364,8 @@ public class ProfileService {
         userBadge.setUserSeq(userSeq);
         userBadge.setGetTime(LocalDate.now());
         userBadge.setBadge(badgeRepository.findById(47L).orElse(null));
+
+        userBadgeRepository.save(userBadge);
     }
 
 
