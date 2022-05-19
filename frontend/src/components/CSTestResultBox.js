@@ -114,9 +114,9 @@ function CSTestResultBox({ state }) {
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     🎉
                   </div>
-                  <div>90점 이상</div>
+                  <div>정말 열심히 공부하셨군요!</div>
                 </TitleBox>
-                <SubTitleBox>90점 이상</SubTitleBox>
+                <SubTitleBox>C;SAFY가 당신의 앞날을 응원합니다.</SubTitleBox>
               </>
             );
           if (getScore(result) > 60)
@@ -126,9 +126,11 @@ function CSTestResultBox({ state }) {
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     🎉
                   </div>
-                  <div>60점 이상</div>
+                  <div>열심히 공부하셨군요!</div>
                 </TitleBox>
-                <SubTitleBox>60점 이상</SubTitleBox>
+                <SubTitleBox>
+                  조금만 더 노력하면 완벽한 CS 마스터가 되실 것 같아요!
+                </SubTitleBox>
               </>
             );
           if (getScore(result) > 30)
@@ -136,11 +138,13 @@ function CSTestResultBox({ state }) {
               <>
                 <TitleBox>
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    🎉
+                    😢
                   </div>
-                  <div>30점 이상</div>
+                  <div>추가적인 공부가 필요합니다.</div>
                 </TitleBox>
-                <SubTitleBox>30점 이상</SubTitleBox>
+                <SubTitleBox>
+                  일반학습과 집중학습을 활용해 조금 더 공부해봐요 우리!
+                </SubTitleBox>
               </>
             );
           if (getScore(result) >= 0)
@@ -148,11 +152,13 @@ function CSTestResultBox({ state }) {
               <>
                 <TitleBox>
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    🎉
+                    😢
                   </div>
-                  <div>0점 이상</div>
+                  <div>많은 노력이 필요합니다.</div>
                 </TitleBox>
-                <SubTitleBox>0점 이상</SubTitleBox>
+                <SubTitleBox>
+                  일반학습과 집중학습을 활용해 조금 더 공부해봐요 우리!
+                </SubTitleBox>
               </>
             );
         })()}

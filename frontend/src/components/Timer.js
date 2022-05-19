@@ -49,14 +49,14 @@ export default function SetTimer() {
   useEffect(timer, [count]);
   return (
     <>
-      <h1>
+      <div>
         {currentHours < 10 ? `0${currentHours}` : currentHours}:
         {currentMinutes < 10 ? `0${currentMinutes}` : currentMinutes}:
         {currentSeconds < 10 ? `0${currentSeconds}` : currentSeconds}
-      </h1>
-      <button onClick={start}>Start</button>
+      </div>
+      {/* <button onClick={start}>Start</button>
       <button onClick={stop}>Stop</button>
-      <button onClick={reset}>Reset</button>
+      <button onClick={reset}>Reset</button> */}
     </>
   );
 }

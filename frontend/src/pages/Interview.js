@@ -66,7 +66,7 @@ const TypeButton = styled.div`
     background-color: #008ed0;
     box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
     color: #fff;
-    // transform: scale(1.05);
+    transform: scale(1.05);
   }
 
   display: flex;
@@ -74,6 +74,22 @@ const TypeButton = styled.div`
   align-items: center;
 
   cursor: pointer;
+`;
+
+const OnlyButton = styled.div`
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 300;
+  margin-bottom: 10px;
+  &:hover {
+    border-radius: 10px;
+    background-color: #008ed0;
+    box-shadow: 0 0 15px 0 rgba(0, 142, 208, 0.3);
+    color: #fff;
+    transform: scale(1.1);
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 `;
 
 const ButtonBox = styled.div`
@@ -262,17 +278,9 @@ function Interview() {
                     </TypeButton>
                   )}
 
-                  <div
-                    onClick={() => navigate('/interviewList')}
-                    style={{
-                      cursor: 'pointer',
-                      fontSize: '13px',
-                      fontWeight: '300',
-                      marginBottom: '12px',
-                    }}
-                  >
+                  <OnlyButton onClick={() => navigate('/interviewList')}>
                     면접 질문만 보고 싶어요
-                  </div>
+                  </OnlyButton>
                 </TypeBox>
               </>
             ) : (
