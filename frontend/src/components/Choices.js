@@ -355,7 +355,7 @@ function Choices({ test, idx }) {
               }}
             >
               {test.explanation}
-              {test.answer}
+              {/* {test.answer} */}
             </div>
           </MeaningDiv>
           {OXCardPack}
@@ -385,7 +385,7 @@ function Choices({ test, idx }) {
               }}
             >
               {test.question}
-              {test.answer}
+              {/* {test.answer} */}
             </div>
           </MeaningDiv>
 

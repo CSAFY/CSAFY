@@ -74,7 +74,7 @@ function KakaopaySuccess() {
           text: res.data.item_name + '회원으로 전환되었습니다.',
           scrollbarPadding: false,
         });
-        navigate('/');
+        navigate('/mypage');
         // router.push('/');
       })
       .catch(() => {

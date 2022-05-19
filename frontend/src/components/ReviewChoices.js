@@ -234,7 +234,7 @@ function ReviewChoices({ test, idx }) {
               }}
             >
               {test.explanation}
-              {test.answer}
+              {/* {test.answer} */}
             </div>
           </MeaningDiv>
           {OXCardPack}
@@ -265,7 +265,7 @@ function ReviewChoices({ test, idx }) {
               }}
             >
               {test.question}
-              {test.answer}
+              {/* {test.answer} */}
             </div>
           </MeaningDiv>
 

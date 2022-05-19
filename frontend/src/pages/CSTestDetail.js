@@ -22,6 +22,7 @@ import {
 
 // COMPONENTS
 import Progress from '../components/Progress';
+import SetTimer from '../components/Timer';
 
 // STYLED
 import styled from 'styled-components';
@@ -150,7 +151,7 @@ const SubmitButton = styled.div`
 
 const TimerBox = styled.div`
   position: absolute;
-  top: 100px;
+  top: 60px;
   left: 200px;
 `;
 
@@ -468,7 +469,10 @@ function CSTestDetail() {
   }, [testData]);
 
   // 타이머 모드 - 종료 시간 일단 3초
-  const endTime = 3;
+
+  // const endTime = 60;
+  const minute = 10;
+  const second = 0;
 
   const testHeight = 550 + testData.length * 550;
 
@@ -575,10 +579,11 @@ function CSTestDetail() {
               <TestDetailContent>
                 <TimerBox>
                   <SpentTime
-                    mm={'00'}
-                    ss={`${endTime}`}
+                    mm={`${minute}`}
+                    ss={`${second}`}
                     message={'모의고사가 종료되었습니다.'}
                   />
+                  {/* <SetTimer /> */}
                 </TimerBox>
                 <TestList>
                   {testData.map((test, idx) => (

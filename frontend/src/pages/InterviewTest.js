@@ -46,7 +46,7 @@ const QuestionBox = styled.div`
   align-items: center;
 
   position: absolute;
-  top: 50px;
+  top: 70px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -61,7 +61,7 @@ const Question = styled.div`
 `;
 const TimerBox = styled.div`
   position: absolute;
-  top: 100px;
+  top: 40px;
   left: 200px;
 `;
 const Icon = styled.div`
@@ -302,7 +302,10 @@ function InterviewTest() {
 
   // 타이머 관련 - 일단 3초로 설정
   // const endTime = (state.length - 1) * 60;
-  const endTime = 3;
+  // const endTime = 3;
+  // const endTime = 600;
+  const minute = 10;
+  const second = 0;
 
   //
   const [stream, setStream] = useState({
@@ -383,8 +386,8 @@ function InterviewTest() {
         {timeLimit && (
           <TimerBox>
             <SpentTime
-              mm={'00'}
-              ss={`${endTime}`}
+              mm={`${minute}`}
+              ss={`${second}`}
               message="면접 시간이 종료되었습니다."
             />
           </TimerBox>
