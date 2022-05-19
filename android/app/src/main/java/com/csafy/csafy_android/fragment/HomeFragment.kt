@@ -11,12 +11,14 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import com.csafy.csafy_android.databinding.FragmentHomeBinding
 import com.csafy.csafy_android.network.RequestToServer
 import com.csafy.csafy_android.network.data.response.ResponseChartData
 import com.csafy.csafy_android.network.data.response.ScoreData
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.data.*
@@ -77,23 +79,30 @@ class HomeFragment : Fragment() {
                     response: Response<ResponseChartData>
                 ) {
                     if (response.isSuccessful) {
-                        var chartData = response.body()!!
-                        score = chartData.scores
+                        if (response.body() == null) {
+                            Toast.makeText(context, "활동을 하면 차트 데이터가 활성화됩니다 !", Toast.LENGTH_SHORT).show()
+                        }
+                        else {
+                            var chartData = response.body()!!
+                            score = chartData.scores
 
-                        network = score!!.network!!.toFloat()
-                        operatingSystem = score!!.network!!.toFloat()
-                        dataSystem = score!!.dataSystem!!.toFloat()
-                        etc = score!!.etc!!.toFloat()
-                        database = score!!.etc!!.toFloat()
-                        computerArchitecture = score!!.computerArchitecture!!.toFloat()
+                            network = score!!.network!!.toFloat()
+                            operatingSystem = score!!.network!!.toFloat()
+                            dataSystem = score!!.dataSystem!!.toFloat()
+                            etc = score!!.etc!!.toFloat()
+                            database = score!!.etc!!.toFloat()
+                            computerArchitecture = score!!.computerArchitecture!!.toFloat()
 
 
-                        Log.e("메인 차트 데이터 통신 성공", "${response.body()!!}")
-                        Log.e("메인 차트 데이터 통신 성공", "${computerArchitecture!!}")
+                            Log.e("메인 차트 데이터 통신 성공", "${response.body()!!}")
+                            Log.e("메인 차트 데이터 통신 성공", "${computerArchitecture!!}")
 
 //                        radarChart()
-                        pieChart()
-                        barChart()
+                            pieChart()
+                            barChart()
+
+                        }
+
 
                     }
                 }
@@ -186,19 +195,19 @@ class HomeFragment : Fragment() {
 
     // bar chart 생성
    private fun barChart() {
-        val barChart: BarChart = binding.barChart
+        val barChart: HorizontalBarChart = binding.barChart
 
         val values = ArrayList<BarEntry>()
         val type = ArrayList<String>()
         val colorList = ArrayList<Int>()
         val set : BarDataSet
 
-        values.add(BarEntry(0.5f, network))
-        values.add(BarEntry(1.0f, operatingSystem))
-        values.add(BarEntry(1.5f, dataSystem))
-        values.add(BarEntry(2.0f, etc))
-        values.add(BarEntry(2.5f, database))
-        values.add(BarEntry(3.0f, computerArchitecture))
+        values.add(BarEntry(1.0f, network))
+        values.add(BarEntry(2.0f, operatingSystem))
+        values.add(BarEntry(3.0f, dataSystem))
+        values.add(BarEntry(4.0f, etc))
+        values.add(BarEntry(5.0f, database))
+        values.add(BarEntry(6.0f, computerArchitecture))
 
         type.add(" ")
         type.add("네트워크")
@@ -211,6 +220,9 @@ class HomeFragment : Fragment() {
         colorList.add(Color.parseColor("#f5c700"))
         colorList.add(Color.parseColor("#ff8e7f"))
         colorList.add(Color.parseColor("#89a5ea"))
+        colorList.add(Color.parseColor("#b5fcca"))
+        colorList.add(Color.parseColor("#6ccad0"))
+        colorList.add(Color.parseColor("#ffe4e1"))
 
         if (barChart.data != null && barChart.data.dataSetCount > 1) {
             val chartData = barChart.data
@@ -219,7 +231,7 @@ class HomeFragment : Fragment() {
             chartData.notifyDataChanged()
             barChart.notifyDataSetChanged()
         } else {
-            set = BarDataSet(values, " ")
+            set = BarDataSet(values, "학습 경험치 차트")
             set.colors = colorList
             set.setDrawValues(true)
 
@@ -228,7 +240,7 @@ class HomeFragment : Fragment() {
 
             val data = BarData(dataSets)
             barChart.data = data
-            barChart.setVisibleXRange(1.0f, 3.0f)
+            barChart.setVisibleXRange(0.0f, 6.0f)
             barChart.setFitBars(true)
 
             val xAxis = barChart.xAxis

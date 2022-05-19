@@ -1,6 +1,8 @@
 package com.csafy.csafy_android.activity
 
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,15 +29,26 @@ class SettingActivity : AppCompatActivity() {
 //            editor.remove("token")
             editor.clear()  // 모든 데이터 삭제
             editor.commit()
-            Toast.makeText(this@SettingActivity, "로그아웃을 진행할게요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@SettingActivity, "로그아웃되었습니다", Toast.LENGTH_SHORT).show()
             finish()
         }
 
         // 회원 탈퇴
-        binding.txWithdraw.setOnClickListener {
+//        binding.txWithdraw.setOnClickListener {
+//
+//        }
 
+        // 개인 정보 이용 약관
+        binding.txPrivacy.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://csafy.com/privacy"))
+            startActivity(intent)
         }
 
+        binding.btnClose.setOnClickListener() {
+//            val intent = Intent(context, JoinActivity::class.java)
+            finish()
+//            startActivity(intent)
+        }
     }
 
 }

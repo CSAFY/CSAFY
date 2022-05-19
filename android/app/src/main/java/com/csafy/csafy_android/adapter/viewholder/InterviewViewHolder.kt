@@ -10,6 +10,6 @@ class InterviewViewHolder(private val binding: ItemInterviewBinding) : RecyclerV
         binding.txKeyword.text = interviewData.category
         binding.txInterviewContent.text = interviewData.question
         binding.txLikeCnt.text = interviewData.interviewLikes.toString()
-        binding.txLiked.text = interviewData.liked.toString()
+//        binding.txLiked.text = interviewData.liked.toString()
     }
 }

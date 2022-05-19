@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.txJoin.setOnClickListener() {
-            Toast.makeText(this, "회원가입하러가기", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "회원가입하러가기", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, JoinActivity::class.java)
             startActivity(intent)
         }
@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "이메일과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
             else {
-                Toast.makeText(this, "login 1", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "login 1", Toast.LENGTH_SHORT).show()
 
                 // 기간 만료 토큰 보내기 방지를 위해 토큰 지우고 보내기
                 val sharedPreference = getSharedPreferences("Login", MODE_PRIVATE)
@@ -70,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
                             editor.putString("token", response.body()!!.token)
                             editor.commit()
 
-                            Toast.makeText(this@LoginActivity, "로그인을 진행할게요.", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(this@LoginActivity, "로그인을 진행할게요.", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<ResponseLoginData>, t: Throwable) {  // 통신 실패
-                        Toast.makeText(this@LoginActivity, "로그인 onFailure.", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this@LoginActivity, "로그인 onFailure.", Toast.LENGTH_SHORT).show()
                     }
                 })
 

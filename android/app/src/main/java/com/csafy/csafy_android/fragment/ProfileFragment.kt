@@ -40,14 +40,14 @@ class ProfileFragment : Fragment() {
         val viewPager = binding.viewpagerProfile
         val tabContent = binding.tabProfile
 
-        val imgIconList = arrayOf(R.drawable.ic_outline_star_24, R.drawable.ic_outline_star_24, R.drawable.ic_outline_star_24)
-        val textList = arrayOf("즐겨찾는 학습", "좋아요한 학습", "모의고사 결과")
+//        val imgIconList = arrayOf(R.drawable.ic_outline_star_24, R.drawable.ic_outline_star_24, R.drawable.ic_outline_star_24)
+        val textList = arrayOf("즐겨찾는 학습", "최근 본 면접", "모의고사 결과")
 
         viewPager.adapter = ProfilePagerAdapter(childFragmentManager, lifecycle)
 
         TabLayoutMediator(tabContent, viewPager) { tab, position ->  // 탭 메뉴 설정
             tab.text = textList[position]
-            tab.setIcon(imgIconList[position])
+//            tab.setIcon(imgIconList[position])
         }.attach()
 
 //        val tabFirst : View = layoutInflater.inflate(R.layout.custom_profile_tab, null)
@@ -86,7 +86,7 @@ class ProfileFragment : Fragment() {
         binding.btnLogin.setOnClickListener{
             activity?.let{
                 val intent = Intent(context, LoginActivity::class.java)
-                Toast.makeText(context, "login btn 눌림", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "login btn 눌림", Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             }
         }

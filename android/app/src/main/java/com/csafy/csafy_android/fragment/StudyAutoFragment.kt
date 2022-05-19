@@ -83,7 +83,7 @@ class StudyAutoFragment : Fragment() {
         binding.btnEndStudy.setOnClickListener {
             isTimerRunning = false
             updateScores()
-            mainActivity.changeHomeFragment()
+            mainActivity.changeStudyFragment()
         }
 
         binding.btnStop.setOnClickListener {

@@ -11,8 +11,7 @@ class ProfileFavoriteViewHolder(private val binding: ItemProfileFavoriteBinding)
         binding.txCategory.text = profileFavoriteData.categoryId
         binding.txCategory2.text = profileFavoriteData.category2Id
         binding.txTitle.text = profileFavoriteData.title
-        binding.txVideoId.text = profileFavoriteData.videoId
-        val imgUrl: String = "https://i.ytimg.com/vi/${profileFavoriteData.videoId}/hqdefault.jpg"
+        val imgUrl: String = "https://i.ytimg.com/vi/${profileFavoriteData.videoId}/default.jpg"
         Glide.with(itemView).load(imgUrl).into(binding.imgThumbnail)
     }
 }

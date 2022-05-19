@@ -4,17 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+
     tools:context=".fragment.StudyCardFragment">
 
     <TextView
         android:id="@+id/textSubject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="60dp"
         android:text="과목이름"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/card_front"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.4"/>
 
     <TextView
         android:id="@+id/textCards"
@@ -30,11 +36,14 @@
     <Button
         android:id="@+id/btnEndStudy"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="학습종료"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:text="학습 종료"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_small_round"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,32 +52,33 @@
         android:id="@+id/card_back"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:layout_marginTop="80dp"
-        android:background="#BF3030"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/card2"
         android:gravity="center"
         android:text="Back Card"
         android:textAlignment="center"
-        android:textSize="22sp"
-        app:layout_constraintHorizontal_bias="0.392"
+        android:paddingHorizontal="8dp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/textSubject"/>
 
     <!--카드 앞면-->
     <TextView
         android:id="@+id/card_front"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:layout_marginTop="80dp"
-        android:background="#326314"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/card"
         android:gravity="center"
         android:text="Front Card"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:textSize="22sp"
-        app:layout_constraintHorizontal_bias="0.392"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/textSubject"
+        app:layout_constraintBottom_toTopOf="@id/btnPastCard"/>
 
     <!--카드 뒤집기 임시버튼-->
 
@@ -76,22 +86,31 @@
     <Button
         android:id="@+id/btnNextCard"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="304dp"
-        android:text="다음카드"
+        android:layout_height="40dp"
+        android:text="다음 카드"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_small_round"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.698"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/btnPastCard"
+        app:layout_constraintTop_toBottomOf="@id/card_front"
+        />
 
     <Button
         android:id="@+id/btnPastCard"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="304dp"
-        android:text="이전카드"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.282"
+        android:layout_height="40dp"
+        android:text="이전 카드"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_small_round"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintEnd_toStartOf="@id/btnNextCard"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/btnNextCard"
+        app:layout_constraintBottom_toBottomOf="@id/btnNextCard"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

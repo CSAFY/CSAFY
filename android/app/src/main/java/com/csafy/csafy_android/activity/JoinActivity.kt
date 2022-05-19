@@ -1,6 +1,7 @@
 package com.csafy.csafy_android.activity
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -30,7 +31,7 @@ class JoinActivity : AppCompatActivity() {
                 Toast.makeText(this, "이메일과 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show()
             }
             else {
-                Toast.makeText(this, "1", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "1", Toast.LENGTH_SHORT).show()
 
                 // 회원가입 요청
                 requestToServer.service.requestJoin(
@@ -47,13 +48,13 @@ class JoinActivity : AppCompatActivity() {
                         // 통신 성공
                         if(response.isSuccessful){
                             Log.d("성공", response.toString())
-                            Toast.makeText(this@JoinActivity, "회원가입을 진행할게요.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@JoinActivity, "회원가입 완료", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@JoinActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         }
                         else {
-                            Toast.makeText(this@JoinActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(this@JoinActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
                             when (response.code()) {
                                 404 -> Log.d("실패", response.message())
 //                                404 -> onFailure()
@@ -63,7 +64,7 @@ class JoinActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<ResponseJoinData>, t: Throwable) {  // 통신 실패
-                        Toast.makeText(this@JoinActivity, "회원가입 onFailure.", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this@JoinActivity, "회원가입 onFailure.", Toast.LENGTH_SHORT).show()
                         Log.d("실패", t.message.toString())
                     }
                 })
@@ -71,9 +72,15 @@ class JoinActivity : AppCompatActivity() {
             }
         }
 
+        // 약관 동의 누르면
+        binding.check1.setOnClickListener() {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://csafy.com/privacy"))
+            startActivity(intent)
+        }
+
         binding.btnClose.setOnClickListener() {
 //            val intent = Intent(context, JoinActivity::class.java)
-            Toast.makeText(this, "close btn 눌림", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "close btn 눌림", Toast.LENGTH_SHORT).show()
             finish()
 //            startActivity(intent)
         }

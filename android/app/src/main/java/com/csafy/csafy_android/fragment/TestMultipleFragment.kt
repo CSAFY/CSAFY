@@ -131,7 +131,7 @@ class TestMultipleFragment : Fragment() {
         val mainActivity = activity as MainActivity
         binding.btnEndQuiz.setOnClickListener {
             updateScores()
-            mainActivity.changeHomeFragment()
+            mainActivity.goTestFragment()
         }
 
         return view

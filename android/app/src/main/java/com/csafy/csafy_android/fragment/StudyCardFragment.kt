@@ -178,7 +178,7 @@ class StudyCardFragment : Fragment() {
         val mainActivity = activity as MainActivity
         binding.btnEndStudy.setOnClickListener {
             updateScores()
-            mainActivity.changeHomeFragment()
+            mainActivity.changeStudyFragment()
         }
 
         return view

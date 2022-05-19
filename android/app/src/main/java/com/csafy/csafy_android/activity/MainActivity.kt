@@ -94,6 +94,22 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             .commit()
     }
 
+    // study으로 보내기
+    fun changeStudyFragment() {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.main_frame, studyFragment)
+                .commit()
+    }
+
+    // study으로 보내기
+    fun goTestFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_frame, testFragment)
+            .commit()
+    }
+
     // frag -> frag
     // 문제에서 OX, 사지선다 선택
     fun changeTestFragment(index: Int, quizType: String){

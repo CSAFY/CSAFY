@@ -48,10 +48,17 @@ class ProfileTestFragment : Fragment() {
                 .enqueue(object : Callback<List<ResponseProfileTestData>> {
                     override fun onResponse(call: Call<List<ResponseProfileTestData>>, response: Response<List<ResponseProfileTestData>>) {
                         if (response.isSuccessful) {
-                            Log.d("모의고사 결과 통신 성공", "${response.body()!!}")
-                            profileTestAdapter = ProfileTestAdapter(response.body()!! as MutableList<ResponseProfileTestData>)
-                            binding.rvProfileTest.adapter = profileTestAdapter
-                            profileTestAdapter.notifyDataSetChanged()
+                            // 모의고사 결과 데이터가 아직 없는 유저에게 발생하는 nullPointException 해결
+                            if (response.body() == null) {
+                                binding.rvProfileTest.layoutManager = LinearLayoutManager(context)
+                            }
+                            else {
+                                Log.d("모의고사 결과 통신 성공", "${response.body()!!}")
+                                profileTestAdapter = ProfileTestAdapter(response.body()!! as MutableList<ResponseProfileTestData>)
+                                binding.rvProfileTest.adapter = profileTestAdapter
+                                profileTestAdapter.notifyDataSetChanged()
+                            }
+
                         }
                     }
 

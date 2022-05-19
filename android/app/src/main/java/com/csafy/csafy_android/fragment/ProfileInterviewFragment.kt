@@ -40,7 +40,7 @@ class ProfileInterviewFragment : Fragment() {
 
         getProfileInterviewData()
 
-        binding.rvProfileInterview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        binding.rvProfileInterview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 //        binding.rvProfileInterview.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))  // item 마다 구분선 긋기
     }
 
@@ -50,10 +50,16 @@ class ProfileInterviewFragment : Fragment() {
                 .enqueue(object: Callback<List<ResponseProfileInterviewData>>{
                     override fun onResponse(call: Call<List<ResponseProfileInterviewData>>, response: Response<List<ResponseProfileInterviewData>>) {
                         if (response.isSuccessful) {
-                            Log.d("최근 본 면접 질문 통신 성공", "${response.body()!!}")
-                            profileInterviewAdapter = ProfileInterviewAdapter(response.body()!! as MutableList<ResponseProfileInterviewData>)
-                            binding.rvProfileInterview.adapter = profileInterviewAdapter
-                            profileInterviewAdapter.notifyDataSetChanged()
+                            // 최근 본 면접 데이터가 아직 없는 유저에게 발생하는 nullPointException 해결
+                            if (response.body() == null) {
+                                binding.rvProfileInterview.layoutManager = LinearLayoutManager(context)
+                            }
+                            else {
+                                Log.d("최근 본 면접 질문 통신 성공", "${response.body()!!}")
+                                profileInterviewAdapter = ProfileInterviewAdapter(response.body()!! as MutableList<ResponseProfileInterviewData>)
+                                binding.rvProfileInterview.adapter = profileInterviewAdapter
+                                profileInterviewAdapter.notifyDataSetChanged()
+                            }
                         }
                     }
 

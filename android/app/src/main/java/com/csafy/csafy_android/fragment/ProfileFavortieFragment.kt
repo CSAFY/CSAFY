@@ -59,13 +59,22 @@ class ProfileFavortieFragment : Fragment() {
                         response: Response<List<ResponseProfileFavoriteData>>
                 ) {
                     if (response.isSuccessful) {
-                        Log.d("통신 성공", "${response.body()}")
-                        profileFavoriteAdapter = ProfileFavoriteAdapter(view!!.context,
-                            response.body()!! as MutableList<ResponseProfileFavoriteData>
-                        )
-                        binding.rvFavorite.adapter = profileFavoriteAdapter
-                        profileFavoriteAdapter.notifyDataSetChanged()
+                        // 즐겨찾는 학습 데이터가 아직 없는 유저에게 발생하는 nullPointException 해결
+                        if (response.body() == null) {
+                            binding.rvFavorite.layoutManager = LinearLayoutManager(context)
+                        }
+
+                        else {
+                            Log.d("통신 성공", "${response.body()}")
+                            profileFavoriteAdapter = ProfileFavoriteAdapter(view!!.context,
+                                response.body()!! as MutableList<ResponseProfileFavoriteData>
+                            )
+                            binding.rvFavorite.adapter = profileFavoriteAdapter
+                            profileFavoriteAdapter.notifyDataSetChanged()
+                        }
+
                     } else {
+                        binding.rvFavorite.layoutManager = LinearLayoutManager(context)
 //                        val intent = Intent(context, LoginActivity::class.java)
 //                        Toast.makeText(context, "login btn 눌림", Toast.LENGTH_SHORT).show()
 //                        startActivity(intent)
@@ -73,12 +82,12 @@ class ProfileFavortieFragment : Fragment() {
 
 //                    val temp = response.body()!!
 //                    Log.d("temp", temp.toString())
-                    Toast.makeText(context, "통신 성공", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "통신 성공", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<List<ResponseProfileFavoriteData>>, t: Throwable) {
                     Log.d("통신 실패", "${t}")
-                    Toast.makeText(context, "통신 실", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "통신 실", Toast.LENGTH_SHORT).show()
                 }
 
             })
