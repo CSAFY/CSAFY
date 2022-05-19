@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { defaultAPI } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
@@ -385,7 +386,18 @@ function MyPage() {
       })
       .catch(err => {
         console.error(err);
-        alert('프로필 사진을 등록해 주세요.');
+        // alert('프로필 사진을 등록해 주세요.');
+        swal.fire({
+          icon: 'warning',
+          position: 'middle',
+          title: '프로필 사진을 등록해 주세요.',
+
+          // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+          confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+          // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+          confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+          // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        });
       });
   };
 

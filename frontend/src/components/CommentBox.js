@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
@@ -8,7 +9,7 @@ import { Token } from '../recoils/Token';
 
 // STYLED
 import styled from 'styled-components';
-
+import swal from 'sweetalert2';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ReplyIcon from '@mui/icons-material/Reply';
@@ -153,7 +154,26 @@ function CommentBox({
       })
       .catch(err => {
         setNewComment(comment);
-        alert('작성자만 수정이 가능합니다.');
+        // alert('작성자만 수정이 가능합니다.');
+        swal.fire({
+          icon: 'error',
+          position: 'middle',
+          title: '작성자만 수정이 가능합니다.',
+
+          // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+          confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+          // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+          confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+          // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        });
+        // .then(result => {
+        //   // 만약 Promise리턴을 받으면,
+        //   if (result.isConfirmed) {
+        //     // 만약 모달창에서 confirm 버튼을 눌렀다면
+        //     setCurrentPage('/');
+        //     navigate('/');
+        //   }
+        // });
         setEditToggle(false);
         // setEditToggle(!editToggle);
       });
@@ -169,7 +189,19 @@ function CommentBox({
         // console.log(res);
         getComment();
       })
-      .catch(err => alert('작성자만 삭제가 가능합니다.'));
+      .catch(err =>
+        swal.fire({
+          icon: 'error',
+          position: 'middle',
+          title: '작성자만 삭제가 가능합니다.',
+
+          // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+          confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+          // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+          confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+          // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        }),
+      );
   };
 
   return (

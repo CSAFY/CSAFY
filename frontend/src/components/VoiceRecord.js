@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 // MUI
 import MicIcon from '@mui/icons-material/Mic';

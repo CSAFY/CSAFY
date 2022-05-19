@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Button } from '@mui/material';
 import { defaultAPI } from '../utils/api';
