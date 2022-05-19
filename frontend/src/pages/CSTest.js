@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 
 // RECOIL
@@ -109,21 +110,21 @@ function CSTest() {
       id: 7,
       img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_short.png',
       title: '전 과목',
-      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      exp: '',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 8,
       img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_short.png',
       title: '입문자를 위한 문제',
-      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      exp: '',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
     {
       id: 9,
       img: 'https://csafy-profile.s3.amazonaws.com/logo/logo_short.png',
       title: '중급자를 위한 문제',
-      exp: '컴퓨터 구조에 대해 알아봅시다.',
+      exp: '',
       stacks: ['images/github.png', 'images/react.png', 'images/swift.png'],
     },
   ];

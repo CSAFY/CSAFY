@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import '../App.css';
@@ -22,11 +23,10 @@ function Signup() {
     passwordCheckIsValid: true,
     agreementIsValid: true,
   });
-  const emailRegex =
-    /^([0-9a-zA-Z_.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+  const emailRegex = /^([0-9a-zA-Z_.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-  const handleChangeUserInfo = (e) => {
+  const handleChangeUserInfo = e => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
     setToggle({
       emailIsValid: true,
@@ -35,7 +35,7 @@ function Signup() {
       agreementIsValid: true,
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     // Validation
     if (!emailRegex.test(userInfo.email)) {
@@ -79,8 +79,8 @@ function Signup() {
         username: 'username',
       })
       // 일단 회원가입 후 메인 페이지로 이동
-      .then((res) => navigate('/mypage'))
-      .catch((err) => console.error(err));
+      .then(res => navigate('/mypage'))
+      .catch(err => console.error(err));
 
     // 초기화
     setUserInfo({
@@ -90,7 +90,7 @@ function Signup() {
     });
   };
 
-  const TuplioAuthTest = (e) => {
+  const TuplioAuthTest = e => {
     window.location.href = `https://tupli.kr/api/v1/oauth2/authorization/google?redirect_uri=https://tupli.kr/oauth/redirect`;
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
@@ -131,7 +132,7 @@ function ReviewNote() {
     setToggle(true);
   }, []);
 
-  const testHeight = 250 + roundTestData.length * 250;
+  const testHeight = 250 + parseInt(roundTestData.length / 4) * 400;
 
   return (
     <>

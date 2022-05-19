@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Stomp from 'webstomp-client';
@@ -12,6 +13,7 @@ import { Userinfo } from '../recoils/Userinfo';
 
 // STYLED
 import styled from 'styled-components';
+import swal from 'sweetalert2';
 import { Button, TextField } from '@mui/material';
 
 const PhoneContent = styled.div`
@@ -134,8 +136,29 @@ function TestChatRoom({ chatRoomId }) {
         },
         // 실패했을 때
         function() {
-          alert('서버 연결에 실패 하였습니다. 다시 접속해 주십시요.');
-          navigate('/'); // 홈으로
+          swal
+            .fire({
+              icon: 'warning',
+              position: 'middle',
+              title: '서버 연결에 실패 하였습니다. 다시 접속해 주십시요.',
+
+              // showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+              confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+              // cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+              confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+              // cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+            })
+            .then(result => {
+              // 만약 Promise리턴을 받으면,
+              if (result.isConfirmed) {
+                // 만약 모달창에서 confirm 버튼을 눌렀다면
+                navigate('/');
+              }
+            });
+          //  alert(
+          //    '서버 연결에 실패 하였습니다. 다시 접속해 주십시요.',
+          //  );
+          //  navigate('/'); // 홈으로
         },
       );
       // console.log('🐸', token);

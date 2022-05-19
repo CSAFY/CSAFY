@@ -1,7 +1,10 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { defaultAPI } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert2';
+
 // Recoil
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
@@ -277,22 +280,37 @@ function AuthModal({ state, setState, setSignup, setModal }) {
                 fontWeight: 'bold',
                 color: '#fff',
               }}
+              type="submit"
               onClick={submitLogin}
             >
               로그인
             </Button>
             <p>또는</p>
-            <img
-              src="images/google.png"
-              alt="Google"
+            <div
               style={{
-                width: '32px',
-                height: '32px',
-                marginTop: '1rem',
-                cursor: 'pointer',
+                width: '50px',
+                height: '50px',
+                backgroundColor: '#f1fcff',
+                // border: '1px solid black',
+                borderRadius: '50%',
+
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
-              onClick={googleOauth}
-            />
+            >
+              <img
+                src="images/google.png"
+                alt="Google"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  // marginTop: '1rem',
+                  cursor: 'pointer',
+                }}
+                onClick={googleOauth}
+              />
+            </div>
           </InputForm>
         </LoginWrapper>
       ) : (

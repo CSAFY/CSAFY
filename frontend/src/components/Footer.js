@@ -1,3 +1,4 @@
+/* eslint-disable */
 import styled from '@emotion/styled';
 import React from 'react';
 
@@ -19,7 +20,7 @@ const FooterWrapper = styled.footer`
 `;
 const FirstDiv = styled.div`
   height: 230px;
-  width: 30%;
+  width: 25%;
   position: absolute;
 `;
 const LogoImg = styled.img`
@@ -35,9 +36,9 @@ const Explain = styled.div`
 `;
 const SecondDiv = styled.div`
   height: 230px;
-  width: 30%;
+  width: 35%;
   position: absolute;
-  left: 30%;
+  left: 25%;
 `;
 const AboutUs = styled.div`
   width: 100%;
@@ -48,7 +49,7 @@ const AboutUs = styled.div`
 const Developer = styled.div`
   width: 100%;
   position: absolute;
-  top: 120px;
+  top: 130px;
   left: 50px;
 `;
 const Name = styled.div`
@@ -112,15 +113,30 @@ function Footer() {
         </FirstDiv>
         <SecondDiv>
           <AboutUs>
-            <h3>About Us</h3>
+            <h3 style={{ marginBottom: '5px' }}>About Us</h3>
             <hr style={{ width: '100%' }} />
             <div>
-              삼성 청년 소프트웨어 아카데미(SSAFY)의 지원을 받아 직접 제작한
-              서비스입니다.
+              <p
+                style={{
+                  fontSize: '13px',
+                  marginTop: '5px',
+                  marginBottom: '0',
+                }}
+              >
+                삼성 청년 소프트웨어 아카데미(SSAFY)의 지원을 받아 직접 제작한
+                서비스입니다.
+              </p>
+              <p style={{ fontSize: '13px', margin: '0' }}>
+                CS 학습에 어려움을 겪는 저희의 고충을 담아 기획하였습니다.
+              </p>
+              <p style={{ fontSize: '13px', margin: '0' }}>
+                개발 직무를 희망하는 모든 분들의 학습에 도움을 드릴 수 있도록
+                지속적으로 발전시키겠습니다.
+              </p>
             </div>
           </AboutUs>
           <Developer>
-            <h3>Developer</h3>
+            <h3 style={{ marginBottom: '5px' }}>Developer</h3>
             <hr style={{ width: '100%' }} />
             <Box
               sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}

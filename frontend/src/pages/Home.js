@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { defaultAPI } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
@@ -419,7 +420,7 @@ function Home() {
         <InfoContent>
           <Fade left>
             <img
-              src="images/study1.png"
+              src="images/home/keyword.png"
               alt="Study1"
               style={{
                 position: 'absolute',
@@ -427,28 +428,30 @@ function Home() {
                 left: '50px',
                 width: '627px',
                 height: '431px',
+                borderRadius: '10px',
               }}
             />
             <img
-              src="images/study2.png"
+              src="images/home/testresult.png"
+              alt="Info3"
+              style={{
+                width: '550px',
+                height: '550px',
+                position: 'absolute',
+                top: '400px',
+                right: '100px',
+                borderRadius: '10px',
+              }}
+            />
+            <img
+              src="images/home/quizes.png"
               alt="Info2"
               style={{
                 position: 'absolute',
                 top: '400px',
                 left: '100px',
-                width: '497px',
-                height: '389px',
-              }}
-            />
-            <img
-              src="images/study3.png"
-              alt="Info3"
-              style={{
-                position: 'absolute',
-                top: '400px',
-                right: '230px',
-                width: '374px',
-                height: '288px',
+                width: '550px',
+                height: '400px',
               }}
             />
           </Fade>
@@ -541,14 +544,14 @@ function Home() {
               }}
             >
               <p style={{ margin: 'auto' }}>
-                단기 기억력을 높여주는 방식을 통해 빠르게 습득할 수 있습니다.
+                메타버스를 통해 친구들과 함께 학습하고,
               </p>
               <p style={{ margin: 'auto' }}>
-                학습한 내용을 바탕으로 진행 가능한 모의고사를 통해
+                실제 면접을 연습하며 면접을 대비할 수 있습니다.
               </p>
-              <p style={{ margin: 'auto' }}>
+              {/* <p style={{ margin: 'auto' }}>
                 확실한 학습 효과를 얻을 수 있습니다.
-              </p>
+              </p> */}
             </div>
           </div>
           <Fade right>

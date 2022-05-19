@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import { Spin as SHamburger } from 'hamburger-react';
 import { slide as Menu } from 'react-burger-menu';

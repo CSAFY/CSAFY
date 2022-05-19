@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
@@ -59,9 +60,18 @@ function RadarChart({ analysisData }) {
     });
   }, []);
 
+  const options = {
+    scales: {
+      r: {
+        suggestedMin: 0,
+        // suggestedMax: 100,
+      },
+    },
+  };
+
   return (
     <RadarGraph>
-      <Radar data={data} />
+      <Radar data={data} options={options} />
     </RadarGraph>
   );
 }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { defaultAPI } from '../utils/api';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -288,6 +289,7 @@ function CSTestDetail() {
       setTestStart(true);
     }, 2000);
   };
+  // console.log(testData);
 
   // '실전 모의고사' 버튼 클릭
   const handleActual = () => {
