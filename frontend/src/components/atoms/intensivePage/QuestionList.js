@@ -32,9 +32,13 @@ function QuestionList(props) {
       onClick={() => props.selectKategorie(data)}
       able = {data.title === props.value ? "Y" : "N" }
       >
+      <span style={{width:"60px"}}>
+        <img src={`images/${data.title}.png`} alt={data.title} style={{ height:`25px`}} ></img>
+      </span>
+      <span style={{width:"100px"}}>
+        {data.title}
+      </span>
       
-      <img src={`images/${data.title}.png`} alt={data.title} style={{width:`50px`, height:`30px`}} ></img>
-      {data.title}
     </ToggleBtn>
     
   )
@@ -69,17 +73,17 @@ function QuestionList(props) {
 export default QuestionList;
 
 const ToggleBtn = styled.button` 
-  width : 180px;
+  width : 170px;
   font-size : 17px;
   font-family : SUIT;
   font-weight : 600;
   display : flex;
-  justify-content : space-between;
+  justify-content : center;
   border: 0;
   height : 60px;
   margin : 0 0 10px 0;
   align-items: center;
-  padding: 0 20px 0 20px;
+  padding: 0 0px 0 0px;
   
   border-radius: 5px;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
