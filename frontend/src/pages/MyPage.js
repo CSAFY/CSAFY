@@ -425,6 +425,7 @@ function MyPage() {
   const badgeWrapperHeight = 300 + parseInt(badges.length / 10) * 80;
 
   // console.log(badgeWrapperHeight);
+  // console.log(analysisData);
   return (
     <>
       <MyPageWrapper>
@@ -809,6 +810,7 @@ function MyPage() {
                 fontSize: '28px',
 
                 position: 'absolute',
+                top: '25px',
                 left: '150px',
               }}
             >

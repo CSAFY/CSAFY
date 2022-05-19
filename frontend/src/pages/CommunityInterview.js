@@ -110,12 +110,16 @@ function CommunityInterview({
           </Icon>
           {/* <ButtonDiv> */}
           <Button
-            style={{
+            sx={{
               position: 'absolute',
               bottom: '30px',
               left: '80px',
               fontSize: '18px',
               color: '#000',
+              ':hover': {
+                color: '#fff',
+                bgcolor: '#008ed0',
+              },
               // fontWeight: '600',
             }}
             onClick={handleModalClose}
@@ -123,12 +127,16 @@ function CommunityInterview({
             면접 종료
           </Button>
           <Button
-            style={{
+            sx={{
               position: 'absolute',
               bottom: '30px',
               right: '80px',
               fontSize: '18px',
               color: '#000',
+              ':hover': {
+                color: '#fff',
+                bgcolor: '#008ed0',
+              },
             }}
             onClick={getInterviewInfo}
           >
