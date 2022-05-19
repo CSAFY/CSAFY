@@ -142,7 +142,7 @@ function ReviewNoteResultBox({ props }) {
   return (
     <>
       <Test>
-        {getScore(testInfo) > 90 ? (
+        {/* {getScore(testInfo) > 90 ? (
           <>
             <TitleBox>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -165,7 +165,70 @@ function ReviewNoteResultBox({ props }) {
             </TitleBox>
             <SubTitleBox>C;SAFY가 여러분의 꿈을 응원합니다.</SubTitleBox>
           </>
-        )}
+        )} */}
+        <>
+          {(() => {
+            if (getScore(testInfo) > 90)
+              return (
+                <>
+                  <TitleBox>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      🎉
+                    </div>
+                    <div>정말 열심히 공부하셨군요!</div>
+                  </TitleBox>
+                  <SubTitleBox>C;SAFY가 당신의 앞날을 응원합니다.</SubTitleBox>
+                </>
+              );
+            if (getScore(testInfo) > 60)
+              return (
+                <>
+                  <TitleBox>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      🎉
+                    </div>
+                    <div>열심히 공부하셨군요!</div>
+                  </TitleBox>
+                  <SubTitleBox>
+                    조금만 더 노력하면 완벽한 CS 마스터가 되실 것 같아요!
+                  </SubTitleBox>
+                </>
+              );
+            if (getScore(testInfo) > 30)
+              return (
+                <>
+                  <TitleBox>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      😢
+                    </div>
+                    <div>추가적인 공부가 필요합니다.</div>
+                  </TitleBox>
+                  <SubTitleBox>
+                    일반학습과 집중학습을 활용해 조금 더 공부해봐요 우리!
+                  </SubTitleBox>
+                </>
+              );
+            if (getScore(testInfo) >= 0)
+              return (
+                <>
+                  <TitleBox>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      😢
+                    </div>
+                    <div>많은 노력이 필요합니다.</div>
+                  </TitleBox>
+                  <SubTitleBox>
+                    일반학습과 집중학습을 활용해 조금 더 공부해봐요 우리!
+                  </SubTitleBox>
+                </>
+              );
+          })()}
+        </>
         <Date>{testInfo.date}</Date>
         <ScoreBox>
           <div style={{ marginBottom: '10px' }}>결과</div>

@@ -61,7 +61,7 @@ export default function AuthHandler() {
     localStorage.setItem('jwt', jwt);
     setToken(jwt);
     setIsLoggedIn(true);
-    navigate('/');
+    navigate('/mypage');
   }, []);
 
   return (

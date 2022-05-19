@@ -132,7 +132,7 @@ function ReviewNote() {
     setToggle(true);
   }, []);
 
-  const testHeight = 250 + parseInt(roundTestData.length / 4) * 400;
+  const testHeight = 500 + parseInt(roundTestData.length / 4) * 400;
 
   return (
     <>
