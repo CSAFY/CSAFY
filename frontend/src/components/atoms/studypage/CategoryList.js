@@ -59,7 +59,7 @@ function CategoryList(props) {
         key={index}
         onClick={() => onClickBTN(data)}
         able={data === alignment ? "Y" : "N"}>
-        <span>{data}</span> 
+        <span style={{width:"135px"}}>{data}</span> 
         <TextDiv>{data === "전체 학습" ? 
           studyDatas.length 
           : studyDatas.filter(element => data === element.categoryId).length}
@@ -88,11 +88,15 @@ function CategoryList(props) {
 export default CategoryList;
 
 const TextDiv = styled.div`  
-  width: 45px;
+  width: 30px;
+  height: 30px;
   background-color: #E0EFF8;
   border-radius: 10px;
   font-weight : 0;
   font-size : 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 const ToggleBtn = styled.button` 
   width : 180px;
@@ -100,7 +104,7 @@ const ToggleBtn = styled.button`
   font-family : SUIT;
   font-weight : 600;
   display : flex;
-  justify-content : space-between;
+  justify-content : flex-start;
   border-radius: 11px;
   height : 60px;
   margin : 0 0 10px 0;
