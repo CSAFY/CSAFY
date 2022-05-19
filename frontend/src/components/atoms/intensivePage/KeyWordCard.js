@@ -33,6 +33,8 @@ function KeyWordCard(props) {
   const [selecCNT, setSelecCNT] = useState(5)
   const [pageNumber, setPageNumber] = useState(1)
 
+  const [selMode, setSelMode] = useState(1)
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -52,7 +54,7 @@ function KeyWordCard(props) {
       },
     })
     .then((res) => {
-      // console.log(res.data)
+      console.log(res.data)
       setKeyWords(res.data)
     })
     .catch(err =>{
@@ -60,8 +62,33 @@ function KeyWordCard(props) {
     })
   }
 
-  const onClickBtn = (data) => {
+  const getFaveriteData = async () => {
+    const JWT = window.localStorage.getItem("jwt")
+    const Url = `https://csafy.com/api/v1/cs-service/study/keyword/likes/all`
+    axios({
+      method: 'get',
+      url:  Url,
+      headers: {
+        Authorization: JWT
+      },
+    })
+    .then((res) => {
+      console.log(res.data)
+      setKeyWords(res.data)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+
+  const onClickStartStudy = (data) => {
+    setSelMode(1)
     setSelecCNT(data)
+    setPageNumber(2)
+  }
+
+  const onClickFaveriteWords = () => {
+    setSelMode(2)
     setPageNumber(2)
   }
 
@@ -81,7 +108,14 @@ function KeyWordCard(props) {
   
   useEffect(() => {
     if (pageNumber === 2){
-      getData()
+      if(selMode === 1){
+        getData()
+        console.log("mode1")
+      } else if (selMode === 2){
+        getFaveriteData()
+        console.log("mode2")
+      }
+      
     }else if (pageNumber === 1) {
       setNowKeyWords({
         explanation: null,
@@ -118,26 +152,21 @@ function KeyWordCard(props) {
       <Title2>
         키워드 학습하기
       </Title2>
+      <div>
+        <ClickBtn
+          able={"Y"}
+          onClick={() => {onClickStartStudy(9999) }}
+          >
+          학습시작
+        </ClickBtn>
+        <ClickBtn
+          able={"Y"}
+          onClick={() => {onClickFaveriteWords() }}
+          >
+          즐겨찾은 키워드
+        </ClickBtn>
+      </div>
       
-      {/* <QuestionText>
-        📗 몇개의 키워드를 학습하고 싶나요?
-      </QuestionText>
-      <ClickBtn
-        able={"Y"}
-        onClick={() => onClickBtn(selecCNT)}
-        >
-        <input type={"number"} min="1" max="20" 
-        onClick={(event)=> event.stopPropagation()}
-        onChange={(event) => setSelecCNT(event.target.value)}
-        value={selecCNT}></input>
-        개
-      </ClickBtn> */}
-      <ClickBtn
-        able={"Y"}
-        onClick={() => {onClickBtn(9999) }}
-        >
-        학습시작
-      </ClickBtn>
     </KeyWordCardDiv>)
   }else if (pageNumber === 2) {
     return(
@@ -265,13 +294,6 @@ const DarkCardDiv = styled.div`
   border-radius: 10px;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
-`
-
-const DarkCardText = styled.span`
-  text-align: center;
-  color: #fff;
-  font-family: SUIT;
-  font-size: 13px;
 `
 
 const ItemFront = styled.div`
