@@ -165,8 +165,9 @@ function FourWayRace(props) {
       setSelectThree(0)
       setSelectFour(0)
       setSelectAnswerCNT(0)
+      setPageNumber(1)
       const checking = Swal.fire({
-        position: 'top-end',
+        position: 'center',
         icon: 'success',
         title: `${props.Cate}과목이 ${res.data.prevScore}점에서 ${res.data.nowScore}점으로 상승했습니다!!`,
         showConfirmButton: false,

@@ -181,7 +181,7 @@ function OXquiz(props) {
     .then((res) => {
       
       const checking = Swal.fire({
-        position: 'top-end',
+        position: 'center',
         icon: 'success',
         title: `${props.Cate}과목이 ${res.data.prevScore}점에서 ${res.data.nowScore}점으로 상승했습니다!!`,
         showConfirmButton: false,
@@ -194,6 +194,7 @@ function OXquiz(props) {
       setSelectO(2)
       setSelectX(2)
       setSelectAnswerCNT(0)
+      setPageNumber(1)
       return checking
     })
     .catch(err =>{

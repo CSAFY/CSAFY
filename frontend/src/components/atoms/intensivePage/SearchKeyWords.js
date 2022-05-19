@@ -69,7 +69,7 @@ function SearchKeyWords() {
     <MarginDiv>
       <FlexDiv>
         <KeyWordInput type={"text"} value={inputWord} onChange={(event) => setInputWord(event.target.value)}
-          placeholder="검색어를 입력해주세요"></KeyWordInput>
+          placeholder="백과사전 검색"></KeyWordInput>
 
         <SearchWordDel onClick={() => setInputWord("")}>
           Reset
@@ -95,6 +95,8 @@ const SearchWordDel = styled.div`
   align-items: center;
   background-color: lightgrey;
   margin-left: 10px;
+  background-color: #84c2ea;
+  border-radius: 15px;
 `
 
 
@@ -106,6 +108,8 @@ const KeyWordInput = styled.input`
   width: 300px;
   height: 35px;
   padding: 0 10px 0 10px;
+  border: aliceblue;
+  border-radius: 15px;
 `
 
 const MarginDiv = styled.div`

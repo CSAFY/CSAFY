@@ -17,7 +17,7 @@ export const MyiFrame = styled.iframe`
 
 export const FullLayOut = styled.div`
   background-color: #f8f8f8;
-  height: 91vh;
+  height: 1200px;
   padding: 10px 20px 20px 20px;
 `
 

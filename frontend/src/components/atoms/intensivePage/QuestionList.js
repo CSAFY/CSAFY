@@ -15,8 +15,8 @@ function QuestionList(props) {
       paths = "fourwaystudy"
     }else if (data.title === "OX 퀴즈"){
       paths = "oxstudy"
-    }else if (data.title === "키워드 검색"){
-      paths = "csafy"
+    }else if (data.title === "백과사전"){
+      paths = "hundbook"
     }
     return(
     <ToggleBtn

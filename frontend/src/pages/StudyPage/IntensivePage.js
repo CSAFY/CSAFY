@@ -70,7 +70,7 @@ function IntensivePage() {
   const choice = [{ title : "키워드 학습"}, 
   {title : "4지 선다"}, 
    {title : "OX 퀴즈"},
-   {title : "키워드 검색"}
+   {title : "백과사전"}
    ]
 
   const cateChange = (event) => {
@@ -177,7 +177,7 @@ function IntensivePage() {
         { nowChoice === "키워드 학습" ?  <KeyWordCard Cate={nowCate}></KeyWordCard>
         : nowChoice === "4지 선다" ?  <FourWayRace Cate={nowCate}></FourWayRace>
         : nowChoice === "OX 퀴즈" ?  <OXquiz Cate={nowCate}></OXquiz>
-        : nowChoice === "키워드 검색" ?  <SearchKeyWords ></SearchKeyWords>
+        : nowChoice === "백과사전" ?  <SearchKeyWords ></SearchKeyWords>
         : null}
         {/* // <Routes>
         //   <Route exact={true} path="KeyWordCard" element={<KeyWordCard Cate={nowCate}/>} />
