@@ -22,7 +22,7 @@ export const FullLayOut = styled.div`
 `
 
 export const DetailLayOut = styled.div`
-  height : 80%;
+  height : 950px;
   margin: 20px auto 20px auto;
   padding: 22px 115px 98px 116px;
   border-radius: 31px;
