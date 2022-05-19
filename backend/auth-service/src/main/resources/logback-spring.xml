@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <property name="FLUENTD_HOST" value="${FLUENTD_HOST:-${DOCKER_HOST:-localhost}}"/>
+    <property name="FLUENTD_PORT" value="${FLUENTD_PORT:-24224}"/>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss, ${projectTimeZone}} [%X{X-B3-TraceId:-}, %X{X-B3-SpanId:-}] [%X{requestURL}] [%thread] %-5level %logger{36} -  %msg %n
+            </Pattern>
+        </layout>
+    </appender>
+
+<!--    <springProfile name="dev, stg, prod">-->
+        <appender name="fluentd" class="ch.qos.logback.more.appenders.DataFluentAppender">
+            <!-- Check tag and label fluentd info: https://docs.fluentd.org/configuration/config-file-->
+            <tag>auth-service</tag>
+            <label>log</label>
+            <remoteHost>${FLUENTD_HOST}</remoteHost>
+            <port>${FLUENTD_PORT}</port>
+
+            <additionalField>
+                <key>foo</key>
+                <value>bar</value>
+            </additionalField>
+            <additionalField>
+                <key>foo2</key>
+                <value>bar2</value>
+            </additionalField>
+
+            <!-- [Optional] Configurations to customize Fluent-logger-java's behavior -->
+            <bufferCapacity>16777216</bufferCapacity> <!-- in bytes -->
+            <timeout>10000</timeout> <!-- in milliseconds -->
+
+            <!--  [Optional] If true, Map Marker is expanded instead of nesting in the marker name -->
+            <flattenMapMarker>false</flattenMapMarker>
+            <!--  [Optional] default "marker" -->
+            <markerPrefix></markerPrefix>
+
+            <!-- [Optional] Message encoder if you want to customize message -->
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>
+                    %d{yyyy-MM-dd HH:mm:ss, ${projectTimeZone}} [%X{X-B3-TraceId:-}, %X{X-B3-SpanId:-}] [%X{requestURL}] [%thread] %-5level %logger{36} - %msg %n
+                </Pattern>
+            </layout>
+
+            <!-- [Optional] Message field key name. Default: "message" -->
+            <messageFieldKeyName>msg</messageFieldKeyName>
+        </appender>
+
+        <appender name="async" class="ch.qos.logback.classic.AsyncAppender">
+            <!-- Logback의 AsyncAppender 옵션 -->
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>DEBUG</level>
+            </filter>
+            <param name="includeCallerData" value="false"/>
+            <param name="queueSize" value="2048"/>
+            <param name="neverBlock" value="true"/>
+            <param name="maxFlushTime" value="5000"/>
+            <appender-ref ref="fluentd" />
+        </appender>
+
+<!--    </springProfile>-->
+
+
+
+<!--    <root level="info">-->
+<!--        <appender-ref ref="CONSOLE" />-->
+<!--        <appender-ref ref="FLUENT_TEXT" />-->
+<!--    </root>-->
+
+<!--    <logger name="com.xyz" level="DEBUG" additivity="false">-->
+<!--        <appender-ref ref="stdout" />-->
+<!--        <springProfile name="dev, stg, prod">-->
+<!--            <appender-ref ref="fluentd" />-->
+<!--        </springProfile>-->
+<!--    </logger>-->
+
+    <root level="INFO">
+        <appender-ref ref="stdout" />
+<!--        <springProfile name="dev, stg, prod">-->
+        <appender-ref ref="fluentd" />
+<!--        </springProfile>-->
+    </root>
+</configuration>
