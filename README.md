@@ -403,7 +403,7 @@ backend
 -   단체학습실에서 방장이 재생하는 강의영상을 같은 공간의 모두가 같이 시청할 수 있습니다.
 -   방장이 칠판에 공유하고 싶은 내용을 입력하면, 모두가 그 내용을 확인할 수 있습니다.
 
-<img width="100%" src="https://user-images.githubusercontent.com/55949647/169340823-d340e651-fd24-4f12-8603-7f2dc47cdb04.gif"/>
+<img width="100%" src="https://user-images.githubusercontent.com/55949647/169426457-ececeb6e-133d-4c46-b224-9997e0332631.gif"/>
 
 <br>
 
