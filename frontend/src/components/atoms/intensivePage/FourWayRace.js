@@ -157,8 +157,7 @@ function FourWayRace(props) {
       
     })
     .then((res) => {
-      // setResData(res.data)
-      // handleOpen()
+      
       setActiveStep(0)
       setSelectOne(0)
       setSelectTwo(0)
@@ -181,14 +180,6 @@ function FourWayRace(props) {
 
   }
 
-
-  const [open, setOpen] = useState(false);
-  const [resData, setResData] = useState({"prevScore": null, "nowScore":null});
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false)
-    setPageNumber(1)
-  };
 
 
   const OXCardPack = (
@@ -299,14 +290,7 @@ function FourWayRace(props) {
 
 
       {OXCardPack}
-      {/* <BasicModal 
-        isOpen={open} 
-        handleClose={handleClose} 
-        prevScore={resData.prevScore} 
-        nowScore={resData.nowScore} 
-        Cate={props.Cate}
-        >
-      </BasicModal> */}
+      
       <CusLinearWithValueLabel 
         selectAnswerCNT={selectAnswerCNT}
         maxSteps={maxSteps}

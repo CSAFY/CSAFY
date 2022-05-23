@@ -1,7 +1,5 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import styled from "styled-components";
@@ -33,25 +31,6 @@ export default function TemporaryDrawer() {
   };
 
   const list = (anchor) => (
-    // <Box
-    //   sx={{ width:  250 , 
-    //     paddingTop: 10, 
-    //     background: "#84c2ea;",
-    //     height : "100%;",
-    //   }}
-    //   role="presentation"
-      
-    // >
-    //   
-    //     <DrawerInList
-    //       isClick={toggleDrawer('left', false)}
-    //       isKeyDown={toggleDrawer('left', false)}
-    //       data={kategori}>
-    //     </DrawerInList>
-    //     gdgd
-    //   </List>
-    //   <Divider />
-    // </Box>
     <DrawerDiv >
       <List>
         <DrawerInList

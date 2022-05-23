@@ -18,7 +18,6 @@ import { keyWordData, likeKeyWord } from "../../../recoils";
 import axios from 'axios';
 
 import {
-  QuestionText,
   ClickBtn,
   QuestionText2
   } from "./FourWayRace"
@@ -200,11 +199,11 @@ function KeyWordCard(props) {
               bgcolor: 'background.default',
             }}
           >
-            {/* <Typography component={'div'} sx={{width: 580}}> */}
-              <Title>
-                {keyWords[activeStep].key}
-              </Title>
-            {/* </Typography> */}
+            
+            <Title>
+              {keyWords[activeStep].key}
+            </Title>
+            
 
           </Paper>
           <DarkCardDiv>

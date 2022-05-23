@@ -155,7 +155,7 @@ function OXquiz(props) {
     </FlexDiv>
   )
   
-  const [resData, setResData] = useState({"prevScore": null, "nowScore":null});
+  
 
   const scorePostAPI = () => {
     const Url = `https://csafy.com/api/v1/cs-service/profile/scores/update`
@@ -179,7 +179,8 @@ function OXquiz(props) {
       },
     })
     .then((res) => {
-      
+      // console.log(props.Cate)
+      // console.log(res)
       const checking = Swal.fire({
         position: 'center',
         icon: 'success',
@@ -187,8 +188,7 @@ function OXquiz(props) {
         showConfirmButton: false,
         timer: 1500
       })
-      // setResData(res.data)
-      // handleOpen()
+      
       
       setActiveStep(0)
       setSelectO(2)
@@ -211,13 +211,6 @@ function OXquiz(props) {
     setPageNumber(2)
   }
 
-  const [open, setOpen] = useState(false);
-  
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false)
-    setPageNumber(1)
-  };
 
   if (pageNumber === 1) {
     return(
@@ -284,14 +277,6 @@ function OXquiz(props) {
         {OXCardPack}
         
         
-        {/* <BasicModal 
-          isOpen={open} 
-          handleClose={handleClose} 
-          prevScore={resData.prevScore} 
-          nowScore={resData.nowScore} 
-          Cate={props.Cate}
-          >
-          </BasicModal> */}
       <CusLinearWithValueLabel 
         selectAnswerCNT={selectAnswerCNT}
         maxSteps={maxSteps}

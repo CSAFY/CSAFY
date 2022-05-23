@@ -47,7 +47,8 @@ export const FlexDiv = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: start;
-  
+  width: 1400px;
+  margin: 0 auto 0 auto;
 `;
 
 export const CardDiv = styled.div`
