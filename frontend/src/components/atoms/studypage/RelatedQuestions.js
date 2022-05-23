@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useRef, useState } from "react";
+import {  useState } from "react";
 import styled, { css } from "styled-components";
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';

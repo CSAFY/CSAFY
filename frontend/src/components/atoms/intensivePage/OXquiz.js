@@ -187,8 +187,7 @@ function OXquiz(props) {
         showConfirmButton: false,
         timer: 1500
       })
-      // setResData(res.data)
-      // handleOpen()
+      
       
       setActiveStep(0)
       setSelectO(2)
@@ -211,13 +210,6 @@ function OXquiz(props) {
     setPageNumber(2)
   }
 
-  const [open, setOpen] = useState(false);
-  
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false)
-    setPageNumber(1)
-  };
 
   if (pageNumber === 1) {
     return(
@@ -284,14 +276,6 @@ function OXquiz(props) {
         {OXCardPack}
         
         
-        {/* <BasicModal 
-          isOpen={open} 
-          handleClose={handleClose} 
-          prevScore={resData.prevScore} 
-          nowScore={resData.nowScore} 
-          Cate={props.Cate}
-          >
-          </BasicModal> */}
       <CusLinearWithValueLabel 
         selectAnswerCNT={selectAnswerCNT}
         maxSteps={maxSteps}

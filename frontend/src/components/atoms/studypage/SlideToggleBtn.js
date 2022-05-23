@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+
 
 const IOSSwitch = styled(props => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />

@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { Link } from 'react-router-dom';
 import { useSetRecoilState } from "recoil";
 import { videoData } from "../../../recoils";
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
+
 
 import axios from 'axios';
 

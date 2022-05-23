@@ -2,15 +2,13 @@ import {
   FullLayOut,
   DetailLayOut,
   FlexDiv,
-  StudyDetailHr,
-  GridDiv,
   FlexDivs
  } from "./IntensivePage.styled"
 
 import "../../components/atoms/intensivePage/DelInputArrow.css"
 
 import { useEffect,  useState } from "react";
-import {  Route,  Routes, useLocation  } from 'react-router';
+
 import axios from 'axios';
 
 import Box from '@mui/material/Box';
@@ -18,8 +16,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarIcon from '@mui/icons-material/Star';
+
 
 import { useRecoilValue, useRecoilState } from "recoil";
 import { category, keyWordData, likeKeyWord } from "../../recoils";
@@ -27,11 +24,10 @@ import { category, keyWordData, likeKeyWord } from "../../recoils";
 import QuestionList from "../../components/atoms/intensivePage/QuestionList"
 import KeyWordCard from "../../components/atoms/intensivePage/KeyWordCard"
 import FourWayRace from "../../components/atoms/intensivePage/FourWayRace"
-import ShortAnswer from "../../components/atoms/intensivePage/ShortAnswer"
+
 import OXquiz from "../../components/atoms/intensivePage/OXquiz"
 import SearchKeyWords from "../../components/atoms/intensivePage/SearchKeyWords"
-import RelatedExam from "../../components/atoms/studypage/RelatedExam"
-import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
+
 
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
@@ -103,7 +99,7 @@ function IntensivePage() {
       </FormControl>
     </Box>
   )
-  const location = useLocation();
+  
 
   const [nowKeyWords, setNowKeyWords] = useRecoilState(likeKeyWord)
   const [keyWords, setKeyWords] = useRecoilState(keyWordData)
@@ -179,11 +175,7 @@ function IntensivePage() {
         : nowChoice === "OX 퀴즈" ?  <OXquiz Cate={nowCate}></OXquiz>
         : nowChoice === "백과사전" ?  <SearchKeyWords ></SearchKeyWords>
         : null}
-        {/* // <Routes>
-        //   <Route exact={true} path="KeyWordCard" element={<KeyWordCard Cate={nowCate}/>} />
-        //   <Route exact={true} path="FourWayRace" element={<FourWayRace Cate={nowCate}/>} />
-        //   <Route exact={true} path="OXquiz" element={<OXquiz  Cate={nowCate}/>} />
-        // </Routes> */}
+        
       </FlexDiv>
         
       </DetailLayOut>

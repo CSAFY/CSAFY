@@ -48,7 +48,7 @@ class YouTubeVideo extends React.PureComponent {
   };
 
   onPlayerReady = event => {
-    // event.target.playVideo();
+    
   };
 
   onPlayerStateChange = event => {

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import axios from 'axios';
-import { useRecoilState, useRecoilValue } from "recoil";
+
+import { useRecoilState } from "recoil";
 import { shortAnswerData } from "../../../recoils";
 
 import Box from '@mui/material/Box';
