@@ -155,7 +155,7 @@ function OXquiz(props) {
     </FlexDiv>
   )
   
-  const [resData, setResData] = useState({"prevScore": null, "nowScore":null});
+  
 
   const scorePostAPI = () => {
     const Url = `https://csafy.com/api/v1/cs-service/profile/scores/update`
@@ -179,7 +179,8 @@ function OXquiz(props) {
       },
     })
     .then((res) => {
-      
+      // console.log(props.Cate)
+      // console.log(res)
       const checking = Swal.fire({
         position: 'center',
         icon: 'success',

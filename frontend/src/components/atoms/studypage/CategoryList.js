@@ -12,7 +12,6 @@ function CategoryList(props) {
   const studyDatas = useRecoilValue(studyData)
 
   const onClickBTN = (data) => {
-    console.log(data)
     setAlignment(data)
     props.selectKategorie(data)
   }

@@ -53,7 +53,7 @@ function StudyDetailPage() {
     if (JWT === null ) {
       checkLogin()
     } else {
-      console.log("good")
+      // console.log("good")
     }
   }, [])
   
