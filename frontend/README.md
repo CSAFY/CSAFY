@@ -37,6 +37,10 @@ npm install react-burger-menu
 
 npm install file-saver
 
+npm install detect-browser
+
+npm install react-responsive
+
 // npm install react-calendar-heatmap react-tooltip 에러로 인해 yarn add 사용
 yarn add react-calendar-heatmap react-tooltip
 

@@ -7,6 +7,8 @@ import { ThemeProvider } from 'styled-components';
 // Recoil
 import { useRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
+// RESPONSIVE
+import { useMediaQuery } from 'react-responsive';
 
 function Chatbot() {
   const navigate = useNavigate();
@@ -75,22 +77,36 @@ function Chatbot() {
 
   // 커뮤니티 페이지에서 안보이게 하기
   const location = useLocation();
-
   if (location.pathname === '/community') return null;
 
+  // 반응형
+  const Desktop = ({ children }) => {
+    const isDesktop = useMediaQuery({ minWidth: 992 });
+    return isDesktop ? children : null;
+  };
+  const Mobile = ({ children }) => {
+    const isMobile = useMediaQuery({ maxWidth: 992 });
+    return isMobile ? children : null;
+  };
+
   return (
-    <ThemeProvider theme={theme}>
-      {isLoggedIn && (
-        <ChatBot
-          handleEnd={contactAdmin}
-          steps={steps}
-          floating={true}
-          // floatingStyle={'left'}
-          headerTitle={'C;SAFY'}
-          placeholder={'채팅이 불가능한 채널입니다.'}
-        />
-      )}
-    </ThemeProvider>
+    <>
+      <Desktop>
+        <ThemeProvider theme={theme}>
+          {isLoggedIn && (
+            <ChatBot
+              handleEnd={contactAdmin}
+              steps={steps}
+              floating={true}
+              // floatingStyle={'left'}
+              headerTitle={'C;SAFY'}
+              placeholder={'채팅이 불가능한 채널입니다.'}
+            />
+          )}
+        </ThemeProvider>
+      </Desktop>
+      {/* <Mobile></Mobile> */}
+    </>
   );
 }
 

@@ -39,6 +39,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Tooltip } from '@mui/material';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import swal from 'sweetalert2';
 
 const loginStyle = {
   position: 'absolute',
@@ -192,6 +193,21 @@ const NavBar = () => {
   };
 
   // console.log(userinfo.profile_image);
+
+  const handleMobile = () => {
+    handleCloseNavMenu();
+
+    const checking = swal
+      .fire({
+        icon: 'warning',
+        title: '모바일은 앱을 이용해주세요',
+        // text: '서비스를 이용하려면 로그인이 필요합니다.',
+      })
+      .then(() => {
+        navigate('/');
+      });
+    return checking;
+  };
 
   return (
     <AppBar
@@ -471,7 +487,7 @@ const NavBar = () => {
                 로그인
               </Button>
             )} */}
-            {token && (
+            {/* {!token && (
               <Button
                 sx={{
                   textAlign: 'center',
@@ -489,7 +505,7 @@ const NavBar = () => {
               >
                 로그인
               </Button>
-            )}
+            )} */}
 
             <Modal
               open={modal}
@@ -550,10 +566,11 @@ const NavBar = () => {
                   return (
                     <MenuItem
                       key={page.name}
-                      onClick={() => {
-                        navigate(`/${page.link}`);
-                        setCurrentPage(page.link);
-                      }}
+                      // onClick={() => {
+                      //   navigate(`/${page.link}`);
+                      //   setCurrentPage(page.link);
+                      // }}
+                      onClick={handleMobile}
                       sx={{
                         ':hover': {
                           color: '#006D9F',
@@ -587,24 +604,7 @@ const NavBar = () => {
                 }
               })}
               <MenuItem
-                onClick={() => {
-                  navigate(`/community`);
-                  setCurrentPage('community');
-                }}
-                sx={{
-                  ':hover': {
-                    color: '#006D9F',
-                    bgcolor: '#ffffff',
-                  },
-                }}
-              >
-                <Typography textAlign="center">메타버스</Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  navigate(`/cstest`);
-                  setCurrentPage('cstest');
-                }}
+                onClick={handleMobile}
                 sx={{
                   ':hover': {
                     color: '#006D9F',
@@ -613,6 +613,21 @@ const NavBar = () => {
                 }}
               >
                 <Typography textAlign="center">실력 테스트</Typography>
+              </MenuItem>
+              <MenuItem
+                // onClick={() => {
+                //   navigate(`/community`);
+                //   setCurrentPage('community');
+                // }}
+                onClick={handleMobile}
+                sx={{
+                  ':hover': {
+                    color: '#006D9F',
+                    bgcolor: '#ffffff',
+                  },
+                }}
+              >
+                <Typography textAlign="center">메타버스</Typography>
               </MenuItem>
             </Menu>
           </Box>
