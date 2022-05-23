@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Box = styled.div`
-  width: 340px;
+  // width: 340px;
+  width: 90%;
   height: 184px;
   margin: 10px;
   border-radius: 20px;

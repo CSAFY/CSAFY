@@ -1,6 +1,9 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
 
+// RESPONSIVE
+import { useMediaQuery } from 'react-responsive';
+
 // RECOIL
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoginState } from '../recoils/LoginState';
@@ -9,10 +12,20 @@ import { NavToggle } from '../recoils/NavToggle';
 // COMPONENTS
 import TestBox from '../components/TestBox';
 import NeedLogin from './handler/NeedLogin';
+import MobilePage from './handler/MobilePage';
 
 // STYLED
 import styled from 'styled-components';
 import { Grid } from '@mui/material';
+
+const Desktop = ({ children }) => {
+  const isDesktop = useMediaQuery({ minWidth: 992 });
+  return isDesktop ? children : null;
+};
+const Mobile = ({ children }) => {
+  const isMobile = useMediaQuery({ maxWidth: 992 });
+  return isMobile ? children : null;
+};
 
 const CSTestWrapper = styled.div`
   width: 100%;
@@ -26,12 +39,14 @@ const CSTestWrapper = styled.div`
   align-items: center;
 `;
 const CSTestContent = styled.div`
-  width: 1232px;
+  max-width: 1232px;
+  min-width: 992px;
 
   position: relative;
 `;
 const TestBoxWrapper = styled.div`
-  width: 1080px;
+  // width: 1080px;
+  width: 100%;
 
   position: absolute;
   top: 350px;
@@ -40,7 +55,8 @@ const TestBoxWrapper = styled.div`
   transform: translate(-50%);
 `;
 const ContentTitle = styled.div`
-  width: 1080px;
+  // width: 1080px;
+  width: 100%;
   height: 200px;
 
   border-radius: 21px;
@@ -130,81 +146,86 @@ function CSTest() {
   ];
 
   return (
-    <CSTestWrapper>
-      <CSTestContent>
-        {isLoggedIn ? (
-          <>
-            <ContentTitle>
-              <div
-                style={{
-                  fontSize: '24px',
-                  fontWeight: '800',
-                  position: 'absolute',
-                  left: '40px',
-                  top: '50px',
-                  color: '#008ed0',
-                }}
-              >
-                CS 실력 테스트
-              </div>
-              <div
-                style={{
-                  fontSize: '18px',
-                  color: '#008ed0',
-                  position: 'absolute',
-                  left: '40px',
-                  top: '105px',
-                }}
-              >
-                자신의 실력을 평가해보고 부족한 부분을 학습해보세요.
-              </div>
-              <div
-                style={{
-                  fontSize: '18px',
-                  color: '#008ed0',
-                  position: 'absolute',
-                  left: '40px',
-                  top: '130px',
-                }}
-              >
-                C;SAFY에서 직접 선별한 문제들만 쏙쏙 모아 출제해드립니다.
-              </div>
-              <div
-                style={{
-                  position: 'absolute',
-                  right: '60px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                }}
-              >
-                <img
-                  src="https://csafy-profile.s3.amazonaws.com/logo/logo_short.png"
-                  alt="CSAFY"
-                  style={{
-                    width: '180px',
-                    height: '150px',
-                  }}
-                />
-              </div>
-            </ContentTitle>
+    <>
+      <Desktop>
+        <CSTestWrapper>
+          <CSTestContent>
+            {isLoggedIn ? (
+              <>
+                <ContentTitle>
+                  <div
+                    style={{
+                      fontSize: '24px',
+                      fontWeight: '800',
+                      position: 'absolute',
+                      left: '40px',
+                      top: '50px',
+                      color: '#008ed0',
+                    }}
+                  >
+                    CS 실력 테스트
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '18px',
+                      color: '#008ed0',
+                      position: 'absolute',
+                      left: '40px',
+                      top: '105px',
+                    }}
+                  >
+                    자신의 실력을 평가해보고 부족한 부분을 학습해보세요.
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '18px',
+                      color: '#008ed0',
+                      position: 'absolute',
+                      left: '40px',
+                      top: '130px',
+                    }}
+                  >
+                    C;SAFY에서 직접 선별한 문제들만 쏙쏙 모아 출제해드립니다.
+                  </div>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      right: '60px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                    }}
+                  >
+                    <img
+                      src="https://csafy-profile.s3.amazonaws.com/logo/logo_short.png"
+                      alt="CSAFY"
+                      style={{
+                        width: '180px',
+                        height: '150px',
+                      }}
+                    />
+                  </div>
+                </ContentTitle>
 
-            <TestBoxWrapper>
-              <Grid container>
-                {categoryData.map(test => (
-                  <Grid item xs={4} key={test.id}>
-                    <TestBox {...test} />
+                <TestBoxWrapper>
+                  <Grid container>
+                    {categoryData.map(test => (
+                      <Grid item xs={4} key={test.id}>
+                        <TestBox {...test} />
+                      </Grid>
+                    ))}
                   </Grid>
-                ))}
-              </Grid>
-            </TestBoxWrapper>
-          </>
-        ) : (
-          <>
-            <NeedLogin />
-          </>
-        )}
-      </CSTestContent>
-    </CSTestWrapper>
+                </TestBoxWrapper>
+              </>
+            ) : (
+              <>
+                <NeedLogin />
+              </>
+            )}
+          </CSTestContent>
+        </CSTestWrapper>
+      </Desktop>
+      <MobilePage />
+    </>
   );
 }
 
