@@ -201,7 +201,7 @@ public class ProfileService {
             nowActivity.setActivityCount(1L);
             userActivityRepository.save(nowActivity);
         } else {
-            userActivity.setActivityCount(userActivity.getActivityCount() + 1);
+            userActivity.setActivityCount(userActivity.getActivityCount() + 1L);
             userActivityRepository.save(userActivity);
         }
 
@@ -226,7 +226,7 @@ public class ProfileService {
             userBadgeRepository.save(userBadge);
         } else {
             if (statistic.getIsLogin().equals("N")) {
-                statistic.setDailyCheck(statistic.getDailyCheck() + 1);
+                statistic.setDailyCheck(statistic.getDailyCheck() + 1L);
                 statistic.setIsLogin("Y");
                 statisticsRepository.save(statistic);
                 badgeService.checkBadgeLogin(userSeq, statistic.getDailyCheck());

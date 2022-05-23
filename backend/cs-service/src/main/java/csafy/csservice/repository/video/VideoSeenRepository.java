@@ -12,4 +12,7 @@ public interface VideoSeenRepository extends JpaRepository<VideoSeen, Long> {
 
     @Query("select s from VideoSeen s where s.userSeq =:userSeq and s.video.id =:studySeq")
     VideoSeen checkSeen(@Param("userSeq") Long userSeq, @Param("studySeq") Long studySeq);
+
+    @Query("select count(s) from VideoSeen s where s.userSeq =:userSeq and s.video.categoryId =:category")
+    int findCategorySeen(@Param("userSeq") Long userSeq, @Param("category") String Category);
 }
