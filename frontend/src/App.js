@@ -3,6 +3,7 @@ import './App.css';
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import ScrollToTop from './components/common/ScrollToTop';
+// import BrowserDetection from 'react-browser-detection';
 
 // PAGES
 import Home from './pages/Home';
@@ -41,56 +42,75 @@ import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import UserChat from './pages/UserChat';
 import ReviewNoteDetail from './pages/ReviewNoteDetail';
+import Example from './pages/Example';
+
+// const browserHandler = {
+//   // 크롬에서 실행했을 경우
+//   chrome: () => <div>Chrome is fantastic!</div>,
+//   // gogolebot에서 실행했을 경우
+//   googlebot: () => <div>Hi GoogleBot!</div>,
+//   // 안드로이드에서 실행했을 경우
+//   android: () => <div>Whatever browser you have, it must be on Android!</div>,
+//   // 안드로이드 특정 브라우저에서 실행했을 경우
+//   // 'android-브라우저이름'
+//   'android-chrome': () => <div>Chrome is a good choice for Android!</div>,
+//   // 그 외
+//   default: browser => <div>Hi {browser}!</div>,
+// };
 
 function App() {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <div className="App">
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/editProfile" element={<EditProfile />} />
-          <Route path="/userChat" element={<UserChat />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/chat/:roomName" element={<ChatRoom />} />
-          <Route path="/StudyFramePage" element={<StudyFramePage />} />
-          <Route path="/StudyDetailPage" element={<StudyDetailPage />} />
-          <Route exact path="/IntensivePage" element={<IntensivePage />} />
-          <Route path="/page2" element={<Page2 />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/classification" element={<Classification />} />
-          <Route path="/interviewList" element={<InterviewList />} />
-          <Route path="/interview" element={<Interview />} />
-          <Route path="/InterviewTest" element={<InterviewTest />} />
-          <Route
-            path="/InterviewDetail/:interviewSeq"
-            element={<InterviewDetail />}
-          />
-          <Route path="/CSTest" element={<CSTest />} />
-          <Route path="/CSTestDetail/:testTitle" element={<CSTestDetail />} />
-          <Route path="/CSTestResult/:testTitle" element={<CSTestResult />} />
-          <Route path="/reviewNote" element={<ReviewNote />} />
-          <Route path="/reviewNote/:round" element={<ReviewNoteDetail />} />
-          {/* <Route path="/payment" element={<Payment />} /> */}
-          <Route path="/oauth/redirect" element={<AuthHandler />} />
-          <Route path="/kakaoPay/success" element={<KakaopaySuccess />} />
-          <Route path="/kakaoPay/cancel" element={<KakaopayCancel />} />
-          <Route path="/kakaoPay/fail" element={<KakaopayFail />} />
-          <Route path="/*" element={<NotFound />} />
-          {/*  */}
-          <Route path="/timer" element={<Timer />} />
-          <Route path="/spentTime" element={<SpentTime />} />
-        </Routes>
-        <Chatbot />
-        <Footer />
-      </div>
-    </BrowserRouter>
+    <>
+      {/* <BrowserDetection>{browserHandler}</BrowserDetection> */}
+      <BrowserRouter>
+        <ScrollToTop />
+        <div className="App">
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/editProfile" element={<EditProfile />} />
+            <Route path="/userChat" element={<UserChat />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat/:roomName" element={<ChatRoom />} />
+            <Route path="/StudyFramePage" element={<StudyFramePage />} />
+            <Route path="/StudyDetailPage" element={<StudyDetailPage />} />
+            <Route exact path="/IntensivePage" element={<IntensivePage />} />
+            <Route path="/page2" element={<Page2 />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/classification" element={<Classification />} />
+            <Route path="/interviewList" element={<InterviewList />} />
+            <Route path="/interview" element={<Interview />} />
+            <Route path="/InterviewTest" element={<InterviewTest />} />
+            <Route
+              path="/InterviewDetail/:interviewSeq"
+              element={<InterviewDetail />}
+            />
+            <Route path="/CSTest" element={<CSTest />} />
+            <Route path="/CSTestDetail/:testTitle" element={<CSTestDetail />} />
+            <Route path="/CSTestResult/:testTitle" element={<CSTestResult />} />
+            <Route path="/reviewNote" element={<ReviewNote />} />
+            <Route path="/reviewNote/:round" element={<ReviewNoteDetail />} />
+            {/* <Route path="/payment" element={<Payment />} /> */}
+            <Route path="/oauth/redirect" element={<AuthHandler />} />
+            <Route path="/kakaoPay/success" element={<KakaopaySuccess />} />
+            <Route path="/kakaoPay/cancel" element={<KakaopayCancel />} />
+            <Route path="/kakaoPay/fail" element={<KakaopayFail />} />
+            <Route path="/*" element={<NotFound />} />
+            {/*  */}
+            <Route path="/timer" element={<Timer />} />
+            <Route path="/spentTime" element={<SpentTime />} />
+            <Route path="/example" element={<Example />} />
+          </Routes>
+          <Chatbot />
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </>
   );
 }
 
