@@ -1,20 +1,34 @@
 /* eslint-disable */
 import React, { useEffect, useRef, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { defaultAPI } from '../utils/api';
 
-// Recoil
-import { useRecoilState } from 'recoil';
+// RESPONSIVE
+import { useMediaQuery } from 'react-responsive';
 
+// RECOIL
+import { useRecoilState } from 'recoil';
 import { Token } from '../recoils/Token';
 import { TimeLimit } from '../recoils/TimeLimit';
+
+// COMPONENTS
+import SpentTime from './SpentTime';
+import AudioRecorder from '../components/AudioRecorder';
 
 // STYLED
 import styled from 'styled-components';
 import swal from 'sweetalert2';
-import SpentTime from './SpentTime';
-import AudioRecorder from '../components/AudioRecorder';
+import MobilePage from './handler/MobilePage';
+
+const Desktop = ({ children }) => {
+  const isDesktop = useMediaQuery({ minWidth: 992 });
+  return isDesktop ? children : null;
+};
+const Mobile = ({ children }) => {
+  const isMobile = useMediaQuery({ maxWidth: 992 });
+  return isMobile ? children : null;
+};
 
 const InterviewResultWrapper = styled.div`
   width: 100%;
@@ -30,12 +44,15 @@ const InterviewResultWrapper = styled.div`
   background-color: #f6f7fb;
 `;
 const InterviewResultContent = styled.div`
-  width: 1232px;
+  max-width: 1232px;
+  min-width: 992px;
+  // height: 100%
 
   position: relative;
 `;
 const QuestionBox = styled.div`
-  width: 840px;
+  // width: 840px;
+  width: 80%;
   height: 530px;
   border-radius: 9px;
   box-shadow: 0 0 11px 1px rgba(0, 142, 208, 0.12);
@@ -62,7 +79,7 @@ const Question = styled.div`
 const TimerBox = styled.div`
   position: absolute;
   top: 40px;
-  left: 200px;
+  left: 10%;
 `;
 const Icon = styled.div`
   position: absolute;
@@ -73,7 +90,8 @@ const Icon = styled.div`
   cursor: pointer;
 `;
 const Progress = styled.div`
-  width: 820px;
+  // width: 820px;
+  width: 95%;
   height: 8px;
 
   background-color: #d7e4ec;
@@ -128,7 +146,8 @@ const StepBox = styled.div`
   left: 30px;
 `;
 const MemoBox = styled.div`
-  width: 840px;
+  // width: 840px;
+  width: 80%;
   height: 394px;
 
   display: flex;
@@ -381,64 +400,69 @@ function InterviewTest() {
   }, []);
 
   return (
-    <InterviewResultWrapper>
-      <InterviewResultContent>
-        {timeLimit && (
-          <TimerBox>
-            <SpentTime
-              mm={`${minute}`}
-              ss={`${second}`}
-              message="면접 시간이 종료되었습니다."
-            />
-          </TimerBox>
-        )}
-        <QuestionBox>
-          {/* <PrevButton onClick={prevQuestion}>이전</PrevButton> */}
-          <StepBox>
-            {cnt} / {testData.length}
-          </StepBox>
-          {cnt !== testData.length ? (
-            <NextButton onClick={nextQuestion}>다음</NextButton>
-          ) : (
-            <NextButton onClick={toStart}>처음으로</NextButton>
-          )}
-          {/* {cnt !== testData.length && (
+    <>
+      <Desktop>
+        <InterviewResultWrapper>
+          <InterviewResultContent>
+            {timeLimit && (
+              <TimerBox>
+                <SpentTime
+                  mm={`${minute}`}
+                  ss={`${second}`}
+                  message="면접 시간이 종료되었습니다."
+                />
+              </TimerBox>
+            )}
+            <QuestionBox>
+              {/* <PrevButton onClick={prevQuestion}>이전</PrevButton> */}
+              <StepBox>
+                {cnt} / {testData.length}
+              </StepBox>
+              {cnt !== testData.length ? (
+                <NextButton onClick={nextQuestion}>다음</NextButton>
+              ) : (
+                <NextButton onClick={toStart}>처음으로</NextButton>
+              )}
+              {/* {cnt !== testData.length && (
             <NextButton onClick={nextQuestion}>다음</NextButton>
           )} */}
 
-          <Question>{question}</Question>
+              <Question>{question}</Question>
 
-          <Icon>
-            <AudioRecorder cnt={cnt} question={question} />
-          </Icon>
+              <Icon>
+                <AudioRecorder cnt={cnt} question={question} />
+              </Icon>
 
-          <Progress>
-            <div style={widthStyle}></div>
-          </Progress>
-        </QuestionBox>
+              <Progress>
+                <div style={widthStyle}></div>
+              </Progress>
+            </QuestionBox>
 
-        {cnt === testData.length && (
-          <NextButton
-            style={{
-              height: '40px',
-              position: 'absolute',
-              top: '600px',
-              left: '50%',
-              transform: 'translate(-50%)',
-            }}
-            onClick={() => navigate('/interviewList')}
-          >
-            면접 종료
-          </NextButton>
-        )}
+            {cnt === testData.length && (
+              <NextButton
+                style={{
+                  height: '40px',
+                  position: 'absolute',
+                  top: '620px',
+                  left: '50%',
+                  transform: 'translate(-50%)',
+                }}
+                onClick={() => navigate('/interviewList')}
+              >
+                면접 종료
+              </NextButton>
+            )}
 
-        <MemoBox>
-          <MemoTtitle>메모</MemoTtitle>
-          <Memo value={memo} onChange={handleMemo} />
-          <SaveButton onClick={handleSave}>저장하기</SaveButton>
-        </MemoBox>
-      </InterviewResultContent>
-    </InterviewResultWrapper>
+            <MemoBox>
+              <MemoTtitle>메모</MemoTtitle>
+              <Memo value={memo} onChange={handleMemo} />
+              <SaveButton onClick={handleSave}>저장하기</SaveButton>
+            </MemoBox>
+          </InterviewResultContent>
+        </InterviewResultWrapper>
+      </Desktop>
+      <MobilePage />
+    </>
   );
 }
 
