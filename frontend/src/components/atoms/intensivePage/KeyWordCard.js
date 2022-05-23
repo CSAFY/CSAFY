@@ -17,6 +17,8 @@ import { keyWordData, likeKeyWord } from "../../../recoils";
 
 import axios from 'axios';
 
+import Swal from 'sweetalert2';
+
 import {
   ClickBtn,
   QuestionText2
@@ -72,8 +74,20 @@ function KeyWordCard(props) {
       },
     })
     .then((res) => {
-      console.log(res.data)
-      setKeyWords(res.data)
+      console.log("faver",res.data.length)
+      console.log(res.data.length === 0)
+      if (res.data.length === 0) {
+        const like = Swal.fire({
+          icon: 'error',
+          title: '이런....',
+          text: '즐겨찾은 키워드가 없어요!',
+        })
+        setPageNumber(1)
+        return like
+      } else {
+        setKeyWords(res.data)
+      }
+      
     })
     .catch(err =>{
       console.log(err)
@@ -109,10 +123,10 @@ function KeyWordCard(props) {
     if (pageNumber === 2){
       if(selMode === 1){
         getData()
-        console.log("mode1")
+        
       } else if (selMode === 2){
         getFaveriteData()
-        console.log("mode2")
+        
       }
       
     }else if (pageNumber === 1) {
