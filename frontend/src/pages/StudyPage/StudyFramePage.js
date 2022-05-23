@@ -1,8 +1,6 @@
 import { LayOut,
   TitleName,
-  SearchBox,
   SelectLayOut,
-  KategorieLayOut,
   FlexDiv,
   InSideLayOut,
   CardDiv,
@@ -10,7 +8,7 @@ import { LayOut,
  } from "./StudyFramePage.styled"
 
 import { useLocation  } from 'react-router';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import CategoryList from "../../components/atoms/studypage/CategoryList"
 import ThumbNailCard from "../../components/atoms/studypage/ThumbNailCard"
 
@@ -77,7 +75,7 @@ function StudyFramePage() {
     if (JWT === null ) {
       checkLogin()
     } else {
-      console.log("good")
+      // console.log("good")
     }
   }, [])
 
@@ -86,41 +84,6 @@ function StudyFramePage() {
     getData();
   }, [location.pathname]);
   
-  // const cateFilter = (data, index) => {
-  //   if (nowKategorie === "전체 학습"){
-  //     return(
-  //       <ThumbNailCard
-  //           key={data.id}
-  //           imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
-  //           title={data.title}
-  //           index={index}
-  //           videoId={data.videoId}
-  //           category2Id = {data.category2Id}
-  //           categoryId={data.categoryId}
-  //           favorites ={data.favorites}
-  //           id = {data.id}
-  //           seen = {data.seen}
-  //           >
-  //         </ThumbNailCard>
-  //     )
-  //   }else if (nowKategorie == data.categoryId) {
-  //     return(
-  //       <ThumbNailCard
-  //           key={data.id}
-  //           imgSrc={`https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`}
-  //           title={data.title}
-  //           index={index}
-  //           videoId={data.videoId}
-  //           category2Id = {data.category2Id}
-  //           categoryId={data.categoryId}
-  //           favorites ={data.favorites}
-  //           id = {data.id}
-  //           seen = {data.seen}
-  //           >
-  //         </ThumbNailCard>
-  //     )
-  //   } 
-  // }
   
   const againCard = studyDatas.map((data, index) => 
       {
@@ -198,15 +161,6 @@ function StudyFramePage() {
   return (
     <LayOut>
       <InSideLayOut>
-        {/* <TitleName>
-          {nowKategorie}
-        </TitleName>
-        <SelectLayOut>
-          <SwitchBox>
-            즐겨찾기
-            <SlideToggleBtn toggleTime={toggleTime} />
-          </SwitchBox>
-        </SelectLayOut> */}
 
         <FlexDiv>
           <CategoryList

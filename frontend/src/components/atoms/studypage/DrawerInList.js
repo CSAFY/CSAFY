@@ -1,34 +1,21 @@
 import * as React from 'react';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { studyData, videoData } from "../../../recoils";
 
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+
 
 import styled, {css} from "styled-components";
 
-import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
-import StarIcon from '@mui/icons-material/Star';
 
 import CusStudyLinearWithValueLabel from "./CusStudyLinearWithValueLabel"
 
-import { useEffect, useRef, useState } from "react";
+import {  useState } from "react";
 
 import Tooltip from '@mui/material/Tooltip';
 
 
 export default function DrawerInList(props) {
-  const [expanded, setExpanded] = React.useState(false);
-  
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
 
   const studyDatas = useRecoilValue(studyData)
   const setVideo = useSetRecoilState(videoData);
@@ -75,43 +62,6 @@ export default function DrawerInList(props) {
       })
     )
   }
-  
-  
-  // const DrawerInList = props.data.slice(1).map((categoryId, index) => 
-  //   <Accordion 
-  //     expanded={expanded === `panel${index + 1}`} 
-  //     onChange={handleChange(`panel${index + 1}`)}
-  //     key ={index}
-  //     sx={{ margin: "0 auto 0 auto;", 
-  //     backgroundColor: "rgba(0,0,0,0);",
-  //     boxShadow: "0px 0px 0px 0px rgb(0 0 0 / 0%);"}}>
-  //     <AccordionSummary
-        
-  //       aria-controls={`panel${index + 1}bh-content`}
-  //       id={`panel${index + 1}bh-header`}
-  //       sx={{ margin:"10px 20px 0 20px;",borderRadius: "15px;",
-  //       border: "solid 1px;",
-  //       background: "#F5F5F5;",
-  //       }}
-  //     >
-  //       <Typography sx={{ width: "90%;", flexShrink: 0,  display:"flex",
-  //         justifyContent: "space-between;",fontWeight: "600;",}}>
-  //         <span>
-  //           {categoryId} 
-  //         </span>
-  //         <CntDiv>
-  //           {studyDatas.filter(element => categoryId === element.categoryId).length}
-  //         </CntDiv>
-  //       </Typography>
-  //     </AccordionSummary>
-  //     <AccordionDetails
-  //       sx={{ overflowY : "scroll;", maxHeight: "500px;", margin: "0 10px 0 20px;"}}>
-        
-  //       {ListItems(categoryId)}
-        
-  //     </AccordionDetails>
-  //   </Accordion>
-  // )
   
   const onClickBtn = (data) => {
     setNowCatego(data)
@@ -354,62 +304,3 @@ const Cont = styled.div`
   flex-direction : column;
   justify-content : center;
 `
-
-
-
-
-// height: 200px;
-//   background-color: #f4fbfe;
-//   transition-duration: 0.5s
-//   ${(props) => {
-//     if (props.status === "Y") {
-//       return css`
-//         {
-//           background-color: #42A7E8;
-//           color: #fff;
-//         }
-//       `;
-//     } else {
-//       return css`
-//         cursor: default;
-//       `;
-//     }
-//   }}
-
-// ${(props) => {
-//   if ( props.status === "Y"){
-//     return css` 
-//       {
-//         ${Opened} {
-//           display : hidden;
-//           position : absolute
-//         }
-//         ${AfterAccordion} {
-//           display : visible;
-//           position : absolute
-//         }
-//       }
-//     `
-//   } else {
-//     return css`
-//       {
-//         ${Opened} {
-//           display : visible;
-//           position : absolute
-//         }
-//         ${AfterAccordion} {
-//           display : hidden;
-//           position : absolute
-//         }
-//       }
-//     `;
-//   }
-// }}
-// ${Opened} {
-//   position : absolute;
-//   display : visible;
-// }
-// ${AfterAccordion} {
-//   position : absolute;
-//   display : hidden;
-// }

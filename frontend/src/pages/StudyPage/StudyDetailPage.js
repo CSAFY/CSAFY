@@ -1,4 +1,4 @@
-import { MyiFrame,
+import { 
   FullLayOut,
   DetailLayOut,
   TitleText,
@@ -11,12 +11,11 @@ import { MyiFrame,
   FlexSpanNon
  } from "./StudyDetailPage.styled"
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import {  useEffect } from "react";
+import {  useRecoilState } from "recoil";
 import { videoData, studyData } from "../../recoils";
 
-import RelatedExam from "../../components/atoms/studypage/RelatedExam"
-import RelatedQuestions from "../../components/atoms/studypage/RelatedQuestions"
+
 import Drawer from "../../components/atoms/studypage/Drawer"
 import YouTubeVideo from "../../components/atoms/studypage/YouTubeVideo"
 
@@ -24,9 +23,6 @@ import YouTubeVideo from "../../components/atoms/studypage/YouTubeVideo"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
 
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
@@ -37,9 +33,6 @@ function StudyDetailPage() {
 
   const [videoDatas, setVideoDatas ]= useRecoilState(videoData)
   const [studyDatas, setStudyDatas] = useRecoilState(studyData)
-  const [beforStudy, setBeforStudy] = useState(false)
-  const [afterStudy, setAfterStudy] = useState(false)
-
 
   let navigate = useNavigate();
 
@@ -60,7 +53,7 @@ function StudyDetailPage() {
     if (JWT === null ) {
       checkLogin()
     } else {
-      console.log("good")
+      // console.log("good")
     }
   }, [])
   
@@ -150,13 +143,7 @@ function StudyDetailPage() {
         </YouTubeVideo>
       
         <StudyDetailHr></StudyDetailHr>
-        {/* <RelatedExam>
-        </RelatedExam>
-
-        <StudyDetailHr></StudyDetailHr>
-
-        <RelatedQuestions>
-        </RelatedQuestions> */}
+        
         <ButtonBox>
           <ArrowAndLabel onClick={() => clickBeforBtn()}>
             <ArrowBackIcon sx={{width:"20px;", height : "20px;"}}></ArrowBackIcon>

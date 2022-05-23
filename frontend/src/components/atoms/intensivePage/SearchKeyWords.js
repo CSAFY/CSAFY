@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import axios from 'axios';
-import { inputAdornmentClasses } from '@mui/material';
 
 function SearchKeyWords() {
   
