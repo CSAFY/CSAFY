@@ -3,9 +3,7 @@ package csafy.csservice.service;
 import csafy.csservice.dto.response.ResponseVideo;
 import csafy.csservice.entity.profile.Badge;
 import csafy.csservice.entity.profile.Statistic;
-import csafy.csservice.entity.video.VideoFavorites;
-import csafy.csservice.entity.video.VideoPlay;
-import csafy.csservice.entity.video.VideoSeen;
+import csafy.csservice.entity.video.*;
 import csafy.csservice.repository.profile.StatisticsRepository;
 import csafy.csservice.repository.video.*;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +26,7 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final VideoSeenRepository videoSeenRepository;
     private final VideoPlayRepository videoPlayRepository;
+    private final VideoCertificateRepository videoCertificateRepository;
 
     private final StatisticsRepository statisticsRepository;
 
@@ -69,7 +69,7 @@ public class VideoService {
     }
 
     @Transactional
-    public void studySeens(Long userSeq, Long studySeq){
+    public VideoCertificate studySeens(Long userSeq, Long studySeq){
 
         VideoSeen videoSeen = videoSeenRepository.checkSeen(userSeq, studySeq);
 
@@ -100,6 +100,29 @@ public class VideoService {
         badgeService.checkStudyCount(userSeq, studyCount);
 
         statisticsRepository.save(statistic);
+
+        List<Video> videos = videoRepository.findCategoryStudy(studySeq);
+
+        if(videos == null || videos.size() == 0){
+            return null;
+        }
+
+        String category = videos.get(0).getCategoryId();
+
+        int seenCount = videoSeenRepository.findCategorySeen(userSeq, category);
+
+        VideoCertificate videoCertificateDuplicated = videoCertificateRepository.findByUserSeqAndCategory(userSeq, category);
+
+        if(videos.size() == seenCount && videoCertificateDuplicated == null){
+            VideoCertificate videoCertificate = new VideoCertificate();
+            videoCertificate.setCategory(category);
+            videoCertificate.setUserSeq(userSeq);
+            videoCertificate.setCertificatedAt(LocalDate.now());
+            videoCertificateRepository.save(videoCertificate);
+            return videoCertificate;
+        }
+
+        return null;
 
     }
 

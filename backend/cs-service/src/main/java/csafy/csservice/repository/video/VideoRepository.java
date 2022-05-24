@@ -21,4 +21,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     @Query("select v FROM VideoFavorites f left join Video v ON v.id = f.video.id WHERE f.userSeq =:userSeq order by f.id DESC")
     Page<Video> findUserFavoriteStudy(@Param("userSeq") Long userSeq, Pageable pageable);
+
+    @Query("SELECT v FROM Video v WHERE v.categoryId = (SELECT vv.categoryId FROM Video vv WHERE vv.id =:studySeq)")
+    List<Video> findCategoryStudy(@Param("studySeq") Long studySeq);
 }
