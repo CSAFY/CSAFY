@@ -15,13 +15,13 @@ import { Userinfo } from '../recoils/Userinfo';
 
 // COMPONENTS
 import AuthModal from '../components/AuthModal';
+import MobilePage from './handler/MobilePage';
 
 // STYLED
 import styled from 'styled-components';
 import Fade from 'react-reveal/Fade';
 import { Box, Button, Modal } from '@mui/material';
 import swal from 'sweetalert2';
-import MobilePage from './handler/MobilePage';
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 992 });
@@ -217,6 +217,26 @@ function Home() {
   const [modal, setModal] = useState(false);
   const [state, setState] = useState('signup');
 
+  // 토큰만료 로그아웃
+  const handleToken = () => {
+    axios
+      .get(`${defaultAPI}/user-service/tokenvalidate`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        if (res.status === 200) {
+          console.log('🎃', res);
+        } else if (res.status === 400) {
+          handleLogout();
+          navigate('/');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        // handleLogout();
+      });
+  };
+
   // 모달 닫기
   const handleModalClose = () => {
     setModal(false);
@@ -274,6 +294,7 @@ function Home() {
   };
 
   useEffect(() => {
+    handleToken();
     getInfo();
   }, [token]);
 
