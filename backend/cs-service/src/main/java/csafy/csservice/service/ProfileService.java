@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -287,6 +288,7 @@ public class ProfileService {
     public void updateMultipleCount(Long userSeq, int questionNum){
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
             statistic.setMultipleCount((long) questionNum);
         } else {
@@ -301,6 +303,7 @@ public class ProfileService {
     public void updateOXCount(Long userSeq, int questionNum){
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
             statistic.setOxCount((long) questionNum);
         } else {
@@ -317,9 +320,10 @@ public class ProfileService {
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
 
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
         }
-        if(statistic.getIsApp() == 1L) return;
+        if(Objects.equals(statistic.getIsApp(), 1L)) return;
         statistic.setIsApp(1L);
         statisticsRepository.save(statistic);
 
@@ -336,6 +340,7 @@ public class ProfileService {
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
 
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
         }
         if(userBadgeRepository.findUserBadgeList(userSeq, 46L, 46L) != null) return;
@@ -354,9 +359,10 @@ public class ProfileService {
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
 
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
         }
-        if(statistic.getIsWinner() == 1L) return;
+        if(Objects.equals(statistic.getIsWinner(), 1L)) return;
         statistic.setIsWinner(1L);
         statisticsRepository.save(statistic);
 
