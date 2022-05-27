@@ -187,7 +187,7 @@ public class TestController {
         UserDto userDto = userServiceClient.getTokenUser(token);
 
         List<Card> cards = testService.getLikedCards(userDto.getUser_seq());
-        List<KeywordDto> result = cards.stream().map(c -> new KeywordDto(c)).collect(Collectors.toList());
+        List<KeywordDto> result = cards.stream().map(c -> new KeywordDto(c, userDto)).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

@@ -6,7 +6,9 @@ import csafy.csservice.dto.request.RequestWrongProblem;
 import csafy.csservice.dto.request.RequestWrongProblemList;
 import csafy.csservice.dto.response.ResponseVideo;
 import csafy.csservice.dto.response.ResponseWrongProblem;
+import csafy.csservice.dto.video.VideoCertificateDto;
 import csafy.csservice.entity.test.WrongProblem;
+import csafy.csservice.entity.video.VideoCertificate;
 import csafy.csservice.service.ProfileService;
 import csafy.csservice.service.TestService;
 import csafy.csservice.service.VideoService;
@@ -112,9 +114,13 @@ public class StudyController {
         }
 
         UserDto userDto = userServiceClient.getTokenUser(token);
-        videoService.studySeens(userDto.getUser_seq(), studySeq);
+        VideoCertificate result = videoService.studySeens(userDto.getUser_seq(), studySeq);
 
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        if( result == null ) {
+            return ResponseEntity.status(HttpStatus.OK).body("ok");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new VideoCertificateDto(result));
     }
 
     // 최근 본 강의 체크
