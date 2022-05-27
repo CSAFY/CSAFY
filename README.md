@@ -305,7 +305,7 @@ backend
 -   [와이어프레임](docs/와이어프레임.md)
 -   [컨벤션](docs/컨벤션.md)
 -   [ERD](docs/ERD.md)
--   [시스템기술서](docs/C;SAFY_시스템_기술서.docx)
+-   [시스템기술서](docs/시스템_기술서)
 
 ## ✔ 프로젝트 결과물
 
