@@ -202,7 +202,7 @@ public class ProfileService {
             nowActivity.setActivityCount(1L);
             userActivityRepository.save(nowActivity);
         } else {
-            userActivity.setActivityCount(userActivity.getActivityCount() + 1);
+            userActivity.setActivityCount(userActivity.getActivityCount() + 1L);
             userActivityRepository.save(userActivity);
         }
 
@@ -227,7 +227,7 @@ public class ProfileService {
             userBadgeRepository.save(userBadge);
         } else {
             if (statistic.getIsLogin().equals("N")) {
-                statistic.setDailyCheck(statistic.getDailyCheck() + 1);
+                statistic.setDailyCheck(statistic.getDailyCheck() + 1L);
                 statistic.setIsLogin("Y");
                 statisticsRepository.save(statistic);
                 badgeService.checkBadgeLogin(userSeq, statistic.getDailyCheck());
@@ -288,6 +288,7 @@ public class ProfileService {
     public void updateMultipleCount(Long userSeq, int questionNum){
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
             statistic.setMultipleCount((long) questionNum);
         } else {
@@ -302,6 +303,7 @@ public class ProfileService {
     public void updateOXCount(Long userSeq, int questionNum){
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
             statistic.setOxCount((long) questionNum);
         } else {
@@ -318,6 +320,7 @@ public class ProfileService {
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
 
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
         }
         if(Objects.equals(statistic.getIsApp(), 1L)) return;
@@ -337,6 +340,7 @@ public class ProfileService {
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
 
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
         }
         if(userBadgeRepository.findUserBadgeList(userSeq, 46L, 46L) != null) return;
@@ -355,6 +359,7 @@ public class ProfileService {
         Statistic statistic = statisticsRepository.findByUserSeq(userSeq);
 
         if(statistic == null){
+            statistic = new Statistic();
             statistic.setUserSeq(userSeq);
         }
         if(Objects.equals(statistic.getIsWinner(), 1L)) return;
