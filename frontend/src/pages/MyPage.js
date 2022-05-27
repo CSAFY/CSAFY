@@ -144,6 +144,22 @@ function MyPage() {
   const [userInfo, setUserInfo] = useRecoilState(Userinfo);
   const setCurrentPage = useSetRecoilState(CurrentPage);
 
+  // 토큰만료 로그아웃
+  const handleToken = () => {
+    axios
+      .get(`${defaultAPI}/user-service/tokenvalidate`, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        console.log('🎃', res);
+      })
+      .catch(err => {
+        console.error(err);
+        handleLogout();
+        navigate('/');
+      });
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('jwt');
     localStorage.removeItem('study_data_token');
@@ -303,6 +319,7 @@ function MyPage() {
   };
 
   useEffect(() => {
+    handleToken();
     getInfo();
     getHeatmapData();
     getRecentInterviewInfo();
