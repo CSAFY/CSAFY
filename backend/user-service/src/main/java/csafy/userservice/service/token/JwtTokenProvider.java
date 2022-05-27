@@ -159,7 +159,8 @@ public class JwtTokenProvider {
             return !claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException ex) {
             log.error("Expired JWT token");
-            throw ex;
+            // throw ex
+            return false;
         }catch (Exception e) {
             return false;
         }
